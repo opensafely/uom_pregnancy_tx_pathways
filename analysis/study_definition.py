@@ -39,7 +39,7 @@ study = StudyDefinition(
         AND
         registered
         AND
-        (age > 14)
+        (age >= 14 AND age < 49)
         AND
         has_follow_up_previous_year
         AND
@@ -86,7 +86,7 @@ study = StudyDefinition(
                                         "mean": 25, "stddev": 5}, "incidence": 1}
         ),
 
-
+    # Number of delivery codes per woman
     delivery_code=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "today"],
@@ -96,4 +96,21 @@ study = StudyDefinition(
        "incidence": 1,
        },
     ),
+
+    #date of last delivery code
+    delivery_code_date=patients.with_these_clinical_events(
+    delivery_codes,
+    between=["index_date", "today"],
+    returning="date",
+    date_format="YYYY-MM-DD",
+    find_last_match_in_period=True,
+    return_expectations={           
+        "date": {
+            "earliest": "2019-01-01",  
+            "latest": "today",
+            },
+        },    
+    ),
 )
+
+##add other variables for measures - age_cat, ethnicity, IMD, etc
