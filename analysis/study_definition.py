@@ -87,13 +87,13 @@ study = StudyDefinition(
         ),
 
 
-    delivery_code=patients.with_these_clinical_events(
-    delivery_code,
-    between=["index_date", "today"],
-    returning="number_of_matches_in_period",
-    return_expectations={
-        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-        "incidence": 1,
-        },
-    ),
+    #delivery_code=patients.with_these_clinical_events(
+    #delivery_code,
+    #between=["index_date", "today"],
+    #returning="number_of_matches_in_period",
+    #return_expectations={
+    #    "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #    "incidence": 1,
+    #    },
+    #),
 )
