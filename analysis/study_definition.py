@@ -69,13 +69,11 @@ study = StudyDefinition(
             return_expectations={"incidence": 0.95},
         ),
 
-
         age=patients.age_as_of(
             "index_date",
             return_expectations={
                 "rate": "universal",
                 "int": {"distribution": "population_ages"},
-                "incidence": 0.001
             },
         ),
         
@@ -122,20 +120,20 @@ study = StudyDefinition(
 
     # THINK ABOUT WHICH CATEGORIES WE WANT/NEED
     # FOR ANALYSES ie RATES BY AGE CAT, ETHNICITY, 
-    # DEPRIVATION?
+    # DEPRIVATION? plus practice/region above
     # ### Age categories
 
     #   age_cat=patients.categorised_as(
     #     {
     #         "0":"DEFAULT",
-    #         "0-13": """ age >= 0 AND age < 5""",
-    #         "14-20": """ age >= 5 AND age < 15""",
-    #         "20-24": """ age >= 15 AND age < 25""",
-    #         "25-29": """ age >= 25 AND age < 35""",
-    #         "30-34": """ age >= 35 AND age < 45""",
-    #         "35-39": """ age >= 45 AND age < 55""",
-    #         "40-44": """ age >= 55 AND age < 65""",
-    #         "45+": """ age >= 75 AND age < 120""",
+    #         "0-13": """ age >= 0 AND age < 13""",
+    #         "14-19": """ age >= 14 AND age < 20""",
+    #         "20-24": """ age >= 20 AND age < 25""",
+    #         "25-29": """ age >= 25 AND age < 30""",
+    #         "30-34": """ age >= 30 AND age < 35""",
+    #         "35-39": """ age >= 35 AND age < 40""",
+    #         "40-44": """ age >= 40 AND age < 45""",
+    #         "45+": """ age >= 45 AND age < 120""",
     #     },
     #     return_expectations={
     #         "rate": "universal",
@@ -155,6 +153,43 @@ study = StudyDefinition(
     #     },
     # ),
 
-#code for IMD and ethnicity in hello-world-2 repo
+    #    ethnicity=patients.with_ethnicity_from_sus(
+    #        returning="group_6",
+    #        use_most_frequent_code=True,
+    #        return_expectations={
+    #            "category": {"ratios": {"1": 0.8, "2": 0.1, "3": 0.1}},
+    #            "incidence": 0.75,
+    #            },
+    #    ),
+
+
+	#    imd=patients.categorised_as(
+    #        {
+    #            "0": "DEFAULT",
+    #            "1": """index_of_multiple_deprivation >=1 AND index_of_multiple_deprivation < 32844*1/5""",
+    #            "2": """index_of_multiple_deprivation >= 32844*1/5 AND index_of_multiple_deprivation < 32844*2/5""",
+    #            "3": """index_of_multiple_deprivation >= 32844*2/5 AND index_of_multiple_deprivation < 32844*3/5""",
+    #            "4": """index_of_multiple_deprivation >= 32844*3/5 AND index_of_multiple_deprivation < 32844*4/5""",
+    #            "5": """index_of_multiple_deprivation >= 32844*4/5 AND index_of_multiple_deprivation < 32844""",
+    #        },
+    #        index_of_multiple_deprivation=patients.address_as_of(
+    #         "index_date",
+    #            returning="index_of_multiple_deprivation",
+    #            round_to_nearest=100,
+    #        ),
+    #        return_expectations={
+    #         "rate": "universal",
+    #            "category": {
+    #                "ratios": {
+    #                    "0": 0.05,
+    #                    "1": 0.19,
+    #                    "2": 0.19,
+    #                    "3": 0.19,
+    #                    "4": 0.19,
+    #                    "5": 0.19,
+    #                }
+    #            },
+    #        },
+    #    ),
 
 

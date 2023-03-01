@@ -13,6 +13,7 @@ actions:
       highly_sensitive:
         cohort: output/input.csv.gz
 
+
 #could generate different populations by month?
 #index dates in study def can be overridden here
-# so could be used for measures
+# so could be used for measures (what are we generating for these?)
