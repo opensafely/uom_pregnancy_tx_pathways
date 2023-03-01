@@ -8,7 +8,8 @@ from cohortextractor import (
 #above as in example but with measure added
 #doesnt run w Measure, add in once measures created
 
-#need to import codelists for snomed
+# Import codelists from codelist.py (which pulls them from the codelist folder)
+from codelists import *
 
 from datetime import datetime
 
@@ -28,15 +29,7 @@ study = StudyDefinition(
 
     index_date=start_date,
 
-    #code got stuck here once changed to index_date below
-    #then worked once moved index_date to line 19
-    #and got stuck on NOT has_died
-    #fixed once """ re-added
-    #then stuck on index_date not defined in index_date
-    #worked once index_date moved inside study def
-    #OUTPUT GENERATED NOW
-    
-    population = patients.satisfying(
+        population = patients.satisfying(
         """
         NOT 
         has_died
@@ -80,24 +73,32 @@ study = StudyDefinition(
         sex=patients.sex(
             return_expectations={
                 "rate": "universal",
-                "category": {"ratios": {"M": 0.49, "F": 0.51}},
+                "category": {"ratios":{"M": 0.00, "F": 1.0}},
             },
         ),
-   
-    #ALL VARIABLES IN STUDY DEF ARE DEFINED HERE
+    )
+        #ALL VARIABLES IN STUDY DEF ARE DEFINED HERE
+       
+        ### Practice
+        practice=patients.registered_practice_as_of(
+            "index_date",
+            returning="pseudo_id",
+            return_expectations={"int": {"distribution": "normal",
+                                         "mean": 25, "stddev": 5}, "incidence": 1}
+        ),
 
+        delivery_code=patients.with_these_clinical_events(
+        delivery_code,
+        between=["index_date", "today"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+            "incidence": 1,
+        },
     ),
 )
-    
-        # ### Practice
-        # practice=patients.registered_practice_as_of(
-        #     "index_date",
-        #     returning="pseudo_id",
-        #     return_expectations={"int": {"distribution": "normal",
-        #                                  "mean": 25, "stddev": 5}, "incidence": 1}
-        # ),
 
-    
+
         #region=patients.registered_practice_as_of(
         #    "2019-01-01",
         #    returning="nuts1_region_name",
@@ -190,6 +191,6 @@ study = StudyDefinition(
     #                }
     #            },
     #        },
-    #    ),
+#)
 
 
