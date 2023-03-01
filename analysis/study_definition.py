@@ -97,7 +97,7 @@ study = StudyDefinition(
        },
     ),
 
-    #date of last delivery code
+    # date of last delivery code
     delivery_code_date=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "today"],
@@ -111,6 +111,44 @@ study = StudyDefinition(
             },
         },    
     ),
+
+    # is there a delivery code present
+    delivery_code_present=patients.with_these_clinical_events(
+    delivery_codes,
+    between=["index_date", "today"],
+    returning="binary_flag",    
+    return_expectations={
+       "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+       "incidence": 1,
+       },
+    ),
+
+    # set for a certain period
+    # use this as example for 6WC check
+    delivery_code_present_2019=patients.with_these_clinical_events(
+    delivery_codes,
+    between=["index_date", "2019-12-31"],
+    returning="binary_flag",    
+    return_expectations={
+       "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+       "incidence": 1,
+       },
+    ),
+
+
 )
+
+# return_expectations just needed to visualise date
+# no links in dummy data between dates and whether
+# codes are present etc 
+
+# can use 
+# between=["delivery_code_date", "delivery_code_date + 84 days"]
+# for postnatal code/6WC check
+
+# to add - binary code for delivery code in a period
+# ^ per month? then return what the code is? 
+# if yes then code? if yes then date?
+# add check for whether postnatal code within 6w
 
 ##add other variables for measures - age_cat, ethnicity, IMD, etc

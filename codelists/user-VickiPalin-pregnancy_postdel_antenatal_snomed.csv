@@ -1,0 +1,300 @@
+code,term
+10573002,Infection of amniotic cavity
+1089000,Intrauterine sepsis of fetus
+11612004,Chorioamnionitis
+11618000,Intra-amniotic infection of fetus
+11687002,Gestational diabetes mellitus
+118185001,Finding related to pregnancy
+125586008,Disorder of placenta
+13961000000108,HSA1 form status
+14094001,Excessive vomiting in pregnancy
+15230009,Liver disorder in pregnancy
+15394000,Toxemia of pregnancy
+15539009,Hydrops fetalis due to isoimmunization
+15938005,Eclampsia
+161011008,Maternity allowance
+16356006,Multiple pregnancy
+16756008,Albuminuria in pregnancy without hypertension
+168092006,Amniotic fluid -meconium stain
+169544009,Postcoital oral contraceptive pill failure
+169550004,Female sterilization failure
+169641007,Feeding intention - not known
+169642000,Feeding intention - unsure
+169643005,Feeding intention - breast
+169644004,Feeding intention - bottle
+169814004,General practice unit birth
+169815003,Consultant unit birth
+171063002,Pregnancy prescription exemption education
+17231009,Fetal valproate syndrome
+17382005,Cervical incompetence
+177085004,Therapeutic fetoscopic operation on fetus
+177100008,Percutaneous fetal procedure
+177118006,Operation on gravid uterus
+177122001,External version of breech
+17787002,Peripheral neuritis in pregnancy
+184241007,Obstetric co-op card
+184242000,Obstetric co-op card issued
+184245003,Obstetric co-op card updated
+18656007,Grand multipara
+19569008,Mild hyperemesis gravidarum
+198609003,"Complication of pregnancy, childbirth and/or puerperium"
+198903000,Hemorrhage due to placenta previa
+198912003,Premature separation of placenta with coagulation defect
+198920001,Antepartum hemorrhage with trauma
+198925006,Antepartum hemorrhage with uterine leiomyoma
+198992004,Eclampsia in pregnancy
+198997005,Pre-eclampsia or eclampsia with pre-existing hypertension
+199025001,Hyperemesis gravidarum with metabolic disturbance
+199047001,False labor
+199110003,Infections of kidney in pregnancy
+199112006,Infections of the genital tract in pregnancy
+199132007,Pregnancy-related glycosuria
+199139003,Pregnancy-induced edema and proteinuria without hypertension
+199141002,Gestational edema with proteinuria
+199206009,Infections of urethra in pregnancy
+199248002,Iron deficiency anemia of pregnancy
+199305006,Complications specific to multiple gestation
+199312002,Finding related to risk factor in pregnancy
+199318003,Twin pregnancy with antenatal problem
+199326006,Quadruplet pregnancy with antenatal problem
+199378009,Multiple pregnancy with malpresentation
+199397009,Cephalopelvic disproportion
+199398004,Disproportion - major pelvic abnormality
+199402008,Disproportion - major pelvic abnormality with antenatal problem
+199416003,Mixed feto-pelvic disproportion
+199428006,Hydrocephalic disproportion with antenatal problem
+199466009,Retroverted incarcerated gravid uterus
+199484006,Cervical incompetence with antenatal problem
+199516000,Known or suspected fetal abnormality
+199531009,Fetus with hereditary disease
+199547006,Fetus with drug damage
+199550009,Fetus with drug damage with antenatal problem
+199553006,Fetus with radiation damage
+199558002,Fetus with damage due to intrauterine contraceptive device
+199578005,Fetal-maternal hemorrhage with antenatal problem
+199583002,Rhesus isoimmunization with antenatal problem
+199593009,Fetal distress with antenatal problem
+199608004,Intrauterine death with antenatal problem
+199613000,Small-for-dates with antenatal problem
+199616008,Large-for-dates fetus
+199618009,Large-for-dates with antenatal problem
+199625002,Placental transfusion syndromes
+199647002,Polyhydramnios with antenatal problem
+199654008,Oligohydramnios with antenatal problem
+199659003,Premature rupture of membranes with antenatal problem
+199661007,"Premature rupture of membranes, labor delayed by therapy"
+199741009,Malnutrition in pregnancy
+200101003,Maternal distress with antenatal problem
+200233001,Antenatal deep vein thrombosis with antenatal complication
+200259003,Cerebral venous thrombosis in pregnancy
+200303005,Obstetric blood-clot pulmonary embolism with antenatal complication
+201134009,Alopecia of pregnancy
+20391007,Amniotic cyst
+205788004,Fetal alcohol syndrome
+206036005,Fetal or neonatal effect of maternal incompetent cervix
+206037001,Fetal or neonatal effect of maternal premature rupture of membrane
+206038006,Fetal or neonatal effect of maternal oligohydramnios
+206065004,Fetal or neonatal effect of placenta previa
+206069005,Fetal or neonatal effect of placental damage caused by amniocentesis
+206077009,Fetal or neonatal effect of placental dysfunction
+206079007,Fetal or neonatal effect of placental insufficiency
+206331005,Infections specific to perinatal period
+206538000,Idiopathic hydrops fetalis
+20956009,Phlebitis complicating pregnancy AND/OR puerperium
+217070006,"Amniocentesis with complication, without blame"
+21861000000105,FP24 maternity fee claim form status
+21871000000103,FP24 maternity claim completed by doctor
+21881000000101,FP24 maternity claim checked by staff
+21891000000104,FP24 maternity claim paid by Family Practitioner Committee - checked
+21901000000103,FP24 maternity claim overpaid by Family Practitioner Committee
+21911000000101,FP24 maternity claim - Family Practitioner Committee contacted regarding mistake
+21921000000107,FP24 maternity claim - Family Practitioner Committee dispute fee due
+21931000000109,FP24A maternity claim signed by patient
+21941000000100,FP24A maternity claim completed by doctor
+22033007,Fetal growth retardation
+226081000000107,Gestational age
+231431000000108,Over 20 weeks gestational age
+234058009,Varicose veins of genitalia in pregnancy
+235888006,Cholestasis of pregnancy
+236946009,McDonald cervical cerclage
+236947000,Shirodkar cervical cerclage
+236951003,Operation on amniotic cavity
+237014000,Postpartum obstetric operation
+237149005,Fetus with suspected rubella damage via mother
+237152002,Fetal spina bifida suspected
+237153007,Fetal hydrocephalus suspected
+237227006,Congenital heart disease in pregnancy
+237228001,Pregnancy and drug dependence
+237230004,Uremia in pregnancy without hypertension
+237240001,Teenage pregnancy
+237256006,Disorder of pelvic size and disproportion
+237270006,Antepartum hemorrhage with hypofibrinogenemia
+237271005,Antepartum hemorrhage with hyperfibrinolysis
+237272003,Antepartum hemorrhage with afibrinogenemia
+237279007,Transient hypertension of pregnancy
+237281009,Moderate proteinuric hypertension of pregnancy
+237284001,Symptomatic disorders in pregnancy
+237285000,Gestational edema
+237286004,Varicose veins of vulva in pregnancy
+237292005,Placental insufficiency
+237296008,Morbidly adherent placenta
+237300009,Pregnancy with isoimmunization
+239102001,Pruritus of pregnancy
+240278000,External cephalic version
+240306004,Fetal acidosis
+240322003,Fetal effect of placental insufficiency
+24082006,Bruising of cord
+249053001,Relation of fetal size to dates
+25825004,Hemorrhage in early pregnancy
+259863001,Removal of Shirodkar cerclage from cervix
+265631002,Fetus and gravid uterus operations
+267197003,Antepartum hemorrhage due to abruptio placentae and placenta previa
+267199000,Antepartum hemorrhage with coagulation defect
+267204006,Genitourinary tract infection in pregnancy
+267252001,Fetus with central nervous system malformation
+267253006,Fetus with chromosomal abnormality
+267254000,Fetus with viral damage via mother
+267258002,Small for gestational age fetus
+267280004,Venous complication of pregnancy and/or puerperium
+268467002,Feeding intention
+268469004,Antenatal data
+268585006,Placental infarct
+268794002,Fetal or neonatal effect of maternal hypertensive disease
+268798004,Fetal or neonatal effect of maternal polyhydramnios
+268799007,Fetal or neonatal effect of maternal death
+268800006,Fetal or neonatal effect of malpresentation before labor
+268803008,Fetal or neonatal effect of abruptio placentae
+270471004,Pregnancy benefits
+270498000,Malposition and malpresentation of fetus
+271992004,Obstetric investigation
+2721000000107,FP24 signed by patient
+2731000000109,FP24 maternity claim sent to family practitioner committee
+2741000000100,FP24 maternity claim underpaid by family practitioner committee
+274121004,Cardiac disease in pregnancy
+2751000000102,FP24 maternity claim family practitioner committee make up payment
+275367000,Intrauterine hypoxia
+275412000,Cystitis of pregnancy
+2761000000104,FP24A maternity claim status
+276507005,Fetal death
+276508000,Hydrops fetalis
+276509008,Non-immune hydrops fetalis
+28079008,Multiparous
+280966008,Phlegmasia alba dolens - obstetric
+283811000000108,Percutaneous serial drainage of amniotic fluid for twin-twin transfusion syndrome
+28701003,Low maternal weight gain
+287979001,Premature/false labor
+29399001,Elderly primigravida
+307534009,Urinary tract infection in pregnancy
+307896000,Obstetric co-op card status
+308133005,Varicose veins of legs in pregnancy
+308136002,Superficial thrombophlebitis in pregnancy
+308140006,Hemorrhoids in pregnancy
+310592002,Pregnancy prolonged - 41 weeks
+310594001,Pregnancy prolonged - 42 weeks
+313017000,Anhydramnios
+321411000000108,Fetus with cardiovascular abnormality
+327111000000105,Finding of gestational age
+33058001,Placenta accreta without hemorrhage
+33552005,Anomaly of placenta
+34165000,Gestational proteinuria
+34842007,Antepartum hemorrhage
+366323009,Finding of length of gestation
+36813001,Placenta previa
+36854009,Inlet contraction of pelvis
+371380006,Amniotic fluid leaking
+386638009,Obstetric operation
+386809009,Operation on fetus
+386811000,Fetal procedure
+387705004,Hemolytic disease of fetus OR newborn due to isoimmunization
+39804004,Abnormal products of conception
+398254007,Pre-eclampsia
+41114007,Mild pre-eclampsia
+414247004,Fetal effects of maternal antepartum hemorrhage
+415105001,Placental abruption
+415683005,Suspect trisomy 21 fetus
+425452004,Endoscopic laser ablation of placental arterio-venous anastomosis
+426737000,Endoscopic serial drainage of amniotic fluid for twin-twin transfusion syndrome
+44223004,Premature rupture of membranes
+444517009,Exposure to rubella in pregnancy
+445548006,Dead fetus in utero
+44772007,Maternal obesity syndrome
+46230007,"Gestation period, 40 weeks"
+46764007,Severe pre-eclampsia
+48194001,Pregnancy-induced hypertension
+48287005,Umbilical cord complication
+49956009,Antepartum deep phlebothrombosis
+516071000000107,Health in Pregnancy grant claim form issued
+51885006,Morning sickness
+5231000000106,Mat B1 certificate status
+52977000,Fetal exsanguination
+59363009,Inevitable abortion
+59566000,Oligohydramnios
+60810003,Quadruplet pregnancy
+609416008,Suspected fetal anencephaly
+609418009,Suspected fetal damage from maternal alcohol
+609419001,Suspected fetal damage from maternal toxoplasmosis
+609429008,Fetal disorder due to disease in mother
+609496007,Complication occurring during pregnancy
+62131008,Couvelaire uterus
+6383007,Premature labor
+64254006,Triplet pregnancy
+65147003,Twin pregnancy
+6541000000105,Complete maternity services claimed
+66456009,Amnioscopy
+6661000000105,Maternity anaesthetic service claim
+6701000000104,Mat B1 certificate due
+6711000000102,Mat B1 signed
+6721000000108,Mat B2 - certificate of confinement
+6781000000109,FW 8 - application for prescription exemption
+69217004,Outlet contraction of pelvis
+69802008,Cervical cerclage suture present
+699950009,Anti-D isoimmunization affecting pregnancy
+70065001,Fetal hydantoin syndrome
+70129008,Placenta accreta
+70591005,Fetal disorder
+71028008,Fetal-maternal hemorrhage
+71473008,Amnion nodosum
+718447001,Difficult tracheal intubation
+725051009,Suspected cystic fibrosis in fetus
+72860003,Disorder of amniotic cavity AND/OR membrane
+764921000000102,Gestational diabetes information leaflet given
+769087009,Vomiting during third trimester of pregnancy
+77278008,Velamentous insertion of umbilical cord
+775821000000102,Referral to teenage pregnancy and parenting support service
+7792000,Placenta previa without hemorrhage
+78067005,Placental structure
+7870007,Vascular lesion of cord
+790961000000101,Antenatal depression
+79668009,Vasa previa
+81402009,Fetal or neonatal effect of condition of umbilical cord
+84235001,Cephalic version
+843251000000106,Therapeutic percutaneous operation for twin-twin transfusion syndrome
+84880007,"Fetal or neonatal effect of complication of placenta, cord and/or membranes"
+86203003,Polyhydramnios
+865431000000108,Pertussis vaccination programme for pregnant women enhanced service administration
+866351000000103,Did not attend pertussis vaccination in pregnancy
+866641000000105,Pertussis vaccination in pregnancy declined
+871005,Contracted pelvis
+88887003,Maternal hypotension syndrome
+90127001,Fetus papyraceous
+90325002,Vomiting of pregnancy
+90968009,Prolonged pregnancy
+9291000000109,FP24A maternity claim checked by staff
+9301000000108,FP24A maternity claim sent to family practitioner committee
+9311000000105,FP24A maternity claim paid by family practitioner committee checked
+9321000000104,FP24A maternity claim underpaid by family practitioner committee
+9351000000109,FP24A maternity claim family practitioner committee make up payment
+9361000000107,FP24A maternity claim family practitioner committee dispute fee due
+9391000000101,HSA1 therapeutic abortion green form
+9401000000103,HSA1 form eligible
+9411000000101,HSA1 form signed
+9451000000102,GMS2 claim signed by patient
+9461000000104,GMS2 claim completed by doctor
+9471000000106,GMS2 claim checked by staff
+9481000000108,GMS2 claim sent to health authority
+9491000000105,"GMS2 claim paid by health authority, checked"
+95005005,Neoplasm of uncertain behavior of placenta
+9521000000108,GMS2 claim health authority contacted regarding mistake
+9531000000105,GMS2 claim health authority make up payment
+9541000000101,GMS2 claim health authority dispute fee due
+95605009,Hemolysis-elevated liver enzymes-low platelet count syndrome
