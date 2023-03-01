@@ -1,3 +1,10 @@
 {
-  "files": {}
+  "files": {
+    "user-VickiPalin-pregnancy_delivery_snomed.csv": {
+      "id": "user/VickiPalin/pregnancy_delivery_snomed/2f47994e",
+      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_delivery_snomed/2f47994e/",
+      "downloaded_at": "2023-03-01 11:12:34.108972Z",
+      "sha": "a894dc7c77f660566ddf18e056f519ff8b7720b7"
+    }
+  }
 }

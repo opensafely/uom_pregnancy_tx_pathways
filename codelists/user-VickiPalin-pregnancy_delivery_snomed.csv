@@ -1,0 +1,610 @@
+code,term
+10217006,Third degree perineal laceration
+106007006,Maternal AND/OR fetal condition affecting labor AND/OR delivery
+109894007,Retained placenta
+111453004,"Retained placenta, without hemorrhage"
+1125006,Sepsis during labor
+11466000,Cesarean section
+118215003,Delivery finding
+124736009,Compound presentation
+125586008,Disorder of placenta
+12729009,Prolonged rupture of membranes
+1343000,Deep transverse arrest
+16207008,Postmature infancy
+169679002,Rhesus screening - cord blood sample
+169734005,Spontaneous rupture of membranes
+169811007,Birth detail
+169812000,Place of birth
+169813005,Home birth
+169817006,Ambulance birth
+169818001,Born before arrival
+169821004,Duration of first stage of labor
+169822006,Duration of second stage of labor
+169823001,Duration of third stage of labor
+169825008,(Outcome of delivery (& [livebirth] or [triplet] or [twin])) or (stillbirth - prevention record)
+169826009,Single live birth
+169827000,Single stillbirth
+169828005,Twins - both live born
+169829002,Twins - one still and one live born
+169830007,Twins - both stillborn
+169831006,Triplets - all live born
+169832004,Triplets - two live and one stillborn
+169834003,Triplets - three stillborn
+169836001,Birth of child
+169838000,Baby male
+169839008,Baby female
+169840005,Two male babies
+169841009,Two female babies
+169842002,One male and one female baby
+169843007,Three male babies
+169844001,Two male and one female babies
+169845000,One male and two female babies
+169846004,Three female babies
+169849006,Baby premature 36-38 weeks
+169860002,Baby birth weight under 3 percent (under 2500g)
+169861003,Baby birth weight equal to 3 percent to 9 percent (2500-2849g)
+169862005,Baby birth weight equal to 10 percent to 24 percent (2850-3149g)
+169863000,Baby birth weight equal to 25 percent to 49 percent (3150-3449g)
+169864006,Baby birth weight equal to 50 percent to 74 percent (3450-3749g)
+169865007,Baby birth weight equal to 75 percent to 89 percent (3750-4049g)
+169866008,Baby birth weight equal to 90 percent to 96 percent (4050-4399g)
+169867004,Baby birth weight equal to or greater than 96 percent (over 4499g)
+169868009,Baby birth weight 4400-4499g
+169876006,Birth head circumference
+169877002,Birth head circumference equal to third centile
+169878007,Birth head circumference equal to third-ninth centile
+169879004,Birth head circumference equal to 10th-24th centile
+169880001,Birth head circumference equal to 25th-49th centile
+169881002,Birth head circumference equal to 50th-74th centile
+169882009,Birth head circumference equal to 75th-89th centile
+169883004,Birth head circumference equal to 90th-96th centile
+169884005,Birth head circumference equal to or greater than 97th centile
+169886007,Birth length
+169887003,Birth length equal to third centile
+169888008,Birth length equal to third-ninth centile
+169889000,Birth length equal to 10th-24th centile
+169890009,Birth length equal to 25th-49th centile
+169891008,Birth length equal to 50th-74th centile
+169892001,Birth length equal to 75th-89th centile
+169893006,Birth length equal to 90th-96th centile
+169894000,Birth length equal to or greater than 97th centile
+169895004,Apgar score at 1 minute
+169896003,Apgar at 1 minute = 0
+169897007,Apgar at 1 minute = 1
+169898002,Apgar at 1 minute = 2
+169899005,Apgar at 1 minute = 3
+169901001,Apgar at 1 minute = 4
+169902008,Apgar at 1 minute = 5
+169903003,Apgar at 1 minute = 6
+169904009,Apgar at 1 minute = 7
+169905005,Apgar at 1 minute = 8
+169906006,Apgar at 1 minute = 9
+169907002,Apgar at 1 minute = 10
+169909004,Apgar score at 5 minutes
+169910009,Apgar at 5 minutes = 0
+169911008,Apgar at 5 minutes = 1
+169912001,Apgar at 5 minutes = 2
+169913006,Apgar at 5 minutes = 3
+169914000,Apgar at 5 minutes = 4
+169915004,Apgar at 5 minutes = 5
+169916003,Apgar at 5 minutes = 6
+169917007,Apgar at 5 minutes = 7
+169918002,Apgar at 5 minutes = 8
+169919005,Apgar at 5 minutes = 9
+169920004,Apgar at 5 minutes = 10
+169922007,Apgar score at 10 minutes
+169923002,Apgar at 10 minutes = 0
+169924008,Apgar at 10 minutes = 1
+169925009,Apgar at 10 minutes = 2
+169926005,Apgar at 10 minutes = 3
+169927001,Apgar at 10 minutes = 4
+169928006,Apgar at 10 minutes = 5
+169929003,Apgar at 10 minutes = 6
+169930008,Apgar at 10 minutes = 7
+169931007,Apgar at 10 minutes = 8
+169932000,Apgar at 10 minutes = 9
+169933005,Apgar at 10 minutes = 10
+169952004,Placental finding
+169953009,Placenta weight
+169954003,Placenta normal O/E
+169955002,Placental diameter
+169958000,Placenta incomplete
+169960003,Labor details
+169961004,Normal birth
+169963001,Birth details not known
+170099002,Child examination - birth
+170103007,Birth examination abnormal - for observation
+170104001,Birth examination abnormal - referred
+170105000,Birth examination abnormal - on treatment
+17263003,Amniotic fluid embolism
+173300003,Disorder of pregnancy
+176653008,Non-obstetric episiotomy
+177108001,Application of fetal scalp electrode
+177128002,Induction and delivery procedures
+177129005,Surgical induction of labor
+177130000,Forewater rupture of amniotic membrane
+177131001,Hindwater rupture of amniotic membrane
+177135005,Oxytocin induction of labor
+177136006,Prostaglandin induction of labor
+177141003,Elective cesarean section
+177142005,Elective upper segment cesarean section
+177143000,Elective lower segment cesarean section
+177152009,Breech extraction delivery with version
+177157003,Spontaneous breech delivery
+177158008,Assisted breech delivery
+177161009,Forceps cephalic delivery
+177162002,High forceps cephalic delivery with rotation
+177164001,Midforceps cephalic delivery with rotation
+177167008,Barton forceps cephalic delivery with rotation
+177173009,High vacuum delivery
+177174003,Low vacuum delivery
+177175002,Vacuum delivery before full dilation of cervix
+177176001,Trial of vacuum delivery
+177179008,Cephalic vaginal delivery with abnormal presentation of head at delivery without instrument
+177180006,Manipulative cephalic vaginal delivery with abnormal presentation of head at delivery without instrument
+177181005,Non-manipulative cephalic vaginal delivery with abnormal presentation of head at delivery without instrument
+177184002,Normal delivery procedure
+177185001,Water birth delivery
+177194007,Manual dilatation of cervix
+177200004,Instrumental removal of products of conception from delivered uterus
+177203002,Manual removal of products of conception from delivered uterus
+177204008,Manual removal of placenta from delivered uterus
+177208006,Repositioning of inverted uterus
+177212000,Normal delivery of placenta
+177217006,Immediate repair of obstetric laceration
+177218001,Immediate repair of obstetric laceration of uterus or cervix uteri
+177219009,Immediate repair of obstetric laceration of perineum and sphincter of anus
+177220003,Immediate repair of obstetric laceration of vagina and floor of pelvis
+177221004,Immediate repair of minor obstetric laceration
+177222006,Repair of episiotomy
+177227000,Secondary repair of obstetric laceration
+177228005,Obstetric uterine tamponade
+177229002,Repositioning of umbilical cord
+180221005,Intravenous induction of labor
+183673002,Discharged from hospital within 6 hours of delivery
+184004000,Patient requested epidural
+18606002,Dyscoordinate labor
+18625004,Low forceps delivery
+196040003,Aspiration pneumonitis due to and following anesthesia during labor and delivery
+198609003,"Complication of pregnancy, childbirth and/or puerperium"
+198617006,Delivery of viable fetus in abdominal pregnancy
+198899007,Placenta previa without hemorrhage - delivered
+198905007,Placenta previa with hemorrhage - delivered
+198910006,Placental abruption - delivered
+198917009,Antepartum hemorrhage with coagulation defect - delivered
+198922009,Antepartum hemorrhage with trauma - delivered
+198927003,Antepartum hemorrhage with uterine leiomyoma - delivered
+198944004,"Benign essential hypertension complicating pregnancy, childbirth and the puerperium - delivered"
+198951008,"Renal hypertension complicating pregnancy, childbirth and the puerperium - delivered"
+198965005,Transient hypertension of pregnancy - delivered
+198974007,Mild or unspecified pre-eclampsia - delivered
+198983002,Severe pre-eclampsia - delivered
+198990007,Eclampsia - delivered
+198999008,Pre-eclampsia or eclampsia with pre-existing hypertension - delivered
+199022003,Mild hyperemesis-delivered
+199063009,Post-term pregnancy - delivered
+199069008,Papyraceous fetus - delivered
+199106001,Genitourinary tract infection in pregnancy - delivered
+199117000,Liver disorder in pregnancy - delivered
+199121007,Fatigue during pregnancy - delivered
+199127006,Herpes gestationis - delivered
+199134008,Glycosuria during pregnancy - delivered
+199156006,Maternal syphilis during pregnancy - baby delivered
+199157002,Maternal syphilis in the puerperium - baby delivered during current episode of care
+199163006,Maternal gonorrhea during pregnancy - baby delivered
+199192005,Maternal rubella during pregnancy - baby delivered
+199225007,Diabetes mellitus during pregnancy - baby delivered
+199237009,Thyroid dysfunction during pregnancy - baby delivered
+199244000,Anemia during pregnancy - baby delivered
+199252002,Drug dependence during pregnancy - baby delivered
+199266007,Congenital cardiovascular disorder during pregnancy - baby delivered
+199314001,Normal delivery but ante- or post- natal conditions present
+199317008,Twin pregnancy - delivered
+199321001,Triplet pregnancy - delivered
+199329004,"Multiple delivery, all spontaneous"
+199330009,"Multiple delivery, all by forceps and vacuum extractor"
+199331008,"Multiple delivery, all by cesarean section"
+199344003,Unstable lie - delivered
+199354004,Breech presentation - delivered
+199362007,Transverse lie - delivered
+199366005,Face presentation - delivered
+199370002,Brow presentation - delivered
+199371003,Brow presentation with antenatal problem
+199385008,Prolapsed arm with antenatal problem
+199400000,Disproportion - major pelvic abnormality - delivered
+199405005,Generally contracted pelvis - delivered
+199418002,Mixed feto-pelvic disproportion - delivered
+199422007,Large fetus causing disproportion - delivered
+199427001,Hydrocephalic disproportion - delivered
+199463001,"Uterine scar from previous surgery in pregnancy, childbirth and the puerperium - delivered"
+199519007,Fetus with central nervous system malformation - delivered
+199526007,Fetus with chromosomal abnormality - delivered
+199533007,Fetus with hereditary disease - delivered
+199549009,Fetus with drug damage - delivered
+199582007,Rhesus isoimmunization - delivered
+199592004,Fetal distress - delivered
+199595002,Labor and delivery complication by meconium in amniotic fluid
+199596001,Labor and delivery complicated by fetal heart rate anomaly with meconium in amniotic fluid
+199597005,Labor and delivery complicated by biochemical evidence of fetal stress
+199607009,Intrauterine death - delivered
+199612005,Small-for-dates baby
+199646006,Polyhydramnios - delivered
+199653002,Oligohydramnios - delivered
+199658006,Premature rupture of membranes - delivered
+199660008,Premature rupture of membranes with onset of labor within 24 hours of the rupture
+199662000,Premature rupture of membranes with onset of labor after 24 hours of the rupture
+199673007,Prolonged artificial rupture of membranes with antenatal problem
+199677008,Amniotic cavity infection - delivered
+199710008,"Sepsis during labor, delivered"
+199714004,Grand multiparity - delivered
+199745000,Complication occurring during labor and delivery
+199746004,Obstructed labor
+199747008,Obstructed labor due to fetal malposition
+199749006,Obstructed labor due to fetal malposition - delivered
+199751005,Obstructed labor due to breech presentation
+199752003,Obstructed labor due to face presentation
+199755001,Obstructed labor due to compound presentation
+199757009,Obstructed labor caused by bony pelvis
+199762005,Obstructed labor due to generally contracted pelvis
+199763000,Obstructed labor due to pelvic inlet contraction
+199767004,Obstructed labor caused by pelvic soft tissues
+199774009,Deep transverse arrest - delivered
+199779004,Persistent occipitoposterior or occipitoanterior position - delivered
+199783004,Shoulder dystocia - delivered
+199784005,Shoulder dystocia with antenatal problem
+199787003,Locked twins - delivered
+199825000,Secondary uterine inertia with antenatal problem
+199833004,Precipitate labor - delivered
+199847000,Prolonged first stage - delivered
+199857004,Prolonged second stage - delivered
+199860006,"Delayed delivery of second twin, triplet etc"
+199862003,Delayed delivery second twin - delivered
+199863008,Delayed delivery second twin with antenatal problem
+199869007,Prolapse of cord - delivered
+199870008,Prolapse of cord with antenatal problem
+199874004,Umbilical cord tight around neck - delivered
+199880007,Cord tangled with compression - delivered
+199881006,Cord tangled with compression with antenatal problem
+199916005,First degree perineal tear during delivery - delivered
+199925004,Second degree perineal tear during delivery - delivered
+199930000,Third degree perineal tear during delivery - delivered
+199934009,Fourth degree perineal tear during delivery - delivered
+199944006,Vulval and/or perineal hematoma during delivery - delivered
+199958008,Ruptured uterus before labor
+199961009,Rupture of uterus before labor with antenatal problem
+199964001,Rupture of uterus during and after labor - delivered
+199972004,Laceration of cervix - obstetric
+199977005,Obstetric high vaginal laceration
+199979008,Obstetric high vaginal laceration - delivered
+199990003,Obstetric damage to pelvic joints and ligaments - delivered
+199993001,Obstetric trauma causing pelvic hematoma
+199995008,Obstetric pelvic hematoma - delivered
+200040005,Retained portion of placenta or membranes with no hemorrhage
+200046004,Complications of anesthesia during labor and delivery
+200061003,Obstetric anesthesia with central nervous system complications
+200068009,Obstetric toxic reaction caused by local anesthesia
+200071001,Obstetric spinal and epidural anesthesia-induced headache
+200075005,Toxic reaction caused by local anesthetic during labor and delivery
+200076006,Spinal and epidural anesthesia-induced headache during labor and delivery
+200077002,Cardiac complications of anesthesia during labor and delivery
+200078007,Central nervous system complications of anesthesia during labor and delivery
+200099005,Maternal distress - delivered
+200130005,Forceps delivery - delivered
+200133007,Delivery by combination of forceps and vacuum extractor
+200134001,Delivered by mid-cavity forceps with rotation
+200138003,Vacuum extractor delivery - delivered
+200142000,Breech extraction - delivered
+200144004,Deliveries by cesarean
+200146002,Cesarean delivery - delivered
+200147006,Cesarean section - pregnancy at term
+200148001,Delivery by elective cesarean section
+200149009,Delivery by emergency cesarean section
+200150009,Delivery by cesarean hysterectomy
+200151008,Cesarean section following previous cesarean section
+200154000,Deliveries by destructive operation
+200173001,Intrapartum hemorrhage with coagulation defect
+200294005,Amniotic fluid pulmonary embolism - delivered
+206054009,Fetal or neonatal effect of breech presentation before labor
+206055005,Fetal or neonatal effect of external version before labor
+206056006,Fetal or neonatal effect of oblique lie before labor
+206057002,Fetal or neonatal effect of transverse lie before labor
+206058007,Fetal or neonatal effect of unstable lie before labor
+206059004,Fetal or neonatal effect of face presentation before labor
+206070006,Fetal or neonatal effect of placental damage caused by cesarean section
+206071005,Fetal or neonatal effect of placental damage caused by surgical induction
+206087008,Fetal or neonatal effect of prolapsed cord
+206089006,Fetal or neonatal effect of umbilical cord around neck
+206091003,Fetal or neonatal effect of knot in cord
+206112008,Fetal or neonatal effect of maternal bony pelvis abnormality during labor and delivery
+206114009,Fetal or neonatal effect of persistent occipito-posterior malposition during labor and delivery
+206115005,Fetal or neonatal effect of shoulder presentation during labor and delivery
+206116006,Fetal or neonatal effect of transverse lie during labor and delivery
+206117002,Fetal or neonatal effect of face presentation during labor and delivery
+206118007,Fetal or neonatal effect of disproportion during labor and delivery
+206121009,Fetal or neonatal effect of forceps delivery
+206122002,Fetal or neonatal effect of vacuum extraction delivery
+206123007,Fetal or neonatal effect of cesarean section
+206124001,Fetal or neonatal effect of maternal anesthetic and analgesic agents during labor and delivery
+206126004,Fetal or neonatal effect of maternal analgesic agent during labor and delivery
+206127008,Fetal or neonatal effect of maternal general anesthesia during labor and delivery
+206128003,Fetal or neonatal effect of maternal epidural anesthesia during labor and delivery
+206130001,Fetal or neonatal effect of maternal pethidine during labor and delivery
+206134005,Fetal or neonatal effect of precipitate delivery
+206138008,Fetal or neonatal effect of hypertonic labor
+206139000,Fetal or neonatal effect of hypertonic uterine dysfunction
+206146009,Fetal or neonatal effect of induction of labor
+206148005,Fetal or neonatal effect of long labor
+206149002,Fetal or neonatal effect of instrumental delivery
+206169007,Premature - weight 1000g-2499g or gestation of 28-37weeks
+206245001,Liver rupture due to birth trauma
+206258000,Fetal death due to prelabor anoxia
+206259008,Fetal death due to labor anoxia
+206260003,Liveborn with prelabor fetal distress
+206262006,Liveborn with prelabor abnormal heart beat
+206263001,Liveborn with prelabor hypoxia
+206264007,Liveborn with prelabor meconium in liquor
+206266009,Liveborn with labor fetal distress
+206267000,Liveborn with labor abnormal heart beat
+206268005,Liveborn with labor hypoxia
+206269002,Liveborn with labor meconium in liquor
+21882006,Face presentation of fetus
+23171006,Delayed AND/OR secondary postpartum hemorrhage
+23332002,Failed trial of labor
+236958009,Induction of labor
+236960006,Sweeping of membrane
+236973005,Delivery procedure
+236975003,Nonrotational forceps delivery
+236978001,Forceps delivery to the aftercoming head
+236991000,Operation to facilitate delivery
+237014000,Postpartum obstetric operation
+237161002,Rigid perineum - baby delivered
+237168008,Persistent hymen - baby delivered
+237184009,Septate vagina - baby delivered
+237206001,Rectocele - baby delivered
+237207005,Cystocele - baby delivered
+237215008,Uterine fibroid - baby delivered
+237223005,Bicornuate uterus - baby delivered
+237256006,Disorder of pelvic size and disproportion
+237283007,Eclampsia in labor
+237300009,Pregnancy with isoimmunization
+237305004,Presentation of cord
+237309005,Knot in umbilical cord
+237311001,Breech delivery
+237313003,Vaginal delivery following previous cesarean section
+237317002,Spasm of uterus or cervix uteri
+237329006,Urethra injury - obstetric
+237330001,Bladder injury - obstetric
+237331002,Perineal hematoma
+237332009,Vulval tear
+237333004,Hymen tear
+237336007,Fibrinolysis - postpartum
+237337003,Afibrinogenemia - postpartum
+237364002,Stillbirth
+237365001,Fresh stillbirth
+237366000,Macerated stillbirth
+23954006,Acromion presentation
+24082006,Bruising of cord
+245479009,Entire delivered uterus
+249092008,Mentum presentation
+249135009,Meconium stained liquor
+249170006,Complete placenta at delivery
+249173008,Placenta gritty
+249181009,Membranes complete
+249182002,Membranes incomplete
+249220002,Vaginal tear resulting from childbirth
+249221003,Labial tear
+25749005,Disproportion between fetus and pelvis
+25825004,Hemorrhage in early pregnancy
+26158002,Uterine inertia
+264558008,Pelvic hematoma
+265641004,Packing to control postnatal vaginal bleeding
+267214002,Congenital abnormality of uterus - baby delivered
+267221002,Tumor of uterine body - baby delivered
+267228008,Other uterine/pelvic floor abnormality - baby delivered
+267247006,Vulval abnormality - baby delivered
+267257007,Labor and delivery complicated by fetal heart rate anomaly
+267262008,Prolonged spontaneous rupture of membranes
+267265005,Hypertonic uterine inertia
+267266006,Cord tangled or knotted with compression
+267268007,Trauma to perineum and/or vulva during delivery
+267269004,Vulval and perineal hematoma during delivery
+267272006,Postpartum coagulation defects
+267273001,Retained placenta or membranes with no hemorrhage
+267276009,Obstetric anesthesia with pulmonary complications
+267278005,Deliveries by vacuum extractor
+268475008,Outcome of delivery
+268476009,Sex of baby
+268484008,Childbirth examination - normal
+268809007,Fetal or neonatal effect of malposition or disproportion during labor or delivery
+268811003,Fetal or neonatal effect of abnormal uterine contractions
+268812005,Fetal or neonatal effect of uterine inertia or dysfunction
+268817004,Very premature - less than 1000g or less than 28 weeks
+268818009,Disorder relating to long gestation and/or high birth weight
+268829008,Severe birth asphyxia - Apgar score less than 4 at 1 minute
+268830003,Mild to moderate birth asphyxia - Apgar score 4-7 at 1 minute
+270498000,Malposition and malpresentation of fetus
+270500004,Prolapsed cord
+271419000,Gas and air analgesia in labor
+27214003,Atonic postpartum hemorrhage
+27215002,Uterine inversion
+274118001,Venereal disease in pregnancy
+274130007,Emergency cesarean section
+274973002,Dilation of cervix uteri and curettage for termination of pregnancy
+275082004,Pack to control postpartum hemorrhage
+275168001,Neville-Barnes forceps delivery
+275169009,Simpson's forceps delivery
+275307002,Apgar normal
+275367000,Intrauterine hypoxia
+275368005,Labor fetal anoxia
+275427000,Retained membrane without hemorrhage
+275430007,Vaginal muscle tear
+275431006,Anal sphincter tear
+275735001,Baby normal at birth
+276640009,Intrapartum fetal hypoxia
+28030000,Twin birth
+281050002,Livebirth
+281051003,Stillbirth [prevention record]
+281052005,Triplet birth
+281053000,Sex of baby at delivery
+281570002,Fetal heart monitoring in labor
+282020008,Premature delivery
+283380005,Laceration of perineum
+28487002,Finding of arrangement of fetus
+288266004,Born after induced labor
+288270007,Post-term infant - 42 weeks plus
+288274003,Fetal distress - in labor
+289248003,Duration of labor
+289256000,Mother delivered
+289311005,Umbilical cord tight around baby's neck
+302081005,Finding of sex of baby
+302383004,Forceps delivery
+302384005,Controlled cord traction of placenta
+302929008,Umbilical cord around neck
+308037008,Syntocinon induction of labor
+309469004,Spontaneous vertex delivery
+309877008,Intrapartum cardiotochogram monitoring
+309878003,Exploration of uterine cavity
+310491007,Baby birth weight less than 751gm
+310492000,Baby birth weight equal to 751g-1kg
+310493005,Baby birth weight 1 to 1.5 kilogram
+310494004,Baby birth weight 1.5 to 2 kilogram
+310523002,Baby premature 24-26 weeks
+310527001,Baby premature 39 weeks
+310528006,Baby premature 38 weeks
+310529003,Baby premature 37 weeks
+310530008,Baby premature 36 weeks
+310538001,Baby birth weight 2 to 2.5 kilogram
+310539009,Baby birth weight above 2.5kg
+310548004,Baby premature 26-28 weeks
+310650002,Ragged placenta
+310661005,Premature infant 28-37 weeks
+31208007,Medical induction of labor
+31516002,"Viral disease in mother complicating pregnancy, childbirth AND/OR puerperium"
+315616008,Domino delivery
+32189006,Pubiotomy
+33058001,Placenta accreta without hemorrhage
+33627001,Prolonged first stage of labor
+34842007,Antepartum hemorrhage
+35874009,Normal labor
+35882009,Abnormality of forces of labor
+363013003,Complication of introduction procedure
+364738009,Finding of outcome of delivery
+37141005,Maternal pyrexia during labor
+372055003,Abnormal glucose tolerance test during pregnancy - baby delivered
+38010008,Intrapartum hemorrhage
+38206000,Exceptionally large at birth
+382391000000106,Order of birth at delivery
+384321000000100,Preterm infant status
+386623008,Incision of uterine cervix
+386637004,Obstetric procedure
+386638009,Obstetric operation
+387699008,Primary uterine inertia
+391998006,Dilation and curettage of uterus after delivery
+394699000,Born by cesarean section
+395681004,Born by forceps delivery
+395682006,Born by elective cesarean section
+395683001,Born by normal vaginal delivery
+397836004,Time of delivery
+398019008,Perineal laceration during delivery
+398307005,Low cervical cesarean section
+399031001,Fourth degree perineal laceration
+399601000000101,"[V]Singleton, born before admission to hospital"
+407613009,Born by breech delivery
+407614003,Born by ventouse delivery
+407615002,Born by emergency cesarean section
+408796008,Stillbirth - unknown if fetal death intrapartum or prior to labor
+408816000,Artificial rupture of membranes
+409018009,Postpartum care assessment
+410041000000109,[X]Other manipulation-assisted delivery
+410062001,Laceration of vagina
+41059002,Cesarean hysterectomy
+411591000000103,[V]Healthy liveborn infants according to type of birth
+412726003,Length of gestation at birth
+413654009,Birth asphyxia
+415981000000108,"[V]Twin, mate live born"
+417121007,Breech extraction
+417426005,Four vessels in umbilical cord
+42571002,Failed induction of labor
+426060003,Nitrous oxide and oxygen gas analgesia in labor
+427971000000107,"[V]Singleton, born outside hospital and not hospitalised"
+428121000000105,"[V]Twin, mate liveborn NOS"
+43715006,Secondary uterine inertia
+439621000000106,[X]Other specified assisted single delivery
+440251000000106,"[X]Assisted single delivery, unspecified"
+442311008,Liveborn born in hospital
+442327001,Twin liveborn born in hospital
+44247006,Prematurity of fetus
+445585003,Livebirth born before admission to hospital
+452451000000109,"[V]Twin, mate stillborn"
+452531000000101,"[V]Twin, mate stillborn NOS"
+45384004,Multiple birth
+45757002,Labor problem
+46311005,Perineal laceration involving fourchette
+463851000000109,[V]Singleton NOS
+47236005,Third stage hemorrhage
+47340003,Birth weight finding
+47386001,Mendelson's syndrome resulting from a procedure
+47821001,Postpartum hemorrhage
+48194001,Pregnancy-induced hypertension
+48287005,Umbilical cord complication
+48782003,Delivery normal
+51195001,Placental polyp
+51920004,Precipitate labor
+53419009,Cord entanglement
+53443007,Prolonged labor
+54048003,Threatened abortion
+5556001,Manually assisted spontaneous delivery
+57271003,Extraperitoneal cesarean section
+57284007,Severe birth asphyxia
+57759005,First degree perineal laceration
+57891003,Term infant
+59795007,Short cord
+609441001,Fetal or neonatal effect of breech delivery
+609496007,Complication occurring during pregnancy
+61586001,Delivery by vacuum extraction
+62129004,Contraction ring dystocia
+6234006,Second degree perineal laceration
+62508004,Mid forceps delivery
+62726004,Fetal clavicotomy
+63339007,Disorder of uterine cervix
+6383007,Premature labor
+64229006,Traumatic lesion during delivery
+64646001,Failed forceps delivery
+69270005,Rupture of uterus during AND/OR after labor
+69422002,Trial forceps delivery
+69777007,Interlocked twins
+70591005,Fetal disorder
+710068006,Baby premature 32-36 weeks
+710235005,Baby premature 28-32 weeks
+715880002,Obstructed labor due to fetal abnormality
+717803002,Singleton liveborn born in hospital
+717805009,Singleton liveborn unspecified as to place of birth
+72860003,Disorder of amniotic cavity AND/OR membrane
+733839001,Postpartum acute renal failure
+7504005,Trauma to vulva during delivery
+76012002,Fetal or neonatal effect of complication of labor and/or delivery
+76658000,Perineal laceration involving labia
+769087009,Vomiting during third trimester of pregnancy
+77259008,Prolonged second stage of labor
+77362009,Mild to moderate birth asphyxia
+77854008,Failed medical induction of labor
+78408007,Complication of obstetrical surgery AND/OR procedure
+79414005,Retraction ring dystocia
+8014007,Brow presentation of fetus
+81448000,"Hemorrhage in early pregnancy, delivered"
+84007008,Shock during AND/OR following labor AND/OR delivery
+84195007,Classical cesarean section
+84457005,Spontaneous onset of labor
+85425003,Intrauterine hypoxia AND/OR birth asphyxia
+85548006,Episiotomy
+86041002,Pre-existing hypertension in obstetric context
+89346004,Delivery by Kielland rotation
+89700002,Shoulder girdle dystocia
+90188009,Failed mechanical induction
+90325002,Vomiting of pregnancy
+90562004,"Fetal distress, in liveborn infant"
+90610005,Interstitial pulmonary fibrosis of prematurity
+90629004,Needling of hydrocephalic head
+9293002,Atony of uterus
+9724000,Repair of current obstetric laceration of uterus
+9780006,Presentation of prolapsed arm of fetus

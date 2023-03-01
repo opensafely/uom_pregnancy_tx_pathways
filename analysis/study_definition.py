@@ -9,7 +9,7 @@ from cohortextractor import (
 #doesnt run w Measure, add in once measures created
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
-from codelists import *
+from codelist import *
 
 from datetime import datetime
 
@@ -87,13 +87,13 @@ study = StudyDefinition(
         ),
 
 
-    #delivery_code=patients.with_these_clinical_events(
-    #delivery_code,
-    #between=["index_date", "today"],
-    #returning="number_of_matches_in_period",
-    #return_expectations={
-    #    "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-    #    "incidence": 1,
-    #    },
-    #),
+    delivery_code=patients.with_these_clinical_events(
+    delivery_codes,
+    between=["index_date", "today"],
+    returning="number_of_matches_in_period",
+    return_expectations={
+       "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+       "incidence": 1,
+       },
+    ),
 )
