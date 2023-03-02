@@ -72,6 +72,41 @@ study = StudyDefinition(
         },
     ),
 
+    #need to define categories
+    #0-13 and 50+ as checks?
+    age_cat=patients.categorised_as(
+        {
+            "0":"DEFAULT",
+            "0-13": """ age >= 0 AND age < 13""",
+            "14-19": """ age >= 14 AND age < 19""",
+            "20-24": """ age >= 20 AND age < 25""",
+            "25-29": """ age >= 25 AND age < 30""",
+            "30-34": """ age >= 30 AND age < 35""",
+            "35-39": """ age >= 35 AND age < 40""",
+            "40-44": """ age >= 40 AND age < 45""",
+            "45-49": """ age >= 45 AND age < 50""",
+            "50+": """ age >= 50 """,
+        },
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                    "0": 0,
+                    "0-13": 0.12, 
+                    "14-19": 0.11,
+                    "20-24": 0.11,
+                    "25-29": 0.11,
+                    "30-34": 0.11,
+                    "35-39": 0.11,
+                    "40-44": 0.11,
+                    "45-49": 0.11,
+                    "50+": 0.11,
+                }
+            },
+        },
+    ),
+
+
     sex=patients.sex(
         return_expectations={
             "rate": "universal",
@@ -79,12 +114,51 @@ study = StudyDefinition(
         }
     ),
 
+    ethnicity=patients.with_ethnicity_from_sus(
+    returning="group_6",
+    use_most_frequent_code=True,
+    return_expectations={
+            "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
+            "incidence": 0.75,
+        },
+    ),
+
     practice=patients.registered_practice_as_of(
             "index_date",
             returning="pseudo_id",
             return_expectations={"int": {"distribution": "normal",
                                         "mean": 25, "stddev": 5}, "incidence": 1}
+    ),
+
+    imd=patients.categorised_as(
+        {
+            "0": "DEFAULT",
+            "1": """index_of_multiple_deprivation >=1 AND index_of_multiple_deprivation < 32844*1/5""",
+            "2": """index_of_multiple_deprivation >= 32844*1/5 AND index_of_multiple_deprivation < 32844*2/5""",
+            "3": """index_of_multiple_deprivation >= 32844*2/5 AND index_of_multiple_deprivation < 32844*3/5""",
+            "4": """index_of_multiple_deprivation >= 32844*3/5 AND index_of_multiple_deprivation < 32844*4/5""",
+            "5": """index_of_multiple_deprivation >= 32844*4/5 AND index_of_multiple_deprivation < 32844""",
+        },
+        index_of_multiple_deprivation=patients.address_as_of(
+            "index_date",
+            returning="index_of_multiple_deprivation",
+            round_to_nearest=100,
         ),
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                    "0": 0.05,
+                    "1": 0.19,
+                    "2": 0.19,
+                    "3": 0.19,
+                    "4": 0.19,
+                    "5": 0.19,
+                }
+            },
+        },
+    ),   
+    
 
     # Number of delivery codes per person
     delivery_code_number=patients.with_these_clinical_events(
@@ -125,11 +199,18 @@ study = StudyDefinition(
 
     #then need to return what the last code is if present
     
-    # delivery_code=patients.with_these_clinical_events(
-    # delivery_codes,
-    # between=["index_date", "2019-12-31"],
-    # returning="????",
-    # ),
+    #delivery_code=patients.with_these_clinical_events(
+    #delivery_codes,
+    #between=["index_date", "2019-12-31"],
+    #returning="numeric_value", 
+    #find_last_match_in_period=True
+    # return_expectations={
+    #    "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #    "incidence": 1,
+    #    },
+    #returning="numeric_value" and ="code" could work but
+    #needs float variable?
+    #),
 
     # set for a certain period
     # use this as example for 6WC check
