@@ -160,7 +160,7 @@ study = StudyDefinition(
     ),   
     
     #are there any other variables that we want?
-    
+
     # Number of delivery codes per person
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes,
@@ -202,7 +202,7 @@ study = StudyDefinition(
     # can use find_first_match_in_period = True or find_last_match_in_period = True
     # can also add include_date_of_match to get the date
     delivery_code=patients.with_these_clinical_events(
-    delivery_code,
+    delivery_codes,
     between=["index_date", "2019-01-01"],
     returning="code", 
     return_expectations={
