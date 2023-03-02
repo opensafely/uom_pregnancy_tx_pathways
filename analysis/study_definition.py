@@ -159,7 +159,8 @@ study = StudyDefinition(
         },
     ),   
     
-
+    #are there any other variables that we want?
+    
     # Number of delivery codes per person
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes,
@@ -197,26 +198,33 @@ study = StudyDefinition(
        },
     ),
 
-    #then need to return what the last code is if present
-    
-    #delivery_code=patients.with_these_clinical_events(
-    #delivery_codes,
-    #between=["index_date", "2019-12-31"],
-    #returning="numeric_value", 
-    #find_last_match_in_period=True
-    # return_expectations={
-    #    "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-    #    "incidence": 1,
-    #    },
-    #returning="numeric_value" and ="code" could work but
-    #needs float variable?
-    #),
+    # Returns delivery code - last code by default
+    # can use find_first_match_in_period = True or find_last_match_in_period = True
+    # can also add include_date_of_match to get the date
+    delivery_code=patients.with_these_clinical_events(
+    delivery_code,
+    between=["index_date", "2019-01-01"],
+    returning="code", 
+    return_expectations={
+        "category": {
+            "ratios": {
+            "10217006":  0.2,
+            "106007006": 0.2,
+            "109894007": 0.2,
+            "111453004": 0.2,
+            "1125006": 0.2,
+            }
+        },
+        "incidence": 1,
+      },
+    ),
+
 
     # set for a certain period
     # use this as example for 6WC check
     delivery_code_present_2019=patients.with_these_clinical_events(
     delivery_codes,
-    between=["index_date", "2019-12-31"],
+    between=["index_date", "2019-01-01"],
     returning="binary_flag",    
     return_expectations={
        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
@@ -260,12 +268,6 @@ study = StudyDefinition(
 
 )
 
-
-
-# can use 
-# between=["delivery_code_date", "delivery_code_date + 84 days"]
-# for postnatal code/6WC check
-
 # add check for whether postnatal code within 6w
 
-##add other variables for measures - age_cat, ethnicity, IMD, etc
+##add measures
