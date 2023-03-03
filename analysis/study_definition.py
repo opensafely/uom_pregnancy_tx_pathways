@@ -77,7 +77,7 @@ study = StudyDefinition(
     age_cat=patients.categorised_as(
         {
             "0":"DEFAULT",
-            "0-13": """ age >= 0 AND age < 13""",
+            #"0-13": """ age >= 0 AND age < 13""",
             "14-19": """ age >= 14 AND age < 19""",
             "20-24": """ age >= 20 AND age < 25""",
             "25-29": """ age >= 25 AND age < 30""",
@@ -85,22 +85,22 @@ study = StudyDefinition(
             "35-39": """ age >= 35 AND age < 40""",
             "40-44": """ age >= 40 AND age < 45""",
             "45-49": """ age >= 45 AND age < 50""",
-            "50+": """ age >= 50 """,
+            #"50+": """ age >= 50 """,
         },
         return_expectations={
             "rate": "universal",
             "category": {
                 "ratios": {
                     "0": 0,
-                    "0-13": 0.12, 
-                    "14-19": 0.11,
-                    "20-24": 0.11,
-                    "25-29": 0.11,
-                    "30-34": 0.11,
-                    "35-39": 0.11,
-                    "40-44": 0.11,
-                    "45-49": 0.11,
-                    "50+": 0.11,
+                    #"0-13": 0.12, 
+                    "14-19": 0.05,
+                    "20-24": 0.15,
+                    "25-29": 0.15,
+                    "30-34": 0.40,
+                    "35-39": 0.10,
+                    "40-44": 0.10,
+                    "45-49": 0.05,
+                    #"50+": 0.11,
                 }
             },
         },
@@ -128,6 +128,26 @@ study = StudyDefinition(
             returning="pseudo_id",
             return_expectations={"int": {"distribution": "normal",
                                         "mean": 25, "stddev": 5}, "incidence": 1}
+    ),
+    
+    ### Region - NHS England 9 regions
+    region=patients.registered_practice_as_of(
+        "index_date",
+        returning="nuts1_region_name",
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                  "North East": 0.1,
+                  "North West": 0.1,
+                  "Yorkshire and The Humber": 0.1,
+                  "East Midlands": 0.1,
+                  "West Midlands": 0.1,
+                  "East": 0.1,
+                  "London": 0.2,
+                  "South West": 0.1,
+                  "South East": 0.1, }, },
+        },
     ),
 
     imd=patients.categorised_as(
@@ -159,7 +179,29 @@ study = StudyDefinition(
         },
     ),   
     
-    #are there any other variables that we want?
+    ## BMI, most recent
+    bmi=patients.most_recent_bmi(
+        between=["2015-01-01", "index_date"],
+        minimum_age_at_measurement=18,
+        include_measurement_date=True,
+        date_format="YYYY-MM-DD",
+        return_expectations={
+            "date": {"earliest": "2015-01-01", "latest": "index_date"},
+            "float": {"distribution": "normal", "mean": 27, "stddev": 6},
+            "incidence": 0.70,
+        },
+    ),
+
+    ## GP consultations - may adjust models for contact in 12m before
+    gp_count=patients.with_gp_consultations(
+        between=["index_date - 12 months", "index_date"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 6, "stddev": 3},
+            "incidence": 0.6,
+        },
+    ),
+
 
     # Number of delivery codes per person
     delivery_code_number=patients.with_these_clinical_events(
@@ -271,3 +313,8 @@ study = StudyDefinition(
 # add check for whether postnatal code within 6w
 
 ##add measures
+
+##numerator num patients with pn code in 12 weeks after delivery date
+##denom num patients delivered that month
+## overall measure, grouped by practice, grouped by age_cat, region
+## develop code for plotting
