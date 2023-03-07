@@ -203,6 +203,7 @@ study = StudyDefinition(
 
 
     # Number of delivery codes per person
+    # plot histogram based on this?
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "today"],
@@ -282,10 +283,10 @@ study = StudyDefinition(
     # ),
 
 ## next three variables are the same but for different codelists
+## use postnatal_8wk_code initially, need to review others
 
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
-    # use this initially
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
     between=["delivery_code_date", "delivery_code_date + 84 days"],
@@ -296,7 +297,7 @@ study = StudyDefinition(
     #    },
     ),
 
-    #do we want to use all of these codes? 
+     
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
@@ -318,8 +319,6 @@ study = StudyDefinition(
     ),
 
     # is there a delivery code in a certain period - this is for 2019
-    # use this as example for 6WC check
-    # do we need this for each month?
     delivery_code_present_2019=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "2019-12-31"],
@@ -348,7 +347,6 @@ study = StudyDefinition(
 ## overall measure, grouped by practice, grouped by age_cat, region, IMD
 ## develop code for plotting
 
-## example code for measures - add back in line 6
 measures = [
 
     # antibiotic rx rate
