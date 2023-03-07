@@ -2,8 +2,8 @@ from cohortextractor import (
     StudyDefinition, 
     patients, 
     codelist, 
-    codelist_from_csv  
-    #Measure
+    codelist_from_csv,  
+    Measure
 )
 #above as in example but with measure added
 #doesnt run w Measure, add in once measures created
@@ -232,6 +232,7 @@ study = StudyDefinition(
     delivery_code_present=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "today"],
+    #does this need to be between index date and last day of month
     returning="binary_flag",    
     return_expectations={
        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
@@ -284,6 +285,7 @@ study = StudyDefinition(
 
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
+    # use this initially
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
     between=["delivery_code_date", "delivery_code_date + 84 days"],
@@ -315,7 +317,7 @@ study = StudyDefinition(
     #    },
     ),
 
-    # is there a delivery code in a certain period - this is 2019
+    # is there a delivery code in a certain period - this is for 2019
     # use this as example for 6WC check
     # do we need this for each month?
     delivery_code_present_2019=patients.with_these_clinical_events(
@@ -341,7 +343,18 @@ study = StudyDefinition(
 ## ^ is this all postnatal codes?
 
 ##denom num patients delivered that month
-## ^ no of patients w delivery codes per month
+## ^ no of patients w delivery codes per month - delivery_code_present_2019 var above?
 
-## overall measure, grouped by practice, grouped by age_cat, region
+## overall measure, grouped by practice, grouped by age_cat, region, IMD
 ## develop code for plotting
+
+## example code for measures - add back in line 6
+measures = [
+
+    # antibiotic rx rate
+    Measure(id="postnatal_check_rate",
+            numerator="postnatal_8wk_code_present",
+            denominator="delivery_code_present",
+            #group_by=["practice"]
+            ),
+]
