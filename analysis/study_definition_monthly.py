@@ -2,9 +2,10 @@ from cohortextractor import (
     StudyDefinition, 
     patients, 
     codelist, 
-    codelist_from_csv,  
-    Measure
+    codelist_from_csv  
+    #Measure
 )
+
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelist import *
@@ -201,7 +202,6 @@ study = StudyDefinition(
 
 
     # Number of delivery codes per person
-    # plot histogram based on this?
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "today"],
@@ -280,7 +280,6 @@ study = StudyDefinition(
     # ),
 
 ## next three variables are the same but for different codelists
-## use postnatal_8wk_code initially, need to review others
 
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
@@ -293,8 +292,7 @@ study = StudyDefinition(
     #    "incidence": 1,
     #    },
     ),
-
-     
+ 
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
@@ -315,7 +313,9 @@ study = StudyDefinition(
     #    },
     ),
 
-    # is there a delivery code in a certain period - this is for 2019
+    # is there a delivery code in a certain period - this is 2019
+    # use this as example for 6WC check
+    # do we need this for each month?
     delivery_code_present_2019=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "2019-12-31"],
@@ -336,20 +336,9 @@ study = StudyDefinition(
 ##add measures
 
 ##numerator num patients with pn code in 12 weeks after delivery date
-## ^ is this all postnatal codes?
 
 ##denom num patients delivered that month
-## ^ no of patients w delivery codes per month - delivery_code_present_2019 var above?
+## ^ no of patients w delivery codes per month
 
-## overall measure, grouped by practice, grouped by age_cat, region, IMD
+## overall measure, grouped by practice, grouped by age_cat, region
 ## develop code for plotting
-
-measures = [
-
-    # rate of postnatal codes over time by delivery code
-    Measure(id="postnatal_check_rate",
-            numerator="postnatal_8wk_code_present",
-            denominator="population",
-            group_by=["delivery_code"]
-            ),
-]

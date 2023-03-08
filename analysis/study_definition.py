@@ -295,8 +295,7 @@ study = StudyDefinition(
     #    "incidence": 1,
     #    },
     ),
-
-    #do we want to use all of these codes? 
+ 
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
@@ -340,7 +339,6 @@ study = StudyDefinition(
 ##add measures
 
 ##numerator num patients with pn code in 12 weeks after delivery date
-## ^ is this all postnatal codes?
 
 ##denom num patients delivered that month
 ## ^ no of patients w delivery codes per month
