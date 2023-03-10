@@ -22,7 +22,7 @@ max_age = 49
 # DEFINE STUDY POPULATION ---
 study = StudyDefinition(
     default_expectations={
-        "date": {"earliest": "1900-01-01", "latest": "today"},
+        "date": {"earliest": "start_date", "latest": "today"},
         "rate": "uniform",
         "incidence": 0.5,
     },
@@ -279,8 +279,8 @@ study = StudyDefinition(
     #   },
     # ),
 
-## next three variables are the same but for different codelists
-## use postnatal_8wk_code initially, need to review others
+    ## next three variables are the same but for different codelists
+    ## use postnatal_8wk_code initially, need to review others
 
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
@@ -288,31 +288,24 @@ study = StudyDefinition(
     postnatal_8wk_codes, 
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    # return_expectations={  
-    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-    #    "incidence": 1,
-    #    },
+    return_expectations={
+            "incidence": 0.3,},
     ),
-
      
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    # return_expectations={  
-    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-    #    "incidence": 1,
-    #    },
+    return_expectations={
+            "incidence": 0.3,},
     ),
 
     postnatal_antenatal_code_present=patients.with_these_clinical_events(
     postdel_antenatal_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    # return_expectations={  
-    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-    #    "incidence": 1,
-    #    },
+    return_expectations={
+            "incidence": 0.3,},
     ),
 
     # is there a delivery code in a certain period - this is for 2019
@@ -321,13 +314,8 @@ study = StudyDefinition(
     between=["index_date", "2019-12-31"],
     returning="binary_flag",    
     return_expectations={
-       "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 1,
-       },
+            "incidence": 0.3,},
     ),
-
-
-
 )
 
 # add check for whether postnatal code within 6w
@@ -350,6 +338,6 @@ measures = [
     Measure(id="postnatal_check_rate",
             numerator="postnatal_8wk_code_present",
             denominator="population",
-            group_by=["delivery_code"]
+            group_by=["delivery_code_present"]
             ),
 ]

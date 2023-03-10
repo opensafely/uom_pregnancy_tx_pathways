@@ -235,7 +235,7 @@ study = StudyDefinition(
     returning="binary_flag",    
     return_expectations={
        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 1,
+       "incidence": 0.4,
        },
     ),
 
@@ -256,7 +256,7 @@ study = StudyDefinition(
             "1125006": 0.2,
             }
         },
-        "incidence": 1,
+        "incidence": 0.4,
       },
     ),
 

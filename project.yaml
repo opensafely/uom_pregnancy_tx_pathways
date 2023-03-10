@@ -8,10 +8,10 @@ actions:
   # this is for number of matches
   # should delivery codes be in population?
   generate_study_population:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition --output-dir=output --output-format csv.gz 
+    run: cohortextractor:latest generate_cohort --study-definition study_definition 
     outputs:
       highly_sensitive:
-        cohort: output/input.csv.gz
+        cohort: output/input.csv
 
   #this is to generate a date file for each month
   generate_study_population_monthly:
