@@ -22,7 +22,7 @@ max_age = 49
 # DEFINE STUDY POPULATION ---
 study = StudyDefinition(
     default_expectations={
-        "date": {"earliest": "start_date", "latest": "today"},
+        "date": {"earliest": "1900-01-01", "latest": "today"},
         "rate": "uniform",
         "incidence": 0.5,
     },
@@ -208,7 +208,7 @@ study = StudyDefinition(
     returning="number_of_matches_in_period",
     return_expectations={
        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 1,
+       "incidence": 0.4,
        },
     ),
 
@@ -234,7 +234,7 @@ study = StudyDefinition(
     returning="binary_flag",    
     return_expectations={
        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 1,
+       "incidence": 0.6,
        },
     ),
 
@@ -255,7 +255,7 @@ study = StudyDefinition(
             "1125006": 0.2,
             }
         },
-        "incidence": 1,
+        "incidence": 0.7,
       },
     ),
 
@@ -314,7 +314,7 @@ study = StudyDefinition(
     between=["index_date", "2019-12-31"],
     returning="binary_flag",    
     return_expectations={
-            "incidence": 0.3,},
+            "incidence": 0.6,},
     ),
 )
 
