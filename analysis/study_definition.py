@@ -44,8 +44,6 @@ study = StudyDefinition(
         has_follow_up_previous_year
         AND
         (sex = "F")
-        AND
-        delivery_code_present
         """,
 
         has_died=patients.died_from_any_cause(
