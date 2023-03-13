@@ -5,8 +5,7 @@ from cohortextractor import (
     codelist_from_csv  
     #Measure
 )
-#above as in example but with measure added
-#doesnt run w Measure, add in once measures created
+
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelist import *
@@ -201,6 +200,7 @@ study = StudyDefinition(
         },
     ),
 
+
     # Number of delivery codes per person
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes,
@@ -208,7 +208,7 @@ study = StudyDefinition(
     returning="number_of_matches_in_period",
     return_expectations={
        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 0.6,
+       "incidence": 1,
        },
     ),
 
@@ -255,7 +255,7 @@ study = StudyDefinition(
             "1125006": 0.2,
             }
         },
-        "incidence": 0.4,
+        "incidence": 1,
       },
     ),
 
@@ -290,7 +290,7 @@ study = StudyDefinition(
     return_expectations={  
     #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
         "incidence": 0.4,
-       },
+        },
     ),
  
     postnatal_other_code_present=patients.with_these_clinical_events(
@@ -299,7 +299,7 @@ study = StudyDefinition(
     returning="binary_flag",
     return_expectations={  
     #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-        "incidence": 0.4,
+        "incidence": 0.5,
         },
     ),
 
@@ -321,10 +321,12 @@ study = StudyDefinition(
     between=["index_date", "2019-12-31"],
     returning="binary_flag",    
     return_expectations={
-       #"int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 0.6,
+    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+       "incidence": 0.2,
        },
     ),
+
+
 
 )
 

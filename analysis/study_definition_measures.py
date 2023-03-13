@@ -2,11 +2,9 @@ from cohortextractor import (
     StudyDefinition, 
     patients, 
     codelist, 
-    codelist_from_csv  
-    #Measure
+    codelist_from_csv,  
+    Measure
 )
-#above as in example but with measure added
-#doesnt run w Measure, add in once measures created
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelist import *
@@ -201,14 +199,16 @@ study = StudyDefinition(
         },
     ),
 
+
     # Number of delivery codes per person
+    # plot histogram based on this?
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "today"],
     returning="number_of_matches_in_period",
     return_expectations={
        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 0.6,
+       "incidence": 0.4,
        },
     ),
 
@@ -234,7 +234,7 @@ study = StudyDefinition(
     returning="binary_flag",    
     return_expectations={
        #"int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 0.4,
+       "incidence": 0.6,
        },
     ),
 
@@ -255,7 +255,7 @@ study = StudyDefinition(
             "1125006": 0.2,
             }
         },
-        "incidence": 0.4,
+        "incidence": 0.7,
       },
     ),
 
@@ -279,7 +279,8 @@ study = StudyDefinition(
     #   },
     # ),
 
-## next three variables are the same but for different codelists
+    ## next three variables are the same but for different codelists
+    ## use postnatal_8wk_code initially, need to review others
 
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
@@ -287,45 +288,34 @@ study = StudyDefinition(
     postnatal_8wk_codes, 
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    return_expectations={  
-    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-        "incidence": 0.4,
-       },
+    return_expectations={
+            "incidence": 0.3,},
     ),
- 
+     
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    return_expectations={  
-    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-        "incidence": 0.4,
-        },
+    return_expectations={
+            "incidence": 0.3,},
     ),
 
     postnatal_antenatal_code_present=patients.with_these_clinical_events(
     postdel_antenatal_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    return_expectations={  
-    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-        "incidence": 0.5,
-        },
+    return_expectations={
+            "incidence": 0.3,},
     ),
 
-    # is there a delivery code in a certain period - this is 2019
-    # use this as example for 6WC check
-    # do we need this for each month?
+    # is there a delivery code in a certain period - this is for 2019
     delivery_code_present_2019=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "2019-12-31"],
     returning="binary_flag",    
     return_expectations={
-       #"int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 0.6,
-       },
+            "incidence": 0.6,},
     ),
-
 )
 
 # add check for whether postnatal code within 6w
@@ -334,9 +324,28 @@ study = StudyDefinition(
 ##add measures
 
 ##numerator num patients with pn code in 12 weeks after delivery date
+## ^ is this all postnatal codes?
 
 ##denom num patients delivered that month
-## ^ no of patients w delivery codes per month
+## ^ no of patients w delivery codes per month - delivery_code_present_2019 var above?
 
-## overall measure, grouped by practice, grouped by age_cat, region
+## overall measure, grouped by practice, grouped by age_cat, region, IMD
 ## develop code for plotting
+
+measures = [
+
+    # rate of postnatal codes over time by delivery code
+    Measure(id="postnatal_check_rate",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present"]
+            ),
+
+
+    # rate of postnatal codes over time by delivery code, age_cat
+    Measure(id="postnatal_check_rate_by_age_cat",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "age_cat"]
+            ),
+]
