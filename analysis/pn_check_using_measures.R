@@ -54,17 +54,9 @@ df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
 #          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
 
 
-plot_pn_rate <- ggplot(df_mean, aes(x=date))+
-  geom_line(aes(y=meanrate),color="steelblue")+
-  geom_point(aes(y=meanrate),color="steelblue")+
-  # geom_line(aes(y=lowquart), color="darkred")+
-  # geom_point(aes(y=lowquart), color="darkred")+
-  # geom_line(aes(y=highquart), color="darkred")+
-  # geom_point(aes(y=highquart), color="darkred")+
-  # geom_line(aes(y=ninefive), color="black", linetype="dotted")+
-  # geom_point(aes(y=ninefive), color="black")+
-  # geom_line(aes(y=five), color="black", linetype="dotted")+
-  # geom_point(aes(y=five), color="black")+
+plot_pn_rate <- ggplot(df_monrate, aes(x=date))+
+  geom_line(aes(y=pn_rate_1000),color="steelblue")+
+  geom_point(aes(y=pn_rate_1000),color="steelblue")+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
   labs(
