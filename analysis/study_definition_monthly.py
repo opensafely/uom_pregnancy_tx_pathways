@@ -233,8 +233,8 @@ study = StudyDefinition(
     between=["index_date", "today"],
     returning="binary_flag",    
     return_expectations={
-       "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 1,
+       #"int": {"distribution": "normal", "mean": 4, "stddev": 1},
+       "incidence": 0.4,
        },
     ),
 
@@ -287,30 +287,30 @@ study = StudyDefinition(
     postnatal_8wk_codes, 
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    # return_expectations={  
+    return_expectations={  
     #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-    #    "incidence": 1,
-    #    },
+        "incidence": 0.4,
+        },
     ),
  
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    # return_expectations={  
+    return_expectations={  
     #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-    #    "incidence": 1,
-    #    },
+        "incidence": 0.5,
+        },
     ),
 
     postnatal_antenatal_code_present=patients.with_these_clinical_events(
     postdel_antenatal_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    # return_expectations={  
+    return_expectations={  
     #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-    #    "incidence": 1,
-    #    },
+        "incidence": 0.5,
+        },
     ),
 
     # is there a delivery code in a certain period - this is 2019
@@ -321,8 +321,8 @@ study = StudyDefinition(
     between=["index_date", "2019-12-31"],
     returning="binary_flag",    
     return_expectations={
-       "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 1,
+    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+       "incidence": 0.2,
        },
     ),
 

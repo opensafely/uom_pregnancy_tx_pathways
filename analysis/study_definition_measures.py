@@ -233,7 +233,7 @@ study = StudyDefinition(
     between=["index_date", "today"],
     returning="binary_flag",    
     return_expectations={
-       "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+       #"int": {"distribution": "normal", "mean": 4, "stddev": 1},
        "incidence": 0.6,
        },
     ),
@@ -339,5 +339,13 @@ measures = [
             numerator="postnatal_8wk_code_present",
             denominator="population",
             group_by=["delivery_code_present"]
+            ),
+
+
+    # rate of postnatal codes over time by delivery code, age_cat
+    Measure(id="postnatal_check_rate_by_age_cat",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "age_cat"]
             ),
 ]
