@@ -6,7 +6,7 @@ library("lubridate")
 
 
 rm(list=ls())
-setwd(here::here("output", "measures"))
+#setwd(here::here("output", "measures"))
 
 df <- read_csv(
   here::here("output", "measures", "measure_postnatal_check_rate.csv"),
@@ -46,25 +46,25 @@ df$cal_year <- year(df$date)
 df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
   mutate(pn_rate_1000 = value*1000) 
 
-df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
-  mutate(meanrate = mean(pn_rate_1000,na.rm=TRUE),
-         lowquart= quantile(pn_rate_1000, na.rm=TRUE)[2],
-         highquart= quantile(pn_rate_1000, na.rm=TRUE)[4],
-         ninefive= quantile(pn_rate_1000, na.rm=TRUE, c(0.95)),
-         five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
+# df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
+#   mutate(meanrate = mean(pn_rate_1000,na.rm=TRUE),
+#          lowquart= quantile(pn_rate_1000, na.rm=TRUE)[2],
+#          highquart= quantile(pn_rate_1000, na.rm=TRUE)[4],
+#          ninefive= quantile(pn_rate_1000, na.rm=TRUE, c(0.95)),
+#          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
 
 
 plot_pn_rate <- ggplot(df_mean, aes(x=date))+
   geom_line(aes(y=meanrate),color="steelblue")+
   geom_point(aes(y=meanrate),color="steelblue")+
-  geom_line(aes(y=lowquart), color="darkred")+
-  geom_point(aes(y=lowquart), color="darkred")+
-  geom_line(aes(y=highquart), color="darkred")+
-  geom_point(aes(y=highquart), color="darkred")+
-  geom_line(aes(y=ninefive), color="black", linetype="dotted")+
-  geom_point(aes(y=ninefive), color="black")+
-  geom_line(aes(y=five), color="black", linetype="dotted")+
-  geom_point(aes(y=five), color="black")+
+  # geom_line(aes(y=lowquart), color="darkred")+
+  # geom_point(aes(y=lowquart), color="darkred")+
+  # geom_line(aes(y=highquart), color="darkred")+
+  # geom_point(aes(y=highquart), color="darkred")+
+  # geom_line(aes(y=ninefive), color="black", linetype="dotted")+
+  # geom_point(aes(y=ninefive), color="black")+
+  # geom_line(aes(y=five), color="black", linetype="dotted")+
+  # geom_point(aes(y=five), color="black")+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
   labs(
