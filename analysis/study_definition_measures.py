@@ -204,7 +204,7 @@ study = StudyDefinition(
     # plot histogram based on this?
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes,
-    between=["index_date", "today"],
+    between=["index_date", "last_day_of_month(index_date)"],
     returning="number_of_matches_in_period",
     return_expectations={
        "int": {"distribution": "normal", "mean": 4, "stddev": 1},
@@ -215,7 +215,7 @@ study = StudyDefinition(
     # Date of last delivery code
     delivery_code_date=patients.with_these_clinical_events(
     delivery_codes,
-    between=["index_date", "today"],
+    between=["index_date", "last_day_of_month(index_date)"],
     returning="date",
     date_format="YYYY-MM-DD",
     find_last_match_in_period=True,
@@ -261,6 +261,19 @@ study = StudyDefinition(
 
     ## next three variables are the same but for different codelists
     ## use postnatal_8wk_code initially, need to review others
+
+    # Number of pn codes codes per person
+    # plot histogram based on this?
+    pn8wk_code_number=patients.with_these_clinical_events(
+    postnatal_8wk_codes,
+    between=["index_date", "last_day_of_month(index_date)"],
+    returning="number_of_matches_in_period",
+    return_expectations={
+       "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+       "incidence": 0.4,
+       },
+    ),
+
 
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
