@@ -17,12 +17,12 @@ df_2 <- read_csv(
 #changed integer to number above - got error
 
 #rename first column in frequency table to match
-colnames(df2)[1]<-"code"
+colnames(df_2)[1]<-"code"
 
 #return which codes are in both files
 #df1$code %in% df2$code
 
-df3<-merge(df2, df1, by="code")
+df_3<-merge(df_2, df_1, by="code")
 
 #do we need to add term to this
 table_del_codes_with_names <- as.data.frame(table(df_3$code)) 

@@ -53,7 +53,7 @@ actions:
 
   describe_del_code_freq_with_names:
     run: r:latest analysis/del_code_frequency_with_names.R
-    needs: [generate_study_population]
+    needs: [generate_study_population, describe_del_code_freq]
     outputs:
       moderately_sensitive:
         table1: output/table_del_codes_with_names.csv
