@@ -259,26 +259,6 @@ study = StudyDefinition(
       },
     ),
 
-    # map codes to their descriptions in R rather than the below
-
-    # delivery_code_name=patients.with_these_clinical_events(
-    # delivery_codes,
-    # between=["index_date", "today"],
-    # returning="term",
-    # return_expectations={
-    #     "category": {
-    #         "ratios": {
-    #         "Cesarean section":  0.2,
-    #         "Baby male": 0.2,
-    #         "Baby female": 0.2,
-    #         "Place of birth": 0.2,
-    #         "Home birth": 0.2,
-    #         }
-    #     },
-    #     "incidence": 1,
-    #   },
-    # ),
-
     ## next three variables are the same but for different codelists
     ## use postnatal_8wk_code initially, need to review others
 
