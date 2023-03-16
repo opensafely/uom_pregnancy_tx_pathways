@@ -14,8 +14,6 @@ df_2 <- read_csv(
   col_types = cols(Var1 = col_number(),Freq = col_number())
 )
 
-#changed integer to number above - got error
-
 #rename first column in frequency table to match
 colnames(df_2)[1]<-"code"
 

@@ -95,8 +95,6 @@ plot_percentile
 
 ggsave(
   plot= plot_percentile,
-  filename="overall_25th_75th_percentile.jpeg", path=here::here("output"),
+  filename="monthly_pn_rate_measures8wkcode_by_practice.jpeg", path=here::here("output"),
 )
 
-
-#write_csv(prescribing_number, here::here("output","total_number_antibacterial_prescriptions.csv"))
