@@ -59,6 +59,14 @@ actions:
         table1: output/table_del_codes_with_names.csv
 
 
+  describe_del_code_freq_with_names_reduced:
+    run: r:latest analysis/del_code_frequency_with_names_reduced.R
+    needs: [generate_study_population, describe_del_code_freq_with_names]
+    outputs:
+      moderately_sensitive:
+        table1: output/table_del_codes_with_names_reduced.csv
+
+
   describe_pn_rate_plots:
     run: r:latest analysis/pn_check_using_measures.R
     needs: [generate_study_population_measures, generate_measures]
