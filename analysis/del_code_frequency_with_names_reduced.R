@@ -7,9 +7,9 @@ df_1 <- read_csv(
   col_types = cols(code = col_number(),term = col_character())
 )
 
-#changes counts under 6 to "n" - what is best notation
+#changes counts under 5 to "n" - what is best notation
 #have checked this works in R 
-df_2 <- df_1 %>% mutate(Freq = case_when(Freq < 6 ~ "n"))
+df_2 <- df_1 %>% mutate(Freq = case_when(Freq < 5 ~ "n"))
 
 ## example code
 #mutate
