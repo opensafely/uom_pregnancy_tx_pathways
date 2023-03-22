@@ -74,7 +74,7 @@ study = StudyDefinition(
     #need to define categories
     age_cat=patients.categorised_as(
         {
-            "0":"DEFAULT",
+            #"0":"DEFAULT",
             #"0-13": """ age >= 0 AND age < 13""",
             "14-19": """ age >= 14 AND age < 19""",
             "20-24": """ age >= 20 AND age < 25""",
@@ -89,7 +89,7 @@ study = StudyDefinition(
             "rate": "universal",
             "category": {
                 "ratios": {
-                    "0": 0,
+                    #"0": 0,
                     #"0-13": 0.12, 
                     "14-19": 0.05,
                     "20-24": 0.15,
@@ -325,6 +325,7 @@ study = StudyDefinition(
        "incidence": 0.2,
        },
     ),
+
 
 
 
