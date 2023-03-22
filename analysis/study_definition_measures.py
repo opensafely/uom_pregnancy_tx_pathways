@@ -230,7 +230,7 @@ study = StudyDefinition(
     # Is there a delivery code present - Y/N
     delivery_code_present=patients.with_these_clinical_events(
     delivery_codes,
-    between=["index_date", "today"],
+    between=["index_date", "last_day_of_month(index_date)"],
     returning="binary_flag",    
     return_expectations={
        #"int": {"distribution": "normal", "mean": 4, "stddev": 1},
