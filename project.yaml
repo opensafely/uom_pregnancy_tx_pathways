@@ -74,3 +74,18 @@ actions:
       moderately_sensitive:
         plot1: output/monthly_pn_rate_measures8wkcode_by_age_cat.jpeg
  
+#by practice isnt on main but runs on server?
+
+  describe_pn_rate_plots_by_ethnicity:
+    run: r:latest analysis/pn_check_using_measures_by_ethnicity.R
+    needs: [generate_study_population_measures, generate_measures]
+    outputs:
+      moderately_sensitive:
+        plot1: output/monthly_pn_rate_measures8wkcode_by_ethnicity.jpeg
+
+  describe_pn_rate_plots_by_imd:
+    run: r:latest analysis/pn_check_using_measures_by_imd.R
+    needs: [generate_study_population_measures, generate_measures]
+    outputs:
+      moderately_sensitive:
+        plot1: output/monthly_pn_rate_measures8wkcode_by_imd.jpeg
