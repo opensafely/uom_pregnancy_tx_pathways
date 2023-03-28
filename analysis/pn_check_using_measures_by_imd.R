@@ -44,6 +44,8 @@ last_mon <- (format(max(df$date), "%m-%Y"))
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
 
+### imd cat == 0 in dummy data so remove
+df <- df %>% filter(imd != 0)
 
 ### get monthly rate per 1000 patients
 df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
