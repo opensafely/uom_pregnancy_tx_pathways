@@ -58,8 +58,8 @@ df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
 
 
 plot_pn_rate <- ggplot(df_monrate, aes(x=date, group=imd, color=imd))+
-  geom_line(aes(y=pn_rate_1000),color="red")+
-  geom_point(aes(y=pn_rate_1000),color="red")+
+  geom_line(aes(y=pn_rate_1000))+
+  geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
   labs(
