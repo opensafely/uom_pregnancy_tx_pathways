@@ -88,7 +88,7 @@ study = StudyDefinition(
             "rate": "universal",
             "category": {
                 "ratios": {
-                    "0": 0,
+                    #"0": 0,
                     #"0-13": 0.12, 
                     "14-19": 0.05,
                     "20-24": 0.15,
@@ -243,7 +243,7 @@ study = StudyDefinition(
     # can also add include_date_of_match to get the date
     delivery_code=patients.with_these_clinical_events(
     delivery_codes,
-    between=["index_date", "today"],
+    between=["index_date", "last_day_of_month(index_date)"],
     returning="code", 
     return_expectations={
         "category": {
