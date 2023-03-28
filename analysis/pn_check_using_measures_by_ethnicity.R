@@ -9,11 +9,11 @@ rm(list=ls())
 #setwd(here::here("output", "measures"))
 
 df <- read_csv(
-  here::here("output", "measures", "measure_postnatal_check_rate_by_age_cat.csv"),
+  here::here("output", "measures", "measure_postnatal_check_rate_by_ethnicity.csv"),
   col_types = cols_only(
 
     #Identifier
-    age_cat = col_factor(),
+    ethnicity = col_factor(),
     
     # Outcomes
     delivery_code_present  = col_double(),
@@ -58,7 +58,7 @@ df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
 #          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
 
 
-plot_pn_rate <- ggplot(df_monrate, aes(x=date, group=age_cat, color=age_cat))+
+plot_pn_rate <- ggplot(df_monrate, aes(x=date, group=ethnicity, color=ethnicity))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
@@ -75,5 +75,5 @@ plot_pn_rate <- ggplot(df_monrate, aes(x=date, group=age_cat, color=age_cat))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_age_cat.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures8wkcode_by_ethnicity.jpeg", path=here::here("output"),
 )

@@ -347,6 +347,22 @@ measures = [
             denominator="population",
             group_by=["delivery_code_present", "practice"]
             ),
+    
+    # rate of postnatal codes over time by delivery code, imd
+    Measure(id="postnatal_check_rate_by_imd",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "imd"]
+            ),
+
+    # rate of postnatal codes over time by delivery code, ethnicity
+    Measure(id="postnatal_check_rate_by_ethnicity",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "ethnicity"]
+            ),
+
+
     # or can we have everything in one measure?
     # rate of postnatal codes over time by delivery code, practice, age_cat
     # Measure(id="postnatal_check_rate_by_practice_age_cat",
