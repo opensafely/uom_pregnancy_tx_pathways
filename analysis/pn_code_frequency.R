@@ -1,13 +1,15 @@
 #### TO DO
 # 1. figure out which files we need and how to combine them
 # 2. write code to combine files
-# 3. write code for counts - table and/or plot - DONE
+# 3. write code for counts - table and/or plot
 
 # from notes     df2<-df1%>%group_by(date)     
 # rbind (df1, df2)
 # ^ do this for all measures by month?
 # then sort/group by patient id?
 # what do we want - no of codes per person per month
+
+#example? https://github.com/opensafely/amr-uom-brit/blob/service_evaluation/analysis/plot/ab_recorded_indication_plot_incident.R 
 
 library('tidyverse')
 
