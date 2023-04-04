@@ -38,7 +38,7 @@ study = StudyDefinition(
         AND
         registered
         AND
-        (age >= 14 AND age < 49)
+        (age >= 14 AND age < 50)
         AND
         has_follow_up_previous_year
         AND
@@ -74,9 +74,9 @@ study = StudyDefinition(
     #need to define categories
     age_cat=patients.categorised_as(
         {
-            #"0":"DEFAULT",
+            "0":"DEFAULT",
             #"0-13": """ age >= 0 AND age < 13""",
-            "14-19": """ age >= 14 AND age < 19""",
+            "14-19": """ age >= 14 AND age < 20""",
             "20-24": """ age >= 20 AND age < 25""",
             "25-29": """ age >= 25 AND age < 30""",
             "30-34": """ age >= 30 AND age < 35""",
@@ -89,7 +89,7 @@ study = StudyDefinition(
             "rate": "universal",
             "category": {
                 "ratios": {
-                    #"0": 0,
+                    "0": 0,
                     #"0-13": 0.12, 
                     "14-19": 0.05,
                     "20-24": 0.15,
