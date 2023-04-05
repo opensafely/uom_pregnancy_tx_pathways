@@ -1,25 +1,42 @@
 #### TO DO
-# 1. figure out which files we need and how to combine them
-# 2. write code to combine files
+# 1. figure out which files we need and how to combine them - DONE
+# 2. write code to combine files - DONE
 # 3. write code for counts - table and/or plot
 
-
-# then sort/group by patient id?
+# then sort/group by patient id? - need to add
 # what do we want - no of codes per person per month
 # average isnt useful - number of zeroes
 
-#csvFiles=list.files(pattern = "input", full.names = FALSE)
 
 library('tidyverse')
+library('lubridate')
+library('dplyr')
 
-dfmonths=list.files(pattern = "input", full.names = FALSE) %>%
-     lapply(read.csv, stringsAsFactors=F) %>%
-     bind_rows()
+#setwd("C:/Users/mdehsdh7/GitHub/uom_pregnancy_tx_pathways/output/measures")
 
-View(dfmonths)
-colnames(dfmonths)
+#combine all "input_measures" files 
+dfmonths=list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
+#create delcode variable as date of delivery code
+dfmonths$delcode<-as.Date(dfmonths$delivery_code_date)
+
+#create month and year variables from delcode
+dfmonths$cal_month<-month(dfmonths$delcode)
+dfmonths$cal_year<-year(dfmonths$delcode)
+
+#create df_date variable by pasting month and year to get MM-YYYY
+dfmonths$df_date<-paste0(dfmonths$cal_month, "-", dfmonths$cal_year)
+
+#can then group by this variable to get no of codes for each person in a month
+
+#define or return patient ID
+#we have patient_id as a varibale but need to group
 #still need to group by patient ID?
+
+#Df_sum<- Df %>% group_by(PatientID, Mon-year-var) %>% summarise(xyz)
+
+
+
 
 #   this is from del code table
 #   here:: ("output", "measures", "input_*.csv.gz"),
