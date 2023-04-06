@@ -2,16 +2,19 @@ library('tidyverse')
 
 options(scipen=99999)
 
-df_1 <- read_csv(
+df1 <- read_csv(
   here::here("output", "table_del_codes_with_names.csv"),
   col_types = cols(code = col_number(),Freq=col_number(), term = col_character())
 )
 
-#changes counts under 5 to "n" - what is best notation
-#have checked this works in R 
-df_2 <- df_1 
-df_2$Freq <- ifelse(df_2$Freq < 5, "NA", df_2$Freq)
-df_2$Freq <- as.numeric(df_2$Freq)
+#changes counts under 6 to "[REDACTED]"
+df2 <- df1 
+df2$Freq <- ifelse(df2$Freq <= 7, "[REDACTED]", df2$Freq)
+df2$Freq <- as.numeric(df2$Freq)
+
+#rounding to nearest 5
+df3<-df2
+df3$Freq <- round(df3$Freq/5)*5
 
 ## example code
 #mutate
@@ -21,4 +24,5 @@ df_2$Freq <- as.numeric(df_2$Freq)
 #        total = round(total/5)*5,
 #    pcent_total = n/total*100)
 
-write_csv(df_2, here::here("output","table_del_codes_with_names_reduced.csv"))
+write_csv(df3, here::here("output","table_del_codes_with_names_reduced.csv"))
+
