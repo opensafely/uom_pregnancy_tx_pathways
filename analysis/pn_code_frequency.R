@@ -32,6 +32,7 @@ dfmonths$df_date<-paste0(dfmonths$cal_month, "-", dfmonths$cal_year)
 dfmonths_sum<-dfmonths%>%group_by(patient_id, df_date)%>%summarise(delivery_code_number)
 
 ##### DATE IS BASED ON DEL CODE DATE so we don't have 51 rows for each person, only a row for each del code date
+# would this be different in real data/can we change this? 
 
 #look at how many months (per person) have a zero?
 #   this is from del code table
