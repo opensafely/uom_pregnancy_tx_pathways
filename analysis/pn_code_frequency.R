@@ -4,7 +4,7 @@
 # 3. write code for counts - table and/or plot
 
 # what do we want - no of codes per person per month
-# average isnt useful - number of zeroes?
+# average isnt useful - number of zeroes? would need a row for each month?
 
 library('tidyverse')
 library('lubridate')
@@ -28,11 +28,8 @@ dfmonths$df_date<-paste0(dfmonths$cal_month, "-", dfmonths$cal_year)
 #filter del codes >0 -- remove?
 #dfmonths=dfmonths%>% filter(delivery_code_present > 0)
 
-#Df_sum<- Df %>% group_by(PatientID, Mon-year-var) %>% summarise(xyz)
-#creates dfmonths_sum
+#create dfmonths_sum - shows no of del codes by date and patient ID 
 dfmonths_sum<-dfmonths%>%group_by(patient_id, df_date)%>%summarise(delivery_code_number)
-#this shows patient IDs in order
-#with a row for each month showing number of del codes
 
 ##### DATE IS BASED ON DEL CODE DATE so we don't have 51 rows for each person, only a row for each del code date
 
