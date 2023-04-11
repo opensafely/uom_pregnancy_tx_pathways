@@ -1,19 +1,13 @@
-#### TO DO
-# 1. figure out which files we need and how to combine them - DONE
-# 2. write code to combine files - DONE
-# 3. write code for counts - table and/or plot
-
-# what do we want - no of codes per person per month
-# average isnt useful - number of zeroes? would need a row for each month?
-
 library('tidyverse')
 library('lubridate')
 library('dplyr')
 
 #setwd("C:/Users/mdehsdh7/GitHub/uom_pregnancy_tx_pathways/output/measures")
 
+setwd(here::here("output", "measures"))
+
 #combine all "input_measures" files 
-dfmonths=list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
+dfmonths<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
 #create delcode variable as date of delivery code
 dfmonths$delcode<-as.Date(dfmonths$delivery_code_date)
@@ -25,16 +19,24 @@ dfmonths$cal_year<-year(dfmonths$delcode)
 #create df_date variable as MM-YYYY
 dfmonths$df_date<-paste0(dfmonths$cal_month, "-", dfmonths$cal_year)
 
-#filter del codes >0 -- remove?
-#dfmonths=dfmonths%>% filter(delivery_code_present > 0)
+#filter del codes >0
+dfmonths<-dfmonths%>% filter(delivery_code_present > 0)
 
 #create dfmonths_sum - shows no of del codes by date and patient ID 
-dfmonths_sum<-dfmonths%>%group_by(patient_id, df_date)%>%summarise(delivery_code_number)
+dfmonths_sum<-dfmonths%>%group_by(patient_id, df_date)%>%summarise(delivery_code_present)
 
-##### DATE IS BASED ON DEL CODE DATE so we don't have 51 rows for each person, only a row for each del code date
-# would this be different in real data/can we change this? 
+#arrange by descending date - NEED TO CHECK as v few dates in dummy data
+dfmonths_sum<-dfmonths%>%group_by(patient_id, df_date)%>%summarise(delivery_code_present)%>%arrange(desc(df_date))
 
-#look at how many months (per person) have a zero?
+#filter by first row to get last date in study period
+dfmonths_sum<-dfmonths_sum%>% filter(row_number()==1)
+
+#add rules for variables, eg remove v low and v high BMI
+#create overall df and df before and after pandemic
+
+
+
+
 #   this is from del code table
 #   here:: ("output", "measures", "input_*.csv.gz"),
 #    and then group by month and find mean per person? 
