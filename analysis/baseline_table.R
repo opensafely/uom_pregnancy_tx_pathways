@@ -56,14 +56,14 @@ df5<-df4%>% filter(row_number()==1)
 df5$bmi <- ifelse(df5$bmi <8 | df5$bmi>50, NA, df5$bmi)
 # do we want to add categories?
 # this works in R, just takes a while to run
-df5<-df5%>%mutate(bmi_cat = case_when(is.na(bmi) ~ "unknown",
-                                    bmi>=8 & bmi< 18.5 ~ "underweight",
-                                    bmi>=18.5 & bmi<=24.9 ~ "healthy weight",
-                                    bmi>24.9 & bmi<=29.9 ~ "overweight",
-                                    bmi>29.9 ~"obese"))
+df5<-df5%>%mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
+                                    bmi>=8 & bmi< 18.5 ~ "Underweight",
+                                    bmi>=18.5 & bmi<=24.9 ~ "Healthy weight",
+                                    bmi>24.9 & bmi<=29.9 ~ "Overweight",
+                                    bmi>29.9 ~"Obese"))
 df5$bmi_cat<-as.factor(df5$bmi_cat)
 
-# imd as a factor
+# imd as a factor - do these have/need labels?
 df5$imd<-as.factor(df5$imd)
 
 ## ethnicity
@@ -79,33 +79,35 @@ df5<-df5%>% mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
 df5$ethnicity_6 <- as.factor(df5$ethnicity_6)
 
 ## code for overall counts - use for paper to get number of practices etc
+# think about which vars we need this for
 # overall_counts <- as.data.frame(cbind(first_mon, last_mon, num_pats, num_pracs))
 # write_csv(overall_counts, here::here("output", "overall_counts_blt_2020.csv"))
 # rm(overall_counts) 
 
-
 ## 6. Create before/after pandemic dfs, keep overall
 # use del_code_date to split?
-df_overall<-df5
+# check dates and date format - before/after first lockdown?
+df_overall<- df5
+df_before <- df_overall%>%filter(del_code_date < "2020-03-01") 
+df_after <- df_overall%>%filter(del_code_date >= "2020-03-01") 
 
+#dates from plots
+#  as.Date("2021-01-01"),xmax = as.Date("2021-04-01")
+#  as.Date("2020-11-01"),xmax = as.Date("2020-12-01")
+#  as.Date("2020-03-01"),xmax = as.Date("2020-06-01")
 
-###code from other repo for table - check vars and names
+## 7. Create summary table
 
-# ## select variables for the baseline table
-# bltab_vars <- select(df_one_pat, date, age, age_cat, sex, bmi, 
-#                      bmi_cat, ethnicity_6, charlsonGrp, smoking_cat, 
-#                      flu_vaccine, gp_count, antibacterial_brit,
-#                      antibacterial_12mb4, broad_spectrum_antibiotics_prescriptions, 
-#                      Covid_test_result_sgss, imd, hx_indications, hx_antibiotics, 
-#                      covrx, died_ever) 
-# # generate data table 
-
+# select variables for the baseline table
+# bmi and bmi cat? are we looking at averages?
+bltab_vars <- df_overall %>% select(age, age_cat, bmi, bmi_cat, ethnicity_6, del_code_number) 
 
 # # columns for baseline table
-# colsfortab <- colnames(bltab_vars)
-# bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
+colsfortab <- colnames(bltab_vars)
+
+#bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 # #str(t)
-# write_csv(t, here::here("output", "blt_one_random_obs_perpat_2020.csv"))
+#write_csv(t, here::here("output", "blt_one_random_obs_perpat_2020.csv"))
 
 
 # ## matching variable for covrx extraction
