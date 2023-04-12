@@ -37,7 +37,7 @@ df3<-df2%>% filter(delivery_code_present > 0)
 ## 3. arrange by patient ID then del code date
 #arrange(data, by_group = TRUE)
 #or just arrange by both? line below works
-df4<-df3%>%arrange(patient_id, desc(delivery_code_date)
+df4<-df3%>%arrange(patient_id, desc(delivery_code_date))
 
 ## 4. filter by first row to get last date in study period
 df5<-df4%>% filter(row_number()==1)
@@ -55,7 +55,7 @@ df5<-df4%>% filter(row_number()==1)
 # remove bmi outliers - this replaces <8 or >50 with NA
 df5$bmi <- ifelse(df5$bmi <8 | df5$bmi>50, NA, df5$bmi)
 # do we want to add categories?
-# unsure if this works
+# this works in R, just takes a while to run
 df5<-df5%>%mutate(bmi_cat = case_when(is.na(bmi) ~ "unknown",
                                     bmi>=8 & bmi< 18.5 ~ "underweight",
                                     bmi>=18.5 & bmi<=24.9 ~ "healthy weight",
@@ -68,6 +68,7 @@ df5$imd<-as.factor(df5$imd)
 
 ## ethnicity
 # replace NA with 6 ("unknown") then convert to factor
+# works in R, also takes a while 
 df5$ethnicity=ifelse(is.na(df5$ethnicity),"6",df5$ethnicity)
 df5<-df5%>% mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
                                  ethnicity == 2  ~ "Mixed",
