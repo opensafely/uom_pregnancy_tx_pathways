@@ -16,36 +16,30 @@ df$delivery_code_date<-as.Date(df$delivery_code_date)
 ##dfmonths$delcode<-as.Date(dfmonths$delivery_code_date)
 ##dfmonths$cal_month<-month(dfmonths$delcode)
 ##dfmonths$cal_year<-year(dfmonths$delcode)
-
 ##create df_date variable as MM-YYYY
 ##dfmonths$df_date<-paste0(dfmonths$cal_month, "-", dfmonths$cal_year)
 
+## start from here
 # 1. group by patient ID
 # 2. filter del codes >0
 # 3. arrange by descending del_code _date
 # 4. keep first row per group
 
 #group by patient ID and sort in ascending order
-df<-df%>%group_by(patient_id)%>%arrange(patient_id)
-#or group by patient id and arrange by del code date desc?
+df2<-df%>%group_by(patient_id)
 
 #filter del codes >0
-df<-df%>% filter(delivery_code_present > 0)
+df3<-df2%>% filter(delivery_code_present > 0)
 
-#ARRANGE IGNORES GROUPING - check order
-#df<-df%>%arrange(desc(delivery_code_date, by_group=TRUE)
+#arrange by patient ID then del code date
+#arrange(data, by_group = TRUE)
+#or just arrange by both? line below works
+df4<-df3%>%arrange(patient_id, desc(delivery_code_date)
 
-#^have tested this with del code number and still arranges by that
-
-##arrange(data, by_group = TRUE)     to override?
 
 #create df_sum - shows no of del codes by date and patient ID 
 #df_sum<-df%>%group_by(patient_id, delivery_code_date)%>%summarise(delivery_code_present)
 
-#arrange by descending date - NEED TO CHECK as v few dates in dummy data so not sure if works
-#df<-df%>%group_by(patient_id, delivery_code_date)%>%arrange(desc(delivery_code_date))
-
-#df<-df%>%arrange(desc(delivery_code_date))
 
 #%>%group_by(patient_id, df_date)%>%summarise(delivery_code_present)%>%arrange(desc(df_date))
 
