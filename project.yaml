@@ -19,7 +19,7 @@ actions:
       --study-definition study_definition_monthly 
       --index-date-range "2019-01-01 to today by month"
       --output-dir=output 
-      --output-format csv.gz 
+      --output-format=csv.gz 
     outputs:
       highly_sensitive:
         cohort: output/input_*.csv.gz
@@ -65,7 +65,6 @@ actions:
      moderately_sensitive:
         table1: output/table_del_codes_with_names_reduced.csv
 
-
   describe_pn_rate_plots:
     run: r:latest analysis/pn_check_using_measures.R
     needs: [generate_study_population_measures, generate_measures]
@@ -78,14 +77,28 @@ actions:
     needs: [generate_study_population_measures, generate_measures]
     outputs:
       moderately_sensitive:
-        plot1: output/monthly_pn_rate_measures8wkcode_by_age_cat.jpeg
+        plot2: output/monthly_pn_rate_measures8wkcode_by_age_cat.jpeg
+
+  describe_pn_rate_plots_by_ethnicity:
+    run: r:latest analysis/pn_check_using_measures_by_ethnicity.R
+    needs: [generate_study_population_measures, generate_measures]
+    outputs:
+      moderately_sensitive:
+        plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity.jpeg
+
+  describe_pn_rate_plots_by_imd:
+    run: r:latest analysis/pn_check_using_measures_by_imd.R
+    needs: [generate_study_population_measures, generate_measures]
+    outputs:
+      moderately_sensitive:
+        plot4: output/monthly_pn_rate_measures8wkcode_by_imd.jpeg
  
   describe_pn_rate_plots_by_practice:
     run: r:latest analysis/pn_check_using_measures_by_practice.R
     needs: [generate_study_population_measures, generate_measures]
     outputs:
       moderately_sensitive:
-        plot1: output/monthly_pn_rate_measures8wkcode_by_practice.jpeg
+        plot5: output/monthly_pn_rate_measures8wkcode_by_practice.jpeg
 
   describe_baseline_table:
     run: r:latest analysis/baseline_table.R
@@ -94,3 +107,4 @@ actions:
       moderately_sensitive:
         table1: output/blt_overall.csv    
 
+        

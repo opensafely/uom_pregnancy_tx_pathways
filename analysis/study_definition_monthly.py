@@ -38,7 +38,7 @@ study = StudyDefinition(
         AND
         registered
         AND
-        (age >= 14 AND age < 49)
+        (age >= 14 AND age < 50)
         AND
         has_follow_up_previous_year
         AND
@@ -76,7 +76,7 @@ study = StudyDefinition(
         {
             "0":"DEFAULT",
             #"0-13": """ age >= 0 AND age < 13""",
-            "14-19": """ age >= 14 AND age < 19""",
+            "14-19": """ age >= 14 AND age < 20""",
             "20-24": """ age >= 20 AND age < 25""",
             "25-29": """ age >= 25 AND age < 30""",
             "30-34": """ age >= 30 AND age < 35""",
@@ -325,6 +325,7 @@ study = StudyDefinition(
        "incidence": 0.2,
        },
     ),
+
 
 
 
