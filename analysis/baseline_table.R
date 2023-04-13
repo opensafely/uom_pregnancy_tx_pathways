@@ -1,6 +1,8 @@
 library('tidyverse')
 library('lubridate')
 library('dplyr')
+library ('finalfit')
+#library('tableone')
 
 #setwd("C:/Users/mdehsdh7/GitHub/uom_pregnancy_tx_pathways/output/measures")
 
@@ -10,14 +12,6 @@ setwd(here::here("output", "measures"))
 df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
 df$delivery_code_date<-as.Date(df$delivery_code_date)
-
-##dont need the below as we can use del code date?
-## although after code above it is still a character?
-##dfmonths$delcode<-as.Date(dfmonths$delivery_code_date)
-##dfmonths$cal_month<-month(dfmonths$delcode)
-##dfmonths$cal_year<-year(dfmonths$delcode)
-##dfmonths$df_date<-paste0(dfmonths$cal_month, "-", dfmonths$cal_year)
-
 
 ## 1. Define/clean variables before splitting dfs
 
@@ -48,36 +42,38 @@ df$ethnicity_6 <- as.factor(df$ethnicity_6)
 #Create before/after pandemic dfs, keep overall
 # use del_code_date to split?
 # check dates and date format - before/after first lockdown?
+# pick random date for each period?
 df_overall <- df
-df_before <- df %>% filter(del_code_date < "2020-03-01") 
-df_after <- df %>% filter(del_code_date >= "2020-03-01") 
+df_before <- df %>% filter(delivery_code_date < "2020-03-01") 
+df_after <- df %>% filter(delivery_code_date >= "2020-03-01") 
 
 #dates from plots
 #  as.Date("2021-01-01"),xmax = as.Date("2021-04-01")
 #  as.Date("2020-11-01"),xmax = as.Date("2020-12-01")
 #  as.Date("2020-03-01"),xmax = as.Date("2020-06-01")
 
-## 2. group by patient ID and sort in ascending order
-df_overall2 <- df %>% group_by(patient_id)
-df_before2 <- df_before %>% group_by(patient_id)
-df_after2 <- df_after %>% group_by(patient_id)
+## 2. filter del codes >0
+df_overall2 <- df_overall %>% filter(delivery_code_present > 0)
+df_before2 <- df_before %>% filter(delivery_code_present > 0)
+df_after2 <- df_after %>% filter(delivery_code_present > 0)
 
-## 3. filter del codes >0
-df_overall3 <- df_overall2 %>% filter(delivery_code_present > 0)
-df_before3 <- df_before2 %>% filter(delivery_code_present > 0)
-df_after3 <- df_after2 %>% filter(delivery_code_present > 0)
+## 3. group by patient ID
+df_overall3 <- df_overall2 %>% group_by(patient_id)
+df_before3 <- df_before2 %>% group_by(patient_id)
+df_after3 <- df_after2 %>% group_by(patient_id)
 
 ## 4. arrange by patient ID then del code date
 # then filter by first row to get last date in study period
 #arrange(data, by_group = TRUE)
 #or just arrange by both? line below works
+
 df_overall4 <- df_overall3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 df_before4 <- df_before3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 df_after4 <- df_after3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 
-## old code - do we need to do this?
-#create df_sum - shows no of del codes by date and patient ID 
-#df_sum<-df%>%group_by(patient_id, delivery_code_date)%>%summarise(delivery_code_present)
+# df4<-df3%>% group_by(patient_id) %>% 
+#   arrange(desc(delivery_code_date), group_by=TRUE) %>%
+#   filter(row_number()==1)
 
 ## code for overall counts - use for paper to get number of practices etc
 # think about which vars we need this for
@@ -88,16 +84,16 @@ df_after4 <- df_after3 %>% arrange(patient_id, desc(delivery_code_date)) %>% fil
 ## 5. Create summary table
 
 # select variables for the baseline table
-# bmi and bmi cat? are we looking at averages?
-bltab_vars <- df_overall %>% select(age, age_cat, bmi, bmi_cat, del_code_number, ethnicity_6, imd) 
+bltab_vars <- df_overall4 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, ethnicity_6, imd) 
 
-# # columns for baseline table
+# columns for baseline table
 colsfortab <- colnames(bltab_vars)
 
-#bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
-# #str(t)
-#write_csv(t, here::here("output", "blt_one_random_obs_perpat_2020.csv"))
+bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
+str(t)
+write_csv(t, here::here("output", "blt_overall.csv"))
 
+#could also use createtableone? 
 
 # ## matching variable for covrx extraction
 # DF=df_one_pat%>%select(patient_id, date)
