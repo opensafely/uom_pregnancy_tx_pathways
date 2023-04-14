@@ -107,4 +107,16 @@ actions:
       moderately_sensitive:
         table1: output/blt_overall.csv    
 
-        
+    describe_baseline_table_before:
+    run: r:latest analysis/baseline_table.R
+    needs: [generate_study_population_measures, generate_measures]
+    outputs:
+      moderately_sensitive:
+        table1: output/blt_before.csv 
+
+    describe_baseline_table_after:
+    run: r:latest analysis/baseline_table.R
+    needs: [generate_study_population_measures, generate_measures]
+    outputs:
+      moderately_sensitive:
+        table1: output/blt_after.csv       

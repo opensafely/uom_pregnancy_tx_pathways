@@ -95,6 +95,10 @@ write_csv(t, here::here("output", "blt_overall.csv"))
 
 #could also use createtableone? 
 
+#do same for before and after
+#blt_before.csv and blt_after.csv
+
+
 # ## matching variable for covrx extraction
 # DF=df_one_pat%>%select(patient_id, date)
 # DF$patient_index_date=as.character(DF$date)
