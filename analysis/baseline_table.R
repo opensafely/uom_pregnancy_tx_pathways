@@ -71,6 +71,7 @@ df_overall4 <- df_overall3 %>% arrange(patient_id, desc(delivery_code_date)) %>%
 df_before4 <- df_before3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 df_after4 <- df_after3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 
+## run this code as well to check if outputs are the same?
 # df4<-df3%>% group_by(patient_id) %>% 
 #   arrange(desc(delivery_code_date), group_by=TRUE) %>%
 #   filter(row_number()==1)
@@ -85,18 +86,28 @@ df_after4 <- df_after3 %>% arrange(patient_id, desc(delivery_code_date)) %>% fil
 
 # select variables for the baseline table
 bltab_vars <- df_overall4 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, ethnicity_6, imd) 
+bltab_vars_before <- df_before4 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, ethnicity_6, imd) 
+bltab_vars_after <- df_after4 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, ethnicity_6, imd) 
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
+colsfortab_before <- colnames(bltab_vars_before)
+colsfortab_after <- colnames(bltab_vars_after)
 
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 str(t)
 write_csv(t, here::here("output", "blt_overall.csv"))
 
-#could also use createtableone? 
+bltab_vars_before %>% summary_factorlist(explanatory = colsfortab_before) -> t2
+str(t2)
+write_csv(t2, here::here("output", "blt_before.csv"))
 
-#do same for before and after
-#blt_before.csv and blt_after.csv
+bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
+str(t3)
+write_csv(t3, here::here("output", "blt_after.csv"))
+
+
+#could also use createtableone? 
 
 
 # ## matching variable for covrx extraction
