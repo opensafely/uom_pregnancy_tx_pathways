@@ -292,6 +292,27 @@ study = StudyDefinition(
         "incidence": 0.4,
         },
     ),
+
+    ## use below codes for pn code within 8 weeks and 6 weeks 
+    # postnatal_8wk_code_present_8wks=patients.with_these_clinical_events(
+    # postnatal_8wk_codes, 
+    # between=["delivery_code_date", "delivery_code_date + 56 days"],
+    # returning="binary_flag",
+    # return_expectations={  
+    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #     "incidence": 0.4,
+    #     },
+    # ),
+
+    # postnatal_8wk_code_present_6wks=patients.with_these_clinical_events(
+    # postnatal_8wk_codes, 
+    # between=["delivery_code_date", "delivery_code_date + 42 days"],
+    # returning="binary_flag",
+    # return_expectations={  
+    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #     "incidence": 0.4,
+    #     },
+    # ),
  
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
