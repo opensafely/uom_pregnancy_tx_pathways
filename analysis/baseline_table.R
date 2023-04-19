@@ -39,7 +39,7 @@ df <- df %>% mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
                                  ethnicity == 6   ~ "Unknown"))
 df$ethnicity_6 <- as.factor(df$ethnicity_6)
 
-#Create before/after pandemic dfs, keep overall
+#Creates before/after pandemic dfs as well as overall
 # use del_code_date to split?
 # check dates and date format - before/after first lockdown?
 # pick random date for each period?
@@ -108,9 +108,3 @@ write_csv(t3, here::here("output", "blt_after.csv"))
 
 
 #could also use createtableone? 
-
-
-# ## matching variable for covrx extraction
-# DF=df_one_pat%>%select(patient_id, date)
-# DF$patient_index_date=as.character(DF$date)
-# write_csv(DF, here::here("output","measures", "id_2020.csv"))

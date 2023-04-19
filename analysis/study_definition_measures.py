@@ -331,12 +331,12 @@ study = StudyDefinition(
     ),
 )
 
-
-##numerator num patients with pn code in 12 weeks after delivery date
-## ^ is this all postnatal codes?
-
 ##denom num patients delivered that month
 ## ^ no of patients w delivery codes per month - delivery_code_present_2019 var above?
+
+## also will have to run measures with postnatal_8wk_code_present_8wks and postnatal_8wk_code_present_6wks
+## as numerators - put this below or create new study def(s)? 
+
 
 measures = [
 
