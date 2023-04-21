@@ -1,7 +1,7 @@
 library('tidyverse')
 library('lubridate')
 library('dplyr')
-library ('finalfit')
+library('finalfit')
 #library('tableone')
 
 #setwd("C:/Users/mdehsdh7/GitHub/uom_pregnancy_tx_pathways/output/measures")
@@ -40,17 +40,9 @@ df <- df %>% mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
 df$ethnicity_6 <- as.factor(df$ethnicity_6)
 
 #Creates before/after pandemic dfs as well as overall
-# use del_code_date to split?
-# check dates and date format - before/after first lockdown?
-# pick random date for each period?
 df_overall <- df
 df_before <- df %>% filter(delivery_code_date < "2020-03-01") 
-df_after <- df %>% filter(delivery_code_date >= "2020-03-01") 
-
-#dates from plots
-#  as.Date("2021-01-01"),xmax = as.Date("2021-04-01")
-#  as.Date("2020-11-01"),xmax = as.Date("2020-12-01")
-#  as.Date("2020-03-01"),xmax = as.Date("2020-06-01")
+df_after <- df %>% filter(delivery_code_date > "2020-02-29") 
 
 ## 2. filter del codes >0
 df_overall2 <- df_overall %>% filter(delivery_code_present > 0)
@@ -64,14 +56,11 @@ df_after3 <- df_after2 %>% group_by(patient_id)
 
 ## 4. arrange by patient ID then del code date
 # then filter by first row to get last date in study period
-#arrange(data, by_group = TRUE)
-#or just arrange by both? line below works
 
 df_overall4 <- df_overall3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 df_before4 <- df_before3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 df_after4 <- df_after3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 
-## run this code as well to check if outputs are the same?
 # df4<-df3%>% group_by(patient_id) %>% 
 #   arrange(desc(delivery_code_date), group_by=TRUE) %>%
 #   filter(row_number()==1)
