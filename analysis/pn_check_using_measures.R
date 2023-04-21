@@ -29,6 +29,10 @@ df <- read_csv(
 ## remove rows where delivery_code_present == 0 (group_by var in measures)
 df=df%>% filter(delivery_code_present > 0)
 
+## below - if we are looking at +84 days do we want to remove last 2/3 months?
+## then for 6/8 weeks change this? and var in #outcomes above
+## set last.date to max(df$date) - 3 months then filter?
+
 # remove last month data
 df$date <- as.Date(df$date)
 last.date=max(df$date)

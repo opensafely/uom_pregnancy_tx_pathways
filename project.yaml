@@ -105,6 +105,7 @@ actions:
     needs: [generate_study_population_measures, generate_measures]
     outputs:
       moderately_sensitive:
-        table1: output/blt_overall.csv    
+        table_overall: output/blt_overall.csv   
+        table_before: output/blt_before.csv 
+        table_after: output/blt_after.csv 
 
-        

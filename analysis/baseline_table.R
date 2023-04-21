@@ -1,7 +1,7 @@
 library('tidyverse')
 library('lubridate')
 library('dplyr')
-library ('finalfit')
+library('finalfit')
 #library('tableone')
 
 #setwd("C:/Users/mdehsdh7/GitHub/uom_pregnancy_tx_pathways/output/measures")
@@ -39,18 +39,10 @@ df <- df %>% mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
                                  ethnicity == 6   ~ "Unknown"))
 df$ethnicity_6 <- as.factor(df$ethnicity_6)
 
-#Create before/after pandemic dfs, keep overall
-# use del_code_date to split?
-# check dates and date format - before/after first lockdown?
-# pick random date for each period?
+#Creates before/after pandemic dfs as well as overall
 df_overall <- df
 df_before <- df %>% filter(delivery_code_date < "2020-03-01") 
-df_after <- df %>% filter(delivery_code_date >= "2020-03-01") 
-
-#dates from plots
-#  as.Date("2021-01-01"),xmax = as.Date("2021-04-01")
-#  as.Date("2020-11-01"),xmax = as.Date("2020-12-01")
-#  as.Date("2020-03-01"),xmax = as.Date("2020-06-01")
+df_after <- df %>% filter(delivery_code_date > "2020-02-29") 
 
 ## 2. filter del codes >0
 df_overall2 <- df_overall %>% filter(delivery_code_present > 0)
@@ -64,8 +56,6 @@ df_after3 <- df_after2 %>% group_by(patient_id)
 
 ## 4. arrange by patient ID then del code date
 # then filter by first row to get last date in study period
-#arrange(data, by_group = TRUE)
-#or just arrange by both? line below works
 
 df_overall4 <- df_overall3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 df_before4 <- df_before3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
@@ -85,17 +75,25 @@ df_after4 <- df_after3 %>% arrange(patient_id, desc(delivery_code_date)) %>% fil
 
 # select variables for the baseline table
 bltab_vars <- df_overall4 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, ethnicity_6, imd) 
+bltab_vars_before <- df_before4 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, ethnicity_6, imd) 
+bltab_vars_after <- df_after4 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, ethnicity_6, imd) 
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
+colsfortab_before <- colnames(bltab_vars_before)
+colsfortab_after <- colnames(bltab_vars_after)
 
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 str(t)
 write_csv(t, here::here("output", "blt_overall.csv"))
 
-#could also use createtableone? 
+bltab_vars_before %>% summary_factorlist(explanatory = colsfortab_before) -> t2
+str(t2)
+write_csv(t2, here::here("output", "blt_before.csv"))
 
-# ## matching variable for covrx extraction
-# DF=df_one_pat%>%select(patient_id, date)
-# DF$patient_index_date=as.character(DF$date)
-# write_csv(DF, here::here("output","measures", "id_2020.csv"))
+bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
+str(t3)
+write_csv(t3, here::here("output", "blt_after.csv"))
+
+
+#could also use createtableone? 

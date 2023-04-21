@@ -274,7 +274,6 @@ study = StudyDefinition(
        },
     ),
 
-
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
     postnatal_8wk_code_present=patients.with_these_clinical_events(
@@ -284,7 +283,28 @@ study = StudyDefinition(
     return_expectations={
             "incidence": 0.3,},
     ),
-     
+
+    ## use below codes for pn code within 8 weeks and 6 weeks 
+    # postnatal_8wk_code_present_8wks=patients.with_these_clinical_events(
+    # postnatal_8wk_codes, 
+    # between=["delivery_code_date", "delivery_code_date + 56 days"],
+    # returning="binary_flag",
+    # return_expectations={  
+    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #     "incidence": 0.4,
+    #     },
+    # ),
+
+    # postnatal_8wk_code_present_6wks=patients.with_these_clinical_events(
+    # postnatal_8wk_codes, 
+    # between=["delivery_code_date", "delivery_code_date + 42 days"],
+    # returning="binary_flag",
+    # return_expectations={  
+    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #     "incidence": 0.4,
+    #     },
+    # ),
+
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
@@ -311,19 +331,12 @@ study = StudyDefinition(
     ),
 )
 
-# add check for whether postnatal code within 6w
-# this would be same format as postnatal_8wk_code_present?
-
-##add measures
-
-##numerator num patients with pn code in 12 weeks after delivery date
-## ^ is this all postnatal codes?
-
 ##denom num patients delivered that month
 ## ^ no of patients w delivery codes per month - delivery_code_present_2019 var above?
 
-## overall measure, grouped by practice, grouped by age_cat, region, IMD
-## develop code for plotting
+## also will have to run measures with postnatal_8wk_code_present_8wks and postnatal_8wk_code_present_6wks
+## as numerators - put this below or create new study def(s)? 
+
 
 measures = [
 

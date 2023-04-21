@@ -292,7 +292,8 @@ study = StudyDefinition(
         "incidence": 0.4,
         },
     ),
- 
+
+
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
