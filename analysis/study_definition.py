@@ -292,6 +292,24 @@ study = StudyDefinition(
         "incidence": 0.4,
        },
     ),
+
+    postnatal_code=patients.with_these_clinical_events(
+    postnatal_8wk_codes,
+    between=["delivery_code_date", "delivery_code_date + 84 days"],
+    returning="code", 
+    return_expectations={
+        "category": {
+            "ratios": {
+            "10588007":  0.2,
+            "10601012007": 0.2,
+            "1089000": 0.2,
+            "160763002": 0.2,
+            "13094009": 0.2,
+            }
+        },
+        "incidence": 0.4,
+      },
+    ),
  
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
