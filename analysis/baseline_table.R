@@ -96,5 +96,16 @@ num_pats <- length(unique(df_overall4$patient_id))
 overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
 write_csv(overall_counts, here::here("output", "overall_counts.csv"))
 
+# just overall or before/after as well?
+# could use as a check for no of patients before/after
 
-#could also use createtableone? 
+num_pracs_before <- length(unique(df_before4$practice))
+num_pats_before <- length(unique(df_before4$patient_id))
+overall_counts_before <- as.data.frame(cbind(num_pats_before, num_pracs_before))
+write_csv(overall_counts_before, here::here("output", "overall_counts_before.csv"))
+
+num_pracs_after <- length(unique(df_after4$practice))
+num_pats_after <- length(unique(df_after4$patient_id))
+overall_counts_after <- as.data.frame(cbind(num_pats_after, num_pracs_after))
+write_csv(overall_counts_after, here::here("output", "overall_counts_after.csv"))
+
