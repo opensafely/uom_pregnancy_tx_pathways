@@ -65,12 +65,6 @@ df_after4 <- df_after3 %>% arrange(patient_id, desc(delivery_code_date)) %>% fil
 #   arrange(desc(delivery_code_date), group_by=TRUE) %>%
 #   filter(row_number()==1)
 
-## code for overall counts - use for paper to get number of practices etc
-# think about which vars we need this for
-# overall_counts <- as.data.frame(cbind(first_mon, last_mon, num_pats, num_pracs))
-# write_csv(overall_counts, here::here("output", "overall_counts_blt_2020.csv"))
-# rm(overall_counts) 
-
 ## 5. Create summary table
 
 # select variables for the baseline table
@@ -95,5 +89,23 @@ bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
 str(t3)
 write_csv(t3, here::here("output", "blt_after.csv"))
 
+## 6. Overall counts
 
-#could also use createtableone? 
+num_pracs <- length(unique(df_overall4$practice))
+num_pats <- length(unique(df_overall4$patient_id))
+overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
+write_csv(overall_counts, here::here("output", "overall_counts.csv"))
+
+# just overall or before/after as well?
+# could use as a check for no of patients before/after
+
+num_pracs_before <- length(unique(df_before4$practice))
+num_pats_before <- length(unique(df_before4$patient_id))
+overall_counts_before <- as.data.frame(cbind(num_pats_before, num_pracs_before))
+write_csv(overall_counts_before, here::here("output", "overall_counts_before.csv"))
+
+num_pracs_after <- length(unique(df_after4$practice))
+num_pats_after <- length(unique(df_after4$patient_id))
+overall_counts_after <- as.data.frame(cbind(num_pats_after, num_pracs_after))
+write_csv(overall_counts_after, here::here("output", "overall_counts_after.csv"))
+
