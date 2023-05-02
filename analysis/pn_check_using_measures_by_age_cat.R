@@ -44,11 +44,18 @@ last_mon <- (format(max(df$date), "%m-%Y"))
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
 
+## round counts for pn8wk codes to nearest 5
+## calculate value_r using this
+## round population/do we need redaction as well?
+## then add to other measures
+
+df2<-df
+df2$postnatal_8wk_code_present_rounded<-round(df2$postnatal_8wk_code_present/5)*5
+df2$value_r<-df2$postnatal_8wk_code_present_rounded/df2$population
 
 ### get monthly rate per 1000 patients
-df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
-  mutate(pn_rate_1000 = value*1000) 
-
+df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
+  mutate(pn_rate_1000 = value_r*1000) 
 
 # df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
 #   mutate(meanrate = mean(pn_rate_1000,na.rm=TRUE),
@@ -56,7 +63,6 @@ df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
 #          highquart= quantile(pn_rate_1000, na.rm=TRUE)[4],
 #          ninefive= quantile(pn_rate_1000, na.rm=TRUE, c(0.95)),
 #          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
-
 
 plot_pn_rate <- ggplot(df_monrate, aes(x=date, group=age_cat, color=age_cat))+
   geom_line(aes(y=pn_rate_1000))+
