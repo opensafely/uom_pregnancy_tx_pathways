@@ -30,7 +30,7 @@ df$imd <- as.factor(df$imd)
 
 ## ethnicity
 # replace NA with 6 ("unknown") then convert to factor
-df$ethnicity=ifelse(is.na(df$ethnicity),"6",df$ethnicity)
+df$ethnicity=ifelse(is.na(df$ethnicity),6,df$ethnicity)
 df <- df %>% mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
                                  ethnicity == 2  ~ "Mixed",
                                  ethnicity == 3  ~ "South Asian",
