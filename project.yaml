@@ -42,7 +42,7 @@ actions:
 
   #generate_12wk_cohort:
   # run: cohortextractor:latest generate_cohort --output-format csv.gz
-  #   --param my_param="delivery_code_date + 84 days"
+  #   --param my_param="84 days"
   #   --output-file output/input_12wk.csv.gz
   # outputs:
   #   highly_sensitive:
@@ -50,7 +50,7 @@ actions:
   
   #generate_8wk_cohort:
   # run: cohortextractor:latest generate_cohort --output-format csv.gz
-  #   --param my_param="delivery_code_date + 56 days"
+  #   --param my_param="56 days"
   #   --output-file output/input_8wk.csv.gz
   # outputs:
   #   highly_sensitive:
@@ -58,7 +58,7 @@ actions:
 
   #generate_6wk_cohort:
   #   run: cohortextractor:latest generate_cohort --output-format csv.gz
-  #     --param my_param="delivery_code_date + 42 days"
+  #     --param my_param="42 days"
   #     --output-file output/input_6wk.csv.gz
   #   outputs:
   #     highly_sensitive:
