@@ -6,14 +6,13 @@ expectations:
 actions:
 
   # this is for number of matches
-  # should delivery codes be in population?
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition 
     outputs:
       highly_sensitive:
         cohort: output/input.csv
 
-  #this is to generate a date file for each month
+  # this is to generate a date file for each month
   generate_study_population_monthly:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_monthly 
@@ -25,7 +24,6 @@ actions:
         cohort: output/input_*.csv.gz
 
   # this is to run measures
-  # need to add first/last day of month to variables in study def?
   generate_study_population_measures:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_measures 
@@ -35,6 +33,27 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/measures/input_*.csv.gz
+
+  ## do these run using measures as above?
+  ## and should my_param be the variations on pn codes
+  ## then add to study def and convert?
+  #generate_8wk_cohort:
+  # run: cohortextractor:latest generate_cohort --output-format csv.gz
+  #   --param my_param=postnatal_8wk_code_present_8wk
+  #   --output-file output/input_8wk.csv.gz
+  # outputs:
+  #   highly_sensitive:
+  #     cohort: output/measures/input_8wk.csv.gz
+
+  #generate_6wk_cohort:
+  #   run: cohortextractor:latest generate_cohort --output-format csv.gz
+  #     --param my_param=postnatal_8wk_code_present_6wk
+  #     --output-file output/input_6wk.csv.gz
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/measures/input_6wk.csv.gz
+
+  ## then import into studydefinition.py
 
   generate_measures:
     run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures
