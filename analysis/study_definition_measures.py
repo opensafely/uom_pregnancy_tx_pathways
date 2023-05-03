@@ -17,7 +17,7 @@ from cohortextractor import params
 my_param = params["my_param"]
 
 ## convert string to integer (no of days)
-# my_int_param = int(params["my_int_param"])
+my_param = int(params["my_param"])
 # my_bool_param = params["my_bool_param"] == "true"
 
 #STUDY POPULATION
@@ -287,7 +287,8 @@ study = StudyDefinition(
     #return codes for those with delivery dates
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
-    between=["delivery_code_date", "delivery_code_date + 84 days"],
+    between=["delivery_code_date", "my_param,"]
+    #between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
     return_expectations={
             "incidence": 0.3,},
