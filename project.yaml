@@ -35,10 +35,7 @@ actions:
 
 ## my_param added to study def, converted to integer,
 ## and added to pn_8wk_present variable
-## should my_param be "delivery_code date + x days"
-## or just the no of days and leave del code date
-## in pn_8wk_code variable
-## also check whether inverted commas needed
+## check whether inverted commas needed
 
   #generate_12wk_cohort:
   # run: cohortextractor:latest generate_cohort --output-format csv.gz
