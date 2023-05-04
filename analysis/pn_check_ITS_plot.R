@@ -31,7 +31,7 @@ breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"),
 df=df%>%mutate(covid=cut(date,breaks,labels = 1:3))
 
 ## gives a covid column with 1-3
-## or do we just want 0/1 or 1/2?
+## are we excluding march to june or just before/after march?
 # 1 = before march 2020
 # 2 = march - june 2020
 # 3 = after june 2020
@@ -49,6 +49,14 @@ df$covid <- factor(df$covid, levels=c("0","1"))
 df=df%>% group_by(covid)%>%mutate(time.since=1:n())
 df$time.since <- ifelse(df$covid==0,0,df$time.since)
 
-# do we need this
+# do we need this?
 # df$value=1-df$percentage
 # df$count= df$total-df$count
+
+## new vars so far
+# times (months since start of study)
+# covid (binary)
+# time.since (months since covid)
+
+## next steps
+# filter by age_cat? to make split dfs
