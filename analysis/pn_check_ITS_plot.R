@@ -25,21 +25,17 @@ df$times <- as.numeric(as.factor(df$date))
 
 ## define dates
 # start of study period, start of lockdown, end of lockdown, end of study?
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), 
-            as.Date("2020-06-01"), max(df$date))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
-df=df%>%mutate(covid=cut(date,breaks,labels = 1:3))
+df=df%>%mutate(covid=cut(date,breaks,labels = 1:2))
 
-## gives a covid column with 1-3
-## are we excluding march to june or just before/after march?
+## gives a covid column with 1-2
+## as we dont want to exclude any months?
 # 1 = before march 2020
-# 2 = march - june 2020
-# 3 = after june 2020
+# 2 = march 2020 onwards
 
-## dont need to filter if not excluding?
-# df=df%>% filter(covid==1 | covid==3)
-
-df$covid= recode(df$covid, '1'="0", '3'="1")
+df=df%>% filter(covid==1 | covid==2)
+df$covid= recode(df$covid, '1'="0", '2'="1")
 df$covid <- factor(df$covid, levels=c("0","1"))
 
 ## creates time.since
@@ -60,3 +56,4 @@ df$time.since <- ifelse(df$covid==0,0,df$time.since)
 
 ## next steps
 # filter by age_cat? to make split dfs
+#this currently loads in overall measures file
