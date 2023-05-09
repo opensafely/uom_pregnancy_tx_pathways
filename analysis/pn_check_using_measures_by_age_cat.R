@@ -66,6 +66,9 @@ df2$value_r<-df2$postnatal_8wk_code_present_rounded/df2$population_rounded
 df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
   mutate(pn_rate_1000 = value_r*1000) 
 
+##create dataframe without NA 
+#gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
+
 # df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
 #   mutate(meanrate = mean(pn_rate_1000,na.rm=TRUE),
 #          lowquart= quantile(pn_rate_1000, na.rm=TRUE)[2],
@@ -75,6 +78,7 @@ df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
 
 plot_pn_rate <- ggplot(df_monrate, aes(x=date, group=age_cat, color=age_cat))+
   geom_line(aes(y=pn_rate_1000))+
+  #geom_line(data=gaps, linetype="dashed", aes(color+age_cat))+
   geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
