@@ -28,7 +28,9 @@ df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate.csv
 
 # df=rbind(df1,df2,df3,df4)
 
-filter by del code present?
+### do we need to build rounding into this?
+
+#filter by del code present?
 df<-df%>%filter(delivery_code_present>0)
 
 delivery_code_present  = col_double(),
@@ -81,8 +83,11 @@ df_overall=df
 # df4=df_overall%>%filter(measure=="practice")
 
 
-##warnings for non-integers, is this why we transform data?
-# 1. overall?
+##warnings for non-integers?
+
+##need to figure out how to combine measures files
+
+# 1. overall
 m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , data = df1)
 
 # # 2.  age_cat
