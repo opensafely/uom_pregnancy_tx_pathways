@@ -44,11 +44,24 @@ last_mon <- (format(max(df$date), "%m-%Y"))
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
 
+#changes counts under 6 to "[REDACTED]"
+df2 <- df 
+df2$postnatal_8wk_code_present_redacted <- ifelse(df2$postnatal_8wk_code_present <= 7, "[REDACTED]", df2$postnatal_8wk_code_present)
+df2$postnatal_8wk_code_present_redacted <- as.numeric(df2$postnatal_8wk_code_present_redacted)
+
+df2$population_redacted <- ifelse(df2$population <= 7, "[REDACTED]", df2$population)
+df2$population_redacted <- as.numeric(df2$population_redacted)
+
+#rounding to nearest 5
+df2$postnatal_8wk_code_present_rounded<-round(df2$postnatal_8wk_code_present_redacted/5)*5
+df2$population_rounded<-round(df2$population_redacted/5)*5
+
+#create value_r based on rounded/redacted values
+df2$value_r<-df2$postnatal_8wk_code_present_rounded/df2$population_rounded
 
 ### get monthly rate per 1000 patients
-df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
-  mutate(pn_rate_1000 = value*1000) 
-
+df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
+  mutate(pn_rate_1000 = value_r*1000) 
 
 # df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
 #   mutate(meanrate = mean(pn_rate_1000,na.rm=TRUE),
@@ -56,7 +69,6 @@ df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
 #          highquart= quantile(pn_rate_1000, na.rm=TRUE)[4],
 #          ninefive= quantile(pn_rate_1000, na.rm=TRUE, c(0.95)),
 #          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
-
 
 plot_pn_rate <- ggplot(df_monrate, aes(x=date, group=ethnicity, color=ethnicity))+
   geom_line(aes(y=pn_rate_1000))+

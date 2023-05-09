@@ -46,8 +46,6 @@ df$cal_year <- year(df$date)
 
 ## round counts for pn8wk codes to nearest 5
 ## calculate value_r using this
-## round population/do we need redaction as well?
-## then add to other measures
 
 #changes counts under 6 to "[REDACTED]"
 df2 <- df 
