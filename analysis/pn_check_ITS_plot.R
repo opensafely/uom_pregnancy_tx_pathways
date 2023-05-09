@@ -75,7 +75,8 @@ df$time.since <- ifelse(df$covid==0,0,df$time.since)
 # our outcome var is rate (value in .csv) = Y
 
 df_overall=df
-## split data
+
+## split data when measures files added
 #df0=df_overall
 # df1=df_overall%>%filter(measure=="age_cat")
 # df2=df_overall%>%filter(measure=="ethnicity")
@@ -88,7 +89,7 @@ df_overall=df
 ##need to figure out how to combine measures files
 
 # 1. overall
-m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , data = df1)
+m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , data = df_overall)
 
 # # 2.  age_cat
 # m2.1 <- glm.nb(count~ offset(log(total)) + covid + times + time.since  , data = df1)
