@@ -42,12 +42,9 @@ measure = col_character(),
 df$date <- as.Date(df$date)
 df$month= format(df$date,"%m")
 
-# group by month?
-
 df$times <- as.numeric(as.factor(df$date))
 
 ## define dates
-# start of study period, start of lockdown, end of lockdown, end of study?
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df=df%>%mutate(covid=cut(date,breaks,labels = 1:2))
