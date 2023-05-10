@@ -42,7 +42,8 @@ measure = col_character(),
 df$date <- as.Date(df$date)
 df$month= format(df$date,"%m")
 
-# creates time since start of study period as 1-52
+# group by month?
+
 df$times <- as.numeric(as.factor(df$date))
 
 ## define dates
@@ -51,7 +52,7 @@ breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df=df%>%mutate(covid=cut(date,breaks,labels = 1:2))
 
-## gives a covid column with 1-2 (no exclusions?)
+## gives a covid column with 1-2
 # 1 = before march 2020
 # 2 = march 2020 onwards
 
@@ -60,7 +61,6 @@ df$covid= recode(df$covid, '1'="0", '2'="1")
 df$covid <- factor(df$covid, levels=c("0","1"))
 
 ## this doesnt work with multiple rows for each month?
-## times works for months
 df=df%>% group_by(covid)%>%mutate(time.since=1:n())
 df$time.since <- ifelse(df$covid==0,0,df$time.since)
 
@@ -72,7 +72,7 @@ df$time.since <- ifelse(df$covid==0,0,df$time.since)
 # times (months since start of study) = T
 # covid (binary) = D
 # time.since (months since covid) = P
-# our outcome var is rate (value in .csv) = Y
+# our outcome var is rate (value) = Y
 
 df_overall=df
 
@@ -83,13 +83,10 @@ df_overall=df
 # df3=df_overall%>%filter(measure=="imd")
 # df4=df_overall%>%filter(measure=="practice")
 
-
 ##warnings for non-integers?
 
-##need to figure out how to combine measures files
-
 # 1. overall
-m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , data = df_overall)
+m2.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , data = df_overall)
 
 # # 2.  age_cat
 # m2.1 <- glm.nb(count~ offset(log(total)) + covid + times + time.since  , data = df1)
@@ -104,9 +101,9 @@ m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , da
 # m5.1 <- glm.nb(count~ offset(log(total))+  covid + times + time.since  , data = df4)
 
 
-(est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
+(est2.0 <- cbind(Estimate = coef(m2.0), confint(m2.0)))
 
-exp1.0=exp(est1.0)
+exp2.0=exp(est2.0)
 
 ##add labels etc
-ggplot(df_overall, aes(x=date, y=value, group=covid))+  theme_bw()+ annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
+ggplot(df_overall, aes(x=date, y=value, group=covid))+ theme_bw()+ annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
