@@ -150,28 +150,28 @@ actions:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_overall.jpeg 
 
-    describe_ITS_plot_age_cat:
+  describe_ITS_plot_age_cat:
     run: r:latest analysis/pn_check_ITS_age_cat.R
     needs: [generate_study_population_measures, generate_measures]
     outputs:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_age_cat.jpeg 
   
-    describe_ITS_plot_ethnicity:
+  describe_ITS_plot_ethnicity:
     run: r:latest analysis/pn_check_ITS_ethnicity.R
     needs: [generate_study_population_measures, generate_measures]
     outputs:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_ethnicity.jpeg 
 
-    describe_ITS_plot_imd:
+  describe_ITS_plot_imd:
     run: r:latest analysis/pn_check_ITS_plot_imd.R
     needs: [generate_study_population_measures, generate_measures]
     outputs:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_imd.jpeg 
 
-    describe_ITS_plot_practice:
+  describe_ITS_plot_practice:
     run: r:latest analysis/pn_check_ITS_plot_practice.R
     needs: [generate_study_population_measures, generate_measures]
     outputs:
