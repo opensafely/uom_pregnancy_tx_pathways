@@ -40,8 +40,13 @@ m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , dat
 exp1.0=exp(est1.0)
 
 ##add labels etc
-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 
+plot_ITS_ethnicity<-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 
     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
+
+ggsave(
+   plot= plot_ITS_ethnicity,
+   filename="pn_check_ITS_ethnicity.jpeg", path=here::here("output"),
+)
