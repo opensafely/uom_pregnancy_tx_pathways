@@ -37,8 +37,10 @@ actions:
 ## and added to pn_8wk_present variable in study defs
 
   generate_12wk_cohort:
-    run: cohortextractor:latest generate_cohort --output-format csv.gz
-      --param num_days='84 days'
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_measures
+      --output-format csv.gz
+      --param num_days=84
       --output-file output/input_12wk.csv.gz
     outputs:
       highly_sensitive:

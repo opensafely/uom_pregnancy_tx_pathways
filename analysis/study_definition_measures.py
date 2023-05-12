@@ -15,8 +15,8 @@ from datetime import datetime
 # Import parameters
 from cohortextractor import params 
 ...
-num_days = params["num_days"]
-num_days = int(params["num_days"])
+
+num_days = params['num_days']
 
 #STUDY POPULATION
 
@@ -284,7 +284,7 @@ study = StudyDefinition(
     #return codes for those with delivery dates
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
-    between=["delivery_code_date", "delivery_code_date + num_days"],
+    between=["delivery_code_date", f"delivery_code_date + {num_days} days"],
     #between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
     return_expectations={
