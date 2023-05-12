@@ -300,8 +300,8 @@ study = StudyDefinition(
 
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
-    between=["delivery_code_date", "delivery_code_date + my_param"],
-    #between=["delivery_code_date", "delivery_code_date + 84 days"],
+    #between=["delivery_code_date", "delivery_code_date + my_param"],
+    between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
     return_expectations={
             "incidence": 0.3,},
