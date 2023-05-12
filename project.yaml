@@ -33,13 +33,12 @@ actions:
       highly_sensitive:
         cohort: output/measures/input_*.csv.gz
 
-## my_param added to study defs, converted to integer,
+## num_days added to study def measures, converted to integer,
 ## and added to pn_8wk_present variable in study defs
-## check whether inverted commas needed
 
   generate_12wk_cohort:
     run: cohortextractor:latest generate_cohort --output-format csv.gz
-      --param my_param=84 days
+      --param num_days='84 days'
       --output-file output/input_12wk.csv.gz
     outputs:
       highly_sensitive:
@@ -47,7 +46,7 @@ actions:
   
   generate_8wk_cohort:
     run: cohortextractor:latest generate_cohort --output-format csv.gz
-      --param my_param=56 days
+      --param num_days='56 days'
       --output-file output/input_8wk.csv.gz
     outputs:
       highly_sensitive:
@@ -55,7 +54,7 @@ actions:
 
   generate_6wk_cohort:
     run: cohortextractor:latest generate_cohort --output-format csv.gz
-      --param my_param=42 days
+      --param num_days='42 days'
       --output-file output/input_6wk.csv.gz
     outputs:
       highly_sensitive:

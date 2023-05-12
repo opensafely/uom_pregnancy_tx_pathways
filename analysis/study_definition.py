@@ -2,8 +2,7 @@ from cohortextractor import (
     StudyDefinition, 
     patients, 
     codelist, 
-    codelist_from_csv  
-    
+    codelist_from_csv,  
 )
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
@@ -11,13 +10,13 @@ from codelist import *
 
 from datetime import datetime
 
-# Import parameters for study defs
-from cohortextractor import params 
-...
-my_param = params["84 days, 56 days, 42 days"]
+# # Import parameters for study defs
+# from cohortextractor import params 
+# ...
+# my_param = params["84 days, 56 days, 42 days"]
 
-## convert string to integer (no of days)
-my_param = int(params["84 days, 56 days, 42 days"])
+# ## convert string to integer (no of days)
+# my_param = int(params["84 days, 56 days, 42 days"])
 
 #STUDY POPULATION
 

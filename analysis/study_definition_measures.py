@@ -3,7 +3,8 @@ from cohortextractor import (
     patients, 
     codelist, 
     codelist_from_csv,  
-    Measure
+    Measure,
+    params,
 )
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
@@ -11,13 +12,11 @@ from codelist import *
 
 from datetime import datetime
 
-# Import parameters for study defs
+# Import parameters
 from cohortextractor import params 
 ...
-my_param = params["84 days", "56 days", "42 days"]
-
-## convert string to integer (no of days)
-my_param = int(params["84 days", "56 days", "42 days"])
+num_days = params["num_days"]
+num_days = int(params["num_days"])
 
 #STUDY POPULATION
 
@@ -110,8 +109,7 @@ study = StudyDefinition(
             },
         },
     ),
-
-
+    
     sex=patients.sex(
         return_expectations={
             "rate": "universal",
@@ -286,7 +284,7 @@ study = StudyDefinition(
     #return codes for those with delivery dates
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
-    between=["delivery_code_date", "delivery_code_date + my_param"],
+    between=["delivery_code_date", "delivery_code_date + num_days"],
     #between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
     return_expectations={
