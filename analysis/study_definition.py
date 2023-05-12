@@ -3,10 +3,8 @@ from cohortextractor import (
     patients, 
     codelist, 
     codelist_from_csv  
-    #Measure
+    
 )
-#above as in example but with measure added
-#doesnt run w Measure, add in once measures created
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelist import *
