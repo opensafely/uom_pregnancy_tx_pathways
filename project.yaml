@@ -47,7 +47,9 @@ actions:
         cohort: output/input_12wk.csv.gz
   
   generate_8wk_cohort:
-    run: cohortextractor:latest generate_cohort --output-format csv.gz
+    run: cohortextractor:latest generate_cohort
+      --study-definition study_definition_measures 
+      --output-format csv.gz
       --param num_days='56 days'
       --output-file output/input_8wk.csv.gz
     outputs:
@@ -55,7 +57,9 @@ actions:
         cohort: output/input_8wk.csv.gz
 
   generate_6wk_cohort:
-    run: cohortextractor:latest generate_cohort --output-format csv.gz
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_measures
+      --output-format csv.gz
       --param num_days='42 days'
       --output-file output/input_6wk.csv.gz
     outputs:
