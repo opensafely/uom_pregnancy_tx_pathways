@@ -50,7 +50,7 @@ actions:
     run: cohortextractor:latest generate_cohort
       --study-definition study_definition_measures 
       --output-format csv.gz
-      --param num_days='56 days'
+      --param num_days=56
       --output-file output/input_8wk.csv.gz
     outputs:
       highly_sensitive:
@@ -60,11 +60,11 @@ actions:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_measures
       --output-format csv.gz
-      --param num_days='42 days'
+      --param num_days=42
       --output-file output/input_6wk.csv.gz
     outputs:
       highly_sensitive:
-        cohort: output/measures/input_6wk.csv.gz
+        cohort: output/input_6wk.csv.gz
 
 ## do any changes need to be made here?  
   generate_measures:
