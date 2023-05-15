@@ -22,6 +22,22 @@ df$month= format(df$date,"%m")
 
 df$times <- as.numeric(as.factor(df$date))
 
+# ## redaction and rounding
+# df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
+# df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
+
+# df$population_redacted <- ifelse(df$population <= 7, "NA", df2$population)
+# df$population_redacted <- as.numeric(df$population_redacted)
+
+# #rounding to nearest 5
+# df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
+# df$population_rounded<-round(df$population_redacted/5)*5
+
+# df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
+# df_plot=df %>% filter(!is.na(rate))
+
+# ## then change to df_plot
+
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df=df%>%mutate(covid=cut(date,breaks,labels = 1:2))
