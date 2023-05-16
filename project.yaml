@@ -42,10 +42,10 @@ actions:
       --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-format csv.gz
       --param num_days=84
-      --output-dir=output/pn12wk/monthly_ext
+      --output-dir=output/pn12wk
     outputs:
       highly_sensitive:
-        cohort: output/pn12wk/monthly_ext/input_*.csv.gz
+        cohort: output/pn12wk/input_*.csv.gz
   
   generate_8wk_cohort:
     run: cohortextractor:latest generate_cohort
@@ -53,10 +53,10 @@ actions:
       --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-format csv.gz
       --param num_days=56
-      --output-dir=output/pn8wk/monthly_ext
+      --output-dir=output/pn8wk
     outputs:
       highly_sensitive:
-        cohort: output/pn8wk/monthly_ext/input_*.csv.gz
+        cohort: output/pn8wk/input_*.csv.gz
 
   generate_6wk_cohort:
     run: cohortextractor:latest generate_cohort 
@@ -64,10 +64,10 @@ actions:
       --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-format csv.gz
       --param num_days=42
-      --output-dir=output/pn6wk/monthly_ext
+      --output-dir=output/pn6wk
     outputs:
       highly_sensitive:
-        cohort: output/pn6wk/monthly_ext/input_*.csv.gz
+        cohort: output/pn6wk/input_*.csv.gz
 
   ## generate measures for each param (above)
   generate_measures:
@@ -81,34 +81,34 @@ actions:
     run: cohortextractor:latest generate_measures 
       --study-definition study_definition_measures 
       --skip-existing 
-      --output-dir=output/pn12wk/measures
+      --output-dir=output/pn12wk
       --param num_days=84
     needs: [generate_12wk_cohort]
     outputs:
       moderately_sensitive:
-        measure_csv: output/pn12wk/measures/measure_*.csv
+        measure_csv: output/pn12wk/measure_*.csv
 
   generate_measures_8wk:
     run: cohortextractor:latest generate_measures 
       --study-definition study_definition_measures 
       --skip-existing 
-      --output-dir=output/pn8wk/measures
+      --output-dir=output/pn8wk
       --param num_days=56
     needs: [generate_8wk_cohort]
     outputs:
       moderately_sensitive:
-        measure_csv: output/pn8wk/measures/measure*.csv
+        measure_csv: output/pn8wk/measure*.csv
 
   generate_measures_6wk:
     run: cohortextractor:latest generate_measures 
       --study-definition study_definition_measures 
       --skip-existing 
-      --output-dir=output/pn6wk/measures
+      --output-dir=output/pn6wk
       --param num_days=42
     needs: [generate_6wk_cohort]
     outputs:
       moderately_sensitive:
-        measure_csv: output/pn6wk/measures/measure_*.csv
+        measure_csv: output/pn6wk/measure_*.csv
 
 
 
