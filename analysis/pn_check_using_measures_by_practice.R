@@ -46,10 +46,10 @@ df$cal_year <- year(df$date)
 
 #changes counts under 6 to "[REDACTED]"
 df2 <- df 
-df2$postnatal_8wk_code_present_redacted <- ifelse(df2$postnatal_8wk_code_present <= 7, "[REDACTED]", df2$postnatal_8wk_code_present)
+df2$postnatal_8wk_code_present_redacted <- ifelse(df2$postnatal_8wk_code_present <= 7, "NA", df2$postnatal_8wk_code_present)
 df2$postnatal_8wk_code_present_redacted <- as.numeric(df2$postnatal_8wk_code_present_redacted)
 
-df2$population_redacted <- ifelse(df2$population <= 7, "[REDACTED]", df2$population)
+df2$population_redacted <- ifelse(df2$population <= 7, "NA", df2$population)
 df2$population_redacted <- as.numeric(df2$population_redacted)
 
 #rounding to nearest 5
@@ -63,6 +63,8 @@ df2$value_r<-df2$postnatal_8wk_code_present_rounded/df2$population_rounded
 df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
   mutate(pn_rate_1000 = value_r*1000)
 
+df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
+
 # mean list size per practice 
 #dfls <- df %>% group_by(practice) %>%
 #  mutate(listsize_ave = round(mean(population),digits = 0))
@@ -73,7 +75,7 @@ df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
 
 num_uniq_prac <- as.numeric(dim(table((df_monrate$practice))))
 
-df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
+df_mean <- df_gaps %>% group_by(cal_mon, cal_year) %>%
   mutate(meanPNrate = mean(pn_rate_1000,na.rm=TRUE),
          lowquart= quantile(pn_rate_1000, na.rm=TRUE)[2],
          highquart= quantile(pn_rate_1000, na.rm=TRUE)[4],
@@ -84,7 +86,7 @@ df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
 #y_min <- min(df_mean$meanABrate) 
 
 #can change colours
-plot_percentile <- ggplot(df_mean, aes(x=date))+
+plot_percentile <- ggplot(df_gaps, aes(x=date))+
   geom_line(aes(y=meanPNrate),color="steelblue")+
   geom_point(aes(y=meanPNrate),color="steelblue")+
   geom_line(aes(y=lowquart), color="darkred")+

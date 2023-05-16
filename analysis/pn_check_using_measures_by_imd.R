@@ -49,10 +49,10 @@ df <- df %>% filter(imd != 0)
 
 #changes counts under 6 to "[REDACTED]"
 df2 <- df 
-df2$postnatal_8wk_code_present_redacted <- ifelse(df2$postnatal_8wk_code_present <= 7, "[REDACTED]", df2$postnatal_8wk_code_present)
+df2$postnatal_8wk_code_present_redacted <- ifelse(df2$postnatal_8wk_code_present <= 7, "NA", df2$postnatal_8wk_code_present)
 df2$postnatal_8wk_code_present_redacted <- as.numeric(df2$postnatal_8wk_code_present_redacted)
 
-df2$population_redacted <- ifelse(df2$population <= 7, "[REDACTED]", df2$population)
+df2$population_redacted <- ifelse(df2$population <= 7, "NA", df2$population)
 df2$population_redacted <- as.numeric(df2$population_redacted)
 
 #rounding to nearest 5
@@ -66,6 +66,8 @@ df2$value_r<-df2$postnatal_8wk_code_present_rounded/df2$population_rounded
 df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
   mutate(pn_rate_1000 = value_r*1000) 
 
+df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
+
 # df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
 #   mutate(meanrate = mean(pn_rate_1000,na.rm=TRUE),
 #          lowquart= quantile(pn_rate_1000, na.rm=TRUE)[2],
@@ -74,7 +76,7 @@ df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
 #          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
 
 
-plot_pn_rate <- ggplot(df_monrate, aes(x=date, group=imd, color=imd))+
+plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=imd, color=imd))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
