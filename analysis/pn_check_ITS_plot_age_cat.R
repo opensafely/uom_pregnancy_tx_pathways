@@ -95,17 +95,20 @@ exp6.1=exp(est6.1)
 (est7.1 <- cbind(Estimate = coef(m7.1), confint(m7.1)))
 exp7.1=exp(est7.1)
 
-df_plot=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
-df$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49")
-#reorder
-#DF$Infection=factor(DF$Infection,levels = c("UTI","URTI","LRTI","Sinusitis","Otitis_externa","Otitis_media"))
+## is this part useful and can we just skip to
+## plotting each df? add code below
 
-#names(DF)[1]="IRR"
-#names(DF)[2]="ci_l"
-#names(DF)[3]="ci_u"
+# df_plot=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
+# df$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49")
+# #reorder
+# #DF$Infection=factor(DF$Infection,levels = c("UTI","URTI","LRTI","Sinusitis","Otitis_externa","Otitis_media"))
 
-#DF1.exp=DF
-#DF1.exp
+# #names(DF)[1]="IRR"
+# #names(DF)[2]="ci_l"
+# #names(DF)[3]="ci_u"
+
+# #DF1.exp=DF
+# #DF1.exp
 
 
 
