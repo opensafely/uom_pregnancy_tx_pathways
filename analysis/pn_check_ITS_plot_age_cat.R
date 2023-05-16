@@ -26,7 +26,7 @@ df$times <- as.numeric(as.factor(df$date))
 # df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
 # df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
 
-# df$population_redacted <- ifelse(df$population <= 7, "NA", df2$population)
+# df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
 # df$population_redacted <- as.numeric(df$population_redacted)
 
 # #rounding to nearest 5
@@ -49,14 +49,69 @@ df$covid <- factor(df$covid, levels=c("0","1"))
 df=df%>% group_by(covid, age_cat)%>%mutate(time.since=1:n())
 df$time.since <- ifelse(df$covid==0,0,df$time.since)
 
-m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df)
+# line for each age cat
+df1=filter(df, age_cat=="14-19")
+df2=filter(df, age_cat=="20-24")
+df3=filter(df, age_cat=="25-29")
+df4=filter(df, age_cat=="30-34")
+df5=filter(df, age_cat=="35-39")
+df6=filter(df, age_cat=="40-44")
+df7=filter(df, age_cat=="45-49")
 
-(est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
+# 14-19
+m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
+# 20-24
+m2.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df2)
+# 25-29
+m3.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df3)
+# 30-34
+m4.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df4)
+# 35-39
+m5.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df5)
+# 40-44
+m6.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df6)
+# 45-49
+m7.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df7)
 
-exp1.0=exp(est1.0)
+# 14-19
+(est1.1 <- cbind(Estimate = coef(m1.1), confint(m1.1)))
+exp1.1=exp(est1.1)
+# 20-24
+(est2.1 <- cbind(Estimate = coef(m2.1), confint(m2.1)))
+exp2.1=exp(est2.1)
+# 25-29
+(est3.1 <- cbind(Estimate = coef(m3.1), confint(m3.1)))
+exp3.1=exp(est3.1)
+# 30-34
+(est4.1 <- cbind(Estimate = coef(m4.1), confint(m4.1)))
+exp4.1=exp(est4.1)
+# 35-39
+(est5.1 <- cbind(Estimate = coef(m5.1), confint(m5.1)))
+exp5.1=exp(est5.1)
+# 40-44
+(est6.1 <- cbind(Estimate = coef(m6.1), confint(m6.1)))
+exp6.1=exp(est6.1)
+# 45-49
+(est7.1 <- cbind(Estimate = coef(m7.1), confint(m7.1)))
+exp7.1=exp(est7.1)
+
+df_plot=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
+df$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49")
+#reorder
+#DF$Infection=factor(DF$Infection,levels = c("UTI","URTI","LRTI","Sinusitis","Otitis_externa","Otitis_media"))
+
+#names(DF)[1]="IRR"
+#names(DF)[2]="ci_l"
+#names(DF)[3]="ci_u"
+
+#DF1.exp=DF
+#DF1.exp
+
+
+
 
 ##add labels etc
-plot_ITS_age_cat<-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 
+plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
