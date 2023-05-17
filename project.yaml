@@ -39,40 +39,80 @@ actions:
   generate_12wk_cohort:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_measures
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-format csv.gz
       --param num_days=84
-      --output-file output/input_12wk.csv.gz
+      --output-dir=output/pn12wk
     outputs:
       highly_sensitive:
-        cohort: output/input_12wk.csv.gz
+        cohort: output/pn12wk/input_*.csv.gz
   
   generate_8wk_cohort:
     run: cohortextractor:latest generate_cohort
       --study-definition study_definition_measures 
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-format csv.gz
       --param num_days=56
-      --output-file output/input_8wk.csv.gz
+      --output-dir=output/pn8wk
     outputs:
       highly_sensitive:
-        cohort: output/input_8wk.csv.gz
+        cohort: output/pn8wk/input_*.csv.gz
 
   generate_6wk_cohort:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_measures
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-format csv.gz
       --param num_days=42
-      --output-file output/input_6wk.csv.gz
+      --output-dir=output/pn6wk
     outputs:
       highly_sensitive:
-        cohort: output/input_6wk.csv.gz
+        cohort: output/pn6wk/input_*.csv.gz
 
-## do any changes need to be made here?  
+  ## generate measures for each param (above)
   generate_measures:
     run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures
     needs: [generate_study_population_measures]
     outputs:
       moderately_sensitive:
         measure_csv: output/measures/measure_*.csv
+
+  generate_measures_12wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn12wk
+      --param num_days=84
+    needs: [generate_12wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn12wk/measure_*.csv
+
+  generate_measures_8wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn8wk
+      --param num_days=56
+    needs: [generate_8wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn8wk/measure*.csv
+
+  generate_measures_6wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn6wk
+      --param num_days=42
+    needs: [generate_6wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn6wk/measure_*.csv
+
+
+
+
 
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R
