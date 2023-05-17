@@ -27,7 +27,7 @@ df$times <- as.numeric(as.factor(df$date))
 df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
 
-df$population_redacted <- ifelse(df$population <= 7, "NA", df2$population)
+df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
 df$population_redacted <- as.numeric(df$population_redacted)
 
 #rounding to nearest 5
@@ -42,6 +42,7 @@ df_plot=df %>% filter(!is.na(rate))
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
+df_plot<-ungroup(df_plot)
 
 ## gives a covid column with 1-2
 # 1 = before march 2020
@@ -67,6 +68,9 @@ m1.0 <- glm.nb(rate~ offset(log(population)) + covid + times + time.since  , dat
 (est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
 
 exp1.0=exp(est1.0)
+#  Id save the model estimates as a csv. ie. 
+# write.csv(as.data.frame(exp1.0)) and save to the appropriate dir. 
+
 
 ##add labels etc
 plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
