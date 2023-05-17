@@ -72,10 +72,6 @@ exp1.0=exp(est1.0)
 # save the model estimates as a csv. 
 write_csv(as.data.frame(exp1.0), here::here("output", "ITS_estimates_1.0.csv"))
 
-# Ya-Ting predicts/estimates for the data using the adjusted model. 
-# something like this: 
-# df1 <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-
 # rate = %?
 
 ##add labels etc

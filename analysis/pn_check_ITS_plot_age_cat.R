@@ -7,13 +7,14 @@ library("MASS")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate_by_age_cat.csv")),
+df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate_by_age_cat.csv"),
 
 delivery_code_present  = col_double(),
 postnatal_8wk_code_present = col_double(),
 population  = col_number(),
 value = col_number(),
 measure = col_character(),
+)
 
 df<-df%>%filter(delivery_code_present>0)
 
@@ -23,40 +24,43 @@ df$month= format(df$date,"%m")
 df$times <- as.numeric(as.factor(df$date))
 
 # ## redaction and rounding
-# df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
-# df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
+df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
+df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
 
-# df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
-# df$population_redacted <- as.numeric(df$population_redacted)
+df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
+df$population_redacted <- as.numeric(df$population_redacted)
 
-# #rounding to nearest 5
-# df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
-# df$population_rounded<-round(df$population_redacted/5)*5
+#rounding to nearest 5
+df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
+df$population_rounded<-round(df$population_redacted/5)*5
 
-# df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
-# df_plot=df %>% filter(!is.na(rate))
+df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
+df_plot=df %>% filter(!is.na(rate))
 
 # ## then change to df_plot
+df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
+df_plot=df %>% filter(!is.na(rate))
 
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
-df=df%>%mutate(covid=cut(date,breaks,labels = 1:2))
+df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
+df_plot<-ungroup(df_plot)
 
-df=df%>% filter(covid==1 | covid==2)
-df$covid= recode(df$covid, '1'="0", '2'="1")
-df$covid <- factor(df$covid, levels=c("0","1"))
+df_plot=df_plot%>% filter(covid==1 | covid==2)
+df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
+df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
-df=df%>% group_by(covid, age_cat)%>%mutate(time.since=1:n())
-df$time.since <- ifelse(df$covid==0,0,df$time.since)
+df_plot=df_plot%>% group_by(covid, age_cat)%>%mutate(time.since=1:n())
+df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # line for each age cat
-df1=filter(df, age_cat=="14-19")
-df2=filter(df, age_cat=="20-24")
-df3=filter(df, age_cat=="25-29")
-df4=filter(df, age_cat=="30-34")
-df5=filter(df, age_cat=="35-39")
-df6=filter(df, age_cat=="40-44")
-df7=filter(df, age_cat=="45-49")
+df1=filter(df_plot, age_cat=="14-19")
+df2=filter(df_plot, age_cat=="20-24")
+df3=filter(df_plot, age_cat=="25-29")
+df4=filter(df_plot, age_cat=="30-34")
+df5=filter(df_plot, age_cat=="35-39")
+df6=filter(df_plot, age_cat=="40-44")
+df7=filter(df_plot, age_cat=="45-49")
 
 # 14-19
 m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
@@ -95,8 +99,15 @@ exp6.1=exp(est6.1)
 (est7.1 <- cbind(Estimate = coef(m7.1), confint(m7.1)))
 exp7.1=exp(est7.1)
 
-## is this part useful and can we just skip to
-## plotting each df? add code below
+# save estimates as .csv
+write_csv(as.data.frame(exp1.1), here::here("output", "ITS_estimates_1.1.csv"))
+write_csv(as.data.frame(exp2.1), here::here("output", "ITS_estimates_2.1.csv"))
+write_csv(as.data.frame(exp3.1), here::here("output", "ITS_estimates_3.1.csv"))
+write_csv(as.data.frame(exp4.1), here::here("output", "ITS_estimates_4.1.csv"))
+write_csv(as.data.frame(exp5.1), here::here("output", "ITS_estimates_5.1.csv"))
+write_csv(as.data.frame(exp6.1), here::here("output", "ITS_estimates_6.1.csv"))
+write_csv(as.data.frame(exp7.1), here::here("output", "ITS_estimates_7.1.csv"))
+
 
 # df_plot=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
 # df$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49")
@@ -110,7 +121,11 @@ exp7.1=exp(est7.1)
 # #DF1.exp=DF
 # #DF1.exp
 
+# Ya-Ting has a step where she predicts/estimates for the data using the adjusted model. 
+# something like this: 
+# df1 <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
 
+## copy over code for individual dfs
 
 
 ##add labels etc
