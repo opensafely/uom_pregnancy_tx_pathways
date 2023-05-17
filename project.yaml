@@ -6,26 +6,23 @@ expectations:
 actions:
 
   # this is for number of matches
-  # should delivery codes be in population?
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition 
     outputs:
       highly_sensitive:
         cohort: output/input.csv
 
-  #this is to generate a date file for each month
-  generate_study_population_monthly:
-    run: cohortextractor:latest generate_cohort 
-      --study-definition study_definition_monthly 
-      --index-date-range "2019-01-01 to today by month"
-      --output-dir=output 
-      --output-format=csv.gz 
-    outputs:
-      highly_sensitive:
-        cohort: output/input_*.csv.gz
+  # this is to generate a date file for each month
+  # generate_study_population_monthly:
+  #   run: cohortextractor:latest generate_cohort 
+  #     --study-definition study_definition_monthly 
+  #     --index-date-range "2019-01-01 to today by month"
+  #     --output-dir=output 
+  #     --output-format=csv.gz 
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/input_*.csv.gz
 
-  # this is to run measures
-  # need to add first/last day of month to variables in study def?
   generate_study_population_measures:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_measures 
@@ -36,12 +33,82 @@ actions:
       highly_sensitive:
         cohort: output/measures/input_*.csv.gz
 
+## num_days added to study def measures, converted to integer,
+## and added to pn_8wk_present variable in study defs
+
+  generate_12wk_cohort:
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_measures
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-format csv.gz
+      --param num_days=84
+      --output-dir=output/pn12wk
+    outputs:
+      highly_sensitive:
+        cohort: output/pn12wk/input_*.csv.gz
+  
+  generate_8wk_cohort:
+    run: cohortextractor:latest generate_cohort
+      --study-definition study_definition_measures 
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-format csv.gz
+      --param num_days=56
+      --output-dir=output/pn8wk
+    outputs:
+      highly_sensitive:
+        cohort: output/pn8wk/input_*.csv.gz
+
+  generate_6wk_cohort:
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_measures
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-format csv.gz
+      --param num_days=42
+      --output-dir=output/pn6wk
+    outputs:
+      highly_sensitive:
+        cohort: output/pn6wk/input_*.csv.gz
+
+  ## generate measures for each param (above)
   generate_measures:
     run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures
     needs: [generate_study_population_measures]
     outputs:
       moderately_sensitive:
         measure_csv: output/measures/measure_*.csv
+
+  generate_measures_12wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn12wk
+      --param num_days=84
+    needs: [generate_12wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn12wk/measure_*.csv
+
+  generate_measures_8wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn8wk
+      --param num_days=56
+    needs: [generate_8wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn8wk/measure*.csv
+
+  generate_measures_6wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn6wk
+      --param num_days=42
+    needs: [generate_6wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn6wk/measure_*.csv
 
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R

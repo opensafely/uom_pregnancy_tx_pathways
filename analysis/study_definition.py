@@ -2,16 +2,21 @@ from cohortextractor import (
     StudyDefinition, 
     patients, 
     codelist, 
-    codelist_from_csv  
-    #Measure
+    codelist_from_csv,  
 )
-#above as in example but with measure added
-#doesnt run w Measure, add in once measures created
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelist import *
 
 from datetime import datetime
+
+# # Import parameters for study defs
+# from cohortextractor import params 
+# ...
+# my_param = params["84 days, 56 days, 42 days"]
+
+# ## convert string to integer (no of days)
+# my_param = int(params["84 days, 56 days, 42 days"])
 
 #STUDY POPULATION
 
@@ -283,14 +288,23 @@ study = StudyDefinition(
 
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
+    # postnatal_8wk_code_present=patients.with_these_clinical_events(
+    # postnatal_8wk_codes, 
+    # between=["delivery_code_date", "delivery_code_date + 84 days"],
+    # returning="binary_flag",
+    # return_expectations={  
+    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #     "incidence": 0.4,
+    #    },
+    # ),
+
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
+    #between=["delivery_code_date", "delivery_code_date + my_param"],
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    return_expectations={  
-    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-        "incidence": 0.4,
-       },
+    return_expectations={
+            "incidence": 0.3,},
     ),
 
     postnatal_code=patients.with_these_clinical_events(

@@ -3,13 +3,20 @@ from cohortextractor import (
     patients, 
     codelist, 
     codelist_from_csv,  
-    Measure
+    Measure,
+    params,
 )
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelist import *
 
 from datetime import datetime
+
+# Import parameters
+from cohortextractor import params 
+...
+
+num_days = params['num_days']
 
 #STUDY POPULATION
 
@@ -102,8 +109,7 @@ study = StudyDefinition(
             },
         },
     ),
-
-
+    
     sex=patients.sex(
         return_expectations={
             "rate": "universal",
@@ -278,32 +284,33 @@ study = StudyDefinition(
     #return codes for those with delivery dates
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
-    between=["delivery_code_date", "delivery_code_date + 84 days"],
+    between=["delivery_code_date", f"delivery_code_date + {num_days} days"],
+    #between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
     return_expectations={
             "incidence": 0.3,},
     ),
 
     ## use below codes for pn code within 8 weeks and 6 weeks 
-    # postnatal_8wk_code_present_8wks=patients.with_these_clinical_events(
-    # postnatal_8wk_codes, 
-    # between=["delivery_code_date", "delivery_code_date + 56 days"],
-    # returning="binary_flag",
-    # return_expectations={  
-    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #postnatal_8wk_code_present_8wks=patients.with_these_clinical_events(
+    #postnatal_8wk_codes, 
+    #between=["delivery_code_date", "delivery_code_date + 56 days"],
+    #returning="binary_flag",
+    #return_expectations={  
+    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
     #     "incidence": 0.4,
     #     },
-    # ),
+    #),
 
-    # postnatal_8wk_code_present_6wks=patients.with_these_clinical_events(
-    # postnatal_8wk_codes, 
-    # between=["delivery_code_date", "delivery_code_date + 42 days"],
-    # returning="binary_flag",
-    # return_expectations={  
-    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #postnatal_8wk_code_present_6wks=patients.with_these_clinical_events(
+    #postnatal_8wk_codes, 
+    #between=["delivery_code_date", "delivery_code_date + 42 days"],
+    #returning="binary_flag",
+    #return_expectations={  
+    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
     #     "incidence": 0.4,
     #     },
-    # ),
+    #),
 
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
