@@ -110,10 +110,6 @@ actions:
       moderately_sensitive:
         measure_csv: output/pn6wk/measure_*.csv
 
-
-
-
-
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R
     needs: [generate_study_population]
