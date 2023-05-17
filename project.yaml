@@ -12,7 +12,7 @@ actions:
       highly_sensitive:
         cohort: output/input.csv
 
-  ## this is to generate a date file for each month
+  # this is to generate a date file for each month
   # generate_study_population_monthly:
   #   run: cohortextractor:latest generate_cohort 
   #     --study-definition study_definition_monthly 
