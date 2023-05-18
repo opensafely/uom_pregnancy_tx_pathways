@@ -116,6 +116,7 @@ df_plot_overall$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49
 
 df_plot_overall$age_cat=factor(df_plot_overall$age_cat,levels = c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
+# IRR - incident rate ratio
 names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
@@ -124,7 +125,8 @@ names(df_plot_overall)[3]="ci_u"
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_overall.csv"))
 
-## ??
+## DF1.exp DF2.exp and DF.3 exp created in Ya-Ting's repo,
+## what are these?1
 # #DF1.exp=DF
 # #DF1.exp
 
