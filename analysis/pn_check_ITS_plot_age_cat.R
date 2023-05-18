@@ -126,7 +126,7 @@ names(df_plot_overall)[3]="ci_u"
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_overall.csv"))
 
 ## DF1.exp DF2.exp and DF.3 exp created in Ya-Ting's repo,
-## what are these?1
+## what are these?
 # #DF1.exp=DF
 # #DF1.exp
 
@@ -155,6 +155,8 @@ ggplot(df1, aes(x=date, y=value, group=covid)) +
 
     x = "", 
     y = "")
+## expected line is close to zero because we are dividing expected
+## rate by population?  
 
 # 20-24
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
