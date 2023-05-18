@@ -23,33 +23,35 @@ df$month= format(df$date,"%m")
 df$times <- as.numeric(as.factor(df$date))
 
 # ## redaction and rounding
-# df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
-# df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
+df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
+df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
+df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
 
-# df$population_redacted <- ifelse(df$population <= 7, "NA", df2$population)
-# df$population_redacted <- as.numeric(df$population_redacted)
+df$postnatal_population_redacted <- df$population
+df$postnatal_population_redacted[which(df$population <=7)] <- NA
+df$postnatal_population_redacted <- as.numeric(df$population)
 
-# #rounding to nearest 5
-# df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
-# df$population_rounded<-round(df$population_redacted/5)*5
+#rounding to nearest 5
+df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
+df$population_rounded<-round(df$population_redacted/5)*5
 
-# df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
-# df_plot=df %>% filter(!is.na(rate))
+df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
+df_plot=df %>% filter(!is.na(rate))
 
-# ## then change to df_plot
-
+# define dates
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
-df=df%>%mutate(covid=cut(date,breaks,labels = 1:2))
+df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
+df_plot<-ungroup(df_plot)
 
-df=df%>% filter(covid==1 | covid==2)
-df$covid= recode(df$covid, '1'="0", '2'="1")
-df$covid <- factor(df$covid, levels=c("0","1"))
+df_plot=df_plot%>% filter(covid==1 | covid==2)
+df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
+df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
-df=df%>% group_by(covid, practice)%>%mutate(time.since=1:n())
-df$time.since <- ifelse(df$covid==0,0,df$time.since)
+df_plot=df%>% group_by(covid, practice)%>%mutate(time.since=1:n())
+df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df)
+m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df_plot)
 
 (est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
 

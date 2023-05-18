@@ -23,46 +23,44 @@ df$month= format(df$date,"%m")
 df$times <- as.numeric(as.factor(df$date))
 
 # ## redaction and rounding
-# df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
-# df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
+df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
+df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
+df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
 
-# df$population_redacted <- ifelse(df$population <= 7, "NA", df2$population)
-# df$population_redacted <- as.numeric(df$population_redacted)
+df$postnatal_population_redacted <- df$population
+df$postnatal_population_redacted[which(df$population <=7)] <- NA
+df$postnatal_population_redacted <- as.numeric(df$population)
 
-# #rounding to nearest 5
-# df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
-# df$population_rounded<-round(df$population_redacted/5)*5
+#rounding to nearest 5
+df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
+df$population_rounded<-round(df$population_redacted/5)*5
 
-# df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
-# df_plot=df %>% filter(!is.na(rate))
-
-# ## then change to df_plot
+df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
+df_plot=df %>% filter(!is.na(rate))
 
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
-df=df%>%mutate(covid=cut(date,breaks,labels = 1:2))
+df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
+df_plot<-ungroup(df_plot)
+df_plot=df_plot%>% filter(covid==1 | covid==2)
 
-df=df%>% filter(covid==1 | covid==2)
-df$covid= recode(df$covid, '1'="0", '2'="1")
-df$covid <- factor(df$covid, levels=c("0","1"))
+df_plot=df_plot%>% group_by(covid, ethnicity)%>%mutate(time.since=1:n())
+df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-df=df%>% group_by(covid, ethnicity)%>%mutate(time.since=1:n())
-df$time.since <- ifelse(df$covid==0,0,df$time.since)
+# m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df)
 
-m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df)
+# (est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
 
-(est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
+# exp1.0=exp(est1.0)
 
-exp1.0=exp(est1.0)
+# ##add labels etc
+# plot_ITS_ethnicity<-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 
+#     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+#     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+#     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
+#     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
 
-##add labels etc
-plot_ITS_ethnicity<-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 
-    annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
-    annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
-    geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
-    theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
-
-ggsave(
-   plot= plot_ITS_ethnicity,
-   filename="pn_check_ITS_ethnicity.jpeg", path=here::here("output"),
-)
+# ggsave(
+#    plot= plot_ITS_ethnicity,
+#    filename="pn_check_ITS_ethnicity.jpeg", path=here::here("output"),
+# )

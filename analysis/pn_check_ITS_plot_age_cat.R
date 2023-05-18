@@ -23,21 +23,19 @@ df$month= format(df$date,"%m")
 
 df$times <- as.numeric(as.factor(df$date))
 
-# ## redaction and rounding
-df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
+## redaction and rounding
+df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
+df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
 
-df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
-df$population_redacted <- as.numeric(df$population_redacted)
+df$postnatal_population_redacted <- df$population
+df$postnatal_population_redacted[which(df$population <=7)] <- NA
+df$postnatal_population_redacted <- as.numeric(df$population)
 
 #rounding to nearest 5
 df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
 df$population_rounded<-round(df$population_redacted/5)*5
 
-df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
-df_plot=df %>% filter(!is.na(rate))
-
-# ## then change to df_plot
 df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
