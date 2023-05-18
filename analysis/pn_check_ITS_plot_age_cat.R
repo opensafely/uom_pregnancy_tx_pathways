@@ -60,6 +60,7 @@ df5=filter(df_plot, age_cat=="35-39")
 df6=filter(df_plot, age_cat=="40-44")
 df7=filter(df_plot, age_cat=="45-49")
 
+## do we need to use population_rounded here? 
 # 14-19
 m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
 # 20-24
@@ -97,33 +98,178 @@ exp6.1=exp(est6.1)
 (est7.1 <- cbind(Estimate = coef(m7.1), confint(m7.1)))
 exp7.1=exp(est7.1)
 
-# save estimates as .csv
-write_csv(as.data.frame(exp1.1), here::here("output", "ITS_estimates_1.1.csv"))
-write_csv(as.data.frame(exp2.1), here::here("output", "ITS_estimates_2.1.csv"))
-write_csv(as.data.frame(exp3.1), here::here("output", "ITS_estimates_3.1.csv"))
-write_csv(as.data.frame(exp4.1), here::here("output", "ITS_estimates_4.1.csv"))
-write_csv(as.data.frame(exp5.1), here::here("output", "ITS_estimates_5.1.csv"))
-write_csv(as.data.frame(exp6.1), here::here("output", "ITS_estimates_6.1.csv"))
-write_csv(as.data.frame(exp7.1), here::here("output", "ITS_estimates_7.1.csv"))
+## save estimates as .csv
+# write_csv(as.data.frame(exp1.1), here::here("output", "ITS_estimates_1.1.csv"))
+# write_csv(as.data.frame(exp2.1), here::here("output", "ITS_estimates_2.1.csv"))
+# write_csv(as.data.frame(exp3.1), here::here("output", "ITS_estimates_3.1.csv"))
+# write_csv(as.data.frame(exp4.1), here::here("output", "ITS_estimates_4.1.csv"))
+# write_csv(as.data.frame(exp5.1), here::here("output", "ITS_estimates_5.1.csv"))
+# write_csv(as.data.frame(exp6.1), here::here("output", "ITS_estimates_6.1.csv"))
+# write_csv(as.data.frame(exp7.1), here::here("output", "ITS_estimates_7.1.csv"))
 
+# creates combined df with estimates and CIs for each age_cat
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
 
-# df_plot=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
-# df$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49")
-# #reorder
-# #DF$Infection=factor(DF$Infection,levels = c("UTI","URTI","LRTI","Sinusitis","Otitis_externa","Otitis_media"))
+#adds age_cat column
+df_plot_overall$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49")
 
-# #names(DF)[1]="IRR"
-# #names(DF)[2]="ci_l"
-# #names(DF)[3]="ci_u"
+df_plot_overall$age_cat=factor(df_plot_overall$age_cat,levels = c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+
+names(df_plot_overall)[1]="IRR"
+names(df_plot_overall)[2]="ci_l"
+names(df_plot_overall)[3]="ci_u"
+
+## save this table? 
+# gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_overall.csv"))
 
 # #DF1.exp=DF
 # #DF1.exp
 
-# Ya-Ting has a step where she predicts/estimates for the data using the adjusted model. 
-# something like this: 
+## estimates using adjusted model?
+# add one of these for each df?
 # df1 <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
+# Warning: "Outer names are only allowed for unnamed scalar atomic inputs" 
 
-## copy over code for individual dfs
+## fix dates in plots/shaded areas 
+## add labels/titles
+
+# 14-19
+ggplot(df1, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+ #geom_line(aes(y=fit/total),color="grey")+
+ #geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+ geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+# 20 -24
+ggplot(df2, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+ #geom_line(aes(y=fit/total),color="grey")+
+# geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+ geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+# 25-29
+ggplot(df3, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+ #geom_line(aes(y=fit/total),color="grey")+
+# geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+ geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+# 30-34
+ggplot(df4, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+ #geom_line(aes(y=fit/total),color="grey")+
+# geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+ geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+# 35-39
+ggplot(df5, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+ #geom_line(aes(y=fit/total),color="grey")+
+# geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+ geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+40-44
+#df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
+
+ggplot(df6, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+ #geom_line(aes(y=fit/total),color="grey")+
+# geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+ geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+# 45-49
+#df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
+
+ggplot(df7, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+ #geom_line(aes(y=fit/total),color="grey")+
+# geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+ geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
 
 
 ##add labels etc
