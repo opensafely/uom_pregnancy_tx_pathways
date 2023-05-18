@@ -34,9 +34,9 @@ df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_prese
 # df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
 # df$population_redacted <- as.numeric(df$population_redacted)
 
-df$postnatal_population_redacted <- df$population
-df$postnatal_population_redacted[which(df$population <=7)] <- NA
-df$postnatal_population_redacted <- as.numeric(df$population)
+df$population_redacted <- df$population
+df$population_redacted[which(df$population <=7)] <- NA
+df$population_redacted <- as.numeric(df$population)
 
 #rounding to nearest 5
 df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5

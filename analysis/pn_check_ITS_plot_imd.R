@@ -7,13 +7,14 @@ library("MASS")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate_by_imd.csv")),
+df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate_by_imd.csv"),
 
 delivery_code_present  = col_double(),
 postnatal_8wk_code_present = col_double(),
 population  = col_number(),
 value = col_number(),
 measure = col_character(),
+)
 
 df<-df%>%filter(delivery_code_present>0)
 
@@ -27,9 +28,9 @@ df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
 df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
 
-df$postnatal_population_redacted <- df$population
-df$postnatal_population_redacted[which(df$population <=7)] <- NA
-df$postnatal_population_redacted <- as.numeric(df$population)
+df$population_redacted <- df$population
+df$population_redacted[which(df$population <=7)] <- NA
+df$population_redacted <- as.numeric(df$population)
 
 #rounding to nearest 5
 df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redacted/5)*5
