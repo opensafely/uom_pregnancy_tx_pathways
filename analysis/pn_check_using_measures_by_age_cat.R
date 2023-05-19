@@ -44,26 +44,25 @@ last_mon <- (format(max(df$date), "%m-%Y"))
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
 
-## round counts for pn8wk codes to nearest 5
-## calculate value_r using this
-
-# redaction of counts <7
-df2 <- df 
-df2$postnatal_8wk_code_present_redacted <- ifelse(df2$postnatal_8wk_code_present <= 7, "NA", df2$postnatal_8wk_code_present)
+#redaction
+df2<-df
+df2$postnatal_8wk_code_present_redacted <- df2$postnatal_8wk_code_present
+df2$postnatal_8wk_code_present_redacted[which(df2$postnatal_8wk_code_present_redacted <=7)] <- NA
 df2$postnatal_8wk_code_present_redacted <- as.numeric(df2$postnatal_8wk_code_present_redacted)
 
-df2$population_redacted <- ifelse(df2$population <= 7, "NA", df2$population)
-df2$population_redacted <- as.numeric(df2$population_redacted)
+df2$population_redacted <- df2$population
+df2$population_redacted[which(df2$population <=7)] <- NA
+df2$population_redacted <- as.numeric(df2$population)
 
 #rounding to nearest 5
 df2$postnatal_8wk_code_present_rounded<-round(df2$postnatal_8wk_code_present_redacted/5)*5
 df2$population_rounded<-round(df2$population_redacted/5)*5
 
-#create value_r based on rounded/redacted values
-df2$value_r<-df2$postnatal_8wk_code_present_rounded/df2$population_rounded
+df2$value_r=df2$postnatal_8wk_code_present_rounded/df2$population_rounded
+df_plot=df2 %>% filter(!is.na(value_r))
 
-## get monthly rate per 1000 patients
-df_monrate <- df2%>% group_by(cal_mon, cal_year) %>%
+### get monthly rate per 1000 patients
+df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
   mutate(pn_rate_1000 = value_r*1000) 
 
 # create dataframe without NA 
