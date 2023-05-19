@@ -10,6 +10,8 @@ rm(list=ls())
 
 df <- read_csv(
   here::here("output", "measures", "measure_postnatal_check_rate.csv"),
+  # here::here("output", "pn12wk", "_________")
+  # do we need to combine input_measures_date files?
   col_types = cols_only(
     
     # Outcomes
