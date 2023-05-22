@@ -126,11 +126,11 @@ names(df_plot_overall)[3]="ci_u"
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_overall.csv"))
 
 ## DF1.exp DF2.exp and DF.3 exp created in Ya-Ting's repo,
-## what are these?
+## what are these/is this relevant
 # #DF1.exp=DF
 # #DF1.exp
 
-## fix dates in plots/shaded areas 
+## fix dates in plots/shaded areas - dotted line for covid?
 ## add labels/titles
 ## expected lines are close to zero because we are dividing expected
 ## rate by population? 
@@ -142,8 +142,8 @@ df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
 # Warning: "Outer names are only allowed for unnamed scalar atomic inputs" 
 plot_ITS_14_19<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
-  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
   geom_point(shape=4)+
   geom_line(aes(y=fit/population),color="grey")+
   geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
@@ -156,14 +156,14 @@ plot_ITS_14_19<-ggplot(df1, aes(x=date, y=value, group=covid)) +
     title = "Rate of postnatal checks over time",
 
     x = "Month", 
-    y = "Rate")
+    y = "Rate") 
  
 # 20-24
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_20_24<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
-  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
   geom_point(shape=4)+
   geom_line(aes(y=fit/population),color="grey")+
   geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
@@ -173,7 +173,7 @@ plot_ITS_20_24<-ggplot(df2, aes(x=date, y=value, group=covid)) +
   theme(axis.text.x = element_text(angle = 60,hjust=1),
         legend.position = "bottom",legend.title =element_blank())+
   labs(
-    title = "",
+    title = "", 
 
     x = "", 
     y = "")
