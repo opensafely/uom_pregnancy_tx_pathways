@@ -52,10 +52,6 @@ breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
 df_plot<-ungroup(df_plot)
 
-## gives a covid column with 1-2
-# 1 = before march 2020
-# 2 = march 2020 onwards
-
 df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
 df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
@@ -73,18 +69,24 @@ df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 m1.0 <- glm.nb(rate~ offset(log(population)) + covid + times + time.since  , data = df_plot)
 #m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , data = df_plot)
 
+# estimates
 (est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
-
 exp1.0=exp(est1.0)
 
 # save the model estimates as a csv. 
 write_csv(as.data.frame(exp1.0), here::here("output", "ITS_estimates_1.0.csv"))
 
+# names(df_plot)[1]="IRR"
+# names(df_plot)[2]="ci_l"
+# names(df_plot)[3]="ci_u"
+
+df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
+
 # rate = %?
 
 ##add labels etc
 plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
-    #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+    annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-06-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "Rate of six week checks over time", x = "Month", y = "Rate")
