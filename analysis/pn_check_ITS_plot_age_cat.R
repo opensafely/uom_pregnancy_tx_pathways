@@ -123,7 +123,7 @@ names(df_plot_overall)[3]="ci_u"
 
 ## save this table? 
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_overall.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_overall.csv"))
 
 ## DF1.exp DF2.exp and DF.3 exp created in Ya-Ting's repo,
 ## what are these/is this relevant

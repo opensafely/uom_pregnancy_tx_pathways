@@ -54,7 +54,7 @@ df-plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 ## categories are 0-5 - names?
 
-# df for each age cat
+# df for each imd category
 df1=filter(df_plot, imd=="0")
 df2=filter(df_plot, imd=="1")
 df3=filter(df_plot, imd=="2")
@@ -121,13 +121,161 @@ names(df_plot_overall)[3]="ci_u"
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_imd_overall.csv"))
 
 
+## plots for each category
+
+# 0
+df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
+plot_ITS_imd_0<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+  geom_line(aes(y=fit/population),color="grey")+
+  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+  geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "Rate of postnatal checks over time",
+
+    x = "Month", 
+    y = "Rate") 
+ 
+# 1
+df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
+plot_ITS_imd_1<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+  geom_line(aes(y=fit/population),color="grey")+
+  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+  geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "", 
+
+    x = "", 
+    y = "")
+
+# 2
+df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
+plot_ITS_imd_2<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+  geom_line(aes(y=fit/population),color="grey")+
+  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+  geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+# 3
+df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
+plot_ITS_imd_3<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+  geom_line(aes(y=fit/population),color="grey")+
+  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+  geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+# 4
+df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
+plot_ITS_imd_4<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+  geom_line(aes(y=fit/population),color="grey")+
+  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+  geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
+
+# 5
+df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
+plot_ITS_imd_5<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
+ theme_bw()+
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  geom_point(shape=4)+
+  geom_line(aes(y=fit/population),color="grey")+
+  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
+  geom_smooth(color="black",se = FALSE)+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank())+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "")
 
 
-# m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df_plot)
+##add labels etc
+# plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
+#     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+#     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+#     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
+#     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
 
-# (est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
+ggsave(
+   plot= plot_ITS_imd_0,
+   filename="pn_check_ITS_imd_0.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_imd_1,
+   filename="pn_check_ITS_age_imd_1.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_imd_2,
+   filename="pn_check_ITS_imd_2.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_imd_3,
+   filename="pn_check_ITS_imd_3.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_imd_4,
+   filename="pn_check_ITS_imd_4.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_imd_5,
+   filename="pn_check_ITS_imd_5.jpeg", path=here::here("output"),
+)
 
-# exp1.0=exp(est1.0)
 
 # ##add labels etc
 # plot_ITS_imd<-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 

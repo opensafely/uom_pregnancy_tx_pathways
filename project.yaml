@@ -178,7 +178,12 @@ actions:
     needs: [generate_study_population_measures, generate_measures]
     outputs:
       moderately_sensitive:
-        plot_ITS_overall: output/pn_check_ITS_imd.jpeg 
+        plot_ITS_imd_0: output/pn_check_ITS_imd_0.jpeg 
+        plot_ITS_imd_1: output/pn_check_ITS_imd_1.jpeg 
+        plot_ITS_imd_2: output/pn_check_ITS_imd_2.jpeg 
+        plot_ITS_imd_3: output/pn_check_ITS_imd_3.jpeg 
+        plot_ITS_imd_4: output/pn_check_ITS_imd_4.jpeg 
+        plot_ITS_imd_5: output/pn_check_ITS_imd_5.jpeg 
 
   describe_ITS_plot_practice:
     run: r:latest analysis/pn_check_ITS_plot_practice.R
