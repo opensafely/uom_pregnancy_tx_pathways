@@ -130,17 +130,13 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_overall
 # #DF1.exp=DF
 # #DF1.exp
 
-## fix dates in plots/shaded areas - dotted line for covid?
-## add labels/titles
-## expected lines are close to zero because we are dividing expected
-## rate by population? 
-
-## 14-19
+## plots for each category
+## 0
 # estimates using adjusted model?
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
  # adds fit and se.fit columns despite message below
 # Warning: "Outer names are only allowed for unnamed scalar atomic inputs" 
-plot_ITS_14_19<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -158,9 +154,9 @@ plot_ITS_14_19<-ggplot(df1, aes(x=date, y=value, group=covid)) +
     x = "Month", 
     y = "Rate") 
  
-# 20-24
+# 1
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_20_24<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -178,9 +174,9 @@ plot_ITS_20_24<-ggplot(df2, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 25-29
+# 2
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_25_29<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -198,9 +194,9 @@ plot_ITS_25_29<-ggplot(df3, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 30-34
+# 3
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_30_34<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -218,9 +214,9 @@ plot_ITS_30_34<-ggplot(df4, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 35-39
+# 4
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_35_39<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_4<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -238,9 +234,9 @@ plot_ITS_35_39<-ggplot(df5, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-40-44
+# 5
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_40_44<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_5<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -258,25 +254,6 @@ plot_ITS_40_44<-ggplot(df6, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 45-49
-df7 <- cbind(df7, "resp" = predict(m7.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) + 
- theme_bw()+
-  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-  geom_point(shape=4)+
-  geom_line(aes(y=fit/population),color="grey")+
-  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-  geom_smooth(color="black",se = FALSE)+
-  scale_y_continuous(labels = scales::percent)+
-  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-  theme(axis.text.x = element_text(angle = 60,hjust=1),
-        legend.position = "bottom",legend.title =element_blank())+
-  labs(
-    title = "",
-
-    x = "", 
-    y = "")
 
 ##add labels etc
 # plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
@@ -285,32 +262,28 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) +
 #     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
 #     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
 
-# ggsave(
-#    plot= plot_ITS_14_19,
-#    filename="pn_check_ITS_age_cat_14_19.jpeg", path=here::here("output"),
-# )
-# ggsave(
-#    plot= plot_ITS_20_24,
-#    filename="pn_check_ITS_age_cat_20_24.jpeg", path=here::here("output"),
-# )
-# ggsave(
-#    plot= plot_ITS_25_29,
-#    filename="pn_check_ITS_age_cat_25_29.jpeg", path=here::here("output"),
-# )
-# ggsave(
-#    plot= plot_ITS_30_34,
-#    filename="pn_check_ITS_age_cat_30_34.jpeg", path=here::here("output"),
-# )
-# ggsave(
-#    plot= plot_ITS_35_39,
-#    filename="pn_check_ITS_age_cat_35_39.jpeg", path=here::here("output"),
-# )
-# ggsave(
-#    plot= plot_ITS_40_44,
-#    filename="pn_check_ITS_age_cat_40_44.jpeg", path=here::here("output"),
-# )
-# ggsave(
-#    plot= plot_ITS_45_49,
-#    filename="pn_check_ITS_age_cat_45_49.jpeg", path=here::here("output"),
-# )
+ggsave(
+   plot= plot_ITS_eth_0,
+   filename="pn_check_ITS_eth_0.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_eth_1,
+   filename="pn_check_ITS_age_eth_1.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_eth_2,
+   filename="pn_check_ITS_eth_2.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_eth_3,
+   filename="pn_check_ITS_eth_3.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_eth_4,
+   filename="pn_check_ITS_eth_4.jpeg", path=here::here("output"),
+)
+ggsave(
+   plot= plot_ITS_eth_5,
+   filename="pn_check_ITS_eth_5.jpeg", path=here::here("output"),
+)
 
