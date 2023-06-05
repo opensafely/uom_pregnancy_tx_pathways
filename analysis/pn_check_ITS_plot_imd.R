@@ -52,6 +52,77 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid, imd)%>%mutate(time.since=1:n())
 df-plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
+## categories are 0-5 - names?
+
+# df for each age cat
+df1=filter(df_plot, imd=="0")
+df2=filter(df_plot, imd=="1")
+df3=filter(df_plot, imd=="2")
+df4=filter(df_plot, imd=="3")
+df5=filter(df_plot, imd=="4")
+df6=filter(df_plot, imd=="5")
+
+# 1
+m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
+# 1
+m2.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df2)
+# 2
+m3.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df3)
+# 3
+m4.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df4)
+# 4
+m5.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df5)
+# 5
+m6.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df6)
+
+# 0
+(est1.1 <- cbind(Estimate = coef(m1.1), confint(m1.1)))
+exp1.1=exp(est1.1)
+# 1
+(est2.1 <- cbind(Estimate = coef(m2.1), confint(m2.1)))
+exp2.1=exp(est2.1)
+# 2
+(est3.1 <- cbind(Estimate = coef(m3.1), confint(m3.1)))
+exp3.1=exp(est3.1)
+# 3
+(est4.1 <- cbind(Estimate = coef(m4.1), confint(m4.1)))
+exp4.1=exp(est4.1)
+# 4
+(est5.1 <- cbind(Estimate = coef(m5.1), confint(m5.1)))
+exp5.1=exp(est5.1)
+# 5
+(est6.1 <- cbind(Estimate = coef(m6.1), confint(m6.1)))
+exp6.1=exp(est6.1)
+
+## save estimates as .csv
+## would need to change names for each category.R file
+# write_csv(as.data.frame(exp1.1), here::here("output", "ITS_estimates_1.1.csv"))
+# write_csv(as.data.frame(exp2.1), here::here("output", "ITS_estimates_2.1.csv"))
+# write_csv(as.data.frame(exp3.1), here::here("output", "ITS_estimates_3.1.csv"))
+# write_csv(as.data.frame(exp4.1), here::here("output", "ITS_estimates_4.1.csv"))
+# write_csv(as.data.frame(exp5.1), here::here("output", "ITS_estimates_5.1.csv"))
+# write_csv(as.data.frame(exp6.1), here::here("output", "ITS_estimates_6.1.csv"))
+
+# creates combined df with estimates and CIs for each imd category
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
+
+#adds imd column
+df_plot_overall$imd=c("0","1","2","3","4","5")
+
+df_plot_overall$imd=factor(df_plot_overall$imd,levels = c("0","1","2","3","4","5"))
+
+# IRR - incident rate ratio
+names(df_plot_overall)[1]="IRR"
+names(df_plot_overall)[2]="ci_l"
+names(df_plot_overall)[3]="ci_u"
+
+## save this table? 
+# gives df_plot_overall with IRR, LCI, UCI, imd and 7 rows
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_imd_overall.csv"))
+
+
+
+
 # m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df_plot)
 
 # (est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0)))
