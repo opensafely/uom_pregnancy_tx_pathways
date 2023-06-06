@@ -117,15 +117,32 @@ study = StudyDefinition(
         }
     ),
 
-    # ethnicity=patients.with_ethnicity_from_sus(
-    # returning="group_6",
-    # use_most_frequent_code=True,
-    # return_expectations={
-    #         "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
-    #         "incidence": 0.75,
-    #     },
-    # ),
+    eth=patients.with_ethnicity_from_sus(
+    returning="group_6",
+    use_most_frequent_code=True,
+    return_expectations={
+            "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
+            "incidence": 0.75,
+        },
+    ),
 
+    ethnicity_sus=patients.with_ethnicity_from_sus(
+       returning="group_6",
+       use_most_frequent_code=True,
+       return_expectations={
+           "category": {
+                           "ratios": {
+                               "1": 0.2,
+                               "2": 0.2,
+                               "3": 0.2,
+                               "4": 0.2,
+                               "5": 0.2
+                               }
+                           },
+           "incidence": 0.4,
+           },
+    ),
+    
     ethnicity=patients.categorised_as(
         {
             "0": "DEFAULT",
