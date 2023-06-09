@@ -10,6 +10,8 @@ rm(list=ls())
 
 df <- read_csv(
   here::here("output", "measures", "measure_postnatal_check_rate.csv"),
+  # here::here("output", "pn12wk", "_________")
+  # do we need to combine input_measures_date files?
   col_types = cols_only(
     
     # Outcomes
@@ -45,10 +47,43 @@ last_mon <- (format(max(df$date), "%m-%Y"))
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
 
+#redaction
+df2<-df
+df2$postnatal_8wk_code_present_redacted <- df2$postnatal_8wk_code_present
+df2$postnatal_8wk_code_present_redacted[which(df2$postnatal_8wk_code_present_redacted <=7)] <- NA
+df2$postnatal_8wk_code_present_redacted <- as.numeric(df2$postnatal_8wk_code_present_redacted)
+
+df2$population_redacted <- df2$population
+df2$population_redacted[which(df2$population <=7)] <- NA
+df2$population_redacted <- as.numeric(df2$population)
+
+#rounding to nearest 5
+df2$postnatal_8wk_code_present_rounded<-round(df2$postnatal_8wk_code_present_redacted/5)*5
+df2$population_rounded<-round(df2$population_redacted/5)*5
+
+df2$value_r=df2$postnatal_8wk_code_present_rounded/df2$population_rounded
+df_plot=df2 %>% filter(!is.na(value_r))
+
+# #changes counts under 6 to "[REDACTED]"
+# df2 <- df 
+# df2$postnatal_8wk_code_present_redacted <- ifelse(df2$postnatal_8wk_code_present <= 7, "NA", df2$postnatal_8wk_code_present)
+# df2$postnatal_8wk_code_present_redacted <- as.numeric(df2$postnatal_8wk_code_present_redacted)
+
+# df2$population_redacted <- ifelse(df2$population <= 7, "NA", df2$population)
+# df2$population_redacted <- as.numeric(df2$population_redacted)
+
+# #rounding to nearest 5
+# df2$postnatal_8wk_code_present_rounded<-round(df2$postnatal_8wk_code_present_redacted/5)*5
+# df2$population_rounded<-round(df2$population_redacted/5)*5
+
+# #create value_r based on rounded/redacted values
+# df2$value_r<-df2$postnatal_8wk_code_present_rounded/df2$population_rounded
 
 ### get monthly rate per 1000 patients
-df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
-  mutate(pn_rate_1000 = value*1000) 
+df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
+  mutate(pn_rate_1000 = value_r*1000) 
+
+df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
 # df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
 #   mutate(meanrate = mean(pn_rate_1000,na.rm=TRUE),
@@ -58,7 +93,7 @@ df_monrate <- df %>% group_by(cal_mon, cal_year) %>%
 #          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
 
 
-plot_pn_rate <- ggplot(df_monrate, aes(x=date))+
+plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
   geom_line(aes(y=pn_rate_1000),color="steelblue")+
   geom_point(aes(y=pn_rate_1000),color="steelblue")+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
