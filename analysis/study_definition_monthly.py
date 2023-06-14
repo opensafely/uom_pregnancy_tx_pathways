@@ -203,7 +203,7 @@ study = StudyDefinition(
 
     # Number of delivery codes per person
     delivery_code_number=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "today"],
     returning="number_of_matches_in_period",
     return_expectations={
@@ -214,7 +214,7 @@ study = StudyDefinition(
 
     # Date of last delivery code
     delivery_code_date=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "today"],
     returning="date",
     date_format="YYYY-MM-DD",
@@ -229,7 +229,7 @@ study = StudyDefinition(
 
     # Is there a delivery code present - Y/N
     delivery_code_present=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "today"],
     returning="binary_flag",    
     return_expectations={
@@ -242,7 +242,7 @@ study = StudyDefinition(
     # can use find_first_match_in_period = True or find_last_match_in_period = True
     # can also add include_date_of_match to get the date
     delivery_code=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "today"],
     returning="code", 
     return_expectations={
@@ -318,7 +318,7 @@ study = StudyDefinition(
     # use this as example for 6WC check
     # do we need this for each month?
     delivery_code_present_2019=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "2019-12-31"],
     returning="binary_flag",    
     return_expectations={

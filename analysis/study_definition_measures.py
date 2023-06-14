@@ -241,7 +241,7 @@ study = StudyDefinition(
     # Number of delivery codes per person
     # plot histogram based on this?
     delivery_code_number=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="number_of_matches_in_period",
     return_expectations={
@@ -252,7 +252,7 @@ study = StudyDefinition(
 
     # Date of last delivery code
     delivery_code_date=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="date",
     date_format="YYYY-MM-DD",
@@ -267,7 +267,7 @@ study = StudyDefinition(
 
     # Is there a delivery code present - Y/N
     delivery_code_present=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="binary_flag",    
     return_expectations={
@@ -280,7 +280,7 @@ study = StudyDefinition(
     # can use find_first_match_in_period = True or find_last_match_in_period = True
     # can also add include_date_of_match to get the date
     delivery_code=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="code", 
     return_expectations={
@@ -303,7 +303,7 @@ study = StudyDefinition(
     # Number of pn codes codes per person
     # plot histogram based on this?
     pn8wk_code_number=patients.with_these_clinical_events(
-    postnatal_8wk_codes,
+    postnatal_8wk_codes_reviewed,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="number_of_matches_in_period",
     return_expectations={
@@ -315,7 +315,7 @@ study = StudyDefinition(
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
     postnatal_8wk_code_present=patients.with_these_clinical_events(
-    postnatal_8wk_codes, 
+    postnatal_8wk_codes_reviewed, 
     between=["delivery_code_date", f"delivery_code_date + {num_days} days"],
     #between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
@@ -362,7 +362,7 @@ study = StudyDefinition(
 
     # is there a delivery code in a certain period - this is for 2019
     delivery_code_present_2019=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed,
     between=["index_date", "2019-12-31"],
     returning="binary_flag",    
     return_expectations={

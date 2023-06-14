@@ -25,3 +25,17 @@ postdel_antenatal_codes = codelist_from_csv(
 )
 
 
+## reviewed codes
+
+delivery_codes_reviewed = codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_delivery_snomed_reviewed.csv",
+    system="snomed",
+    column="code",
+)
+
+postnatal_8wk_codes_reviewed = codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_postnatal_8wk_snomed_reviewed.csv",
+    system="snomed",
+    column="code",
+)
+
