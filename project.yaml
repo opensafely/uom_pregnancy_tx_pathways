@@ -29,6 +29,7 @@ actions:
       --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-dir=output/measures 
       --output-format=csv.gz 
+      --param num_days=84 
     outputs:
       highly_sensitive:
         cohort: output/measures/input_*.csv.gz
