@@ -22,7 +22,7 @@ num_days = params['num_days']
 
 start_date = "2019-01-01"
 end_date = datetime.today().strftime('%Y-%m-%d')
-index_year = 2019
+#index_year = 2019
 min_age = 14
 max_age = 49
 
@@ -31,7 +31,7 @@ study = StudyDefinition(
     default_expectations={
         "date": {"earliest": "1900-01-01", "latest": "today"},
         "rate": "uniform",
-        "incidence": 0.5,
+        "incidence": 0.1,
     },
 
     # Set index date to start date
@@ -265,8 +265,8 @@ study = StudyDefinition(
     find_last_match_in_period=True,
     return_expectations={           
         "date": {
-            "earliest": "2019-01-01",  
-            "latest": "today",
+            "earliest": "index_date",  
+            "latest": "last_day_of_month(index_date)",
             },
         },    
     ),
