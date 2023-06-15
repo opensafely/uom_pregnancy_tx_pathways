@@ -23,16 +23,16 @@ actions:
   #     highly_sensitive:
   #       cohort: output/input_*.csv.gz
 
-  # generate_study_population_measures:
-  #   run: cohortextractor:latest generate_cohort 
-  #     --study-definition study_definition_measures 
-  #     --index-date-range "2019-01-01 to today by month" --skip-existing 
-  #     --output-dir=output/measures 
-  #     --output-format=csv.gz 
-  #     --param num_days=84 
-  #   outputs:
-  #     highly_sensitive:
-  #       cohort: output/measures/input_*.csv.gz
+  generate_study_population_measures:
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_measures 
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-dir=output/measures 
+      --output-format=csv.gz 
+      --param num_days=84 
+    outputs:
+      highly_sensitive:
+        cohort: output/measures/input_*.csv.gz
 
 ## num_days added to study def measures, converted to integer,
 ## and added to pn_8wk_present variable in study defs
