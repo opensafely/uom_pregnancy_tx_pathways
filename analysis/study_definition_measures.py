@@ -265,9 +265,10 @@ study = StudyDefinition(
     find_last_match_in_period=True,
     return_expectations={           
         "date": {
-            "earliest": "index_date",  
-            "latest": "last_day_of_month(index_date)",
+            "earliest": "2019-01-01",  
+            "latest": "2023-05-31",
             },
+        "incidence": 0.1,
         },    
     ),
 
@@ -278,7 +279,7 @@ study = StudyDefinition(
     returning="binary_flag",    
     return_expectations={
        #"int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 0.6,
+       "incidence": 0.2,
        },
     ),
 
@@ -366,14 +367,14 @@ study = StudyDefinition(
             "incidence": 0.3,},
     ),
 
-    # is there a delivery code in a certain period - this is for 2019
-    delivery_code_present_2019=patients.with_these_clinical_events(
-    delivery_codes_reviewed,
-    between=["index_date", "2019-12-31"],
-    returning="binary_flag",    
-    return_expectations={
-            "incidence": 0.6,},
-    ),
+    # # is there a delivery code in a certain period - this is for 2019
+    # delivery_code_present_2019=patients.with_these_clinical_events(
+    # delivery_codes_reviewed,
+    # between=["index_date", "2019-12-31"],
+    # returning="binary_flag",    
+    # return_expectations={
+    #         "incidence": 0.6,},
+    # ),
 )
 
 ##denom num patients delivered that month
@@ -426,14 +427,5 @@ measures = [
             denominator="population",
             group_by=["delivery_code_present", "region"]
             ),
-
-
-    # or can we have everything in one measure?
-    # rate of postnatal codes over time by delivery code, practice, age_cat
-    # Measure(id="postnatal_check_rate_by_practice_age_cat",
-    #         numerator="postnatal_8wk_code_present",
-    #         denominator="population",
-    #         group_by=["delivery_code_present", "practice", "age_cat"]
-    #         ),
 
 ]
