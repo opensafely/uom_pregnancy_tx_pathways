@@ -27,6 +27,8 @@ df$bmi_cat <- as.factor(df$bmi_cat)
 
 # imd as a factor - do these have/need labels?
 df$imd <- as.factor(df$imd)
+df$ethnicity <- as.factor(df$ethnicity)
+df$region <- as.factor(df$region)
 
 ## ethnicity
 # replace NA with 6 ("unknown") then convert to factor
