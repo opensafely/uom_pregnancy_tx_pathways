@@ -72,7 +72,9 @@ actions:
 
   ## generate measures for each param (above)
   generate_measures:
-    run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures
+    run: cohortextractor:latest generate_measures --study-definition study_definition_measures 
+    --skip-existing --output-dir=output/measures
+    --param num_days=84
     needs: [generate_study_population_measures]
     outputs:
       moderately_sensitive:
