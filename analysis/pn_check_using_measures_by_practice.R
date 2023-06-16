@@ -88,7 +88,7 @@ df_mean <- df_gaps %>% group_by(cal_mon, cal_year) %>%
 #y_min <- min(df_mean$meanABrate) 
 
 #can change colours
-plot_percentile <- ggplot(df_gaps, aes(x=date))+
+ggplot(df_mean, aes(x=date))+
   geom_line(aes(y=meanPNrate),color="steelblue")+
   geom_point(aes(y=meanPNrate),color="steelblue")+
   geom_line(aes(y=lowquart), color="darkred")+
@@ -110,7 +110,7 @@ plot_percentile <- ggplot(df_gaps, aes(x=date))+
   geom_vline(xintercept = as.numeric(as.Date("2019-12-31")), color="grey")+
   geom_vline(xintercept = as.numeric(as.Date("2020-12-31")), color="grey")
 
-plot_percentile 
+ 
 
 ggsave(
   plot= plot_percentile,
