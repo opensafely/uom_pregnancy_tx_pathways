@@ -6,7 +6,7 @@ library('finalfit')
 
 #setwd("C:/Users/mdehsdh7/GitHub/uom_pregnancy_tx_pathways/output/measures")
 
-setwd(here::here("output", "pn12wk"))
+setwd(here::here("output", "pn8wk"))
 
 #combine all "input_measures" files 
 df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
@@ -44,28 +44,28 @@ df$region <- as.factor(df$region)
 #Creates before/after pandemic dfs as well as overall
 df_overall <- df
 df_before <- df %>% filter(delivery_code_date < "2020-03-01") 
-df_after <- df %>% filter(delivery_code_date > "2020-02-29") 
+#df_after <- df %>% filter(delivery_code_date > "2020-02-29") 
 
 ## 2. filter del codes >0
 df_overall2 <- df_overall %>% filter(delivery_code_present > 0)
 df_before2 <- df_before %>% filter(delivery_code_present > 0)
-df_after2 <- df_after %>% filter(delivery_code_present > 0)
+#df_after2 <- df_after %>% filter(delivery_code_present > 0)
 
 ## 3. group by patient ID, then arrange by most recent delivery code date
 ## take most recent code per patient in period. 
 df_overall3 <- df_overall2 %>% group_by(patient_id)%>% arrange(desc(delivery_code_date)) %>% filter(row_number()==1)
 df_before3 <- df_before2 %>% group_by(patient_id)%>% arrange(desc(delivery_code_date)) %>% filter(row_number()==1)
-df_after3 <- df_after2 %>% group_by(patient_id)%>% arrange(desc(delivery_code_date)) %>% filter(row_number()==1)
+#df_after3 <- df_after2 %>% group_by(patient_id)%>% arrange(desc(delivery_code_date)) %>% filter(row_number()==1)
 
 # select variables for the baseline table
 bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
 bltab_vars_before  <- df_before3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
-bltab_vars_after  <- df_after3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
+#bltab_vars_after  <- df_after3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
 colsfortab_before <- colnames(bltab_vars_before)
-colsfortab_after <- colnames(bltab_vars_after)
+#colsfortab_after <- colnames(bltab_vars_after)
 
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 #str(t)
@@ -77,7 +77,7 @@ write_csv(t2, here::here("output", "blt_before_12wk.csv"))
 
 #bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
 #str(t3)
-write_csv(t3, here::here("output", "blt_after_12wk.csv"))
+#write_csv(t3, here::here("output", "blt_after_12wk.csv"))
 
 
 ## 6. Overall counts
@@ -94,8 +94,8 @@ num_pats_before <- length(unique(df_before3$patient_id))
 overall_counts_before <- as.data.frame(cbind(num_pats_before, num_pracs_before))
 write_csv(overall_counts_before, here::here("output", "overall_counts_before_12wk.csv"))
 
-num_pracs_after <- length(unique(df_after3$practice))
-num_pats_after <- length(unique(df_after3$patient_id))
-overall_counts_after <- as.data.frame(cbind(num_pats_after, num_pracs_after))
-write_csv(overall_counts_after, here::here("output", "overall_counts_after_12wk.csv"))
+# num_pracs_after <- length(unique(df_after3$practice))
+# num_pats_after <- length(unique(df_after3$patient_id))
+# overall_counts_after <- as.data.frame(cbind(num_pats_after, num_pracs_after))
+# write_csv(overall_counts_after, here::here("output", "overall_counts_after_12wk.csv"))
 
