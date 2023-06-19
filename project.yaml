@@ -216,7 +216,7 @@ actions:
         table_counts_before: output/overall_counts_before_12wk.csv
         table_counts_after: output/overall_counts_after_12wk.csv 
 
- describe_baseline_table_8wk_cohort:
+  describe_baseline_table_8wk_cohort:
     run: r:latest analysis/baseline_table_8wk.R
     needs: [generate_8wk_cohort]
     outputs:
