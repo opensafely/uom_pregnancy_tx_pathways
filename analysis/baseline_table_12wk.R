@@ -75,7 +75,7 @@ bltab_vars_before %>% summary_factorlist(explanatory = colsfortab_before) -> t2
 #str(t2)
 write_csv(t2, here::here("output", "blt_before_12wk.csv"))
 
-#bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
+bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
 #str(t3)
 write_csv(t3, here::here("output", "blt_after_12wk.csv"))
 
