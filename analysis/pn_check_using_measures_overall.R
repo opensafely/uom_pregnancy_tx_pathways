@@ -110,6 +110,6 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures_8wk.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures_overall.jpeg", path=here::here("output"),
 )
 
