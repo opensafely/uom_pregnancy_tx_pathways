@@ -6,15 +6,13 @@ library("lubridate")
 
 
 rm(list=ls())
-#setwd(here::here("output", "pn8wk"))
 
 df <- read_csv(
-  here::here("output", "pn8wk"),
-
-#combine all "input_measures" files 
-df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
-
+  here::here("output", "measures", "measure_postnatal_check_rate.csv"),
   col_types = cols_only(
+    
+    #Identifier
+    practice = col_factor(),
     
     # Outcomes
     delivery_code_present  = col_double(),
