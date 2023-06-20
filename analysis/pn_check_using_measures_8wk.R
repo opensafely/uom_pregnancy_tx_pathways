@@ -9,7 +9,12 @@ rm(list=ls())
 #setwd(here::here("output", "measures"))
 
 df <- read_csv(
-  here::here("output", "measures", "measure_postnatal_check_rate.csv"),
+  here::here("output", "pn8wk"),
+
+#setwd(here::here("output", "pn12wk"))
+
+#combine all "input_measures" files 
+df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
   col_types = cols_only(
     
@@ -29,10 +34,6 @@ df <- read_csv(
 
 ## remove rows where delivery_code_present == 0 (group_by var in measures)
 df=df%>% filter(delivery_code_present > 0)
-
-## below - if we are looking at +84 days do we want to remove last 2/3 months?
-## then for 6/8 weeks change this? and var in #outcomes above
-## set last.date to max(df$date) - 3 months then filter?
 
 # remove last month data
 df$date <- as.Date(df$date)
@@ -109,6 +110,6 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures_8wk.jpeg", path=here::here("output"),
 )
 
