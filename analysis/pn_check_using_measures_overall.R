@@ -6,12 +6,10 @@ library("lubridate")
 
 
 rm(list=ls())
-#setwd(here::here("output", "measures"))
+#setwd(here::here("output", "pn8wk"))
 
 df <- read_csv(
   here::here("output", "pn8wk"),
-
-#setwd(here::here("output", "pn12wk"))
 
 #combine all "input_measures" files 
 df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
@@ -30,7 +28,6 @@ df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, strin
   ),
   na = character()
   )
-
 
 ## remove rows where delivery_code_present == 0 (group_by var in measures)
 df=df%>% filter(delivery_code_present > 0)
