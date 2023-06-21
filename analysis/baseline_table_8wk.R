@@ -69,22 +69,22 @@ colsfortab_after <- colnames(bltab_vars_after)
 
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 #str(t)
-write_csv(t, here::here("output", "blt_overall_12wk.csv"))
+write_csv(t, here::here("output", "blt_overall_8wk.csv"))
 
 bltab_vars_before %>% summary_factorlist(explanatory = colsfortab_before) -> t2
 #str(t2)
-write_csv(t2, here::here("output", "blt_before_12wk.csv"))
+write_csv(t2, here::here("output", "blt_before_8wk.csv"))
 
 bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
 #str(t3)
-write_csv(t3, here::here("output", "blt_after_12wk.csv"))
+write_csv(t3, here::here("output", "blt_after_8wk.csv"))
 
 
 ## 6. Overall counts
 num_pracs <- length(unique(df_overall3$practice))
 num_pats <- length(unique(df_overall3$patient_id))
 overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
-write_csv(overall_counts, here::here("output", "overall_counts_12wk.csv"))
+write_csv(overall_counts, here::here("output", "overall_counts_8wk.csv"))
 
 # just overall or before/after as well?
 # could use as a check for no of patients before/after
@@ -92,10 +92,10 @@ write_csv(overall_counts, here::here("output", "overall_counts_12wk.csv"))
 num_pracs_before <- length(unique(df_before3$practice))
 num_pats_before <- length(unique(df_before3$patient_id))
 overall_counts_before <- as.data.frame(cbind(num_pats_before, num_pracs_before))
-write_csv(overall_counts_before, here::here("output", "overall_counts_before_12wk.csv"))
+write_csv(overall_counts_before, here::here("output", "overall_counts_before_8wk.csv"))
 
 num_pracs_after <- length(unique(df_after3$practice))
 num_pats_after <- length(unique(df_after3$patient_id))
 overall_counts_after <- as.data.frame(cbind(num_pats_after, num_pracs_after))
-write_csv(overall_counts_after, here::here("output", "overall_counts_after_12wk.csv"))
+write_csv(overall_counts_after, here::here("output", "overall_counts_after_8wk.csv"))
 
