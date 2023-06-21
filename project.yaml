@@ -170,21 +170,6 @@ actions:
     outputs:
       moderately_sensitive:
         plot1: output/monthly_pn_rate_measures_8wk.jpeg 
-  
-  # describe_pn_rate_plots_12wk:
-  #   run: r:latest analysis/pn_check_using_measures_12wk.R
-  #   #needs: [generate_study_population_measures, generate_measures]
-  #   needs: [generate_12wk_cohort, generate_measures_12wk]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot1: output/monthly_pn_rate_measures_12wk.jpeg
-
-  # describe_pn_rate_plots_6wk:
-  #   run: r:latest analysis/pn_check_using_measures_6wk.R
-  #   needs: [generate_6wk_cohort, generate_measures_6wk]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot1: output/monthly_pn_rate_measures_6wk.jpeg
 
   ## rate plots by category
   describe_pn_rate_plots_by_age_cat:
@@ -217,6 +202,13 @@ actions:
       moderately_sensitive:
         plot5: output/monthly_pn_rate_measures8wkcode_by_practice.jpeg
   
+  describe_pn_rate_plots_by_practice_8wk:
+    run: r:latest analysis/pn_check_using_measures_by_practice_8wk.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
+    outputs:
+      moderately_sensitive:
+        plot5: output/monthly_pn_rate_measures8wkcode_by_practice_8wk.jpeg
+
   describe_pn_rate_plots_by_region:
     run: r:latest analysis/pn_check_using_measures_by_region.R
     needs: [generate_study_population_measures, generate_measures]
@@ -258,10 +250,10 @@ actions:
       moderately_sensitive:
         table_overall: output/blt_overall_8wk.csv   
         table_before: output/blt_before_8wk.csv 
-        #table_after: output/blt_after_8wk.csv 
+        table_after: output/blt_after_8wk.csv 
         table_overall_counts: output/overall_counts_8wk.csv
         table_counts_before: output/overall_counts_before_8wk.csv
-        #table_counts_after: output/overall_counts_after_8wk.csv 
+        table_counts_after: output/overall_counts_after_8wk.csv 
 
   describe_baseline_table_6wk_cohort:
     run: r:latest analysis/baseline_table_6wk.R
@@ -270,8 +262,8 @@ actions:
       moderately_sensitive:
         table_overall: output/blt_overall_6wk.csv   
         table_before: output/blt_before_6wk.csv 
-        #table_after: output/blt_after_6wk.csv 
+        table_after: output/blt_after_6wk.csv 
         table_overall_counts: output/overall_counts_6wk.csv
         table_counts_before: output/overall_counts_before_6wk.csv
-        #table_counts_after: output/overall_counts_after_6wk.csv 
+        table_counts_after: output/overall_counts_after_6wk.csv 
 
