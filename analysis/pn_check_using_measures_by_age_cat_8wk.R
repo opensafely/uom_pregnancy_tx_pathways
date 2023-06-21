@@ -9,11 +9,11 @@ rm(list=ls())
 #setwd(here::here("output", "measures"))
 
 df <- read_csv(
-  here::here("output", "measures", "measure_postnatal_check_rate_by_region.csv"),
+  here::here("output", "pn8wk", "measure_postnatal_check_rate_by_age_cat.csv"),
   col_types = cols_only(
 
     #Identifier
-    region = col_factor(),
+    age_cat = col_factor(),
     
     # Outcomes
     delivery_code_present  = col_double(),
@@ -68,6 +68,8 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 # create dataframe without NA 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
+# remove 45-49 age cat due to low counts?
+df_gaps=filter(df_gaps, age_cat !="45-49")
 
 # df_mean <- df_monrate %>% group_by(cal_mon, cal_year) %>%
 #   mutate(meanrate = mean(pn_rate_1000,na.rm=TRUE),
@@ -76,9 +78,9 @@ df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 #          ninefive= quantile(pn_rate_1000, na.rm=TRUE, c(0.95)),
 #          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
 
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=region, color=region))+
+plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=age_cat, color=age_cat))+
   geom_line(aes(y=pn_rate_1000))+
-  #geom_line(data=df_gaps, linetype="dashed", aes(color+region))+ geom_point(aes(y=pn_rate_1000))+
+  #geom_line(data=df_gaps, linetype="dashed", aes(color+age_cat))+ geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
   labs(
@@ -93,5 +95,5 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=region, color=region))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_region.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures8wkcode_by_age_cat_8wk.jpeg", path=here::here("output"),
 )
