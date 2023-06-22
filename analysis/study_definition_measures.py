@@ -247,7 +247,7 @@ study = StudyDefinition(
     # Number of delivery codes per person
     # plot histogram based on this?
     delivery_code_number=patients.with_these_clinical_events(
-    delivery_codes_reviewed,
+    delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="number_of_matches_in_period",
     return_expectations={
@@ -258,7 +258,7 @@ study = StudyDefinition(
 
     # Date of last delivery code
     delivery_code_date=patients.with_these_clinical_events(
-    delivery_codes_reviewed,
+    delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="date",
     date_format="YYYY-MM-DD",
@@ -274,7 +274,7 @@ study = StudyDefinition(
 
     # Is there a delivery code present - Y/N
     delivery_code_present=patients.with_these_clinical_events(
-    delivery_codes_reviewed,
+    delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="binary_flag",    
     return_expectations={
@@ -287,7 +287,7 @@ study = StudyDefinition(
     # can use find_first_match_in_period = True or find_last_match_in_period = True
     # can also add include_date_of_match to get the date
     delivery_code=patients.with_these_clinical_events(
-    delivery_codes_reviewed,
+    delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="code", 
     return_expectations={
