@@ -5,42 +5,113 @@ expectations:
 
 actions:
 
+  # this is for number of matches
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition 
     outputs:
       highly_sensitive:
         cohort: output/input.csv
 
-  generate_study_population_monthly:
-    run: cohortextractor:latest generate_cohort 
-      --study-definition study_definition_monthly 
-      --index-date-range "2019-01-01 to today by month"
-      --output-dir=output 
-      --output-format=csv.gz 
-    outputs:
-      highly_sensitive:
-        cohort: output/input_*.csv.gz
+  # this is to generate a date file for each month
+  # generate_study_population_monthly:
+  #   run: cohortextractor:latest generate_cohort 
+  #     --study-definition study_definition_monthly 
+  #     --index-date-range "2019-01-01 to today by month"
+  #     --output-dir=output 
+  #     --output-format=csv.gz 
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/input_*.csv.gz
 
-## this command to run measures that we are using
   generate_study_population_measures:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_measures 
       --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-dir=output/measures 
       --output-format=csv.gz 
+      --param num_days=84 
     outputs:
       highly_sensitive:
         cohort: output/measures/input_*.csv.gz
 
+## num_days added to study def measures, converted to integer,
+## and added to pn_8wk_present variable in study defs
+
+  generate_12wk_cohort:
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_measures
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-format csv.gz
+      --param num_days=84
+      --output-dir=output/pn12wk
+    outputs:
+      highly_sensitive:
+        cohort: output/pn12wk/input_*.csv.gz
+  
+  generate_8wk_cohort:
+    run: cohortextractor:latest generate_cohort
+      --study-definition study_definition_measures 
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-format csv.gz
+      --param num_days=56
+      --output-dir=output/pn8wk
+    outputs:
+      highly_sensitive:
+        cohort: output/pn8wk/input_*.csv.gz
+
+  generate_6wk_cohort:
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_measures
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-format csv.gz
+      --param num_days=42
+      --output-dir=output/pn6wk
+    outputs:
+      highly_sensitive:
+        cohort: output/pn6wk/input_*.csv.gz
+
+  ## generate measures for each param (above)
   generate_measures:
-    run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures
+    run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures --param num_days=84
     needs: [generate_study_population_measures]
     outputs:
       moderately_sensitive:
         measure_csv: output/measures/measure_*.csv
 
-## delivery code frequencies
+  generate_measures_12wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn12wk
+      --param num_days=84
+    needs: [generate_12wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn12wk/measure_*.csv
 
+  generate_measures_8wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn8wk
+      --param num_days=56
+    needs: [generate_8wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn8wk/measure*.csv
+
+  generate_measures_6wk:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_measures 
+      --skip-existing 
+      --output-dir=output/pn6wk
+      --param num_days=42
+    needs: [generate_6wk_cohort]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/pn6wk/measure_*.csv
+
+  ## code frequencies
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R
     needs: [generate_study_population]
@@ -62,9 +133,7 @@ actions:
     outputs:
      moderately_sensitive:
         table1: output/table_del_codes_with_names_reduced.csv
-
-## postnatal code frequencies
-
+        
   describe_pn_code_freq:
     run: r:latest analysis/pn_code_frequency.R
     needs: [generate_study_population]
@@ -86,108 +155,118 @@ actions:
      moderately_sensitive:
         table1: output/table_pn_codes_with_names_reduced.csv   
 
-## plots for measures
-
+  ## rate plots 
   describe_pn_rate_plots:
-    run: r:latest analysis/pn_check_using_measures.R
+    run: r:latest analysis/pn_check_using_measures_overall.R
     needs: [generate_study_population_measures, generate_measures]
     outputs:
       moderately_sensitive:
-        plot1: output/monthly_pn_rate_measures8wkcode.jpeg
-
-  describe_pn_rate_plots_by_age_cat:
-    run: r:latest analysis/pn_check_using_measures_by_age_cat.R
-    needs: [generate_study_population_measures, generate_measures]
+        plot1: output/monthly_pn_rate_measures_overall.jpeg
+  
+  ## rate plots by category
+  describe_pn_rate_plots_by_age_cat_8wk:
+    run: r:latest analysis/pn_check_using_measures_by_age_cat_8wk.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
     outputs:
       moderately_sensitive:
-        plot2: output/monthly_pn_rate_measures8wkcode_by_age_cat.jpeg
+        plot2: output/monthly_pn_rate_measures8wkcode_by_age_cat_8wk.jpeg
 
   describe_pn_rate_plots_by_ethnicity:
-    run: r:latest analysis/pn_check_using_measures_by_ethnicity.R
-    needs: [generate_study_population_measures, generate_measures]
+    run: r:latest analysis/pn_check_using_measures_by_ethnicity_8wk.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
     outputs:
       moderately_sensitive:
-        plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity.jpeg
+        plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity_8wk.jpeg
 
   describe_pn_rate_plots_by_imd:
-    run: r:latest analysis/pn_check_using_measures_by_imd.R
-    needs: [generate_study_population_measures, generate_measures]
+    run: r:latest analysis/pn_check_using_measures_by_imd_8wk.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
     outputs:
       moderately_sensitive:
-        plot4: output/monthly_pn_rate_measures8wkcode_by_imd.jpeg
+        plot4: output/monthly_pn_rate_measures8wkcode_by_imd_8wk.jpeg
  
-  describe_pn_rate_plots_by_practice:
-    run: r:latest analysis/pn_check_using_measures_by_practice.R
-    needs: [generate_study_population_measures, generate_measures]
-    outputs:
-      moderately_sensitive:
-        plot5: output/monthly_pn_rate_measures8wkcode_by_practice.jpeg
-
-## baseline tables
-
-  describe_baseline_table:
-    run: r:latest analysis/baseline_table.R
-    needs: [generate_study_population_measures, generate_measures]
-    outputs:
-      moderately_sensitive:
-        table_overall: output/blt_overall.csv   
-        table_before: output/blt_before.csv 
-        table_after: output/blt_after.csv 
-        table_overall_counts: output/overall_counts.csv
-        table_counts_before: output/overall_counts_before.csv
-        table_counts_after: output/overall_counts_after.csv 
-
-## ITS plots
-# add within each category? see age cat
-# also csvs for each if we want these?
-
-  describe_ITS_plot_overall:
-    run: r:latest analysis/pn_check_ITS_plot.R
-    needs: [generate_study_population_measures, generate_measures]
-    outputs:
-      moderately_sensitive:
-        plot_ITS_overall: output/pn_check_ITS_overall.jpeg 
-
-  describe_ITS_plot_age_cat:
-    run: r:latest analysis/pn_check_ITS_age_cat.R
-    needs: [generate_study_population_measures, generate_measures]
-    outputs:
-      moderately_sensitive:
-        plot_ITS_14_19: output/pn_check_ITS_age_cat_14_19.jpeg 
-        plot_ITS_20_24: output/pn_check_ITS_age_cat_20_24.jpeg 
-        plot_ITS_25_29: output/pn_check_ITS_age_cat_25_29.jpeg 
-        plot_ITS_30_34: output/pn_check_ITS_age_cat_30_34.jpeg 
-        plot_ITS_35_39: output/pn_check_ITS_age_cat_35_39.jpeg 
-        plot_ITS_40_44: output/pn_check_ITS_age_cat_40_44.jpeg 
-        plot_ITS_45_49: output/pn_check_ITS_age_cat_45_49.jpeg 
+  # describe_pn_rate_plots_by_practice:
+  #   run: r:latest analysis/pn_check_using_measures_by_practice.R
+  #   needs: [generate_study_population_measures, generate_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot5: output/monthly_pn_rate_measures8wkcode_by_practice.jpeg
   
-  describe_ITS_plot_ethnicity:
-    run: r:latest analysis/pn_check_ITS_ethnicity.R
-    needs: [generate_study_population_measures, generate_measures]
+  describe_pn_rate_plots_by_practice_8wk:
+    run: r:latest analysis/pn_check_using_measures_by_practice_8wk.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
     outputs:
       moderately_sensitive:
-        plot_ITS_eth_0: output/pn_check_ITS_eth_0.jpeg 
-        plot_ITS_eth_1: output/pn_check_ITS_eth_1.jpeg 
-        plot_ITS_eth_2: output/pn_check_ITS_eth_2.jpeg 
-        plot_ITS_eth_3: output/pn_check_ITS_eth_3.jpeg 
-        plot_ITS_eth_4: output/pn_check_ITS_eth_4.jpeg 
-        plot_ITS_eth_5: output/pn_check_ITS_eth_5.jpeg 
+        plot5: output/monthly_pn_rate_measures8wkcode_by_practice_8wk.jpeg
+  
+  describe_pn_rate_plots_by_practice_12wk:
+    run: r:latest analysis/pn_check_using_measures_by_practice_12wk.R
+    needs: [generate_12wk_cohort, generate_measures_12wk]
+    outputs:
+      moderately_sensitive:
+        plot5: output/monthly_pn_rate_measures8wkcode_by_practice_12wk.jpeg
+  
+  describe_pn_rate_plots_by_practice_6wk:
+    run: r:latest analysis/pn_check_using_measures_by_practice_6wk.R
+    needs: [generate_6wk_cohort, generate_measures_6wk]
+    outputs:
+      moderately_sensitive:
+        plot5: output/monthly_pn_rate_measures8wkcode_by_practice_6wk.jpeg
 
-  describe_ITS_plot_imd:
-    run: r:latest analysis/pn_check_ITS_plot_imd.R
-    needs: [generate_study_population_measures, generate_measures]
+  describe_pn_rate_plots_by_region:
+    run: r:latest analysis/pn_check_using_measures_by_region_8wk.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
     outputs:
       moderately_sensitive:
-        plot_ITS_imd_0: output/pn_check_ITS_imd_0.jpeg 
-        plot_ITS_imd_1: output/pn_check_ITS_imd_1.jpeg 
-        plot_ITS_imd_2: output/pn_check_ITS_imd_2.jpeg 
-        plot_ITS_imd_3: output/pn_check_ITS_imd_3.jpeg 
-        plot_ITS_imd_4: output/pn_check_ITS_imd_4.jpeg 
-        plot_ITS_imd_5: output/pn_check_ITS_imd_5.jpeg 
+        plot6: output/monthly_pn_rate_measures8wkcode_by_region_8wk.jpeg
 
-  describe_ITS_plot_practice:
-    run: r:latest analysis/pn_check_ITS_plot_practice.R
-    needs: [generate_study_population_measures, generate_measures]
-    outputs:
-      moderately_sensitive:
-        plot_ITS_overall: output/pn_check_ITS_practice.jpeg 
+### Generating baseline tables ### 
+#################################
+  # describe_baseline_table:
+  #   run: r:latest analysis/baseline_table.R
+  #   needs: [generate_study_population_measures, generate_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall.csv   
+  #       table_before: output/blt_before.csv 
+  #       table_after: output/blt_after.csv 
+  #       table_overall_counts: output/overall_counts.csv
+  #       table_counts_before: output/overall_counts_before.csv
+  #       table_counts_after: output/overall_counts_after.csv 
+
+  # describe_baseline_table_12wk_cohort:
+  #   run: r:latest analysis/baseline_table_12wk.R
+  #   needs: [generate_12wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall_12wk.csv   
+  #       table_before: output/blt_before_12wk.csv 
+  #       table_after: output/blt_after_12wk.csv 
+  #       table_overall_counts: output/overall_counts_12wk.csv
+  #       table_counts_before: output/overall_counts_before_12wk.csv
+  #       table_counts_after: output/overall_counts_after_12wk.csv 
+
+  # describe_baseline_table_8wk_cohort:
+  #   run: r:latest analysis/baseline_table_8wk.R
+  #   needs: [generate_8wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall_8wk.csv   
+  #       table_before: output/blt_before_8wk.csv 
+  #       table_after: output/blt_after_8wk.csv 
+  #       table_overall_counts: output/overall_counts_8wk.csv
+  #       table_counts_before: output/overall_counts_before_8wk.csv
+  #       table_counts_after: output/overall_counts_after_8wk.csv 
+
+  # describe_baseline_table_6wk_cohort:
+  #   run: r:latest analysis/baseline_table_6wk.R
+  #   needs: [generate_6wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall_6wk.csv   
+  #       table_before: output/blt_before_6wk.csv 
+  #       table_after: output/blt_after_6wk.csv 
+  #       table_overall_counts: output/overall_counts_6wk.csv
+  #       table_counts_before: output/overall_counts_before_6wk.csv
+  #       table_counts_after: output/overall_counts_after_6wk.csv 
+
