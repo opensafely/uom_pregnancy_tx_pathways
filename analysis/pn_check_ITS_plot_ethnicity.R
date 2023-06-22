@@ -117,8 +117,6 @@ names(df_plot_overall)[3]="ci_u"
 # gives df_plot_overall with IRR, LCI, UCI, ethnicity and 7 rows
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_ethnicity_overall.csv"))
 
-## DF1.exp DF2.exp and DF.3 exp created in Ya-Ting's repo,
-## what are these/is this relevant
 # #DF1.exp=DF
 # #DF1.exp
 

@@ -8,14 +8,14 @@ library("MASS")
 
 ## Import data
 ## change measures file name
-df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate_by_age_cat.csv"),
+df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_age_cat.csv"))
 
-delivery_code_present  = col_double(),
-postnatal_8wk_code_present = col_double(),
-population  = col_number(),
-value = col_number(),
-measure = col_character(),
-)
+# delivery_code_present  = col_double(),
+# postnatal_8wk_code_present = col_double(),
+# population  = col_number(),
+# value = col_number(),
+# measure = col_character(),
+# )
 
 df<-df%>%filter(delivery_code_present>0)
 
@@ -61,7 +61,6 @@ df5=filter(df_plot, age_cat=="35-39")
 df6=filter(df_plot, age_cat=="40-44")
 df7=filter(df_plot, age_cat=="45-49")
 
-## do we need to use population_rounded here? 
 # 14-19
 m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
 # 20-24
@@ -125,10 +124,8 @@ names(df_plot_overall)[3]="ci_u"
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_overall.csv"))
 
-## DF1.exp DF2.exp and DF.3 exp created in Ya-Ting's repo,
-## what are these/is this relevant
-# #DF1.exp=DF
-# #DF1.exp
+#DF1.exp=df_plot_overall
+#DF1.exp
 
 ## plots for each category
 
@@ -275,6 +272,44 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
+##
+## add group var to each df?
+df1$group="14-19"
+df2$group="20-24"
+df3$group="25-29"
+df4$group="30-34"
+df5$group="35-39"
+df6$group="40-44"
+df7$group="45-49"
+
+df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
+df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+
+age_cat_ITS_plot<-ggplot(data=df_age_cat, aes(y=group, x=age_cat, color=group))+
+geom_point()+
+
+geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
+
+#adding a vertical line at the effect = 0 mark
+#geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
+#thematic stuff
+theme_bw()+
+#theme(text=element_text(family="Times",size=18, color="black"))+
+#theme(panel.spacing = unit(1, "lines"))+
+labs(
+      title = "",
+    x="IRR (95% CI)",
+    y=""
+  )+
+facet_grid(Infection~., scales = "free", space = "free")+
+ theme(strip.text.y = element_text(angle = 0),
+   axis.title.y =element_blank(),
+        axis.text.y=element_blank(),
+       axis.ticks.y=element_blank(),
+       legend.title=element_blank(),
+       legend.position="bottom")
+
+
 ##add labels etc
 # plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
 #     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
@@ -282,31 +317,32 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) +
 #     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
 #     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
 
-ggsave(
-   plot= plot_ITS_14_19,
-   filename="pn_check_ITS_age_cat_14_19.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_20_24,
-   filename="pn_check_ITS_age_cat_20_24.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_25_29,
-   filename="pn_check_ITS_age_cat_25_29.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_30_34,
-   filename="pn_check_ITS_age_cat_30_34.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_35_39,
-   filename="pn_check_ITS_age_cat_35_39.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_40_44,
-   filename="pn_check_ITS_age_cat_40_44.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_45_49,
-   filename="pn_check_ITS_age_cat_45_49.jpeg", path=here::here("output"),
-)
+# ggsave(
+#    plot= plot_ITS_14_19,
+#    filename="pn_check_ITS_age_cat_14_19.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_20_24,
+#    filename="pn_check_ITS_age_cat_20_24.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_25_29,
+#    filename="pn_check_ITS_age_cat_25_29.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_30_34,
+#    filename="pn_check_ITS_age_cat_30_34.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_35_39,
+#    filename="pn_check_ITS_age_cat_35_39.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_40_44,
+#    filename="pn_check_ITS_age_cat_40_44.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_45_49,
+#    filename="pn_check_ITS_age_cat_45_49.jpeg", path=here::here("output"),
+# )
+

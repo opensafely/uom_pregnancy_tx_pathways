@@ -7,14 +7,17 @@ library("MASS")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate.csv"),
-
-delivery_code_present  = col_double(),
-postnatal_8wk_code_present = col_double(),
-population  = col_number(),
-value = col_number(),
-measure = col_character(),
-)
+df <- read.csv(
+ here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
+ 
+#  col_types = cols_only(
+#    delivery_code_present  = col_double(),
+#    postnatal_8wk_code_present = col_double(),
+#    population  = col_number(),
+#    value = col_number(),
+#    measure = col_character(),
+#    ),
+#  )
 
 df<-df%>%filter(delivery_code_present>0)
 
@@ -86,12 +89,12 @@ df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRU
 
 ##add labels etc
 plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
-    annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
-    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-06-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+    #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "Rate of six week checks over time", x = "Month", y = "Rate")
 
 ggsave(
    plot= plot_ITS_overall,
-   filename="pn_check_ITS_overall.jpeg", path=here::here("output"),
+   filename="pn_check_ITS_overall_8wk.jpeg", path=here::here("output"),
 )
