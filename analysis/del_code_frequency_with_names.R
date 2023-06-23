@@ -4,7 +4,7 @@ options(scipen=99999)
 
 #load delivery codes
 df_1 <- read_csv(
-  here::here("codelists", "user-VickiPalin-pregnancy_delivery_snomed.csv"),
+  here::here("codelists", "user-VickiPalin-pregnancy_delivery_snomed_reviewed_2.csv"),
   col_types = cols(code = col_number(),term = col_character())
 )
 
