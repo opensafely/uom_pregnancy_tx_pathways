@@ -271,42 +271,43 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-##
+## should I just be using df_plot_overall here?
+## this has IRR, ci_l, ci_u and age_cat
+
 ## add group var to each df?
-df1$group="14-19"
-df2$group="20-24"
-df3$group="25-29"
-df4$group="30-34"
-df5$group="35-39"
-df6$group="40-44"
-df7$group="45-49"
+# ## we already have this as age_cat
+# df1$group="14-19"
+# df2$group="20-24"
+# df3$group="25-29"
+# df4$group="30-34"
+# df5$group="35-39"
+# df6$group="40-44"
+# df7$group="45-49"
 
-df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
-df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+# df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
+# df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
-## do these need to be re added
-# IRR - incident rate ratio
-#names(df_age_cat)[1]="IRR"
-#names(df_age_cat)[2]="ci_l"
-#names(df_age_cat)[3]="ci_u"
+# names(df_age_cat)[1]="IRR"
+# names(df_age_cat)[2]="ci_l"
+# names(df_age_cat)[3]="ci_u"
 
-age_cat_ITS_plot<-ggplot(data=df_age_cat, aes(y=group, x=age_cat, color=group))+
+## use df_plot_overall here?
+## would be age_cat instead of group
+age_cat_ITS_plot<-ggplot(data=df_plot_overall, aes(y=group, x=IRR, color=group))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
 
-#adding a vertical line at the effect = 0 mark
-#geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
-#thematic stuff
+geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
 theme_bw()+
-#theme(text=element_text(family="Times",size=18, color="black"))+
-#theme(panel.spacing = unit(1, "lines"))+
+theme(text=element_text(family="Times",size=18, color="black"))+
+theme(panel.spacing = unit(1, "lines"))+
 labs(
       title = "",
     x="IRR (95% CI)",
     y=""
   )+
-facet_grid(Infection~., scales = "free", space = "free")+
+facet_grid(group~., scales = "free", space = "free")+
  theme(strip.text.y = element_text(angle = 0),
    axis.title.y =element_blank(),
         axis.text.y=element_blank(),
