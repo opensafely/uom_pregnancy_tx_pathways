@@ -210,7 +210,7 @@ actions:
     run: r:latest analysis/pn_check_using_measures_by_practice_6wk.R
     needs: [generate_6wk_cohort, generate_measures_6wk]
     outputs:
-      moderately_sensitive:
+       moderately_sensitive:
         plot5: output/monthly_pn_rate_measures8wkcode_by_practice_6wk.jpeg
 
   describe_pn_rate_plots_by_region:
@@ -270,3 +270,124 @@ actions:
   #       table_counts_before: output/overall_counts_before_6wk.csv
   #       table_counts_after: output/overall_counts_after_6wk.csv 
 
+## ITS analyses
+
+# overall uses 8 wk cohort
+  describe_ITS_plot_overall:
+    run: r:latest analysis/pn_check_ITS_plot.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
+    outputs:
+      moderately_sensitive:
+        plot_ITS_overall: output/pn_check_ITS_overall_8wk.jpeg 
+
+  describe_ITS_plot_overall_6wk:
+    run: r:latest analysis/pn_check_ITS_plot_6wk.R
+    needs: [generate_6wk_cohort, generate_measures_6wk]
+    outputs:
+      moderately_sensitive:
+        plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk.jpeg 
+
+  describe_ITS_plot_overall_12wk:
+    run: r:latest analysis/pn_check_ITS_plot_12wk.R
+    needs: [generate_12wk_cohort, generate_measures_12wk]
+    outputs:
+      moderately_sensitive:
+        plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk.jpeg 
+
+##do we want all cats on one plot  
+  # describe_ITS_plot_age_cat:
+  #   run: r:latest analysis/pn_check_ITS_age_cat.R
+  #   needs: [generate_study_population_measures, generate_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot_ITS_14_19: output/pn_check_ITS_age_cat_14_19.jpeg 
+  #       plot_ITS_20_24: output/pn_check_ITS_age_cat_20_24.jpeg 
+  #       plot_ITS_25_29: output/pn_check_ITS_age_cat_25_29.jpeg 
+  #       plot_ITS_30_34: output/pn_check_ITS_age_cat_30_34.jpeg 
+  #       plot_ITS_35_39: output/pn_check_ITS_age_cat_35_39.jpeg 
+  #       plot_ITS_40_44: output/pn_check_ITS_age_cat_40_44.jpeg 
+  #       plot_ITS_45_49: output/pn_check_ITS_age_cat_45_49.jpeg 
+  
+  # describe_ITS_plot_ethnicity:
+  #   run: r:latest analysis/pn_check_ITS_ethnicity.R
+  #   needs: [generate_study_population_measures, generate_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot_ITS_eth_0: output/pn_check_ITS_eth_0.jpeg 
+  #       plot_ITS_eth_1: output/pn_check_ITS_eth_1.jpeg 
+  #       plot_ITS_eth_2: output/pn_check_ITS_eth_2.jpeg 
+  #       plot_ITS_eth_3: output/pn_check_ITS_eth_3.jpeg 
+  #       plot_ITS_eth_4: output/pn_check_ITS_eth_4.jpeg 
+  #       plot_ITS_eth_5: output/pn_check_ITS_eth_5.jpeg 
+  
+  # describe_ITS_plot_imd:
+  #   run: r:latest analysis/pn_check_ITS_plot_imd.R
+  #   needs: [generate_study_population_measures, generate_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot_ITS_overall: output/pn_check_ITS_imd.jpeg 
+  #       plot_ITS_imd_0: output/pn_check_ITS_imd_0.jpeg 
+  #       plot_ITS_imd_1: output/pn_check_ITS_imd_1.jpeg 
+  #       plot_ITS_imd_2: output/pn_check_ITS_imd_2.jpeg 
+  #       plot_ITS_imd_3: output/pn_check_ITS_imd_3.jpeg 
+  #       plot_ITS_imd_4: output/pn_check_ITS_imd_4.jpeg 
+  #       plot_ITS_imd_5: output/pn_check_ITS_imd_5.jpeg 
+  
+  # describe_ITS_plot_practice:
+  #   run: r:latest analysis/pn_check_ITS_plot_practice.R
+  #   needs: [generate_study_population_measures, generate_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot_ITS_overall: output/pn_check_ITS_practice.jpeg 
+
+### Generating baseline tables ### 
+#################################
+  # describe_baseline_table:
+  #   run: r:latest analysis/baseline_table.R
+  #   needs: [generate_study_population_measures, generate_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall.csv   
+  #       table_before: output/blt_before.csv 
+  #       table_after: output/blt_after.csv 
+  #       table_overall_counts: output/overall_counts.csv
+  #       table_counts_before: output/overall_counts_before.csv
+  #       table_counts_after: output/overall_counts_after.csv 
+
+  # describe_baseline_table_12wk_cohort:
+  #   run: r:latest analysis/baseline_table_12wk.R
+  #   needs: [generate_12wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall_12wk.csv   
+  #       table_before: output/blt_before_12wk.csv 
+  #       table_after: output/blt_after_12wk.csv 
+  #       table_overall_counts: output/overall_counts_12wk.csv
+  #       table_counts_before: output/overall_counts_before_12wk.csv
+  #       table_counts_after: output/overall_counts_after_12wk.csv 
+
+  # describe_baseline_table_8wk_cohort:
+  #   run: r:latest analysis/baseline_table_8wk.R
+  #   needs: [generate_8wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall_8wk.csv   
+  #       table_before: output/blt_before_8wk.csv 
+  #       table_after: output/blt_after_8wk.csv 
+  #       table_overall_counts: output/overall_counts_8wk.csv
+  #       table_counts_before: output/overall_counts_before_8wk.csv
+  #       table_counts_after: output/overall_counts_after_8wk.csv 
+
+  # describe_baseline_table_6wk_cohort:
+  #   run: r:latest analysis/baseline_table_6wk.R
+  #   needs: [generate_6wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall_6wk.csv   
+  #       table_before: output/blt_before_6wk.csv 
+  #       table_after: output/blt_after_6wk.csv 
+  #       table_overall_counts: output/overall_counts_6wk.csv
+  #       table_counts_before: output/overall_counts_before_6wk.csv
+  #       table_counts_after: output/overall_counts_after_6wk.csv 
+
+ 
