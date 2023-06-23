@@ -275,16 +275,6 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) +
 ## should I just be using df_plot_overall here?
 ## this has IRR, ci_l, ci_u and age_cat
 
-## add group var to each df?
-# ## we already have this as age_cat
-# df1$group="14-19"
-# df2$group="20-24"
-# df3$group="25-29"
-# df4$group="30-34"
-# df5$group="35-39"
-# df6$group="40-44"
-# df7$group="45-49"
-
 df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
 df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
@@ -292,11 +282,12 @@ df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34
 # names(df_age_cat)[2]="ci_l"
 # names(df_age_cat)[3]="ci_u"
 
-age_cat_ITS_plot_1<-ggplot(data=df_age_cat,aes(x=date,y=rate,group=covid)) + 
+## ITS plot with panels for each age cat
+
+plot_ITS_age_cat_1<-ggplot(data=df_age_cat,aes(x=date,y=rate,group=covid)) + 
  theme_bw()+
- # change dates if this runs
-  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2021-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
   
   geom_point(shape = 4)+
   geom_smooth(se = FALSE,fullrange=FALSE, color="black")+
@@ -313,21 +304,20 @@ age_cat_ITS_plot_1<-ggplot(data=df_age_cat,aes(x=date,y=rate,group=covid)) +
          axis.title.x=element_blank(),
         )+
   labs(
-    title = "",
+    title = "Rate of postnatal checks over time",
 
-    x = "", 
-    y = "Number of consultations per 1000 patients")
+    x = "Month", 
+    y = "Rate")
 
-ggsave(plot= age_cat_ITS_plot_1,filename="age_cat_ITS_plot_1.jpeg", path=here::here("output"),)
+ggsave(plot= plot_ITS_age_cat_1,filename="plot_ITS_age_cat_1.jpeg", path=here::here("output"),)
 
   
-
 #### creates plot with IRRs and error bars/CIs
-
 
 ## use df_plot_overall here or df_age_cat?
 ## variable is group for df_age_cat and age_cat for df_plot_overall
-age_cat_ITS_plot_2<-ggplot(data=df_plot_overall, aes(y=group, x=IRR, color=group))+
+## need to hash out text line to run
+plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR, color=age_cat))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
@@ -341,7 +331,7 @@ labs(
     x="IRR (95% CI)",
     y=""
   )+
-facet_grid(group~., scales = "free", space = "free")+
+facet_grid(age_cat~., scales = "free", space = "free")+
  theme(strip.text.y = element_text(angle = 0),
    axis.title.y =element_blank(),
         axis.text.y=element_blank(),
@@ -349,7 +339,7 @@ facet_grid(group~., scales = "free", space = "free")+
        legend.title=element_blank(),
        legend.position="bottom")
 
-ggsave(plot= age_cat_ITS_plot_2,filename="age_cat_ITS_plot_2.jpeg", path=here::here("output"),)
+ggsave(plot= plot_ITS_age_cat_2,filename="plot_ITS_age_cat_2.jpeg", path=here::here("output"),)
 
 
 ##add labels etc

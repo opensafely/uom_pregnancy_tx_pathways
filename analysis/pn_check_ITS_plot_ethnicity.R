@@ -3,6 +3,7 @@ library("data.table")
 library("dplyr")
 library("tidyverse")
 library("MASS")
+library("ggpubr")
 #library(modelsummary)
 #library("gtsummary")
 
@@ -117,11 +118,6 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_ethnici
 
 # #DF1.exp=DF
 # #DF1.exp
-
-## fix dates in plots/shaded areas - dotted line for covid?
-## add labels/titles
-## expected lines are close to zero because we are dividing expected
-## rate by population? 
 
 ## plots for each category
 
@@ -258,23 +254,54 @@ df_eth$group=factor(df_eth$group,levels=c("1","2","3","4","5"))
 #names(df_eth)[2]="ci_l"
 #names(df_eth)[3]="ci_u"
 
-eth_ITS_plot<-ggplot(data=df_eth, aes(y=group, x=eth, color=group))+
+## ITS plot with panels
+
+plot_ITS_eth_1<-ggplot(data=df_eth,aes(x=date,y=rate,group=covid)) + 
+ theme_bw()+
+  #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2021-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  
+  geom_point(shape = 4)+
+  geom_smooth(se = FALSE,fullrange=FALSE, color="black")+
+  update_geom_defaults("smooth", list(size = .5))+
+  
+  facet_grid(rows = vars(ethnicity),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01))+
+  
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank(),
+         axis.title.x=element_blank(),
+        )+
+  labs(
+    title = "Rate of postnatal checks over time",
+
+    x = "Month", 
+    y = "Rate")
+
+ggsave(plot= age_cat_ITS_plot_1,filename="age_cat_ITS_plot_1.jpeg", path=here::here("output"),)
+
+#### creates plot with IRRs and error bars/CIs
+
+## use df_plot_overall here or df_age_cat?
+## variable is group for df_age_cat and age_cat for df_plot_overall
+plot_ITS_eth_2<-ggplot(data=df_plot_overall, aes(y=group, x=IRR, color=group))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
 
-#adding a vertical line at the effect = 0 mark
-#geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
-#thematic stuff
+geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
 theme_bw()+
-#theme(text=element_text(family="Times",size=18, color="black"))+
-#theme(panel.spacing = unit(1, "lines"))+
+theme(text=element_text(family="Times",size=18, color="black"))+
+theme(panel.spacing = unit(1, "lines"))+
 labs(
       title = "",
     x="IRR (95% CI)",
     y=""
   )+
-facet_grid(Infection~., scales = "free", space = "free")+
+facet_grid(group~., scales = "free", space = "free")+
  theme(strip.text.y = element_text(angle = 0),
    axis.title.y =element_blank(),
         axis.text.y=element_blank(),
@@ -282,7 +309,7 @@ facet_grid(Infection~., scales = "free", space = "free")+
        legend.title=element_blank(),
        legend.position="bottom")
 
-
+ggsave(plot= plot_ITS_age_cat_2,filename="plot_ITS_age_cat_2", path=here::here("output"),)
 
 
 
