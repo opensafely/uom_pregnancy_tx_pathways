@@ -281,13 +281,11 @@ plot_ITS_eth_1<-ggplot(data=df_eth,aes(x=date,y=rate,group=covid)) +
     x = "Month", 
     y = "Rate")
 
-ggsave(plot= age_cat_ITS_plot_1,filename="age_cat_ITS_plot_1.jpeg", path=here::here("output"),)
+ggsave(plot= plot_ITS_eth_1,filename="plot_ITS_eth_1.jpeg", path=here::here("output"),)
 
 #### creates plot with IRRs and error bars/CIs
 
-## use df_plot_overall here or df_age_cat?
-## variable is group for df_age_cat and age_cat for df_plot_overall
-plot_ITS_eth_2<-ggplot(data=df_plot_overall, aes(y=group, x=IRR, color=group))+
+plot_ITS_eth_2<-ggplot(data=df_plot_overall, aes(y=ethnicity, x=IRR, color=ethnicity))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
@@ -301,7 +299,7 @@ labs(
     x="IRR (95% CI)",
     y=""
   )+
-facet_grid(group~., scales = "free", space = "free")+
+facet_grid(ethnicity~., scales = "free", space = "free")+
  theme(strip.text.y = element_text(angle = 0),
    axis.title.y =element_blank(),
         axis.text.y=element_blank(),
@@ -309,16 +307,8 @@ facet_grid(group~., scales = "free", space = "free")+
        legend.title=element_blank(),
        legend.position="bottom")
 
-ggsave(plot= plot_ITS_age_cat_2,filename="plot_ITS_age_cat_2", path=here::here("output"),)
+ggsave(plot= plot_ITS_eth_2,filename="plot_ITS_eth_2", path=here::here("output"),)
 
-
-
-##add labels etc
-# plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
-#     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
-#     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
-#     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
-#     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
 
 # ggsave(
 #    plot= plot_ITS_eth_0,

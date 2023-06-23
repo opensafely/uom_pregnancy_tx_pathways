@@ -314,8 +314,7 @@ ggsave(plot= plot_ITS_age_cat_1,filename="plot_ITS_age_cat_1.jpeg", path=here::h
   
 #### creates plot with IRRs and error bars/CIs
 
-## use df_plot_overall here or df_age_cat?
-## variable is group for df_age_cat and age_cat for df_plot_overall
+## variable is group or age_cat for df_age_cat and age_cat for df_plot_overall (helpfully)
 ## need to hash out text line to run
 plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR, color=age_cat))+
 geom_point()+

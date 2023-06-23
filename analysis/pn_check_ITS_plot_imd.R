@@ -53,7 +53,7 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid, imd)%>%mutate(time.since=1:n())
 df-plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-## categories are 0-5 - names?
+## categories are 0-5
 
 # df for each imd category
 df1=filter(df_plot, imd=="0")
@@ -244,6 +244,68 @@ plot_ITS_imd_5<-ggplot(df6, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
+df_imd=bind_rows(df1,df2,df3,df4,df5,df6)
+df_imd$group=factor(df_imd$group,levels=c("0","1","2","3","4","5"))
+
+## ITS plot with panels for each imd cat
+
+plot_ITS_imd_1<-ggplot(data=df_imd,aes(x=date,y=rate,group=covid)) + 
+ theme_bw()+
+  #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2021-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  
+  geom_point(shape = 4)+
+  geom_smooth(se = FALSE,fullrange=FALSE, color="black")+
+  update_geom_defaults("smooth", list(size = .5))+
+  
+  facet_grid(rows = vars(imd),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01))+
+  
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank(),
+         axis.title.x=element_blank(),
+        )+
+  labs(
+    title = "Rate of postnatal checks over time",
+
+    x = "Month", 
+    y = "Rate")
+
+ggsave(plot= plot_ITS_imd_1,filename="plot_ITS_imd_1.jpeg", path=here::here("output"),)
+
+#### creates plot with IRRs and error bars/CIs
+
+## variable is group for df_age_cat and age_cat for df_plot_overall (helpfully)
+## need to hash out text line to run
+plot_ITS_imd_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR, color=imd))+
+geom_point()+
+
+geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
+
+geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
+theme_bw()+
+theme(text=element_text(family="Times",size=18, color="black"))+
+theme(panel.spacing = unit(1, "lines"))+
+labs(
+      title = "",
+    x="IRR (95% CI)",
+    y=""
+  )+
+facet_grid(imd~., scales = "free", space = "free")+
+ theme(strip.text.y = element_text(angle = 0),
+   axis.title.y =element_blank(),
+        axis.text.y=element_blank(),
+       axis.ticks.y=element_blank(),
+       legend.title=element_blank(),
+       legend.position="bottom")
+
+ggsave(plot= plot_ITS_imd_2,filename="plot_ITS_imd_2.jpeg", path=here::here("output"),)
+
+
+
 
 ##add labels etc
 # plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
@@ -252,40 +314,40 @@ plot_ITS_imd_5<-ggplot(df6, aes(x=date, y=value, group=covid)) +
 #     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
 #     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
 
-ggsave(
-   plot= plot_ITS_imd_0,
-   filename="pn_check_ITS_imd_0.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_imd_1,
-   filename="pn_check_ITS_age_imd_1.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_imd_2,
-   filename="pn_check_ITS_imd_2.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_imd_3,
-   filename="pn_check_ITS_imd_3.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_imd_4,
-   filename="pn_check_ITS_imd_4.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_imd_5,
-   filename="pn_check_ITS_imd_5.jpeg", path=here::here("output"),
-)
-
-
-# ##add labels etc
-# plot_ITS_imd<-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 
-#     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
-#     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
-#     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
-#     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
-
 # ggsave(
-#    plot= plot_ITS_imd,
-#    filename="pn_check_ITS_imd.jpeg", path=here::here("output"),
+#    plot= plot_ITS_imd_0,
+#    filename="pn_check_ITS_imd_0.jpeg", path=here::here("output"),
 # )
+# ggsave(
+#    plot= plot_ITS_imd_1,
+#    filename="pn_check_ITS_age_imd_1.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_imd_2,
+#    filename="pn_check_ITS_imd_2.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_imd_3,
+#    filename="pn_check_ITS_imd_3.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_imd_4,
+#    filename="pn_check_ITS_imd_4.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_imd_5,
+#    filename="pn_check_ITS_imd_5.jpeg", path=here::here("output"),
+# )
+
+
+# # ##add labels etc
+# # plot_ITS_imd<-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 
+# #     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+# #     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+# #     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
+# #     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
+
+# # ggsave(
+# #    plot= plot_ITS_imd,
+# #    filename="pn_check_ITS_imd.jpeg", path=here::here("output"),
+# # )
