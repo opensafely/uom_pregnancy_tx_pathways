@@ -7,14 +7,14 @@ library("MASS")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate_by_ethnicity.csv"),
+df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_ethnicity.csv"))
 
-delivery_code_present  = col_double(),
-postnatal_8wk_code_present = col_double(),
-population  = col_number(),
-value = col_number(),
-measure = col_character(),
-)
+# delivery_code_present  = col_double(),
+# postnatal_8wk_code_present = col_double(),
+# population  = col_number(),
+# value = col_number(),
+# measure = col_character(),
+# )
 
 df<-df%>%filter(delivery_code_present>0)
 
@@ -58,7 +58,6 @@ df4=filter(df_plot, ethnicity=="3")
 df5=filter(df_plot, ethnicity=="4")
 df6=filter(df_plot, ethnicity=="5")
 
-## do we need to use population_rounded here? 
 # 1
 m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
 # 1
@@ -99,7 +98,6 @@ exp6.1=exp(est6.1)
 # write_csv(as.data.frame(exp5.1), here::here("output", "ITS_estimates_5.1.csv"))
 # write_csv(as.data.frame(exp6.1), here::here("output", "ITS_estimates_6.1.csv"))
 
-
 # creates combined df with estimates and CIs for each eth category
 df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
 
@@ -129,8 +127,6 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_ethnici
 
 # 0
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
- # adds fit and se.fit columns despite message below
-# Warning: "Outer names are only allowed for unnamed scalar atomic inputs" 
 plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
@@ -249,6 +245,46 @@ plot_ITS_eth_5<-ggplot(df6, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
+df1$group="1"
+df2$group="2"
+df3$group="3"
+df4$group="4"
+df5$group="5"
+
+df_eth=bind_rows(df1,df2,df3,df4,df5,df6,df7)
+df_eth$group=factor(df_eth$group,levels=c("1","2","3","4","5"))
+
+#names(df_eth)[1]="IRR"
+#names(df_eth)[2]="ci_l"
+#names(df_eth)[3]="ci_u"
+
+eth_ITS_plot<-ggplot(data=df_eth, aes(y=group, x=eth, color=group))+
+geom_point()+
+
+geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
+
+#adding a vertical line at the effect = 0 mark
+#geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
+#thematic stuff
+theme_bw()+
+#theme(text=element_text(family="Times",size=18, color="black"))+
+#theme(panel.spacing = unit(1, "lines"))+
+labs(
+      title = "",
+    x="IRR (95% CI)",
+    y=""
+  )+
+facet_grid(Infection~., scales = "free", space = "free")+
+ theme(strip.text.y = element_text(angle = 0),
+   axis.title.y =element_blank(),
+        axis.text.y=element_blank(),
+       axis.ticks.y=element_blank(),
+       legend.title=element_blank(),
+       legend.position="bottom")
+
+
+
+
 
 ##add labels etc
 # plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
@@ -257,30 +293,30 @@ plot_ITS_eth_5<-ggplot(df6, aes(x=date, y=value, group=covid)) +
 #     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
 #     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
 
-ggsave(
-   plot= plot_ITS_eth_0,
-   filename="pn_check_ITS_eth_0.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_1,
-   filename="pn_check_ITS_age_eth_1.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_2,
-   filename="pn_check_ITS_eth_2.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_3,
-   filename="pn_check_ITS_eth_3.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_4,
-   filename="pn_check_ITS_eth_4.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_5,
-   filename="pn_check_ITS_eth_5.jpeg", path=here::here("output"),
-)
+# ggsave(
+#    plot= plot_ITS_eth_0,
+#    filename="pn_check_ITS_eth_0.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_1,
+#    filename="pn_check_ITS_age_eth_1.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_2,
+#    filename="pn_check_ITS_eth_2.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_3,
+#    filename="pn_check_ITS_eth_3.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_4,
+#    filename="pn_check_ITS_eth_4.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_5,
+#    filename="pn_check_ITS_eth_5.jpeg", path=here::here("output"),
+# )
 
 # ggsave(
 #    plot= plot_ITS_ethnicity,

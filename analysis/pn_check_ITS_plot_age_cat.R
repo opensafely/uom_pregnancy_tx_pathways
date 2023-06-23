@@ -7,7 +7,6 @@ library("MASS")
 #library("gtsummary")
 
 ## Import data
-## change measures file name
 df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_age_cat.csv"))
 
 # delivery_code_present  = col_double(),
@@ -284,6 +283,12 @@ df7$group="45-49"
 
 df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
 df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+
+## do these need to be re added
+# IRR - incident rate ratio
+#names(df_age_cat)[1]="IRR"
+#names(df_age_cat)[2]="ci_l"
+#names(df_age_cat)[3]="ci_u"
 
 age_cat_ITS_plot<-ggplot(data=df_age_cat, aes(y=group, x=age_cat, color=group))+
 geom_point()+
