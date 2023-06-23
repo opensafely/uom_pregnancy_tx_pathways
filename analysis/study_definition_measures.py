@@ -330,6 +330,25 @@ study = StudyDefinition(
             "incidence": 0.3,},
     ),
 
+    postnatal_code=patients.with_these_clinical_events(
+    postnatal_8wk_codes_reviewed,
+    between=["delivery_code_date", f"delivery_code_date + {num_days} days"],
+    returning="code", 
+    return_expectations={
+        "category": {
+            "ratios": {
+            "10588007":  0.2,
+            "10601012007": 0.2,
+            "1089000": 0.2,
+            "160763002": 0.2,
+            "13094009": 0.2,
+            }
+        },
+        "incidence": 0.4,
+      },
+    ),
+ 
+
     ## use below codes for pn code within 8 weeks and 6 weeks 
     #postnatal_8wk_code_present_8wks=patients.with_these_clinical_events(
     #postnatal_8wk_codes, 
@@ -366,6 +385,8 @@ study = StudyDefinition(
     return_expectations={
             "incidence": 0.3,},
     ),
+
+    
 
     # # is there a delivery code in a certain period - this is for 2019
     # delivery_code_present_2019=patients.with_these_clinical_events(
