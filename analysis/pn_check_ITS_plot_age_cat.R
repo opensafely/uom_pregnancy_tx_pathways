@@ -3,6 +3,7 @@ library("data.table")
 library("dplyr")
 library("tidyverse")
 library("MASS")
+library("ggpubr")
 #library(modelsummary)
 #library("gtsummary")
 
@@ -284,16 +285,49 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) +
 # df6$group="40-44"
 # df7$group="45-49"
 
-# df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
-# df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
+df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
 # names(df_age_cat)[1]="IRR"
 # names(df_age_cat)[2]="ci_l"
 # names(df_age_cat)[3]="ci_u"
 
+age_cat_ITS_plot_1<-ggplot(data=df_age_cat,aes(x=date,y=rate,group=covid)) + 
+ theme_bw()+
+ # change dates if this runs
+  annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  
+  geom_point(shape = 4)+
+  geom_smooth(se = FALSE,fullrange=FALSE, color="black")+
+  update_geom_defaults("smooth", list(size = .5))+
+  
+  facet_grid(rows = vars(age_cat),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01))+
+  
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank(),
+         axis.title.x=element_blank(),
+        )+
+  labs(
+    title = "",
+
+    x = "", 
+    y = "Number of consultations per 1000 patients")
+
+ggsave(plot= age_cat_ITS_plot_1,filename="age_cat_ITS_plot_1.jpeg", path=here::here("output"),)
+
+  
+
+#### creates plot with IRRs and error bars/CIs
+
+
 ## use df_plot_overall here or df_age_cat?
 ## variable is group for df_age_cat and age_cat for df_plot_overall
-age_cat_ITS_plot<-ggplot(data=df_plot_overall, aes(y=group, x=IRR, color=group))+
+age_cat_ITS_plot_2<-ggplot(data=df_plot_overall, aes(y=group, x=IRR, color=group))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
@@ -314,6 +348,8 @@ facet_grid(group~., scales = "free", space = "free")+
        axis.ticks.y=element_blank(),
        legend.title=element_blank(),
        legend.position="bottom")
+
+ggsave(plot= age_cat_ITS_plot_2,filename="age_cat_ITS_plot_2.jpeg", path=here::here("output"),)
 
 
 ##add labels etc
