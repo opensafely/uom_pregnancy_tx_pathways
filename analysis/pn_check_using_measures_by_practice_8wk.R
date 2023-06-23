@@ -9,7 +9,7 @@ rm(list=ls())
 
 # import data
 df <- read_csv(
-  here::here("output", "measures", "measure_postnatal_check_rate_by_practice.csv"),
+  here::here("output", "pn8wk", "measure_postnatal_check_rate_by_practice.csv"),
   col_types = cols_only(
     
     #Identifier
@@ -104,15 +104,15 @@ plot_percentile <- ggplot(df_mean, aes(x=date))+
   labs(
     title = "Rate of PN checks by month",
     subtitle = paste(first_mon,"-",last_mon),
-    #caption = paste("Data from approximately", num_uniq_prac,"TPP Practices"),
+    caption = paste("Data from approximately", num_uniq_prac,"TPP Practices"),
     x = "",
-    y = "Pn check rate per 1000 registered patients")+
+    y = "Rate of PN checks per 1000 registered practices")+
   geom_vline(xintercept = as.numeric(as.Date("2019-12-31")), color="grey")+
   geom_vline(xintercept = as.numeric(as.Date("2020-12-31")), color="grey")
 
 
 ggsave(
   plot= plot_percentile,
-  filename="monthly_pn_rate_measures8wkcode_by_practice.jpeg", path=here::here("output"),
+  filename="monthly_pn_rate_measures8wkcode_by_practice_8wk.jpeg", path=here::here("output"),
 )
 

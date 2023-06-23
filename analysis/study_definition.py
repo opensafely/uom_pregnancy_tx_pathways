@@ -2,16 +2,21 @@ from cohortextractor import (
     StudyDefinition, 
     patients, 
     codelist, 
-    codelist_from_csv  
-    #Measure
+    codelist_from_csv,  
 )
-#above as in example but with measure added
-#doesnt run w Measure, add in once measures created
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelist import *
 
 from datetime import datetime
+
+# # Import parameters for study defs
+# from cohortextractor import params 
+# ...
+# my_param = params["84 days, 56 days, 42 days"]
+
+# ## convert string to integer (no of days)
+# my_param = int(params["84 days, 56 days, 42 days"])
 
 #STUDY POPULATION
 
@@ -112,13 +117,45 @@ study = StudyDefinition(
             "category": {"ratios": {"M": 0.00, "F": 1.0}},
         }
     ),
-
-    ethnicity=patients.with_ethnicity_from_sus(
+    
+    eth=patients.with_ethnicity_from_sus(
     returning="group_6",
     use_most_frequent_code=True,
     return_expectations={
             "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
             "incidence": 0.75,
+        },
+    ),
+
+    ethnicity_sus=patients.with_ethnicity_from_sus(
+       returning="group_6",
+       use_most_frequent_code=True,
+       return_expectations={
+           "category": {
+                           "ratios": {
+                               "1": 0.2,
+                               "2": 0.2,
+                               "3": 0.2,
+                               "4": 0.2,
+                               "5": 0.2
+                               }
+                           },
+           "incidence": 0.4,
+           },
+    ),
+    
+    ethnicity=patients.categorised_as(
+        {
+            "0": "DEFAULT",
+            "1": "eth='1' OR (NOT eth AND ethnicity_sus='1')",
+            "2": "eth='2' OR (NOT eth AND ethnicity_sus='2')",
+            "3": "eth='3' OR (NOT eth AND ethnicity_sus='3')",
+            "4": "eth='4' OR (NOT eth AND ethnicity_sus='4')",
+            "5": "eth='5' OR (NOT eth AND ethnicity_sus='5')",
+        },
+        return_expectations={
+            "category": {"ratios": { "0": 0.5,"1": 0.1,"2": 0.1,"3": 0.1,"4": 0.1,"5": 0.1}},
+            "rate": "universal",
         },
     ),
 
@@ -283,14 +320,23 @@ study = StudyDefinition(
 
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
+    # postnatal_8wk_code_present=patients.with_these_clinical_events(
+    # postnatal_8wk_codes, 
+    # between=["delivery_code_date", "delivery_code_date + 84 days"],
+    # returning="binary_flag",
+    # return_expectations={  
+    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #     "incidence": 0.4,
+    #    },
+    # ),
+
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes, 
+    #between=["delivery_code_date", "delivery_code_date + my_param"],
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
-    return_expectations={  
-    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-        "incidence": 0.4,
-       },
+    return_expectations={
+            "incidence": 0.3,},
     ),
 
     postnatal_code=patients.with_these_clinical_events(

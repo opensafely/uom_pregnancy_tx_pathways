@@ -23,6 +23,36 @@
       "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_postdel_antenatal_snomed/22287ec9/",
       "downloaded_at": "2023-03-01 16:12:33.581947Z",
       "sha": "b837b062b663f17a820193e541a60426f12384cf"
+    },
+    "user-VickiPalin-pregnancy_postnatal_8wk_snomed_reviewed.csv": {
+      "id": "user/VickiPalin/pregnancy_postnatal_8wk_snomed_reviewed/021cbb8d",
+      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_postnatal_8wk_snomed_reviewed/021cbb8d/",
+      "downloaded_at": "2023-06-14 14:23:54.580097Z",
+      "sha": "d76e606ef3c67934af526a6650e1481fc175cdb7"
+    },
+    "user-VickiPalin-pregnancy_delivery_snomed_reviewed.csv": {
+      "id": "user/VickiPalin/pregnancy_delivery_snomed_reviewed/343ba1f7",
+      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_delivery_snomed_reviewed/343ba1f7/",
+      "downloaded_at": "2023-06-14 14:23:54.836459Z",
+      "sha": "a081490d585f05eca181f14e472d9fefb34e2c2a"
+    },
+    "user-VickiPalin-pregnancy_delivery_snomed_reviewed_2.csv": {
+      "id": "user/VickiPalin/pregnancy_delivery_snomed_reviewed_2/39a121e3",
+      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_delivery_snomed_reviewed_2/39a121e3/",
+      "downloaded_at": "2023-06-22 15:46:13.858595Z",
+      "sha": "bc80f516cff58f1ca299d519b6ee28e1f2a85740"
+    },
+    "opensafely-ethnicity.csv": {
+      "id": "opensafely/ethnicity/2020-04-27",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity/2020-04-27/",
+      "downloaded_at": "2023-06-15 09:26:35.549256Z",
+      "sha": "3d2f3998b71863a80b24d60f6f4282e14191ae13"
+    },
+    "opensafely-ethnicity-snomed-0removed.csv": {
+      "id": "opensafely/ethnicity-snomed-0removed/2e641f61",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/",
+      "downloaded_at": "2023-06-15 09:58:31.533059Z",
+      "sha": "8b849b5b785d80306e488d0109640c8c1d2da01b"
     }
   }
 }

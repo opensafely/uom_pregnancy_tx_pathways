@@ -1,0 +1,601 @@
+code,term
+10588007,Perinatal death
+106012007,"Hypoxia, asphyxia AND/OR other respiratory condition of fetus AND/OR newborn"
+10877007,Perinatal jaundice due to hepatocellular damage
+111466004,Perinatal partial atelectasis
+111467008,Fetal OR neonatal hemorrhage
+12301009,Neonatal urinary tract infection
+12546009,Hemorrhagic disease of the newborn due to vitamin K deficiency
+126945001,Perinatal anoxic-ischemic brain injury
+12901004,Transitory neonatal electrolyte disturbance
+13094009,Apnea in newborn
+133906008,Postpartum care
+13629008,Hypothermia of newborn
+13795004,Neonatal thyrotoxicosis
+13842006,Subinvolution of uterus in puerperium
+14333004,Alloimmune neonatal neutropenia
+160763002,Midwife attends
+160764008,Midwife attends 1-10 days post-discharge
+160765009,Midwife attends 11-13 days post-discharge
+160766005,Midwife attends 14-16 days post-discharge
+160767001,Midwife attends 17-20 days post-discharge
+160768006,Midwife attends 21-24 days post-discharge
+160769003,Midwife attends 25-28 days post-discharge
+169754006,Postnatal care provider
+169755007,P/N care from consultant
+169756008,Postnatal care from general practitioner
+169757004,P/N - shared care
+169762003,Postnatal visit
+169763008,Postnatal - first day visit
+169764002,Postnatal - second day visit
+169765001,Postnatal - third day visit
+169766000,Postnatal - fourth day visit
+169767009,Postnatal - fifth day visit
+169768004,Postnatal - sixth day visit
+169769007,Postnatal - seventh day visit
+169770008,Postnatal - eighth day visit
+169771007,Postnatal - ninth day visit
+169772000,Postnatal - tenth day visit
+169773005,P/N care started at birth
+169774004,Postnatal care less than 48 hours after birth
+169775003,Postnatal care greater than 48 hours after birth
+169783009,Postnatal examination minor problem found
+169784003,Postnatal examination normal
+169947009,Difficult to establish feeding
+170107008,Child examination - 10 days
+170108003,Child not examined at 10 days
+170109006,Child 10 day examination - normal
+170110001,10 day examination abnormal - for observation
+170111002,10 day examination abnormal - referred
+170114005,Child examination - 6 weeks
+170118008,Child 6 week examination normal
+170119000,6 week examination abnormal - for observation
+170120006,6 week examination abnormal - referred
+170121005,6 week examination abnormal - on treatment
+170300004,Child 8 week examination
+170305009,Child 8 week examination normal
+170306005,8 week examination abnormal - for observation
+170307001,8 week examination abnormal - referred
+170308006,8 week examination abnormal - on treatment
+17140000,Neonatal jaundice due to delayed conjugation
+178280004,Postnatal infection
+17849001,Respiratory condition of fetus OR newborn
+180202002,Neonatal exchange transfusion
+183861004,Referral to postnatal clinic
+18503002,Perinatal cutaneous hemorrhage
+185266004,Seen in postnatal clinic
+185531000000104,Neonatal check enhanced services administration
+185541000000108,Neonatal check enhanced service completed
+191345000,Acquired neutropenia in newborn
+192990004,Benign myoclonic epilepsy in infancy
+193994000,Congenital nasolacrimal duct obstruction
+194943002,Acute aseptic myocarditis of the newborn
+198609003,"Complication of pregnancy, childbirth and/or puerperium"
+198945003,"Benign essential hypertension complicating pregnancy, childbirth and the puerperium - delivered with postnatal complication"
+198947006,"Benign essential hypertension complicating pregnancy, childbirth and the puerperium with postnatal complication"
+198952001,"Renal hypertension complicating pregnancy, childbirth and the puerperium - delivered with postnatal complication"
+198966006,Transient hypertension of pregnancy - delivered with postnatal complication
+198968007,Transient hypertension of pregnancy with postnatal complication
+198984008,Severe pre-eclampsia - delivered with postnatal complication
+198986005,Severe pre-eclampsia with postnatal complication
+198991006,Eclampsia - delivered with postnatal complication
+198993009,Eclampsia with postnatal complication
+199000005,Pre-eclampsia or eclampsia with pre-existing hypertension - delivered with postnatal complication
+199003007,Pre-eclampsia or eclampsia with pre-existing hypertension with postnatal complication
+199015006,"Unspecified hypertension complicating pregnancy, childbirth and the puerperium - delivered with postnatal complication"
+199018008,"Unspecified hypertension complicating pregnancy, childbirth and the puerperium with postnatal complication"
+199100007,Asymptomatic bacteriuria in pregnancy - delivered with postnatal complication
+199106001,Genitourinary tract infection in pregnancy - delivered
+199109008,Genitourinary tract infection in pregnancy with postnatal complication
+199111004,Urinary tract infection following delivery
+199124004,Fatigue during pregnancy with postnatal complication
+199128001,Herpes gestationis - delivered with postnatal complication
+199130004,Herpes gestationis with postnatal complication
+199135009,Glycosuria during pregnancy - delivered with postnatal complication
+199153003,Infective/parasitic disease in preg/childbirth/puerperium
+199159004,Maternal syphilis in the puerperium - baby delivered during previous episode of care
+199164000,Maternal gonorrhea in the puerperium - baby delivered during current episode of care
+199166003,Maternal gonorrhea in the puerperium - baby delivered during previous episode of care
+199228009,Diabetes mellitus in the puerperium - baby delivered during previous episode of care
+199238004,Thyroid dysfunction in the puerperium - baby delivered during current episode of care
+199245004,Anemia in the puerperium - baby delivered during current episode of care
+199247007,Anemia in the puerperium - baby delivered during previous episode of care
+199260001,Mental disorder in the puerperium - baby delivered
+199262009,Mental disorder in the puerperium - baby delivered during previous episode of care
+199269000,Congenital cardiovascular disorder in the puerperium - baby delivered during previous episode of care
+199514002,"Pelvic soft tissue abnormality in pregnancy, childbirth and the puerperium with postnatal complication"
+199745000,Complication occurring during labor and delivery
+199917001,First degree perineal tear during delivery with postnatal problem
+199926003,Second degree perineal tear during delivery with postnatal problem
+199931001,Third degree perineal tear during delivery with postnatal problem
+199935005,Fourth degree perineal tear during delivery with postnatal problem
+199945007,Vulval and/or perineal hematoma during delivery with postnatal problem
+199965000,Rupture of uterus during and after labor - delivered with postnatal problem
+199970007,Obstetric inversion of uterus with postnatal problem
+199991004,Obstetric damage to pelvic joints and ligaments with postnatal problem
+200025008,Secondary postpartum hemorrhage - delivered with postnatal problem
+200038000,Retained placenta with no hemorrhage with postnatal problem
+200043007,Retained products with no hemorrhage with postnatal problem
+200073003,Spinal and epidural anesthesia-induced headache during the puerperium
+200114002,Maternal hypotension syndrome with postnatal problem
+200118004,Post-delivery acute renal failure with postnatal problem
+200125006,Infection of obstetric surgical wound
+200156003,Death from sequela of direct obstetric cause
+200181000,Puerperal endometritis - delivered with postnatal complication
+200182007,Puerperal endometritis with postnatal complication
+200187001,Puerperal salpingitis with postnatal complication
+200190007,Puerperal peritonitis - delivered with postnatal complication
+200195002,Puerperal septicemia - delivered with postnatal complication
+200209007,Varicose veins of legs in pregnancy and the puerperium with postnatal complication
+200227005,Superficial thrombophlebitis in pregnancy and the puerperium with postnatal complication
+200232006,Antenatal deep vein thrombosis - delivered
+200237000,Postnatal deep vein thrombosis - delivered with postnatal complication
+200238005,Postnatal deep vein thrombosis with postnatal complication
+200251000,Hemorrhoids in pregnancy and the puerperium - delivered
+200252007,Hemorrhoids in pregnancy and the puerperium - delivered with postnatal complication
+200254008,Hemorrhoids in pregnancy and the puerperium with postnatal complication
+200255009,Hemorrhoids in puerperium
+200260008,Cerebral venous thrombosis in puerperium
+200277008,Puerperal pyrexia of unknown origin
+200284000,Obstetric pulmonary embolism
+200295006,Amniotic fluid pulmonary embolism - delivered with postnatal complication
+200330000,Puerperal cerebrovascular disorder - delivered
+200332008,Puerperal cerebrovascular disorder with antenatal complication
+200337002,Cesarean wound disruption - delivered with postnatal complication
+200338007,Cesarean wound disruption with postnatal complication
+200342005,Obstetric perineal wound disruption - delivered with postnatal complication
+200343000,Obstetric perineal wound disruption with postnatal complication
+200364001,Obstetric breast infections
+200367008,Obstetric nipple infection - delivered
+200370007,Obstetric nipple infection with postnatal complication
+200374003,Obstetric breast abscess - delivered
+200375002,Obstetric breast abscess - delivered with postnatal complication
+200377005,Obstetric breast abscess with postnatal complication
+200381005,Obstetric non-purulent mastitis - delivered
+200382003,Obstetric non-purulent mastitis - delivered with postnatal complication
+200383008,Obstetric non-purulent mastitis with antenatal complication
+200385001,Obstetric non-purulent mastitis with postnatal complication
+200411001,"Cracked nipple in pregnancy, the puerperium or lactation - delivered"
+200412008,"Cracked nipple in pregnancy, the puerperium or lactation - delivered with postnatal complication"
+200414009,"Cracked nipple in pregnancy, the puerperium or lactation with postnatal complication"
+200416006,"Breast engorgement in pregnancy, the puerperium or lactation"
+200418007,"Breast engorgement in pregnancy, the puerperium or lactation - delivered"
+200419004,"Breast engorgement in pregnancy, the puerperium or lactation - delivered with postnatal complication"
+200439000,Suppressed lactation - delivered
+200446009,Galactorrhea in pregnancy and the puerperium - delivered
+200449002,Galactorrhea in pregnancy and the puerperium with postnatal complication
+200706004,Impetigo neonatorum
+200946001,Staphylococcal scalded skin syndrome
+20322005,Chronic respiratory disease in perinatal period
+204113001,Congenital glaucoma
+204371000000109,Neonatal examination
+205550003,Lamellar ichthyosis
+206188000,Subdural and cerebral hemorrhage due to birth trauma
+206191000,Local intracranial subdural hematoma due to birth trauma
+206192007,Tentorial tear due to birth trauma
+206194008,Cerebral hematoma in fetus or newborn
+206195009,Extradural intracranial hemorrhage in fetus or newborn
+206196005,Cerebral hemorrhage due to birth injury
+206200000,Cephalhematoma due to birth trauma
+206201001,Vacuum extraction chignon
+206202008,Massive epicranial subaponeurotic hemorrhage due to birth trauma
+206203003,Scalp abrasions due to birth trauma
+206204009,Scalp bruising due to birth trauma
+206209004,Fracture of clavicle due to birth trauma
+206211008,Fracture of humerus due to birth trauma
+206213006,Fracture of femur due to birth trauma
+206214000,Fracture of tibia and/or fibula due to birth trauma
+206215004,Fracture of skull due to birth trauma
+206216003,Birth dislocation of the shoulder
+206221000,Spine dislocation due to birth trauma
+206226005,Brachial plexus palsy due to birth trauma
+206228006,Birth plexus injury - whole plexus
+206233005,Birth injury to phrenic nerve
+206234004,Cranial nerve injury due to birth trauma
+206235003,Peripheral nerve injury due to birth trauma
+206238001,Cerebral edema due to birth injury
+206241005,Eye damage due to birth trauma
+206242003,Liver subcapsular hematoma due to birth trauma
+206243008,Testicular hematoma due to birth trauma
+206244002,Vulval hematoma due to birth trauma
+206248004,Traumatic glaucoma due to birth trauma
+206249007,Subconjunctival hemorrhage due to birth trauma
+206250007,Torticollis due to birth injury
+206252004,Sternomastoid injury due to birth injury
+206253009,Birth injury to face
+206254003,Subcutaneous fat necrosis due to birth injury
+206283000,Congenital staphylococcal pneumonia
+206284006,Congenital group A hemolytic streptococcal pneumonia
+206285007,Congenital group B hemolytic streptococcal pneumonia
+206286008,Congenital Escherichia coli pneumonia
+206287004,Congenital pseudomonal pneumonia
+206289001,Congenital chlamydial pneumonia
+206292002,Meconium aspiration syndrome
+206294001,Neonatal aspiration of blood
+206295000,Aspiration of vomit in newborn
+206296004,Neonatal aspiration of milk and regurgitated food
+206303001,Perinatal lung intra-alveolar hemorrhage
+206304007,Perinatal hemoptysis of fetus and/or neonate
+206305008,Tracheobronchial hemorrhage originating in the perinatal period
+206324006,Neonatal acrocyanosis
+206331005,Infections specific to perinatal period
+206345004,Neonatal dacryocystitis and conjunctivitis
+206356004,Neonatal candidiasis of perineum
+206370004,Pseudomonas pyocyaneus congenital infection
+206372007,Congenital viral hepatitis
+206373002,Congenital hepatitis A infection
+206376005,Sepsis of the newborn
+206378006,Sepsis of newborn caused by Staphylococcus aureus
+206379003,Sepsis of newborn caused by Escherichia coli
+206380000,Sepsis of newborn caused by anaerobes
+206398001,Intraventricular hemorrhage due to birth injury
+206399009,Intracranial subarachnoid hemorrhage due to birth injury
+206403000,Massive umbilical hemorrhage of newborn
+206406008,Perinatal hematemesis
+206408009,Perinatal rectal hemorrhage
+206409001,Neonatal vaginal hemorrhage
+206413008,Perinatal superficial hematoma
+206414002,Perinatal purpura
+206421002,Perinatal epistaxis
+206422009,Perinatal transient vaginal bleeding
+206423004,Neonatal hematemesis
+206424005,Neonatal melena
+206425006,Neonatal rectal hemorrhage
+206434001,Late anemia of newborn due to isoimmunization
+206439006,Neonatal jaundice due to glucose-6-phosphate dehydrogenase deficiency
+206442000,Perinatal jaundice from bruising
+206444004,Perinatal jaundice from infection
+206446002,Perinatal jaundice from polycythemia
+206447006,Perinatal jaundice from swallowed maternal blood
+206448001,Perinatal jaundice from bleeding
+206455004,Neonatal jaundice with Dubin-Johnson syndrome
+206456003,Neonatal jaundice with Gilbert's syndrome
+206457007,Neonatal jaundice with congenital hypothyroidism
+206458002,Neonatal jaundice with porphyria
+206469004,Perinatal jaundice due to congenital obstruction of bile duct
+206470003,Perinatal jaundice due to galactosemia
+206478005,Kernicterus not due to isoimmunization
+206481000,Perinatal endocrine and metabolic disorders
+206489003,Transitory neonatal hypernatremia
+206490007,Transitory neonatal hyponatremia
+206491006,Transitory neonatal hyperkalemia
+206492004,Transitory neonatal hypokalemia
+206493009,Disturbances of sodium balance of newborn
+206494003,Disturbances of potassium balance of newborn
+206511007,Transient neonatal thrombocytopenia due to idiopathic maternal thrombocytopenia
+206523001,Meconium ileus
+206528005,Meconium plug
+206529002,Congenital fecaliths causing obstruction
+206537005,Perinatal disorder of skin and temperature regulation
+206539008,Sclerema neonatorum
+206552003,Other perinatal skin disorders
+206554002,Neonatal skin infection
+206556000,Perinatal skin disorder NOS
+206565007,Rumination in newborn
+206566008,Underfeeding in newborn
+206567004,Overfeeding in newborn
+206570000,Newborn drug reaction and intoxication
+206572008,Neonatal withdrawal symptoms from maternal use of drugs of addiction
+206573003,Withdrawal symptoms from therapeutic use of drugs in newborn
+206576006,Neonatal cerebral ischemia
+206578007,Neonatal cerebral leukomalacia
+206596003,Neonatal hypertension
+206597007,Persistent fetal circulation
+20932005,Puerperal salpingitis
+21202004,Perinatal intracranial subarachnoid hemorrhage
+217634009,Accident due to abandonment of newborn
+22399000,Puerperal endometritis
+23171006,Delayed AND/OR secondary postpartum hemorrhage
+23205009,Transient neonatal thrombocytopenia
+23321000000107,FP58 newborn registration form
+23688003,Hematemesis AND/OR melena due to swallowed maternal blood
+237014000,Postpartum obstetric operation
+237158003,Rigid perineum complicating postpartum care - baby delivered during previous episode of care
+237190008,Stenosis of cervix - baby delivered with postpartum complication
+237193005,Polyp of cervix complicating postnatal care - baby delivered during previous episode of care
+237195003,Polyp of cervix - baby delivered with postpartum complication
+237198001,Rectocele complicating postpartum care - baby delivered during previous episode of care
+237199009,Cystocele complicating postpartum care - baby delivered during previous episode of care
+237202004,Rectocele - delivered with postpartum complication
+237203009,Cystocele - delivered with postpartum complication
+237212006,Uterine fibroid complicating postpartum care - baby delivered during previous episode of care
+237214007,Uterine fibroid - baby delivered with postpartum complication
+237219002,Bicornuate uterus complicating postpartum care - baby delivered during previous episode of care
+237221007,Bicornuate uterus - baby delivered with postpartum complication
+237315005,Postnatal vaginal discomfort
+237338008,Blood dyscrasia puerperal
+237339000,Infection - perineal wound
+237343001,Phlebitis in puerperium
+237345008,Varicose veins - obstetric
+237348005,Puerperal pyrexia
+23735003,Neonatal dacryocystitis
+237353000,Obstetric disorders of breast and lactation
+239095007,Omphalitis
+240297000,Infant death
+240300005,Bottle feeding problem in the newborn
+240301009,Breastfeeding problem in the newborn
+240302002,Neonatal erythroderma
+240303007,Panniculitis in newborn
+240305000,Neonatal thrombocytopenia due to platelet alloimmunization
+240307008,Late neonatal hypocalcemia
+240310001,Grunting baby
+240312009,Cerebral injury due to birth trauma
+240313004,Intracerebral hemorrhage in fetus or newborn
+240314005,Skeletal injury due to birth trauma
+240315006,Fracture of nose due to birth trauma
+240316007,Laryngeal injury due to birth trauma
+240317003,Kidney injury due to birth trauma
+240591000,Neonatal chlamydial conjunctivitis
+24342007,Infection of cesarean section AND/OR perineal wound
+243831005,Postnatal examination status
+253952006,Predislocation status of hip at birth
+267217009,Congenital abnormality of uterus complicating postpartum care - baby delivered during previous episode of care
+267222009,Tumor of uterine body - baby delivered with postpartum complication
+267258002,Small for gestational age fetus
+267268007,Trauma to perineum and/or vulva during delivery
+267280004,Venous complication of pregnancy and/or puerperium
+267283002,Superficial thrombophlebitis in pregnancy and the puerperium - delivered with postnatal complication
+26746005,Cold injury syndrome of newborn
+268817004,Very premature - less than 1000g or less than 28 weeks
+268818009,Disorder relating to long gestation and/or high birth weight
+268824003,Fracture of radius and/or ulna due to birth trauma
+268826001,Spleen rupture due to birth trauma
+268832006,Aspiration of liquor or mucus in newborn
+268838005,Neonatal dacryocystitis or conjunctivitis caused by Escherichia coli
+268839002,Neonatal dacryocystitis or conjunctivitis caused by staphylococcus
+268841001,Neonatal dacryocystitis or conjunctivitis caused by virus
+268842008,Neonatal dacryocystitis or conjunctivitis caused by chlamydiae
+268846006,Neonatal hypocalcemia
+268850004,Neonatal diarrhea
+268852007,Other specified perinatal skin disorder
+270101008,Medical certificate of still-birth
+271375003,Snuffles in newborn
+27214003,Atonic postpartum hemorrhage
+274118001,Venereal disease in pregnancy
+275360003,Neonatal jaundice due to deficiency of enzyme system for bilirubin conjugation
+275364007,Spleen injury due to birth trauma
+275365008,Birth fracture of radius
+275366009,Birth fracture of ulna
+275434003,Stroke in the puerperium
+276505002,Late neonatal death
+276506001,Newborn death
+276510003,Perinatal cardiovascular disorders
+276513001,Neonatal dysrhythmia
+276514007,Neonatal cardiac failure
+276517000,Transient myocardial ischemia of newborn
+276519002,Neonatal hypotension
+276521007,Perinatal intestinal obstruction
+276522000,Neonatal peritonitis
+276524004,Neonatal chloridorrhea
+276528001,Newborn thermal injury
+276533002,Neonatal aspiration syndrome
+276540001,Neonatal aspiration of amniotic fluid
+276541002,Neonatal aspiration of mucus
+276549000,Newborn physiological jaundice
+276562001,Iatrogenic neonatal hypoglycemia
+276565004,Neonatal goiter
+276587008,Perinatal neurological disorder
+276596008,Cerebral irritation
+276610007,Low birth weight infant
+276612004,Extremely low birth weight infant
+276618000,Umbilical polyp of newborn
+276632003,Hypomagnesemic tetany in newborn
+276658003,Extreme immaturity
+276660001,Congenital viral disease
+276669000,Bacterial sepsis of newborn
+276671000,Congenital falciparum malaria
+276675009,Neonatal infection of the eye
+276678006,Umbilical sepsis
+276681001,Neonatal chlamydial dacryocystitis
+276682008,Neonatal viral conjunctivitis
+276685005,Neonatal viral dacryocystitis
+276688007,Neonatal dacryocystitis caused by Escherichia coli
+276689004,Coliform ophthalmia neonatorum
+276690008,Neonatal dacryocystitis caused by staphylococcus
+276691007,Staphylococcal ophthalmia neonatorum
+276692000,Congenital viral pneumonia
+276713004,Delayed passage of meconium
+276771000000107,Newborn hearing screening programme outcome
+277488009,Perinatal trauma
+279591000000106,Newborn hearing screening programme contraindicated
+279601000000100,Newborn hearing screening programme incomplete as lack of service capacity
+280966008,Phlegmasia alba dolens - obstetric
+281898005,Lymphadenopathy due to congenital toxoplasmosis
+28438004,Gonococcal conjunctivitis neonatorum
+2858002,Puerperal sepsis
+289320001,Umbilical cord stump almost off
+289321002,Umbilical cord stump adherent
+289322009,Umbilical stump not separated
+302241000000109,Newborn blood spot screening status
+302781000000106,"Newborn blood spot screening programme, congenital hypothyroidism not screened for or screening incomplete"
+30571006,Environmentally-induced pyrexia in newborn
+308134004,Varicose veins of legs in the puerperium
+308135003,Varicose veins of genitalia in puerperium
+308137006,Superficial thrombophlebitis in puerperium
+308187004,Varicose veins of vagina in puerperium
+30921002,Perinatal massive pulmonary hemorrhage
+309739005,Perinatal coagulase-negative staphylococcus
+310659001,Birth weight 1000-2499 g
+310660006,Birth weight 999 g or less
+312486000,Notification of birth
+312851005,Screening for disorder
+32605001,Transient neonatal disorder of coagulation
+32858009,Hemolytic disease of fetus OR newborn due to ABO immunization
+32984002,Neonatal polycythemia
+32999002,Complication of obstetrical surgical wound
+34298002,Neonatal conjunctivitis
+34417008,Disseminated intravascular coagulation in newborn
+3468005,Neonatal infective mastitis
+34681009,Perinatal respiratory distress
+34831003,Breast engorgement in newborn
+35046003,Disorder of lactation
+352641000000101,Neonatal feeding education
+359007,Kernicterus due to isoimmunization
+359621002,Acquired periventricular cysts of newborn
+36078000,Perinatal pneumopericardium
+361194002,Perinatal pulmonary fibroplasia
+361208003,Primary sleep apnea of newborn
+363013003,Complication of introduction procedure
+366343003,Finding of birth details
+371610007,Hematoma of perineal wound
+371614003,Hematoma of obstetric wound
+372051007,Glucose tolerance test in puerperium - baby delivered during current episode of care outside reference range
+37260006,Congenital tuberculosis
+37384000,Birth injury to scalp
+384331000000103,"Newborn blood spot screening programme, phenylketonuria repeat screening with further sample required"
+384361000000108,"Newborn blood spot screening programme, congenital hypothyroidism repeat screening with further sample required"
+384371000000101,"Newborn blood spot screening programme, medium chain acyl-coenzyme A dehydrogenase deficiency repeat screening with further sample required"
+384634009,Postnatal maternal examination
+384635005,Full postnatal examination
+384636006,Maternal postnatal 6 week examination
+38593000,Perinatal cyanotic attacks
+387705004,Hemolytic disease of fetus OR newborn due to isoimmunization
+387712008,Neonatal jaundice
+391181005,Early neonatal death
+394575008,Postnatal clinic
+395186008,On examination - Umbilical stump - neonatal
+396544001,Cesarean wound disruption
+397729009,Perinatal necrotizing enterocolitis
+397746007,Snuffles
+397752008,Obstetric perineal wound disruption
+398019008,Perineal laceration during delivery
+398262004,Disruption of episiotomy wound in the puerperium
+403000003,Neonatal systemic candidosis
+408445005,Neonatology
+41168002,Condition in fetus originating in the perinatal period
+412727007,Infant feeding at birth
+413638006,Benign neonatal sleep myoclonus
+413654009,Birth asphyxia
+414023003,Disorder of cellular component of blood in newborn
+414819007,Neonatal abstinence syndrome
+414821002,Neonatal candidiasis
+417491009,Neonatal hearing test
+42052009,Omphalitis of newborn
+42357009,Disorder of digestive system specific to fetus OR newborn
+4244005,Urticaria neonatorum
+428447008,Newborn blood spot screening
+42908004,"Primary atelectasis, in perinatal period"
+431340005,Referral to breast feeding peer support service
+43424001,Tetanus neonatorum
+442162000,Child 6 to 8 week examination
+44247006,Prematurity of fetus
+444020006,Maternal postnatal examination declined
+444136005,Maternal postnatal examination done
+444429003,Child examination at 10 days with explicit context
+44671008,Perinatal adrenal hemorrhage
+46775006,Respiratory distress syndrome in the newborn
+47100003,Anemia of prematurity
+47236005,Third stage hemorrhage
+472857006,Perinatal pulmonary hemorrhage
+47444008,Lucey-Driscoll syndrome
+48000002,Vomiting in newborn
+48729005,Perinatal gastrointestinal hemorrhage
+49000007,Bruising in fetus OR newborn
+49415001,Slow feeding in newborn
+49513005,Dehydration fever in newborn
+49706007,Neonatal acne
+49746001,Engorgement of breasts
+49756002,Perinatal pneumothorax
+49817004,Neonatal diabetes mellitus
+50143004,Kernicterus of newborn
+51577008,Wilson-Mikity syndrome
+51634001,Congenital malaria
+52767006,Neonatal hypoglycemia
+54842003,Intestinal obstruction by inspissated milk in newborn
+54959009,Perinatal atelectasis
+55331005,Newborn regurgitation of food
+55444004,Transient neonatal neutropenia
+56110009,Birth trauma of fetus
+56272000,Deep venous thrombosis in puerperium
+56921004,Perinatal jaundice due to hereditary hemolytic anemia
+57284007,Severe birth asphyxia
+58703003,Postpartum depression
+59283008,Maternal death
+59491002,Ecchymoses in fetus OR newborn
+59527008,Congenital cytomegalovirus infection
+60025004,Transitory fever of newborn
+60125001,Perinatal interstitial emphysema
+60498001,Congenital viral hepatitis B infection
+60822000,Petechiae in fetus OR newborn
+61145000,Tetanus omphalitis
+62377009,Postpartum cardiomyopathy
+63275006,Cow's milk hypocalcemia of newborn
+63607006,Perinatal pneumomediastinum
+63981007,Neonatal hypoparathyroidism
+64229006,Traumatic lesion during delivery
+64728002,Fracture of spine due to birth trauma
+65390006,Perinatal intestinal perforation
+6581000000102,Care during confinement
+6591000000100,Complete postnatal care
+6594005,Cerebrovascular disorder in the puerperium
+6601000000106,Partial postnatal care - one visit
+6611000000108,Partial postnatal care - two visits
+6621000000102,Partial postnatal care - three visits
+6631000000100,Partial postnatal care - four visits
+6641000000109,Partial postnatal care - five visits
+67569000,Bronchopulmonary dysplasia of newborn
+68550008,Disturbance of temperature regulation of newborn
+698499006,Spine injury due to birth trauma
+70073005,Perinatal apneic spells
+70611002,Perinatal intraventricular hemorrhage
+70612009,Hyperthermia in newborn
+707089008,Genital tract infection in puerperium
+715069001,Aspiration pneumonitis of fetus
+717810008,Routine postpartum follow-up
+722591006,Fetal or neonatal effect of amniocentesis
+72552008,Feeding problems in newborn
+7293009,Heavy-for-dates at birth regardless of gestation period
+736653007,Neonatal disorder of endocrine system
+73749009,Neonatal jaundice associated with preterm delivery
+73876000,Perinatal jaundice due to inspissated bile syndrome
+75387001,Transient neonatal hypertyrosinemia
+7550008,Transitory tachypnea of newborn
+755041000000102,Health visitor new birth visit
+767551003,Scalpel wound of fetal skin due to and during delivery procedure
+76873001,Polycythemia due to maternal-fetal transfusion
+7690000,Gray syndrome from chloramphenicol administration in newborn
+77362009,Mild to moderate birth asphyxia
+78141002,Erb-Duchenne paralysis
+78408007,Complication of obstetrical surgery AND/OR procedure
+78812008,Neonatal dehydration
+78895009,Congenital pneumonia
+78913002,Edema of newborn
+79607001,Congenital hepatic fibrosis
+80113008,Complication of the puerperium
+82178003,Neonatal myasthenia gravis
+82351006,Craniotabes
+82353009,Congenital infectious disease
+82368005,Transitory ileus of newborn
+82696006,Neonatal jaundice due to delayed conjugation from breast milk inhibitor
+82729001,Caput succedaneum
+82986004,Umbilical hemorrhage after birth
+8301000000104,British Association for Adoption and Fostering B2 neonatal report sent
+83886009,Klumpke-Déjerine paralysis
+8390008,Routine care of newborn
+84947004,Facial palsy as birth trauma
+85539001,Hemorrhage of newborn
+86986002,Hemolytic disease of fetus OR newborn due to RhD isoimmunization
+87227007,Cerebral depression in newborn
+87476004,Convulsions in the newborn
+87898000,Neonatal hypomagnesemia
+880461000000109,Postnatal examination invitation
+880531000000103,Postnatal examination second invitation
+880551000000105,Postnatal examination first invitation
+88178009,Puerperal peritonitis
+90224001,Coma in the newborn
+9153009,Newborn care service
+91576008,Congenital herpes simplex
+93011000000108,Sure Start postnatal visit
+935451000000104,Disturbance of cerebral status of newborn
+935461000000101,Disorder of muscle tone of newborn
+943991000000104,Transitory metabolic disorder of newborn
+944001000000109,Transitory endocrine disorder of newborn
+944011000000106,Transitory disorder of calcium and magnesium metabolism of newborn
+944061000000108,Neonatal sepsis due to Streptococcus
+944071000000101,Neonatal sepsis due to Staphylococcus
+95616002,Neonatal apneic attack
+95619009,Neonatal respiratory failure
+9635004,Late metabolic acidosis of newborn
+985701000000100,"Newborn and Infant Physical Examination Screening Programme, hip examination done, no abnormality and no risk factor"
+9936001,Perinatal jaundice due to fetal OR neonatal hepatitis
+996781000000102,Neonatal screening test

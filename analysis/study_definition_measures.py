@@ -3,7 +3,8 @@ from cohortextractor import (
     patients, 
     codelist, 
     codelist_from_csv,  
-    Measure
+    Measure,
+    params,
 )
 
 # Import codelists from codelist.py (which pulls them from the codelist folder)
@@ -11,11 +12,17 @@ from codelist import *
 
 from datetime import datetime
 
+# Import parameters
+from cohortextractor import params 
+...
+
+num_days = params['num_days']
+
 #STUDY POPULATION
 
 start_date = "2019-01-01"
 end_date = datetime.today().strftime('%Y-%m-%d')
-index_year = 2019
+#index_year = 2019
 min_age = 14
 max_age = 49
 
@@ -24,7 +31,7 @@ study = StudyDefinition(
     default_expectations={
         "date": {"earliest": "1900-01-01", "latest": "today"},
         "rate": "uniform",
-        "incidence": 0.5,
+        "incidence": 0.1,
     },
 
     # Set index date to start date
@@ -102,8 +109,7 @@ study = StudyDefinition(
             },
         },
     ),
-
-
+    
     sex=patients.sex(
         return_expectations={
             "rate": "universal",
@@ -111,14 +117,52 @@ study = StudyDefinition(
         }
     ),
 
-    ethnicity=patients.with_ethnicity_from_sus(
-    returning="group_6",
-    use_most_frequent_code=True,
-    return_expectations={
-            "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
-            "incidence": 0.75,
+
+
+        ### Ethnicity (6 categories)
+    ethnicity = patients.categorised_as(
+        {
+            "Unknown": "DEFAULT",
+            "White": "eth6='1'",
+            "Mixed": "eth6='2'",
+            "Asian or Asian British": "eth6='3'",
+            "Black or Black British": "eth6='4'",
+            "Other": "eth6='5'",
+        },
+        eth6 = patients.with_these_clinical_events(
+            ethnicity_codes_6,
+            returning = "category",
+            find_last_match_in_period = True,
+            include_date_of_match = False,
+            return_expectations = {
+                "incidence": 0.75,
+                "category": {
+                    "ratios": {
+                        "1": 0.30,
+                        "2": 0.20,
+                        "3": 0.20,
+                        "4": 0.20,
+                        "5": 0.05,
+                        "6": 0.05,
+                    },
+                },
+            },
+        ),
+        return_expectations = {
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                    "White": 0.30,
+                    "Mixed": 0.20,
+                    "Asian or Asian British": 0.20,
+                    "Black or Black British": 0.20,
+                    "Other": 0.05,
+                    "Unknown": 0.05,
+                },
+            },
         },
     ),
+    
 
     practice=patients.registered_practice_as_of(
             "index_date",
@@ -203,7 +247,7 @@ study = StudyDefinition(
     # Number of delivery codes per person
     # plot histogram based on this?
     delivery_code_number=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="number_of_matches_in_period",
     return_expectations={
@@ -214,7 +258,7 @@ study = StudyDefinition(
 
     # Date of last delivery code
     delivery_code_date=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="date",
     date_format="YYYY-MM-DD",
@@ -222,19 +266,20 @@ study = StudyDefinition(
     return_expectations={           
         "date": {
             "earliest": "2019-01-01",  
-            "latest": "today",
+            "latest": "2023-05-31",
             },
+        "incidence": 0.1,
         },    
     ),
 
     # Is there a delivery code present - Y/N
     delivery_code_present=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="binary_flag",    
     return_expectations={
        #"int": {"distribution": "normal", "mean": 4, "stddev": 1},
-       "incidence": 0.6,
+       "incidence": 0.2,
        },
     ),
 
@@ -242,7 +287,7 @@ study = StudyDefinition(
     # can use find_first_match_in_period = True or find_last_match_in_period = True
     # can also add include_date_of_match to get the date
     delivery_code=patients.with_these_clinical_events(
-    delivery_codes,
+    delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="code", 
     return_expectations={
@@ -265,7 +310,7 @@ study = StudyDefinition(
     # Number of pn codes codes per person
     # plot histogram based on this?
     pn8wk_code_number=patients.with_these_clinical_events(
-    postnatal_8wk_codes,
+    postnatal_8wk_codes_reviewed,
     between=["index_date", "last_day_of_month(index_date)"],
     returning="number_of_matches_in_period",
     return_expectations={
@@ -277,33 +322,34 @@ study = StudyDefinition(
     #using delivery_code_dates mean that this should only
     #return codes for those with delivery dates
     postnatal_8wk_code_present=patients.with_these_clinical_events(
-    postnatal_8wk_codes, 
-    between=["delivery_code_date", "delivery_code_date + 84 days"],
+    postnatal_8wk_codes_reviewed, 
+    between=["delivery_code_date", f"delivery_code_date + {num_days} days"],
+    #between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="binary_flag",
     return_expectations={
             "incidence": 0.3,},
     ),
 
     ## use below codes for pn code within 8 weeks and 6 weeks 
-    # postnatal_8wk_code_present_8wks=patients.with_these_clinical_events(
-    # postnatal_8wk_codes, 
-    # between=["delivery_code_date", "delivery_code_date + 56 days"],
-    # returning="binary_flag",
-    # return_expectations={  
-    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #postnatal_8wk_code_present_8wks=patients.with_these_clinical_events(
+    #postnatal_8wk_codes, 
+    #between=["delivery_code_date", "delivery_code_date + 56 days"],
+    #returning="binary_flag",
+    #return_expectations={  
+    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
     #     "incidence": 0.4,
     #     },
-    # ),
+    #),
 
-    # postnatal_8wk_code_present_6wks=patients.with_these_clinical_events(
-    # postnatal_8wk_codes, 
-    # between=["delivery_code_date", "delivery_code_date + 42 days"],
-    # returning="binary_flag",
-    # return_expectations={  
-    # #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+    #postnatal_8wk_code_present_6wks=patients.with_these_clinical_events(
+    #postnatal_8wk_codes, 
+    #between=["delivery_code_date", "delivery_code_date + 42 days"],
+    #returning="binary_flag",
+    #return_expectations={  
+    #   "int": {"distribution": "normal", "mean": 4, "stddev": 1},
     #     "incidence": 0.4,
     #     },
-    # ),
+    #),
 
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
@@ -321,14 +367,14 @@ study = StudyDefinition(
             "incidence": 0.3,},
     ),
 
-    # is there a delivery code in a certain period - this is for 2019
-    delivery_code_present_2019=patients.with_these_clinical_events(
-    delivery_codes,
-    between=["index_date", "2019-12-31"],
-    returning="binary_flag",    
-    return_expectations={
-            "incidence": 0.6,},
-    ),
+    # # is there a delivery code in a certain period - this is for 2019
+    # delivery_code_present_2019=patients.with_these_clinical_events(
+    # delivery_codes_reviewed,
+    # between=["index_date", "2019-12-31"],
+    # returning="binary_flag",    
+    # return_expectations={
+    #         "incidence": 0.6,},
+    # ),
 )
 
 ##denom num patients delivered that month
@@ -375,13 +421,11 @@ measures = [
             group_by=["delivery_code_present", "ethnicity"]
             ),
 
-
-    # or can we have everything in one measure?
-    # rate of postnatal codes over time by delivery code, practice, age_cat
-    # Measure(id="postnatal_check_rate_by_practice_age_cat",
-    #         numerator="postnatal_8wk_code_present",
-    #         denominator="population",
-    #         group_by=["delivery_code_present", "practice", "age_cat"]
-    #         ),
+    # rate of postnatal codes over time by delivery code, region
+    Measure(id="postnatal_check_rate_by_region",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "region"]
+            ),
 
 ]
