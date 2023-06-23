@@ -291,8 +291,8 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) +
 # names(df_age_cat)[2]="ci_l"
 # names(df_age_cat)[3]="ci_u"
 
-## use df_plot_overall here?
-## would be age_cat instead of group
+## use df_plot_overall here or df_age_cat?
+## variable is group for df_age_cat and age_cat for df_plot_overall
 age_cat_ITS_plot<-ggplot(data=df_plot_overall, aes(y=group, x=IRR, color=group))+
 geom_point()+
 
