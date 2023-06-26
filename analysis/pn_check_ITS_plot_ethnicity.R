@@ -52,12 +52,12 @@ df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 ## new categories are 0-5 - names?
 
 # df for each age cat
-df1=filter(df_plot, ethnicity=="0")
-df2=filter(df_plot, ethnicity=="1")
-df3=filter(df_plot, ethnicity=="2")
-df4=filter(df_plot, ethnicity=="3")
-df5=filter(df_plot, ethnicity=="4")
-df6=filter(df_plot, ethnicity=="5")
+df1=filter(df_plot, ethnicity=="White")
+df2=filter(df_plot, ethnicity=="Mixed")
+df3=filter(df_plot, ethnicity=="Asian or Asian British")
+df4=filter(df_plot, ethnicity=="Black or Black British")
+df5=filter(df_plot, ethnicity=="Other")
+df6=filter(df_plot, ethnicity=="Unknown")
 
 # 1
 m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
@@ -100,7 +100,7 @@ exp6.1=exp(est6.1)
 # write_csv(as.data.frame(exp6.1), here::here("output", "ITS_estimates_6.1.csv"))
 
 # creates combined df with estimates and CIs for each eth category
-df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
 
 #adds ethnicity column
 #df_plot_overall$ethnicity=c("0","1","2","3","4","5")
