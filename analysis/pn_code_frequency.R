@@ -2,7 +2,7 @@ library('tidyverse')
 
 df_input <- read_csv(
   here::here("output", "input_8wk.csv.gz"),
-  col_types = cols(patient_id = col_integer(),delivery_code_number = col_number(), postnatal_8wk_code_present = col_character(), postnatal_code = col_number())
+  col_types = cols(patient_id = col_integer(),delivery_code_number = col_number())
 )
 
 df_input <- df_input %>% filter(postnatal_8wk_code_present >0)
