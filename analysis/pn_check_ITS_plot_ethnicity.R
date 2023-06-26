@@ -103,9 +103,12 @@ exp6.1=exp(est6.1)
 df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
 
 #adds ethnicity column
-df_plot_overall$ethnicity=c("0","1","2","3","4","5")
+#df_plot_overall$ethnicity=c("0","1","2","3","4","5")
+df_plot_overall$ethnicity=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown")
 
-df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("0","1","2","3","4","5"))
+#df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("0","1","2","3","4","5"))
+df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
+
 
 # IRR - incident rate ratio
 names(df_plot_overall)[1]="IRR"
@@ -121,7 +124,7 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_ethnici
 
 ## plots for each category
 
-# 0
+# "White"
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -141,7 +144,7 @@ plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=value, group=covid)) +
     x = "Month", 
     y = "Rate") 
  
-# 1
+# "Mixed"
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -161,7 +164,7 @@ plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 2
+# "Asian or Asian British"
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -181,7 +184,7 @@ plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 3
+# "Black or Black British"
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -201,7 +204,7 @@ plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 4
+# "other"
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_4<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -221,7 +224,7 @@ plot_ITS_eth_4<-ggplot(df5, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 5
+# "Unknown"
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
 plot_ITS_eth_5<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -241,14 +244,17 @@ plot_ITS_eth_5<-ggplot(df6, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-df1$group="1"
-df2$group="2"
-df3$group="3"
-df4$group="4"
-df5$group="5"
+df1$group="White"
+df2$group="Mixed"
+df3$group="Asian or Asian British"
+df4$group="Black or Black British"
+df5$group="Other"
+df6$group="Unknown"
 
-df_eth=bind_rows(df1,df2,df3,df4,df5,df6,df7)
-df_eth$group=factor(df_eth$group,levels=c("1","2","3","4","5"))
+
+df_eth=bind_rows(df1,df2,df3,df4,df5,df6)
+df_eth$group=factor(df_eth$group,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
+
 
 #names(df_eth)[1]="IRR"
 #names(df_eth)[2]="ci_l"
