@@ -19,7 +19,7 @@ df_input <- df_input %>% filter(postnatal_8wk_code_present >0)
 #   plot= plot_delivery_code_frequency,
 #   filename="pn_code_histogram_reviewed.jpeg", path=here::here("output"),
 # )
-
+ 
 
 table_pn_codes <- as.data.frame(table(df_input$postnatal_code)) 
 table_pn_codes <- table_pn_codes[order(-table_pn_codes$Freq),]
