@@ -3,11 +3,12 @@ library("data.table")
 library("dplyr")
 library("tidyverse")
 library("MASS")
+library("ggpubr")
 #library(modelsummary)
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate_by_practice.csv"),
+df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_practice.csv"),
 
 delivery_code_present  = col_double(),
 postnatal_8wk_code_present = col_double(),

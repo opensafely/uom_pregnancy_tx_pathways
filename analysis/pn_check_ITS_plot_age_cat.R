@@ -3,11 +3,11 @@ library("data.table")
 library("dplyr")
 library("tidyverse")
 library("MASS")
+library("ggpubr")
 #library(modelsummary)
 #library("gtsummary")
 
 ## Import data
-## change measures file name
 df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_age_cat.csv"))
 
 # delivery_code_present  = col_double(),
@@ -232,7 +232,7 @@ plot_ITS_35_39<-ggplot(df5, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-40-44
+# 40-44
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
 plot_ITS_40_44<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -272,42 +272,73 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-##
-## add group var to each df?
-df1$group="14-19"
-df2$group="20-24"
-df3$group="25-29"
-df4$group="30-34"
-df5$group="35-39"
-df6$group="40-44"
-df7$group="45-49"
+## should I just be using df_plot_overall here?
+## this has IRR, ci_l, ci_u and age_cat
 
 df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
 df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
-age_cat_ITS_plot<-ggplot(data=df_age_cat, aes(y=group, x=age_cat, color=group))+
+# names(df_age_cat)[1]="IRR"
+# names(df_age_cat)[2]="ci_l"
+# names(df_age_cat)[3]="ci_u"
+
+## ITS plot with panels for each age cat
+
+plot_ITS_age_cat_1<-ggplot(data=df_age_cat,aes(x=date,y=rate,group=covid)) + 
+ theme_bw()+
+  #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2021-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  
+  geom_point(shape = 4)+
+  geom_smooth(se = FALSE,fullrange=FALSE, color="black")+
+  update_geom_defaults("smooth", list(size = .5))+
+  
+  facet_grid(rows = vars(age_cat),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01))+
+  
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank(),
+         axis.title.x=element_blank(),
+        )+
+  labs(
+    title = "Rate of postnatal checks over time",
+
+    x = "Month", 
+    y = "Rate")
+
+ggsave(plot= plot_ITS_age_cat_1,filename="plot_ITS_age_cat_1.jpeg", path=here::here("output"),)
+
+  
+#### creates plot with IRRs and error bars/CIs
+
+## variable is group or age_cat for df_age_cat and age_cat for df_plot_overall (helpfully)
+## need to hash out text line to run
+plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR, color=age_cat))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
 
-#adding a vertical line at the effect = 0 mark
-#geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
-#thematic stuff
+geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
 theme_bw()+
-#theme(text=element_text(family="Times",size=18, color="black"))+
-#theme(panel.spacing = unit(1, "lines"))+
+theme(text=element_text(family="Times",size=18, color="black"))+
+theme(panel.spacing = unit(1, "lines"))+
 labs(
       title = "",
     x="IRR (95% CI)",
     y=""
   )+
-facet_grid(Infection~., scales = "free", space = "free")+
+facet_grid(age_cat~., scales = "free", space = "free")+
  theme(strip.text.y = element_text(angle = 0),
    axis.title.y =element_blank(),
         axis.text.y=element_blank(),
        axis.ticks.y=element_blank(),
        legend.title=element_blank(),
        legend.position="bottom")
+
+ggsave(plot= plot_ITS_age_cat_2,filename="plot_ITS_age_cat_2.jpeg", path=here::here("output"),)
 
 
 ##add labels etc

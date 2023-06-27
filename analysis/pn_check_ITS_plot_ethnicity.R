@@ -3,18 +3,19 @@ library("data.table")
 library("dplyr")
 library("tidyverse")
 library("MASS")
+library("ggpubr")
 #library(modelsummary)
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "measures", "measure_postnatal_check_rate_by_ethnicity.csv"),
+df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_ethnicity.csv"))
 
-delivery_code_present  = col_double(),
-postnatal_8wk_code_present = col_double(),
-population  = col_number(),
-value = col_number(),
-measure = col_character(),
-)
+# delivery_code_present  = col_double(),
+# postnatal_8wk_code_present = col_double(),
+# population  = col_number(),
+# value = col_number(),
+# measure = col_character(),
+# )
 
 df<-df%>%filter(delivery_code_present>0)
 
@@ -51,14 +52,13 @@ df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 ## new categories are 0-5 - names?
 
 # df for each age cat
-df1=filter(df_plot, ethnicity=="0")
-df2=filter(df_plot, ethnicity=="1")
-df3=filter(df_plot, ethnicity=="2")
-df4=filter(df_plot, ethnicity=="3")
-df5=filter(df_plot, ethnicity=="4")
-df6=filter(df_plot, ethnicity=="5")
+df1=filter(df_plot, ethnicity=="White")
+df2=filter(df_plot, ethnicity=="Mixed")
+df3=filter(df_plot, ethnicity=="Asian or Asian British")
+df4=filter(df_plot, ethnicity=="Black or Black British")
+df5=filter(df_plot, ethnicity=="Other")
+df6=filter(df_plot, ethnicity=="Unknown")
 
-## do we need to use population_rounded here? 
 # 1
 m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
 # 1
@@ -99,14 +99,16 @@ exp6.1=exp(est6.1)
 # write_csv(as.data.frame(exp5.1), here::here("output", "ITS_estimates_5.1.csv"))
 # write_csv(as.data.frame(exp6.1), here::here("output", "ITS_estimates_6.1.csv"))
 
-
 # creates combined df with estimates and CIs for each eth category
-df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
 
 #adds ethnicity column
-df_plot_overall$ethnicity=c("0","1","2","3","4","5")
+#df_plot_overall$ethnicity=c("0","1","2","3","4","5")
+df_plot_overall$ethnicity=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown")
 
-df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("0","1","2","3","4","5"))
+#df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("0","1","2","3","4","5"))
+df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
+
 
 # IRR - incident rate ratio
 names(df_plot_overall)[1]="IRR"
@@ -120,17 +122,10 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_ethnici
 # #DF1.exp=DF
 # #DF1.exp
 
-## fix dates in plots/shaded areas - dotted line for covid?
-## add labels/titles
-## expected lines are close to zero because we are dividing expected
-## rate by population? 
-
 ## plots for each category
 
-# 0
+# "White"
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
- # adds fit and se.fit columns despite message below
-# Warning: "Outer names are only allowed for unnamed scalar atomic inputs" 
 plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
@@ -149,7 +144,7 @@ plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=value, group=covid)) +
     x = "Month", 
     y = "Rate") 
  
-# 1
+# "Mixed"
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -169,7 +164,7 @@ plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 2
+# "Asian or Asian British"
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -189,7 +184,7 @@ plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 3
+# "Black or Black British"
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -209,7 +204,7 @@ plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 4
+# "other"
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
 plot_ITS_eth_4<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -229,7 +224,7 @@ plot_ITS_eth_4<-ggplot(df5, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-# 5
+# "Unknown"
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
 plot_ITS_eth_5<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
@@ -249,38 +244,102 @@ plot_ITS_eth_5<-ggplot(df6, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
+df1$group="White"
+df2$group="Mixed"
+df3$group="Asian or Asian British"
+df4$group="Black or Black British"
+df5$group="Other"
+df6$group="Unknown"
 
-##add labels etc
-# plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
-#     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
-#     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
-#     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
-#     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
 
-ggsave(
-   plot= plot_ITS_eth_0,
-   filename="pn_check_ITS_eth_0.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_1,
-   filename="pn_check_ITS_age_eth_1.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_2,
-   filename="pn_check_ITS_eth_2.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_3,
-   filename="pn_check_ITS_eth_3.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_4,
-   filename="pn_check_ITS_eth_4.jpeg", path=here::here("output"),
-)
-ggsave(
-   plot= plot_ITS_eth_5,
-   filename="pn_check_ITS_eth_5.jpeg", path=here::here("output"),
-)
+df_eth=bind_rows(df1,df2,df3,df4,df5,df6)
+df_eth$group=factor(df_eth$group,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
+
+
+#names(df_eth)[1]="IRR"
+#names(df_eth)[2]="ci_l"
+#names(df_eth)[3]="ci_u"
+
+## ITS plot with panels
+
+plot_ITS_eth_1<-ggplot(data=df_eth,aes(x=date,y=rate,group=covid)) + 
+ theme_bw()+
+  #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
+  annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2021-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
+  
+  geom_point(shape = 4)+
+  geom_smooth(se = FALSE,fullrange=FALSE, color="black")+
+  update_geom_defaults("smooth", list(size = .5))+
+  
+  facet_grid(rows = vars(ethnicity),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.01))+
+  
+  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  
+  theme(axis.text.x = element_text(angle = 60,hjust=1),
+        legend.position = "bottom",legend.title =element_blank(),
+         axis.title.x=element_blank(),
+        )+
+  labs(
+    title = "Rate of postnatal checks over time",
+
+    x = "Month", 
+    y = "Rate")
+
+ggsave(plot= plot_ITS_eth_1,filename="plot_ITS_eth_1.jpeg", path=here::here("output"),)
+
+#### creates plot with IRRs and error bars/CIs
+
+plot_ITS_eth_2<-ggplot(data=df_plot_overall, aes(y=ethnicity, x=IRR, color=ethnicity))+
+geom_point()+
+
+geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
+
+geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
+theme_bw()+
+theme(text=element_text(family="Times",size=18, color="black"))+
+theme(panel.spacing = unit(1, "lines"))+
+labs(
+      title = "",
+    x="IRR (95% CI)",
+    y=""
+  )+
+facet_grid(ethnicity~., scales = "free", space = "free")+
+ theme(strip.text.y = element_text(angle = 0),
+   axis.title.y =element_blank(),
+        axis.text.y=element_blank(),
+       axis.ticks.y=element_blank(),
+       legend.title=element_blank(),
+       legend.position="bottom")
+
+ggsave(plot= plot_ITS_eth_2,filename="plot_ITS_eth_2", path=here::here("output"),)
+
+
+# ggsave(
+#    plot= plot_ITS_eth_0,
+#    filename="pn_check_ITS_eth_0.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_1,
+#    filename="pn_check_ITS_age_eth_1.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_2,
+#    filename="pn_check_ITS_eth_2.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_3,
+#    filename="pn_check_ITS_eth_3.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_4,
+#    filename="pn_check_ITS_eth_4.jpeg", path=here::here("output"),
+# )
+# ggsave(
+#    plot= plot_ITS_eth_5,
+#    filename="pn_check_ITS_eth_5.jpeg", path=here::here("output"),
+# )
 
 # ggsave(
 #    plot= plot_ITS_ethnicity,
