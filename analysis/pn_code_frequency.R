@@ -1,11 +1,14 @@
 library('tidyverse')
 
 df_input <- read_csv(
-  here::here("output", "input_8wk.csv.gz"),
+  here::here("output", "pn8wk"),
+  #here::here("output", "pn8wk", "input_*.csv.gz"),
   col_types = cols(patient_id = col_integer(),delivery_code_number = col_number())
 )
 
-df_input <- df_input %>% filter(postnatal_8wk_code_present >0)
+df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
+
+df<- df %>% filter(postnatal_8wk_code_present >0)
 
 #might need library('dplyr')
 
