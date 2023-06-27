@@ -325,7 +325,7 @@ actions:
   #       plot_ITS_eth_4: output/pn_check_ITS_eth_4.jpeg 
   #       plot_ITS_eth_5: output/pn_check_ITS_eth_5.jpeg 
   
-   describe_ITS_plot_imd:
+  describe_ITS_plot_imd:
      run: r:latest analysis/pn_check_ITS_plot_imd.R
      needs: [generate_8wk_cohort, generate_measures_8wk]
      outputs:
