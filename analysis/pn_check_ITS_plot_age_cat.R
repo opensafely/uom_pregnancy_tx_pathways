@@ -134,7 +134,7 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
  # adds fit and se.fit columns despite message below
 # Warning: "Outer names are only allowed for unnamed scalar atomic inputs" 
-plot_ITS_14_19<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
+plot_ITS_14_19<-ggplot(df1, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -154,7 +154,7 @@ plot_ITS_14_19<-ggplot(df1, aes(x=date, y=value, group=covid)) +
  
 # 20-24
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_20_24<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
+plot_ITS_20_24<-ggplot(df2, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -174,7 +174,7 @@ plot_ITS_20_24<-ggplot(df2, aes(x=date, y=value, group=covid)) +
 
 # 25-29
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_25_29<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
+plot_ITS_25_29<-ggplot(df3, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -194,7 +194,7 @@ plot_ITS_25_29<-ggplot(df3, aes(x=date, y=value, group=covid)) +
 
 # 30-34
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_30_34<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
+plot_ITS_30_34<-ggplot(df4, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -214,7 +214,7 @@ plot_ITS_30_34<-ggplot(df4, aes(x=date, y=value, group=covid)) +
 
 # 35-39
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_35_39<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
+plot_ITS_35_39<-ggplot(df5, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -234,7 +234,7 @@ plot_ITS_35_39<-ggplot(df5, aes(x=date, y=value, group=covid)) +
 
 # 40-44
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_40_44<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
+plot_ITS_40_44<-ggplot(df6, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -254,7 +254,7 @@ plot_ITS_40_44<-ggplot(df6, aes(x=date, y=value, group=covid)) +
 
 # 45-49
 df7 <- cbind(df7, "resp" = predict(m7.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_45_49<-ggplot(df7, aes(x=date, y=value, group=covid)) + 
+plot_ITS_45_49<-ggplot(df7, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -311,7 +311,6 @@ plot_ITS_age_cat_1<-ggplot(data=df_age_cat,aes(x=date,y=rate,group=covid)) +
 
 ggsave(plot= plot_ITS_age_cat_1,filename="plot_ITS_age_cat_1.jpeg", path=here::here("output"),)
 
-  
 #### creates plot with IRRs and error bars/CIs
 
 ## variable is group or age_cat for df_age_cat and age_cat for df_plot_overall (helpfully)
