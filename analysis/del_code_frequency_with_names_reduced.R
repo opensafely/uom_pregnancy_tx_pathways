@@ -3,7 +3,7 @@ library('tidyverse')
 options(scipen=99999)
 
 df1 <- read_csv(
-  here::here("output", "table_del_codes_with_names.csv"),
+  here::here("output", "table_del_codes_reviewed_with_names.csv"),
   col_types = cols(code = col_number(),Freq=col_number(), term = col_character())
 )
 
@@ -24,5 +24,5 @@ df3$Freq <- round(df3$Freq/5)*5
 #        total = round(total/5)*5,
 #    pcent_total = n/total*100)
 
-write_csv(df3, here::here("output","table_del_codes_with_names_reduced.csv"))
+write_csv(df3, here::here("output","table_del_codes_reviewed_with_names_reduced.csv"))
 

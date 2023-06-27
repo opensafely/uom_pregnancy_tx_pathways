@@ -22,4 +22,4 @@ df_3<-merge(df_2, df_1, by="code")
 df_3 <- df_3[order(-df_3$Freq),]
 
 
-write_csv(df_3, here::here("output","table_del_codes_with_names.csv"))
+write_csv(df_3, here::here("output","table_del_codes_reviewed_with_names.csv"))
