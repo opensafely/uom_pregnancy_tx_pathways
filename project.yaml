@@ -340,13 +340,13 @@ actions:
   #       plot_ITS_imd_4: output/pn_check_ITS_imd_4.jpeg 
   #       plot_ITS_imd_5: output/pn_check_ITS_imd_5.jpeg 
   
-  describe_ITS_plot_practice:
-   run: r:latest analysis/pn_check_ITS_plot_practice.R
-    needs: [generate_8wk_cohort, generate_measures_8wk]
-    outputs:
-      moderately_sensitive:
-         plot_ITS_practice_1: output/plot_ITS_practice_1.jpeg
-         plot_ITS_practice_2: output/plot_ITS_practice_2.jpeg
+  # describe_ITS_plot_practice:
+  #  run: r:latest analysis/pn_check_ITS_plot_practice.R
+  #   needs: [generate_8wk_cohort, generate_measures_8wk]
+  #   outputs:
+  #     moderately_sensitive:
+  #        plot_ITS_practice_1: output/plot_ITS_practice_1.jpeg
+  #        plot_ITS_practice_2: output/plot_ITS_practice_2.jpeg
   
 
   # describe_ITS_plot_region:
