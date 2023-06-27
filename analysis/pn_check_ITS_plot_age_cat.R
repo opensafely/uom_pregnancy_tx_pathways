@@ -232,7 +232,7 @@ plot_ITS_35_39<-ggplot(df5, aes(x=date, y=value, group=covid)) +
     x = "", 
     y = "")
 
-40-44
+# 40-44
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
 plot_ITS_40_44<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
  theme_bw()+
