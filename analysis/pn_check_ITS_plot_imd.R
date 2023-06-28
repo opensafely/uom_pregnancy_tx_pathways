@@ -8,7 +8,7 @@ library("ggpubr")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv"),
+df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv")
 
 # delivery_code_present  = col_double(),
 # postnatal_8wk_code_present = col_double(),
