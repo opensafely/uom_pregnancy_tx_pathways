@@ -10,12 +10,12 @@ library("ggpubr")
 ## Import data
 df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv"),
 
-delivery_code_present  = col_double(),
-postnatal_8wk_code_present = col_double(),
-population  = col_number(),
-value = col_number(),
-measure = col_character(),
-)
+# delivery_code_present  = col_double(),
+# postnatal_8wk_code_present = col_double(),
+# population  = col_number(),
+# value = col_number(),
+# measure = col_character(),
+# )
 
 df<-df%>%filter(delivery_code_present>0)
 
