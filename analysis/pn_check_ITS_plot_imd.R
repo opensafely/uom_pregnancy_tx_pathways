@@ -8,7 +8,7 @@ library("ggpubr")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv")
+df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv"))
 
 # delivery_code_present  = col_double(),
 # postnatal_8wk_code_present = col_double(),
@@ -38,7 +38,7 @@ df$postnatal_8wk_code_present_rounded<-round(df$postnatal_8wk_code_present_redac
 df$population_rounded<-round(df$population_redacted/5)*5
 
 df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
-df_plot=df %>% filter(!is.na(rate))
+df_plot=df%>%filter(!is.na(rate))
 
 #define dates 
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
