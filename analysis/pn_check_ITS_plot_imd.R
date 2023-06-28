@@ -126,7 +126,7 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_imd_ove
 
 # 0
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_imd_0<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
+plot_ITS_imd_0<-ggplot(df1, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -146,7 +146,7 @@ plot_ITS_imd_0<-ggplot(df1, aes(x=date, y=value, group=covid)) +
  
 # 1
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_imd_1<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
+plot_ITS_imd_1<-ggplot(df2, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -166,7 +166,7 @@ plot_ITS_imd_1<-ggplot(df2, aes(x=date, y=value, group=covid)) +
 
 # 2
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_imd_2<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
+plot_ITS_imd_2<-ggplot(df3, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -186,7 +186,7 @@ plot_ITS_imd_2<-ggplot(df3, aes(x=date, y=value, group=covid)) +
 
 # 3
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_imd_3<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
+plot_ITS_imd_3<-ggplot(df4, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -206,7 +206,7 @@ plot_ITS_imd_3<-ggplot(df4, aes(x=date, y=value, group=covid)) +
 
 # 4
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_imd_4<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
+plot_ITS_imd_4<-ggplot(df5, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -226,7 +226,7 @@ plot_ITS_imd_4<-ggplot(df5, aes(x=date, y=value, group=covid)) +
 
 # 5
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_imd_5<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
+plot_ITS_imd_5<-ggplot(df6, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -245,7 +245,7 @@ plot_ITS_imd_5<-ggplot(df6, aes(x=date, y=value, group=covid)) +
     y = "")
 
 df_imd=bind_rows(df1,df2,df3,df4,df5,df6)
-df_imd$group=factor(df_imd$group,levels=c("0","1","2","3","4","5"))
+#df_imd$group=factor(df_imd$group,levels=c("0","1","2","3","4","5"))
 
 ## ITS plot with panels for each imd cat
 
@@ -278,8 +278,7 @@ ggsave(plot= plot_ITS_imd_1,filename="plot_ITS_imd_1.jpeg", path=here::here("out
 
 #### creates plot with IRRs and error bars/CIs
 
-## variable is group for df_age_cat and age_cat for df_plot_overall (helpfully)
-## need to hash out text line to run
+## need to hash out text line to run locally
 plot_ITS_imd_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR, color=imd))+
 geom_point()+
 
