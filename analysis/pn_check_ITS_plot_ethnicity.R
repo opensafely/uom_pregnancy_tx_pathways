@@ -311,6 +311,7 @@ facet_grid(ethnicity~., scales = "free", space = "free")+
        legend.title=element_blank(),
        legend.position="bottom")
 
+#ggsave(plot= plot_ITS_eth_2,filename="plot_ITS_eth_2.jpeg", path=here::here("output"),)
 ggsave(plot= plot_ITS_eth_2,filename="plot_ITS_eth_2.jpeg", path=here::here("output"),)
 
 
