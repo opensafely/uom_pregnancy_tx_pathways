@@ -126,7 +126,7 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_ethnici
 
 # "White"
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -146,7 +146,7 @@ plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=value, group=covid)) +
  
 # "Mixed"
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -166,7 +166,7 @@ plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=value, group=covid)) +
 
 # "Asian or Asian British"
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -186,7 +186,7 @@ plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=value, group=covid)) +
 
 # "Black or Black British"
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -206,7 +206,7 @@ plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=value, group=covid)) +
 
 # "other"
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_eth_4<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
+plot_ITS_eth_4<-ggplot(df5, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -253,7 +253,7 @@ df6$group="Unknown"
 
 
 df_eth=bind_rows(df1,df2,df3,df4,df5,df6)
-df_eth$group=factor(df_eth$group,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
+#df_eth$group=factor(df_eth$group,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
 
 
 #names(df_eth)[1]="IRR"
