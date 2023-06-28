@@ -49,8 +49,6 @@ df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot=df_plot%>% group_by(covid, ethnicity)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-## new categories are 0-5 - names?
-
 # df for each age cat
 df1=filter(df_plot, ethnicity=="White")
 df2=filter(df_plot, ethnicity=="Mixed")
@@ -59,17 +57,17 @@ df4=filter(df_plot, ethnicity=="Black or Black British")
 df5=filter(df_plot, ethnicity=="Other")
 df6=filter(df_plot, ethnicity=="Unknown")
 
-# 1
+# White
 m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
-# 1
+# Mixed
 m2.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df2)
-# 2
+# Asian or Asian British
 m3.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df3)
-# 3
+# Black or Black British
 m4.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df4)
-# 4
+# Other
 m5.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df5)
-# 5
+# Unknown
 m6.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df6)
 
 # 0
