@@ -276,7 +276,7 @@ plot_ITS_45_49<-ggplot(df7, aes(x=date, y=fit, group=covid)) +
 ## this has IRR, ci_l, ci_u and age_cat
 
 df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
-df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+#df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
 # names(df_age_cat)[1]="IRR"
 # names(df_age_cat)[2]="ci_l"
