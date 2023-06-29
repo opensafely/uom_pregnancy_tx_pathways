@@ -365,7 +365,7 @@ ggsave(plot= plot_ITS_region_1,filename="plot_ITS_region_1.jpeg", path=here::her
 
 ## variable is group or age_cat for df_age_cat and age_cat for df_plot_overall (helpfully)
 ## need to hash out text line to run
-plot_ITS_region_2<-ggplot(data=df_plot_overall, aes(y=region, x=IRR, color=region))+
+plot_ITS_region_2<-ggplot(data=df_plot_overall, aes(y=region, x=IRR))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+

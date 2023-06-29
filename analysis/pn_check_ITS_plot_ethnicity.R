@@ -287,7 +287,7 @@ ggsave(plot= plot_ITS_eth_1,filename="plot_ITS_eth_1.jpeg", path=here::here("out
 
 #### creates plot with IRRs and error bars/CIs
 
-plot_ITS_eth_2<-ggplot(data=df_plot_overall, aes(y=ethnicity, x=IRR, color=ethnicity))+
+plot_ITS_eth_2<-ggplot(data=df_plot_overall, aes(y=ethnicity, x=IRR))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
