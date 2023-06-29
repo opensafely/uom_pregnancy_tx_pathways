@@ -270,7 +270,7 @@ ggsave(plot= plot_ITS_imd_new_1,filename="plot_ITS_imd_new_1.jpeg", path=here::h
 #### creates plot with IRRs and error bars/CIs
 
 ## need to hash out text line to run locally
-plot_ITS_imd_new_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR, color=imd))+
+plot_ITS_imd_new_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR))+
 geom_point()+
 
 geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
