@@ -13,13 +13,10 @@ df_input<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv,
 
 df_input<- df_input %>% filter(postnatal_8wk_code_present >0)
 
-#might need library('dplyr')
-
 # plot_pn_code_frequency <- ggplot(data=df_input, aes(df_input$delivery_code_number)) + 
 # geom_histogram() +
 # labs (title = "Delivery Code Distribution",
 # x = "No. of delivery codes")
-
 
 # ggsave(
 #   plot= plot_delivery_code_frequency,
