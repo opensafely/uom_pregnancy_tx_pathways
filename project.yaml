@@ -290,6 +290,14 @@ actions:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk.jpeg 
 
+  ## this is replacing "y=value" with "y=fit" in line 89 to match other plots
+  describe_ITS_plot_overall_new:
+    run: r:latest analysis/pn_check_ITS_plot_new.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
+    outputs:
+      moderately_sensitive:
+        plot_ITS_overall: output/pn_check_ITS_overall_8wk_new.jpeg
+
   describe_ITS_plot_overall_6wk:
     run: r:latest analysis/pn_check_ITS_plot_6wk.R
     needs: [generate_6wk_cohort, generate_measures_6wk]

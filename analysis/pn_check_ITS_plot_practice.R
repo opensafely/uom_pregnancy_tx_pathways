@@ -7,6 +7,9 @@ library("ggpubr")
 #library(modelsummary)
 #library("gtsummary")
 
+## is this useful/
+## would we have to map quartiles to individual dfs/estimates
+
 ## Import data
 df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_practice.csv"),
 
@@ -60,7 +63,7 @@ m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , dat
 exp1.0=exp(est1.0)
 
 ##add labels etc
-plot_ITS_practice<-ggplot(df, aes(x=date, y=value, group=covid))+ theme_bw()+ 
+plot_ITS_practice<-ggplot(df, aes(x=date, y=fit, group=covid))+ theme_bw()+ 
     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 

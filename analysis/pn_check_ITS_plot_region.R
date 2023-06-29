@@ -143,7 +143,7 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_region_
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
  # adds fit and se.fit columns despite message below
 # Warning: "Outer names are only allowed for unnamed scalar atomic inputs" 
-plot_ITS_North_East<-ggplot(df1, aes(x=date, y=value, group=covid)) + 
+plot_ITS_North_East<-ggplot(df1, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -163,7 +163,7 @@ plot_ITS_North_East<-ggplot(df1, aes(x=date, y=value, group=covid)) +
  
 # NW
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_North_West<-ggplot(df2, aes(x=date, y=value, group=covid)) + 
+plot_ITS_North_West<-ggplot(df2, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -183,7 +183,7 @@ plot_ITS_North_West<-ggplot(df2, aes(x=date, y=value, group=covid)) +
 
 # Yorks
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_Yorkshire<-ggplot(df3, aes(x=date, y=value, group=covid)) + 
+plot_ITS_Yorkshire<-ggplot(df3, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -203,7 +203,7 @@ plot_ITS_Yorkshire<-ggplot(df3, aes(x=date, y=value, group=covid)) +
 
 # E Mids
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_East_Midlands<-ggplot(df4, aes(x=date, y=value, group=covid)) + 
+plot_ITS_East_Midlands<-ggplot(df4, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -223,7 +223,7 @@ plot_ITS_East_Midlands<-ggplot(df4, aes(x=date, y=value, group=covid)) +
 
 # W Mids
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_West_Midlands<-ggplot(df5, aes(x=date, y=value, group=covid)) + 
+plot_ITS_West_Midlands<-ggplot(df5, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -243,7 +243,7 @@ plot_ITS_West_Midlands<-ggplot(df5, aes(x=date, y=value, group=covid)) +
 
 # East
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_East<-ggplot(df6, aes(x=date, y=value, group=covid)) + 
+plot_ITS_East<-ggplot(df6, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -263,7 +263,7 @@ plot_ITS_East<-ggplot(df6, aes(x=date, y=value, group=covid)) +
 
 # London
 df7 <- cbind(df7, "resp" = predict(m7.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_London<-ggplot(df7, aes(x=date, y=value, group=covid)) + 
+plot_ITS_London<-ggplot(df7, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -283,7 +283,7 @@ plot_ITS_London<-ggplot(df7, aes(x=date, y=value, group=covid)) +
 
 # SW
 df8 <- cbind(df8, "resp" = predict(m8.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_South_West<-ggplot(df8, aes(x=date, y=value, group=covid)) + 
+plot_ITS_South_West<-ggplot(df8, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -303,7 +303,7 @@ plot_ITS_South_West<-ggplot(df8, aes(x=date, y=value, group=covid)) +
 
 # SE
 df9 <- cbind(df9, "resp" = predict(m9.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-plot_ITS_South_East<-ggplot(df9, aes(x=date, y=value, group=covid)) + 
+plot_ITS_South_East<-ggplot(df9, aes(x=date, y=fit, group=covid)) + 
  theme_bw()+
   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
@@ -325,7 +325,7 @@ plot_ITS_South_East<-ggplot(df9, aes(x=date, y=value, group=covid)) +
 ## this has IRR, ci_l, ci_u and region
 
 df_region=bind_rows(df1,df2,df3,df4,df5,df6,df7,df8,df9)
-df_region$region=factor(df_region$region,levels=c("North East", "North West", "Yorkshire and The Humber", "East Midlands", "West Midlands", "East", "London", "South West", "South East"))
+#df_region$region=factor(df_region$region,levels=c("North East", "North West", "Yorkshire and The Humber", "East Midlands", "West Midlands", "East", "London", "South West", "South East"))
 
 # names(df_region)[1]="IRR"
 # names(df_region)[2]="ci_l"
