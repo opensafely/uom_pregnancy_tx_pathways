@@ -93,7 +93,7 @@ exp5.1=exp(est5.1)
 (est6.1 <- cbind(Estimate = coef(m6.1), confint(m6.1)))
 exp6.1=exp(est6.1)
 
-df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6[2,],)
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],)
 
 #adds imd column
 df_plot_overall$imd=c("0", "1", "2", "3", "4", "5")
