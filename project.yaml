@@ -291,6 +291,7 @@ actions:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk.jpeg 
 
   ## this is replacing "y=value" with "y=fit" in line 89 to match other plots
+  ## as are other "_new" scripts below
   describe_ITS_plot_overall_new:
     run: r:latest analysis/pn_check_ITS_plot_new.R
     needs: [generate_8wk_cohort, generate_measures_8wk]
@@ -305,12 +306,26 @@ actions:
       moderately_sensitive:
         plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk.jpeg 
 
+  describe_ITS_plot_overall_6wk_new:
+    run: r:latest analysis/pn_check_ITS_plot_6wk_new.R
+    needs: [generate_6wk_cohort, generate_measures_6wk]
+    outputs:
+      moderately_sensitive:
+        plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk_new.jpeg 
+
   describe_ITS_plot_overall_12wk:
     run: r:latest analysis/pn_check_ITS_plot_12wk.R
     needs: [generate_12wk_cohort, generate_measures_12wk]
     outputs:
       moderately_sensitive:
         plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk.jpeg 
+ 
+  describe_ITS_plot_overall_12wk_new:
+    run: r:latest analysis/pn_check_ITS_plot_12wk_new.R
+    needs: [generate_12wk_cohort, generate_measures_12wk]
+    outputs:
+      moderately_sensitive:
+        plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk_new.jpeg 
  
   ## doesnt run locally due to dummy data
   ## can run in R using certain dfs
@@ -372,8 +387,7 @@ actions:
   #       plot_ITS_imd_2: output/pn_check_ITS_imd_2.jpeg 
   #       plot_ITS_imd_3: output/pn_check_ITS_imd_3.jpeg 
   #       plot_ITS_imd_4: output/pn_check_ITS_imd_4.jpeg 
-  #       plot_ITS_imd_5: output/pn_check_ITS_imd_5.jpeg 
-
+  #       plot_ITS_imd_5: output/pn_check_ITS_imd_5.jpeg
 
   # describe_ITS_plot_practice:
   #  run: r:latest analysis/pn_check_ITS_plot_practice.R
@@ -382,7 +396,6 @@ actions:
   #     moderately_sensitive:
   #        plot_ITS_practice_1: output/plot_ITS_practice_1.jpeg
   #        plot_ITS_practice_2: output/plot_ITS_practice_2.jpeg
-  
 
   describe_ITS_plot_region:
      run: r:latest analysis/pn_check_ITS_plot_region.R
