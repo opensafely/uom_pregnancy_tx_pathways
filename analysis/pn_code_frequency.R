@@ -9,7 +9,7 @@ library('tidyverse')
 setwd(here::here("output", "pn8wk"))
 df_input<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
-#col_types = cols(patient_id = col_integer(),delivery_code_number = col_number())
+col_types = cols(patient_id = col_integer(),delivery_code_number = col_number(), postnatal_8wk_code_present = col_number())
 
 df_input<- df_input %>% filter(postnatal_8wk_code_present >0)
 
