@@ -62,19 +62,34 @@ df6=filter(df_plot, age_cat=="40-44")
 df7=filter(df_plot, age_cat=="45-49")
 
 # 14-19
-m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
+m1.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df1)
 # 20-24
-m2.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df2)
+m2.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df2)
 # 25-29
-m3.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df3)
+m3.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df3)
 # 30-34
-m4.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df4)
+m4.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df4)
 # 35-39
-m5.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df5)
+m5.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df5)
 # 40-44
-m6.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df6)
+m6.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df6)
 # 45-49
-m7.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df7)
+m7.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df7)
+
+# # 14-19
+# m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
+# # 20-24
+# m2.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df2)
+# # 25-29
+# m3.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df3)
+# # 30-34
+# m4.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df4)
+# # 35-39
+# m5.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df5)
+# # 40-44
+# m6.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df6)
+# # 45-49
+# m7.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df7)
 
 # 14-19
 (est1.1 <- cbind(Estimate = coef(m1.1), confint(m1.1)))
