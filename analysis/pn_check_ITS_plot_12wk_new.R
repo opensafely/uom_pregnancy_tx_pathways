@@ -62,8 +62,8 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-# rate is with rounding/redaction, value without
-m1.0 <- glm.nb(rate~ offset(log(population)) + covid + times + time.since  , data = df_plot)
+m1.0 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since  , data = df_plot)
+#m1.0 <- glm.nb(rate~ offset(log(population)) + covid + times + time.since  , data = df_plot)
 #m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , data = df_plot)
 
 # estimates
