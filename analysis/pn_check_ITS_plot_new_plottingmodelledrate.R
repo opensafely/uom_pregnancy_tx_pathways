@@ -70,26 +70,20 @@ df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # rate is with rounding/redaction, value without
 m1.0 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since  , data = df_plot)
-#m1.0 <- glm.nb(rate~ offset(log(population)) + covid + times + time.since  , data = df_plot)
-#m1.0 <- glm.nb(value~ offset(log(population)) + covid + times + time.since  , data = df_plot)
 
 # estimates and confidence intervals 
 est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0))
-#exp1.0=exp(est1.0)
-DF=est1.0[2,]
-names(DF)[1]="coefficient"
+## exp(estimate) - to get IRR
+exp1.0=exp(est1.0)
+
+DF=bind_rows(est1.0[2,],exp1.0[2,])
+
+## binds coef and exp(coef) together 
+names(DF)[1]="coefficient & IRR"
 names(DF)[2]="ci_l"
 names(DF)[3]="ci_u"
 
-# save the model estimates as a csv. 
-#write_csv(as.data.frame(exp1.0), here::here("output", "ITS_estimates_1.0.csv"))
-
-## exp(estimate) - to get IRR
-exp1.0=exp(est1.0)
-DF.est<- exp1.0[2,]
-names(DF.est)[1]="IRR"
-names(DF.est)[2]="ci_l"
-names(DF.est)[3]="ci_u"
+write_csv(as.data.frame(exp1.0), here::here("output", "ITS_estimates_1.0.csv"))
 
 ## predict
 df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
@@ -97,7 +91,7 @@ df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRU
 df_plot_counter <- df_plot[, c(10:12, 5, 7)] 
 df_plot_counter$covid <- 0
 df_plot_counter$time.since <- 0
-View(df_plot_counter)
+#View(df_plot_counter)
 df_plot_counter$covid<- as.factor(df_plot_counter$covid)
 df_plot_counter <- cbind(df_plot_counter, "resp" = predict(m1.0, type = "response", se.fit = TRUE, newdata = df_plot_counter)[1:2])
 df_plot_counter2<-df_plot_counter[,8:9]
@@ -127,5 +121,5 @@ plot_ITS_overall<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=cov
 
 ggsave(
    plot= plot_ITS_overall,
-   filename="pn_check_ITS_overall_8wk_new.jpeg", path=here::here("output"),
+   filename="pn_check_ITS_overall_8wk_new_modelled.jpeg", path=here::here("output"),
 )
