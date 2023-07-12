@@ -83,7 +83,7 @@ names(DF)[1]="coefficient & IRR"
 names(DF)[2]="ci_l"
 names(DF)[3]="ci_u"
 
-write_csv(as.data.frame(exp1.0), here::here("output", "ITS_estimates_overall.csv"))
+write_csv(as.data.frame(DF), here::here("output", "ITS_estimates_overall.csv"))
 
 ## predict
 df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
