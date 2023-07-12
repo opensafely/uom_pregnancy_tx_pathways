@@ -305,6 +305,7 @@ actions:
     outputs:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk_new_modelled.jpeg
+        estimates: output/ITS_estimates_overall.csv
 
 
   describe_ITS_plot_overall_6wk:
