@@ -141,61 +141,83 @@ df_plot_overall$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49
 df_plot_overall$age_cat=factor(df_plot_overall$age_cat,levels = c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
 # IRR - incident rate ratio
-names(df_plot_overall)[1]="IRR"
+names(df_plot_overall)[1]="coefficient & IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
-## save this table? 
+## add to project.yaml
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_overall.csv"))
 
-#DF1.exp=df_plot_overall
-#DF1.exp
+#df_plot <- cbind(df_plot_overall, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
 
-## plots for each category
-
+## plots for each category ##
 ## 14-19
-# estimates using adjusted model?
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
- # adds fit and se.fit columns despite message below
-# Warning: "Outer names are only allowed for unnamed scalar atomic inputs" 
-plot_ITS_14_19<-ggplot(df1, aes(x=date, y=fit, group=covid)) + 
- theme_bw()+
-  annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-  #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-  geom_point(shape=4)+
-  geom_line(aes(y=fit/population),color="grey")+
-  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-  geom_smooth(color="black",se = FALSE)+
-  scale_y_continuous(labels = scales::percent)+
-  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-  theme(axis.text.x = element_text(angle = 60,hjust=1),
-        legend.position = "bottom",legend.title =element_blank())+
-  labs(
-    title = "Rate of postnatal checks over time",
 
-    x = "Month", 
-    y = "Rate") 
+df1_counter <- df1[, c(10:12, 5, 7)] 
+df1_counter$covid <- 0
+df1_counter$time.since <- 0
+#View(df_plot_counter)
+df1_counter$covid<- as.factor(df1_counter$covid)
+df1_counter <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
+df1_counter2<-df1_counter[,8:9]
+
+df1_f<- cbind(df1,df1_counter2)
+
+plot_ITS_14_19<-ggplot(df1_f, aes(x=date, y=fit*1000/population, group=covid))+
+  theme_bw()+ 
+    #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+    geom_point(shape=4)+ 
+    geom_line(aes(y=fit*1000/population),color="grey")+
+    geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="black") +
+    geom_line(aes(y=rate*1000),color="blue")+
+    geom_line(aes(y=resp.fit*1000/population),color="grey")+
+    geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="black") +
+    scale_x_date(date_labels = "%m-%Y", 
+                 breaks = seq(as.Date("2019-01-01"), as.Date(max(df_plot_f$date)), 
+                              by = "3 months"))+
+      theme(axis.text.x = element_text(angle = 60,hjust=1),
+          legend.position = "bottom",legend.title =element_blank())+
+    labs(
+      title = "",
+      x = "", 
+      y = "Number of PN checks per 1000 Delivery codes")
  
 # 20-24
+## need to edit from here
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
-plot_ITS_20_24<-ggplot(df2, aes(x=date, y=fit, group=covid)) + 
- theme_bw()+
-  annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-  #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-  geom_point(shape=4)+
-  geom_line(aes(y=fit/population),color="grey")+
-  geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-  geom_smooth(color="black",se = FALSE)+
-  scale_y_continuous(labels = scales::percent)+
-  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-  theme(axis.text.x = element_text(angle = 60,hjust=1),
-        legend.position = "bottom",legend.title =element_blank())+
-  labs(
-    title = "", 
 
-    x = "", 
-    y = "")
+df2_counter <- df2[, c(10:12, 5, 7)] 
+df2_counter$covid <- 0
+df2_counter$time.since <- 0
+#View(df_plot_counter)
+df2_counter$covid<- as.factor(df2_counter$covid)
+df2_counter <- cbind(df2_counter, "resp" = predict(m1.0, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
+df2_counter2<-df2_counter[,8:9]
+
+df1_f<- cbind(df1,df1_counter2)
+
+plot_ITS_14_19<-ggplot(df1_f, aes(x=date, y=fit*1000/population, group=covid))+
+  theme_bw()+ 
+    #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+    geom_point(shape=4)+ 
+    geom_line(aes(y=fit*1000/population),color="grey")+
+    geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="black") +
+    geom_line(aes(y=rate*1000),color="blue")+
+    geom_line(aes(y=resp.fit*1000/population),color="grey")+
+    geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="black") +
+    scale_x_date(date_labels = "%m-%Y", 
+                 breaks = seq(as.Date("2019-01-01"), as.Date(max(df_plot_f$date)), 
+                              by = "3 months"))+
+      theme(axis.text.x = element_text(angle = 60,hjust=1),
+          legend.position = "bottom",legend.title =element_blank())+
+    labs(
+      title = "",
+      x = "", 
+      y = "Number of PN checks per 1000 Delivery codes")
 
 # 25-29
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
