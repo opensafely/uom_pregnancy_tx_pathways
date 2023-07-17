@@ -49,7 +49,6 @@ df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
-# check this works on real data
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
@@ -68,7 +67,6 @@ df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 # time.since (months since covid) = P
 # our outcome var is rate (value) = Y
 
-# rate is with rounding/redaction, value without
 m1.0 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since  , data = df_plot)
 
 # estimates and confidence intervals 
