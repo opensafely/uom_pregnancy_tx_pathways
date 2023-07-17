@@ -25,9 +25,15 @@ df$month= format(df$date,"%m")
 df$times <- as.numeric(as.factor(df$date))
 
 ## redaction and rounding
+# df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
+# df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
+
 df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
 df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
+
+# df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
+# df$population_redacted <- as.numeric(df$population_redacted)
 
 df$population_redacted <- df$population
 df$population_redacted[which(df$population <=7)] <- NA
@@ -40,16 +46,17 @@ df$population_rounded<-round(df$population_redacted/5)*5
 df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
+## define dates
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
-df_plot<-ungroup(df_plot)
+#df_plot<-ungroup(df_plot)
 
 df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
 df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
-df_plot=df_plot%>% group_by(covid, age_cat)%>%mutate(time.since=1:n())
+df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # df for each age cat
@@ -62,19 +69,19 @@ df6=filter(df_plot, age_cat=="40-44")
 df7=filter(df_plot, age_cat=="45-49")
 
 # 14-19
-m1.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df1)
+m1.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df1)
 # 20-24
-m2.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df2)
+m2.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df2)
 # 25-29
-m3.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df3)
+m3.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df3)
 # 30-34
-m4.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df4)
+m4.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df4)
 # 35-39
-m5.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df5)
+m5.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df5)
 # 40-44
-m6.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df6)
+m6.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df6)
 # 45-49
-m7.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + times + time.since , data = df7)
+m7.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df7)
 
 # # 14-19
 # m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
@@ -90,6 +97,9 @@ m7.1 <- glm.nb(postnatal_8wk_code_present~ offset(log(population)) + covid + tim
 # m6.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df6)
 # # 45-49
 # m7.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df7)
+
+# estimates and confidence intervals 
+## exp(estimate) - to get IRR
 
 # 14-19
 (est1.1 <- cbind(Estimate = coef(m1.1), confint(m1.1)))

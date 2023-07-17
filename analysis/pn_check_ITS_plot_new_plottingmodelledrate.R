@@ -8,7 +8,7 @@ library("MASS")
 
 ## Import data
 df <- read.csv(
- here::here("output", "pn6wk", "measure_postnatal_check_rate.csv"))
+ here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
  
 #  col_types = cols_only(
 #    delivery_code_present  = col_double(),
@@ -116,8 +116,8 @@ plot_ITS_overall<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=cov
       title = "",
       x = "", 
       y = "Number of PN checks per 1000 Delivery codes")
-    
+
 ggsave(
-   plot= plot_ITS_overall_6wk,
-   filename="pn_check_ITS_overall_6wk_new.jpeg", path=here::here("output"),
+   plot= plot_ITS_overall,
+   filename="pn_check_ITS_overall_8wk_new_modelled.jpeg", path=here::here("output"),
 )
