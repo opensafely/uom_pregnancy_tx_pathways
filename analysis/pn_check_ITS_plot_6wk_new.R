@@ -97,7 +97,7 @@ df_plot_counter2<-df_plot_counter[,8:9]
 df_plot_f<- cbind(df_plot,df_plot_counter2)
 
 ##add labels etc
-plot_ITS_overall<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ ###fit or rate??
+plot_ITS_overall_6wk<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ ###fit or rate??
   theme_bw()+ 
     #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
