@@ -101,12 +101,21 @@ plot_ITS_overall<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=cov
   theme_bw()+ 
     #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
-    geom_point(shape=4)+ 
-    geom_line(aes(y=fit*1000/population),color="grey")+
-    geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="black") +
-    geom_line(aes(y=rate*1000),color="blue")+
-    geom_line(aes(y=resp.fit*1000/population),color="grey")+
-    geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="black") +
+    #geom_point(shape=4)+ 
+    
+    ## actual rate
+    geom_point(shape=4,aes(x=date, y=rate*1000))+
+    #geom_line(aes(y=rate*1000),color="blue")+
+    
+    #prediction model
+    geom_line(color="blue")+
+    geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+    
+    #prediction model - no covid - counterfactual
+    #geom_point(shape=4,aes(y=fit*1000/population),color="blue")+
+    geom_line(aes(y=resp.fit*1000/population),color="red")+
+    geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red") +
+    
     scale_x_date(date_labels = "%m-%Y", 
                  breaks = seq(as.Date("2019-01-01"), as.Date(max(df_plot_f$date)), 
                               by = "3 months"))+
