@@ -141,7 +141,7 @@ df_plot_overall$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49
 df_plot_overall$age_cat=factor(df_plot_overall$age_cat,levels = c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
 # IRR - incident rate ratio
-names(df_plot_overall)[1]="coefficient & IRR"
+names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
@@ -386,9 +386,9 @@ plot_ITS_45_49<-ggplot(df7_f, aes(x=date, y=fit*1000/population, group=covid))+
 df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
 #df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
-# names(df_age_cat)[1]="IRR"
-# names(df_age_cat)[2]="ci_l"
-# names(df_age_cat)[3]="ci_u"
+names(df_age_cat)[1]="IRR"
+names(df_age_cat)[2]="ci_l"
+names(df_age_cat)[3]="ci_u"
 
 ## ITS plot with panels for each age cat
 
@@ -445,10 +445,6 @@ facet_grid(age_cat~., scales = "free", space = "free")+
        legend.position="bottom")
 
 ggsave(plot= plot_ITS_age_cat_2,filename="plot_ITS_age_cat_2.jpeg", path=here::here("output"),)
-
-
-####error in 'eval' (predvars, data, env): object 'times' not found
-##cbind .. predict.lm ->model.frame
 
 
 ##add labels etc
