@@ -153,7 +153,7 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat
 ## 14-19
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
 
-## times variable isnt being selected here 
+## added c8 to below as times wasnt being selected 
 df1_counter <- df1[, c(10:12, 5, 7:8)] 
 df1_counter$covid <- 0
 df1_counter$time.since <- 0
@@ -183,7 +183,14 @@ plot_ITS_14_19<-ggplot(df1_f, aes(x=date, y=fit*1000/population, group=covid))+
       title = "",
       x = "", 
       y = "Number of PN checks per 1000 Delivery codes")
- 
+
+# plot_ITS_age_cat<-ggplot(df_plot, aes(x=date, y=value, group=covid))+ theme_bw()+ 
+#     annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+#     annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+#     geom_point(shape=4)+ geom_smooth(color="black",se = FALSE)+ scale_y_continuous(labels = scales::percent)+ scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+ 
+#     theme(axis.text.x = element_text(angle = 60,hjust=1), legend.position = "bottom",legend.title =element_blank())+ labs(title = "", x = "", y = "")
+
+
 # 20-24
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
 
@@ -383,8 +390,9 @@ plot_ITS_45_49<-ggplot(df7_f, aes(x=date, y=fit*1000/population, group=covid))+
       x = "", 
       y = "Number of PN checks per 1000 Delivery codes")
 
+##line 395 was commented out before
 df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
-#df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
 names(df_age_cat)[1]="IRR"
 names(df_age_cat)[2]="ci_l"
@@ -401,8 +409,10 @@ plot_ITS_age_cat_1<-ggplot(data=df_age_cat,aes(x=date,y=rate,group=covid)) +
   geom_smooth(se = FALSE,fullrange=FALSE, color="black")+
   update_geom_defaults("smooth", list(size = .5))+
   
-  facet_grid(rows = vars(age_cat),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  facet_grid(rows = vars(group),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  #facet_grid(rows = vars(age_cat),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
+
   scale_y_continuous(labels = scales::label_number(accuracy = 0.01))+
   
   scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
