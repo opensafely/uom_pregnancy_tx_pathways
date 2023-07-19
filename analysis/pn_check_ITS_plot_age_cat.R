@@ -154,13 +154,13 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat
 df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
 
 ## added c8 to below as times wasnt being selected 
-df1_counter <- df1[, c(10:12, 5, 7:8)] 
+df1_counter <- df1[, c(2, 10:12, 6:8, 11:12,13)] 
 df1_counter$covid <- 0
 df1_counter$time.since <- 0
 #View(df_plot_counter)
 df1_counter$covid<- as.factor(df1_counter$covid)
 df1_counter <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
-df1_counter2<-df1_counter[,8:9]
+df1_counter2<-df1_counter[,13:14]
 
 df1_f<- cbind(df1,df1_counter2)
 
@@ -194,13 +194,13 @@ plot_ITS_14_19<-ggplot(df1_f, aes(x=date, y=fit*1000/population, group=covid))+
 # 20-24
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
 
-df2_counter <- df2[, c(10:12, 5, 7:8)] 
+df2_counter <- df2[, c(2, 10:12, 6:8, 11:12,13)] 
 df2_counter$covid <- 0
 df2_counter$time.since <- 0
 #View(df_plot_counter)
 df2_counter$covid<- as.factor(df2_counter$covid)
 df2_counter <- cbind(df2_counter, "resp" = predict(m2.1, type = "response", se.fit = TRUE, newdata = df2_counter)[1:2])
-df2_counter2<-df2_counter[,8:9]
+df2_counter2<-df2_counter[,13:14]
 
 df2_f<- cbind(df2,df2_counter2)
 
@@ -227,13 +227,13 @@ plot_ITS_20_24<-ggplot(df2_f, aes(x=date, y=fit*1000/population, group=covid))+
 # 25-29
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
 
-df3_counter <- df3[, c(10:12, 5, 7:8)] 
+df3_counter <- df3[, c(2, 10:12, 6:8, 11:12,13)] 
 df3_counter$covid <- 0
 df3_counter$time.since <- 0
 #View(df_plot_counter)
 df3_counter$covid<- as.factor(df3_counter$covid)
 df3_counter <- cbind(df3_counter, "resp" = predict(m3.1, type = "response", se.fit = TRUE, newdata = df3_counter)[1:2])
-df3_counter2<-df3_counter[,8:9]
+df3_counter2<-df3_counter[,13:14]
 
 df3_f<- cbind(df3,df3_counter2)
 
@@ -260,13 +260,13 @@ plot_ITS_25_29<-ggplot(df3_f, aes(x=date, y=fit*1000/population, group=covid))+
 # 30-34
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
 
-df4_counter <- df4[, c(10:12, 5, 7:8)] 
+df4_counter <- df4[, c(2, 10:12, 6:8, 11:12,13)] 
 df4_counter$covid <- 0
 df4_counter$time.since <- 0
 #View(df_plot_counter)
 df4_counter$covid<- as.factor(df4_counter$covid)
 df4_counter <- cbind(df4_counter, "resp" = predict(m4.1, type = "response", se.fit = TRUE, newdata = df4_counter)[1:2])
-df4_counter2<-df4_counter[,8:9]
+df4_counter2<-df4_counter[,13:14]
 
 df4_f<- cbind(df4,df4_counter2)
 
@@ -293,13 +293,13 @@ plot_ITS_30_34<-ggplot(df4_f, aes(x=date, y=fit*1000/population, group=covid))+
 # 35-39
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
 
-df5_counter <- df5[, c(10:12, 5, 7:8)] 
+df5_counter <- df5[, c(2, 10:12, 6:8, 11:12,13)] 
 df5_counter$covid <- 0
 df5_counter$time.since <- 0
 #View(df_plot_counter)
 df5_counter$covid<- as.factor(df5_counter$covid)
 df5_counter <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.fit = TRUE, newdata = df5_counter)[1:2])
-df5_counter2<-df5_counter[,8:9]
+df5_counter2<-df5_counter[,13:14]
 
 df5_f<- cbind(df5,df5_counter2)
 
@@ -326,13 +326,13 @@ plot_ITS_35_39<-ggplot(df5_f, aes(x=date, y=fit*1000/population, group=covid))+
 # 40-44
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
 
-df6_counter <- df6[, c(10:12, 5, 7:8)] 
+df6_counter <- df6[, c(2, 10:12, 6:8, 11:12,13)] 
 df6_counter$covid <- 0
 df6_counter$time.since <- 0
 #View(df_plot_counter)
 df6_counter$covid<- as.factor(df6_counter$covid)
 df6_counter <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
-df6_counter2<-df6_counter[,8:9]
+df6_counter2<-df6_counter[,13:!4]
 
 df6_f<- cbind(df6,df6_counter2)
 
@@ -360,13 +360,13 @@ plot_ITS_40_44<-ggplot(df6_f, aes(x=date, y=fit*1000/population, group=covid))+
 # 45-49
 df7 <- cbind(df7, "resp" = predict(m7.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
 
-df7_counter <- df7[, c(10:12, 5, 7:8)] 
+df7_counter <- df7[, c(2, 10:12, 6:8, 11:12,13)] 
 df7_counter$covid <- 0
 df7_counter$time.since <- 0
 #View(df_plot_counter)
 df7_counter$covid<- as.factor(df7_counter$covid)
 df7_counter <- cbind(df7_counter, "resp" = predict(m7.1, type = "response", se.fit = TRUE, newdata = df7_counter)[1:2])
-df7_counter2<-df7_counter[,8:9]
+df7_counter2<-df7_counter[,13:14]
 
 df7_f<- cbind(df7,df7_counter2)
 
@@ -392,7 +392,7 @@ plot_ITS_45_49<-ggplot(df7_f, aes(x=date, y=fit*1000/population, group=covid))+
 
 ##line 395 was commented out before
 df_age_cat=bind_rows(df1,df2,df3,df4,df5,df6,df7)
-df_age_cat$group=factor(df_age_cat$group,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+df_age_cat$age_cat=factor(df_age_cat$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
 
 names(df_age_cat)[1]="IRR"
 names(df_age_cat)[2]="ci_l"
@@ -415,7 +415,7 @@ plot_ITS_age_cat_1<-ggplot(data=df_age_cat,aes(x=date,y=rate,group=covid)) +
 
   scale_y_continuous(labels = scales::label_number(accuracy = 0.01))+
   
-  scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
+  scale_x_date(date_breaks = "3 month",date_labels =  "%Y-%m")+
   
   theme(axis.text.x = element_text(angle = 60,hjust=1),
         legend.position = "bottom",legend.title =element_blank(),
