@@ -221,7 +221,7 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
   labs(
     title = "",
     x = "", 
-    y = "Number of consultations per 1000 patients")
+    y = "Number of PN checks per 1000 patients")
 
 #plot_ITS
 
