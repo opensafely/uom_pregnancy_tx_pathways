@@ -326,13 +326,13 @@ actions:
      needs: [generate_8wk_cohort, generate_measures_8wk]
      outputs:
        moderately_sensitive:
-          plot_ITS_age_cat: output/plot_ITS_agecat.jpeg
+          plot_ITS_age_cat: output/plot_ITS_age_cat.jpeg
           plot_ITS_age_cat_data: output/plot_ITS_check_age_cat.csv
           plot_ITS_IRR_age_cat: output/plot_ITS_age_cat_IRR.jpeg
           plot_ITS_IRR_age_cat_data: output/ITS_plot_age_cat_IRR_overall.csv
 
   describe_ITS_plot_ethnicity:
-     run: r:latest analysis/pn_check_ITS_plot_ethnicity.R
+     run: r:latest analysis/pn_check_ITS_plot_ethnicity_new.R
      needs: [generate_8wk_cohort, generate_measures_8wk]
      outputs:
        moderately_sensitive:
@@ -363,6 +363,7 @@ actions:
        moderately_sensitive:
           plot_ITS_imd_1: output/plot_ITS_imd_new_1.jpeg
           plot_ITS_imd_2: output/plot_ITS_imd_new_2.jpeg
+          plot_ITS_imd_data: output/plot_ITS_check_imd.csv
   #       plot_ITS_overall: output/pn_check_ITS_imd.jpeg 
   #       plot_ITS_imd_0: output/pn_check_ITS_imd_0.jpeg 
   #       plot_ITS_imd_1: output/pn_check_ITS_imd_1.jpeg 
