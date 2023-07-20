@@ -112,10 +112,8 @@ actions:
         measure_csv: output/pn6wk/measure_*.csv
 
   ## code frequencies
-  ## do we also want to run other cohorts as checks?
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R
-    #needs: [generate_study_population]
     needs: [generate_8wk_cohort]
     outputs:
       moderately_sensitive:
@@ -125,7 +123,6 @@ actions:
   describe_del_code_freq_with_names:
     run: r:latest analysis/del_code_frequency_with_names.R
     needs: [generate_8wk_cohort, describe_del_code_freq]
-    #needs: [generate_study_population, describe_del_code_freq]
     outputs:
       moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names.csv
@@ -133,14 +130,12 @@ actions:
   describe_del_code_freq_with_names_reduced:
     run: r:latest analysis/del_code_frequency_with_names_reduced.R
     needs: [generate_8wk_cohort, describe_del_code_freq_with_names]
-    #needs: [generate_study_population, describe_del_code_freq_with_names]
     outputs:
      moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names_reduced.csv
         
   describe_pn_code_freq:
     run: r:latest analysis/pn_code_frequency.R
-    #needs: [generate_study_population]
     needs: [generate_8wk_cohort]
     outputs:
       moderately_sensitive:
@@ -149,7 +144,6 @@ actions:
   describe_pn_code_freq_with_names:
      run: r:latest analysis/pn_code_frequency_with_names.R
      needs: [generate_8wk_cohort, describe_pn_code_freq]
-     #needs: [generate_study_population, describe_del_code_freq]
      outputs:
        moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names.csv   
@@ -190,13 +184,6 @@ actions:
     outputs:
       moderately_sensitive:
         plot4: output/monthly_pn_rate_measures8wkcode_by_imd_8wk.jpeg
- 
-  # describe_pn_rate_plots_by_practice:
-  #   run: r:latest analysis/pn_check_using_measures_by_practice.R
-  #   needs: [generate_study_population_measures, generate_measures]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot5: output/monthly_pn_rate_measures8wkcode_by_practice.jpeg
   
   describe_pn_rate_plots_by_practice_8wk:
     run: r:latest analysis/pn_check_using_measures_by_practice_8wk.R
@@ -290,8 +277,6 @@ actions:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk.jpeg 
 
-  ## this is replacing "y=value" with "y=fit" in line 89 to match other plots
-  ## as are other "_new" scripts below
   describe_ITS_plot_overall_new:
     run: r:latest analysis/pn_check_ITS_plot_new.R
     needs: [generate_8wk_cohort, generate_measures_8wk]
@@ -299,6 +284,7 @@ actions:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk_new.jpeg
 
+## current ITS plot - has run on server
   describe_ITS_plot_overall_new_modelled:
     run: r:latest analysis/pn_check_ITS_plot_new_plottingmodelledrate.R
     needs: [generate_8wk_cohort, generate_measures_8wk]
@@ -307,37 +293,34 @@ actions:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk_new_modelled.jpeg
         estimates: output/ITS_estimates_overall.csv
 
-
-  describe_ITS_plot_overall_6wk:
-    run: r:latest analysis/pn_check_ITS_plot_6wk.R
-    needs: [generate_6wk_cohort, generate_measures_6wk]
-    outputs:
-      moderately_sensitive:
-        plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk.jpeg 
+  # describe_ITS_plot_overall_6wk:
+  #   run: r:latest analysis/pn_check_ITS_plot_6wk.R
+  #   needs: [generate_6wk_cohort, generate_measures_6wk]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk.jpeg 
 
   describe_ITS_plot_overall_6wk_new:
     run: r:latest analysis/pn_check_ITS_plot_6wk_new.R
     needs: [generate_6wk_cohort, generate_measures_6wk]
     outputs:
       moderately_sensitive:
-        plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk_new.jpeg 
+        plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk_new_modelled.jpeg 
 
-  describe_ITS_plot_overall_12wk:
-    run: r:latest analysis/pn_check_ITS_plot_12wk.R
-    needs: [generate_12wk_cohort, generate_measures_12wk]
-    outputs:
-      moderately_sensitive:
-        plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk.jpeg 
+  # describe_ITS_plot_overall_12wk:
+  #   run: r:latest analysis/pn_check_ITS_plot_12wk.R
+  #   needs: [generate_12wk_cohort, generate_measures_12wk]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk.jpeg 
  
   describe_ITS_plot_overall_12wk_new:
     run: r:latest analysis/pn_check_ITS_plot_12wk_new.R
     needs: [generate_12wk_cohort, generate_measures_12wk]
     outputs:
       moderately_sensitive:
-        plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk_new.jpeg 
+        plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk_new_modelled.jpeg 
  
-  ## doesnt run locally due to dummy data
-  ## can run in R using certain dfs
   describe_ITS_plot_age_cat:
      run: r:latest analysis/pn_check_ITS_plot_age_cat_vp.R
      needs: [generate_8wk_cohort, generate_measures_8wk]
@@ -347,7 +330,6 @@ actions:
           plot_ITS_age_cat_data: output/plot_ITS_check_age_cat.csv
           plot_ITS_IRR_age_cat: output/plot_ITS_age_cat_IRR.jpeg
           plot_ITS_IRR_age_cat_data: output/ITS_plot_age_cat_IRR_overall.csv
-
 
   describe_ITS_plot_ethnicity:
      run: r:latest analysis/pn_check_ITS_plot_ethnicity.R

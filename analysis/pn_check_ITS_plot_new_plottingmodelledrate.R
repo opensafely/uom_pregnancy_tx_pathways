@@ -61,7 +61,6 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-## new vars so far
 # times (months since start of study) = T
 # covid (binary) = D
 # time.since (months since covid) = P
