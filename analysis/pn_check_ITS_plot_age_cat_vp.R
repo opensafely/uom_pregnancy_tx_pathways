@@ -83,7 +83,6 @@ m6.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded
 # 45-49
 m7.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df7)
 
-
 # estimates and confidence intervals 
 ## exp(estimate) - to get IRR
 
@@ -125,11 +124,6 @@ names(df_plot_overall)[3]="ci_u"
 ## add to project.yaml
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall.csv"))
-
-
-
-
-
 
 ## plots for each category ##
 ## model prediction
@@ -187,12 +181,11 @@ DF_counter$age_cat=factor(DF_counter$age_cat,levels=c("14-19","20-24","25-29","3
 DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
 
 
-
 ### plot 
 ##add labels etc
 plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
   
-  #actual rage point
+  #actual rate point
   geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
   
   # prediction model  
@@ -231,9 +224,6 @@ ggsave(
   )
 
 write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
-
-
-
 
 
 #### creates plot with IRRs and error bars/CIs
