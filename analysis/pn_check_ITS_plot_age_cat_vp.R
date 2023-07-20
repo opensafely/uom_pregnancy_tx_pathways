@@ -108,7 +108,6 @@ exp6.1=exp(est6.1)
 (est7.1 <- cbind(Estimate = coef(m7.1), confint(m7.1)))
 exp7.1=exp(est7.1)
 
-
 # creates combined df with estimates and CIs for each age_cat
 df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
 
@@ -199,7 +198,7 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
   # group by indication  
   facet_grid(rows = vars(age_cat),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
-  # them
+  # theme
   theme_bw()+ 
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60",alpha=0.5)+   
   

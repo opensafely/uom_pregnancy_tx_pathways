@@ -61,7 +61,6 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-## new vars so far
 # times (months since start of study) = T
 # covid (binary) = D
 # time.since (months since covid) = P
@@ -97,16 +96,25 @@ df_plot_counter2<-df_plot_counter[,8:9]
 df_plot_f<- cbind(df_plot,df_plot_counter2)
 
 ##add labels etc
-plot_ITS_overall_12wk<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ ###fit or rate??
+plot_ITS_overall<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ ###fit or rate??
   theme_bw()+ 
     #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
-    geom_point(shape=4)+ 
-    geom_line(aes(y=fit*1000/population),color="grey")+
-    geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="black") +
-    geom_line(aes(y=rate*1000),color="blue")+
-    geom_line(aes(y=resp.fit*1000/population),color="grey")+
-    geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="black") +
+    #geom_point(shape=4)+ 
+    
+    ## actual rate
+    geom_point(shape=4,aes(x=date, y=rate*1000))+
+    #geom_line(aes(y=rate*1000),color="blue")+
+    
+    #prediction model
+    geom_line(color="blue")+
+    geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+    
+    #prediction model - no covid - counterfactual
+    #geom_point(shape=4,aes(y=fit*1000/population),color="blue")+
+    geom_line(aes(y=resp.fit*1000/population),color="red")+
+    geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red") +
+    
     scale_x_date(date_labels = "%m-%Y", 
                  breaks = seq(as.Date("2019-01-01"), as.Date(max(df_plot_f$date)), 
                               by = "3 months"))+
@@ -118,6 +126,6 @@ plot_ITS_overall_12wk<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, grou
       y = "Number of PN checks per 1000 Delivery codes")
 
 ggsave(
-   plot= plot_ITS_overall_12wk,
-   filename="pn_check_ITS_overall_12wk_new.jpeg", path=here::here("output"),
+   plot= plot_ITS_overall,
+   filename="pn_check_ITS_overall_12wk_new_modelled.jpeg", path=here::here("output"),
 )
