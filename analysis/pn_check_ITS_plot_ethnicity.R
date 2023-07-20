@@ -57,7 +57,7 @@ df2=filter(df_plot, ethnicity=="Mixed")
 df3=filter(df_plot, ethnicity=="Asian or Asian British")
 df4=filter(df_plot, ethnicity=="Black or Black British")
 df5=filter(df_plot, ethnicity=="Other")
-df6=filter(df_plot, ethnicity=="Unknown")
+#df6=filter(df_plot, ethnicity=="Unknown")
 
 # White
 m1.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df1)
@@ -70,7 +70,7 @@ m4.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , dat
 # Other
 m5.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df5)
 # Unknown
-m6.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df6)
+#m6.1 <- glm.nb(value~ offset(log(population)) + covid + times + time.since , data = df6)
 
 # estimates and confidence intervals 
 ## exp(estimate) - to get IRR
@@ -91,8 +91,8 @@ exp4.1=exp(est4.1)
 (est5.1 <- cbind(Estimate = coef(m5.1), confint(m5.1)))
 exp5.1=exp(est5.1)
 # 5
-(est6.1 <- cbind(Estimate = coef(m6.1), confint(m6.1)))
-exp6.1=exp(est6.1)
+#(est6.1 <- cbind(Estimate = coef(m6.1), confint(m6.1)))
+#exp6.1=exp(est6.1)
 
 ## save estimates as .csv
 # write_csv(as.data.frame(exp1.1), here::here("output", "ITS_estimates_1.1.csv"))
@@ -103,14 +103,14 @@ exp6.1=exp(est6.1)
 # write_csv(as.data.frame(exp6.1), here::here("output", "ITS_estimates_6.1.csv"))
 
 # creates combined df with estimates and CIs for each eth category
-df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,])
 
 #adds ethnicity column
 #df_plot_overall$ethnicity=c("0","1","2","3","4","5")
-df_plot_overall$ethnicity=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown")
+df_plot_overall$ethnicity=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
 
 #df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("0","1","2","3","4","5"))
-df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
+df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
 
 # IRR - incident rate ratio
 names(df_plot_overall)[1]="IRR"
@@ -128,10 +128,10 @@ df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
-df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])
+#df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])
 
-DF=rbind(df1,df2,df3,df4,df5,df6)
-DF$ethnicity=factor(DF$ethnicity,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
+DF=rbind(df1,df2,df3,df4,df5)
+DF$ethnicity=factor(DF$ethnicity,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
 
 # prediction -non covid - counterfactual trace
 df1_counter <- subset(df1, select=-c(fit,se.fit))
@@ -159,147 +159,15 @@ df5_counter$covid=as.factor(0)
 df5_counter$time.since=0
 df5_counter  <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.fit = TRUE, newdata = df5_counter)[1:2])
 
-df6_counter <- subset(df6, select=-c(fit,se.fit))
-df6_counter$covid=as.factor(0)
-df6_counter$time.since=0
-df6_counter  <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
+#df6_counter <- subset(df6, select=-c(fit,se.fit))
+#df6_counter$covid=as.factor(0)
+#df6_counter$time.since=0
+#df6_counter  <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
 
-DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
-DF_counter$ethnicity=factor(DF_counter$ethnicity,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
+DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter)
+DF_counter$ethnicity=factor(DF_counter$ethnicity,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
 
 DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
-
-# plot_ITS_eth_0<-ggplot(df1, aes(x=date, y=fit, group=covid)) + 
-#  theme_bw()+
-#   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-#   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-#   geom_point(shape=4)+
-#   geom_line(aes(y=fit/population),color="grey")+
-#   geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-#   geom_smooth(color="black",se = FALSE)+
-#   scale_y_continuous(labels = scales::percent)+
-#   scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-#   theme(axis.text.x = element_text(angle = 60,hjust=1),
-#         legend.position = "bottom",legend.title =element_blank())+
-#   labs(
-#     title = "Rate of postnatal checks over time",
-
-#     x = "Month", 
-#     y = "Rate") 
- 
-# # "Mixed"
-
-# plot_ITS_eth_1<-ggplot(df2, aes(x=date, y=fit, group=covid)) + 
-#  theme_bw()+
-#   annotate(geom = "rect", xmin = as.Date("2019-03-01"),xmax = as.Date("2020-03-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-#   #annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-#   geom_point(shape=4)+
-#   geom_line(aes(y=fit/population),color="grey")+
-#   geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-#   geom_smooth(color="black",se = FALSE)+
-#   scale_y_continuous(labels = scales::percent)+
-#   scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-#   theme(axis.text.x = element_text(angle = 60,hjust=1),
-#         legend.position = "bottom",legend.title =element_blank())+
-#   labs(
-#     title = "", 
-
-#     x = "", 
-#     y = "")
-
-# # "Asian or Asian British"
-# df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
-# plot_ITS_eth_2<-ggplot(df3, aes(x=date, y=fit, group=covid)) + 
-#  theme_bw()+
-#   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-#   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-#   geom_point(shape=4)+
-#   geom_line(aes(y=fit/population),color="grey")+
-#   geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-#   geom_smooth(color="black",se = FALSE)+
-#   scale_y_continuous(labels = scales::percent)+
-#   scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-#   theme(axis.text.x = element_text(angle = 60,hjust=1),
-#         legend.position = "bottom",legend.title =element_blank())+
-#   labs(
-#     title = "",
-
-#     x = "", 
-#     y = "")
-
-# # "Black or Black British"
-# df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
-# plot_ITS_eth_3<-ggplot(df4, aes(x=date, y=fit, group=covid)) + 
-#  theme_bw()+
-#   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-#   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-#   geom_point(shape=4)+
-#   geom_line(aes(y=fit/population),color="grey")+
-#   geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-#   geom_smooth(color="black",se = FALSE)+
-#   scale_y_continuous(labels = scales::percent)+
-#   scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-#   theme(axis.text.x = element_text(angle = 60,hjust=1),
-#         legend.position = "bottom",legend.title =element_blank())+
-#   labs(
-#     title = "",
-
-#     x = "", 
-#     y = "")
-
-# # "other"
-# df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
-# plot_ITS_eth_4<-ggplot(df5, aes(x=date, y=fit, group=covid)) + 
-#  theme_bw()+
-#   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-#   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-#   geom_point(shape=4)+
-#   geom_line(aes(y=fit/population),color="grey")+
-#   geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-#   geom_smooth(color="black",se = FALSE)+
-#   scale_y_continuous(labels = scales::percent)+
-#   scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-#   theme(axis.text.x = element_text(angle = 60,hjust=1),
-#         legend.position = "bottom",legend.title =element_blank())+
-#   labs(
-#     title = "",
-
-#     x = "", 
-#     y = "")
-
-# # "Unknown"
-# df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])#select fit & se.fit
-# plot_ITS_eth_5<-ggplot(df6, aes(x=date, y=fit, group=covid)) + 
-#  theme_bw()+
-#   annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+
-#   annotate(geom = "rect", xmin = as.Date("2020-04-01"),xmax = as.Date("2021-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
-#   geom_point(shape=4)+
-#   geom_line(aes(y=fit/population),color="grey")+
-#   geom_ribbon(aes(ymin=(fit-1.96*se.fit)/population, ymax=(fit+1.96*se.fit)/population),alpha=0.2,fill="black") +
-#   geom_smooth(color="black",se = FALSE)+
-#   scale_y_continuous(labels = scales::percent)+
-#   scale_x_date(date_breaks = "1 month",date_labels =  "%Y-%m")+
-#   theme(axis.text.x = element_text(angle = 60,hjust=1),
-#         legend.position = "bottom",legend.title =element_blank())+
-#   labs(
-#     title = "",
-
-#     x = "", 
-#     y = "")
-
-# df1$group="White"
-# df2$group="Mixed"
-# df3$group="Asian or Asian British"
-# df4$group="Black or Black British"
-# df5$group="Other"
-# df6$group="Unknown"
-
-#df_eth=bind_rows(df1,df2,df3,df4,df5,df6)
-#df_eth$group=factor(df_eth$group,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other", "Unknown"))
-
-#names(df_eth)[1]="IRR"
-#names(df_eth)[2]="ci_l"
-#names(df_eth)[3]="ci_u"
 
 ## ITS plot with panels
 
