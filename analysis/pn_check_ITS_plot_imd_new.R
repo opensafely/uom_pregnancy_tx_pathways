@@ -96,7 +96,7 @@ exp5.1=exp(est5.1)
 exp6.1=exp(est6.1)
 
 # creates combined df with estimates and CIs for each imd cat
-df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
 
 df_plot_overall$imd=c("0","1","2","3","4","5")
 df_plot_overall$imd=factor(df_plot_overall$imd,levels = c("0","1","2","3","4","5"))
