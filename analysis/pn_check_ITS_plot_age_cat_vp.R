@@ -215,7 +215,6 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
     y = "Number of PN checks per 1000 patients")
 
 #plot_ITS
-
 ggsave(
   plot= plot_ITS,
   filename="plot_ITS_age_cat.jpeg", path=here::here("output"), dpi = 300
@@ -223,10 +222,7 @@ ggsave(
 
 write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
 
-
 #### creates plot with IRRs and error bars/CIs
-
-## need to hash out text line to run locally
 plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
   geom_point()+
   
