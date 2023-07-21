@@ -284,7 +284,6 @@ actions:
       moderately_sensitive:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk_new.jpeg
 
-## current ITS plot - has run on server
   describe_ITS_plot_overall_new_modelled:
     run: r:latest analysis/pn_check_ITS_plot_new_plottingmodelledrate.R
     needs: [generate_8wk_cohort, generate_measures_8wk]
@@ -293,13 +292,6 @@ actions:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk_new_modelled.jpeg
         estimates: output/ITS_estimates_overall.csv
 
-  # describe_ITS_plot_overall_6wk:
-  #   run: r:latest analysis/pn_check_ITS_plot_6wk.R
-  #   needs: [generate_6wk_cohort, generate_measures_6wk]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk.jpeg 
-
   describe_ITS_plot_overall_6wk_new:
     run: r:latest analysis/pn_check_ITS_plot_6wk_new.R
     needs: [generate_6wk_cohort, generate_measures_6wk]
@@ -307,13 +299,6 @@ actions:
       moderately_sensitive:
         plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk_new_modelled.jpeg 
 
-  # describe_ITS_plot_overall_12wk:
-  #   run: r:latest analysis/pn_check_ITS_plot_12wk.R
-  #   needs: [generate_12wk_cohort, generate_measures_12wk]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk.jpeg 
- 
   describe_ITS_plot_overall_12wk_new:
     run: r:latest analysis/pn_check_ITS_plot_12wk_new.R
     needs: [generate_12wk_cohort, generate_measures_12wk]
@@ -339,30 +324,14 @@ actions:
           plot_ITS_eth_1: output/plot_ITS_eth_1.jpeg
           plot_ITS_eth_2: output/plot_ITS_eth_2.jpeg
           plot_ITS_eth_data: output/plot_ITS_check_ethnicity.csv
-  #       plot_ITS_eth_0: output/pn_check_ITS_eth_0.jpeg 
-  #       plot_ITS_eth_1: output/pn_check_ITS_eth_1.jpeg 
-  #       plot_ITS_eth_2: output/pn_check_ITS_eth_2.jpeg 
-  #       plot_ITS_eth_3: output/pn_check_ITS_eth_3.jpeg 
-  #       plot_ITS_eth_4: output/pn_check_ITS_eth_4.jpeg 
-  #       plot_ITS_eth_5: output/pn_check_ITS_eth_5.jpeg 
-  
-  # describe_ITS_plot_imd:
-  #    run: r:latest analysis/pn_check_ITS_plot_imd.R
-  #    needs: [generate_8wk_cohort, generate_measures_8wk]
-  #    outputs:
-  #      moderately_sensitive:
-  #         plot_ITS_imd_1: output/plot_ITS_imd_1.jpeg
-  #         plot_ITS_imd_2: output/plot_ITS_imd_2.jpeg
-  # #       plot_ITS_overall: output/pn_check_ITS_imd.jpeg 
-  
-  ## replaced code above - this has run on server
+ 
   describe_ITS_plot_imd_new:
      run: r:latest analysis/pn_check_ITS_plot_imd_new.R
      needs: [generate_8wk_cohort, generate_measures_8wk]
      outputs:
        moderately_sensitive:
-          plot_ITS_imd_1: output/plot_ITS_imd_new_1.jpeg
-          plot_ITS_imd_2: output/plot_ITS_imd_new_2.jpeg
+          plot_ITS_imd_1: output/plot_ITS_imd_1.jpeg
+          plot_ITS_imd_2: output/plot_ITS_imd_2.jpeg
           plot_ITS_imd_data: output/plot_ITS_check_imd.csv
   #       plot_ITS_overall: output/pn_check_ITS_imd.jpeg 
   #       plot_ITS_imd_0: output/pn_check_ITS_imd_0.jpeg 
@@ -381,12 +350,12 @@ actions:
   #        plot_ITS_practice_2: output/plot_ITS_practice_2.jpeg
 
   describe_ITS_plot_region:
-     run: r:latest analysis/pn_check_ITS_plot_region.R
+     run: r:latest analysis/pn_check_ITS_plot_region_new.R
      needs: [generate_8wk_cohort, generate_measures_8wk]
      outputs:
       moderately_sensitive:
-         plot_ITS_practice_1: output/plot_ITS_region_1.jpeg
-         plot_ITS_practice_2: output/plot_ITS_region_2.jpeg
- 
+         plot_ITS_region_1: output/plot_ITS_region_1.jpeg
+         plot_ITS_region_2: output/plot_ITS_region_2.jpeg
+         plot_ITS_region_data: output/plot_ITS_check_region.csv
 
  

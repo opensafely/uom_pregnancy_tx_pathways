@@ -8,7 +8,7 @@ library("ggpubr")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv"))
+df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_region.csv"))
 
 # delivery_code_present  = col_double(),
 # postnatal_8wk_code_present = col_double(),
@@ -24,16 +24,10 @@ df$month= format(df$date,"%m")
 
 df$times <- as.numeric(as.factor(df$date))
 
-## redaction and rounding
-# df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
-# df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
-
+#redaction of small values
 df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
 df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
-
-# df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
-# df$population_redacted <- as.numeric(df$population_redacted)
 
 df$population_redacted <- df$population
 df$population_redacted[which(df$population <=7)] <- NA
@@ -59,13 +53,16 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-# df for each imd cat
-df1=filter(df_plot, imd=="0")
-df2=filter(df_plot, imd=="1")
-df3=filter(df_plot, imd=="2")
-df4=filter(df_plot, imd=="3")
-df5=filter(df_plot, imd=="4")
-df6=filter(df_plot, imd=="5")
+# df for each region
+df1=filter(df_plot, region=="North East")
+df2=filter(df_plot, region=="North West")
+df3=filter(df_plot, region=="Yorkshire and The Humber")
+df4=filter(df_plot, region=="East Midlands")
+df5=filter(df_plot, region=="West Midlands")
+df6=filter(df_plot, region=="East")
+df7=filter(df_plot, region=="London")
+df8=filter(df_plot, region=="South West")
+df9=filter(df_plot, region=="South East")
 
 m1.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df1)
 m2.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df2)
@@ -73,6 +70,9 @@ m3.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded
 m4.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df4)
 m5.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df5)
 m6.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df6)
+m7.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df7)
+m8.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df8)
+m9.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df9)
 
 # estimates and confidence intervals 
 ## exp(estimate) - to get IRR
@@ -95,11 +95,21 @@ exp5.1=exp(est5.1)
 (est6.1 <- cbind(Estimate = coef(m6.1), confint(m6.1)))
 exp6.1=exp(est6.1)
 
-# creates combined df with estimates and CIs for each imd cat
-df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
+(est7.1 <- cbind(Estimate = coef(m7.1), confint(m7.1)))
+exp7.1=exp(est7.1)
 
-df_plot_overall$imd=c("0","1","2","3","4","5")
-df_plot_overall$imd=factor(df_plot_overall$imd,levels = c("0","1","2","3","4","5"))
+(est8.1 <- cbind(Estimate = coef(m8.1), confint(m8.1)))
+exp8.1=exp(est8.1)
+
+(est9.1 <- cbind(Estimate = coef(m9.1), confint(m9.1)))
+exp9.1=exp(est9.1)
+
+# creates combined df with estimates and CIs for each region
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,],exp8.1[2,],exp9.1[2,])
+
+#adds region column
+df_plot_overall$region=c("North East", "North West", "Yorkshire and The Humber", "East Midlands", "West Midlands", "East", "London", "South West", "South East")
+df_plot_overall$region=factor(df_plot_overall$region,levels = c("North East", "North West", "Yorkshire and The Humber", "East Midlands", "West Midlands", "East", "London", "South West", "South East"))
 
 # IRR - incident rate ratio
 names(df_plot_overall)[1]="IRR"
@@ -107,7 +117,8 @@ names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
 ## add to project.yaml
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_imd_IRR_overall.csv"))
+# gives df_plot_overall with IRR, LCI, UCI, region and 7 rows
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_region_IRR_overall.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -117,9 +128,12 @@ df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])
+df7 <- cbind(df7, "resp" = predict(m7.1, type = "response", se.fit = TRUE)[1:2])
+df8 <- cbind(df8, "resp" = predict(m8.1, type = "response", se.fit = TRUE)[1:2])
+df9 <- cbind(df9, "resp" = predict(m9.1, type = "response", se.fit = TRUE)[1:2])
 
-DF=rbind(df1,df2,df3,df4,df5,df6)
-DF$imd<-factor(DF$imd,levels=c("0","1","2","3","4","5"))
+DF=rbind(df1,df2,df3,df4,df5,df6,df7,df8,df9)
+DF$region=factor(DF$region,levels=c("North East", "North West", "Yorkshire and The Humber", "East Midlands", "West Midlands", "East", "London", "South West", "South East"))
 
 # prediction -non covid - counterfactual trace
 df1_counter <- subset(df1, select=-c(fit,se.fit))
@@ -152,14 +166,29 @@ df6_counter$covid=as.factor(0)
 df6_counter$time.since=0
 df6_counter  <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
 
-DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
-DF_counter$imd=factor(DF_counter$imd,levels=c("0","1","2","3","4","5"))
+df7_counter <- subset(df7, select=-c(fit,se.fit))
+df7_counter$covid=as.factor(0)
+df7_counter$time.since=0
+df7_counter  <- cbind(df7_counter, "resp" = predict(m7.1, type = "response", se.fit = TRUE, newdata = df7_counter)[1:2])
+
+df8_counter <- subset(df8, select=-c(fit,se.fit))
+df8_counter$covid=as.factor(0)
+df8_counter$time.since=0
+df8_counter  <- cbind(df8_counter, "resp" = predict(m8.1, type = "response", se.fit = TRUE, newdata = df8_counter)[1:2])
+
+df9_counter <- subset(df9, select=-c(fit,se.fit))
+df9_counter$covid=as.factor(0)
+df9_counter$time.since=0
+df9_counter  <- cbind(df9_counter, "resp" = predict(m9.1, type = "response", se.fit = TRUE, newdata = df9_counter)[1:2])
+
+
+DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter,df7_counter,df8_counter,df9_counter)
+DF_counter$region=factor(DF_counter$region,levels=c("North East", "North West", "Yorkshire and The Humber", "East Midlands", "West Midlands", "East", "London", "South West", "South East"))
 
 DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
 
 
 ### plot 
-##add labels etc
 plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
   
   #actual rate point
@@ -174,7 +203,7 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
   
   # group by indication  
-  facet_grid(rows = vars(imd),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  facet_grid(rows = vars(region),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
   # theme
   theme_bw()+ 
@@ -194,19 +223,15 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
     y = "Number of PN checks per 1000 patients")
 
 #plot_ITS
-
 ggsave(
   plot= plot_ITS,
-  filename="plot_ITS_imd_1.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_region.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_imd.csv"))
+write.csv(DF,here::here("output","plot_ITS_check_region.csv"))
 
-
-#### creates plot with IRRs and error bars/CIs
-
-## need to hash out text line to run locally
-plot_ITS_imd_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR))+
+#### plot with IRRs and error bars/CIs
+plot_ITS_region_2<-ggplot(data=df_plot_overall, aes(y=region, x=IRR))+
   geom_point()+
   
   geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
@@ -220,7 +245,7 @@ plot_ITS_imd_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR))+
     x="IRR (95% CI)",
     y=""
   )+
-  facet_grid(imd~., scales = "free", space = "free")+
+  facet_grid(region~., scales = "free", space = "free")+
   theme(strip.text.y = element_text(angle = 0),
         axis.title.y =element_blank(),
         axis.text.y=element_blank(),
@@ -229,7 +254,7 @@ plot_ITS_imd_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR))+
         legend.position="bottom")
 
 ggsave(
-  plot= plot_ITS_imd_2, 
-  filename="plot_ITS_imd_2.jpeg", path=here::here("output"), dpi=300
+  plot= plot_ITS_region_2, 
+  filename="plot_ITS_region_2.jpeg", path=here::here("output"), dpi=300
   )
 
