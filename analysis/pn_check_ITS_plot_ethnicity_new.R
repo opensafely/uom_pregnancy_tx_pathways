@@ -96,7 +96,7 @@ df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,]
 
 df_plot_overall$ethnicity=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
 df_plot_overall$ethnicity=factor(df_plot_overall$ethnicity,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
-# IRR - incident rate ratio
+
 names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
