@@ -225,10 +225,10 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
 #plot_ITS
 ggsave(
   plot= plot_ITS,
-  filename="plot_ITS_region.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_region_1.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_region_1.csv"))
+write.csv(DF,here::here("output","plot_ITS_check_region.csv"))
 
 #### plot with IRRs and error bars/CIs
 plot_ITS_region_2<-ggplot(data=df_plot_overall, aes(y=region, x=IRR))+
