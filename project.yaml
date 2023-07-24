@@ -164,7 +164,7 @@ actions:
   #       plot1: output/monthly_pn_rate_measures_overall.jpeg
   
   describe_pn_rate_plots_8wk:
-    run: r:latest analysis/pn_check_using_measures_overall.R
+    run: r:latest analysis/pn_check_using_measures_8wk.R
     needs: [generate_8wk_cohort, generate_measures_8wk]
     outputs:
       moderately_sensitive:

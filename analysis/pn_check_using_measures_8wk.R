@@ -10,8 +10,6 @@ setwd(here::here("output", "pn8wk"))
 
 df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
-# df <- read_csv(
-#   here::here("output", "measures", "measure_postnatal_check_rate.csv"),
 col_types = cols_only(
     
     #Identifier
