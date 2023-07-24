@@ -156,13 +156,20 @@ actions:
          table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
 
   ## rate plots 
-  describe_pn_rate_plots:
+  # describe_pn_rate_plots:
+  #   run: r:latest analysis/pn_check_using_measures_8wk.R
+  #   needs: [generate_study_population_measures, generate_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot1: output/monthly_pn_rate_measures_overall.jpeg
+  
+  describe_pn_rate_plots_8wk:
     run: r:latest analysis/pn_check_using_measures_overall.R
-    needs: [generate_study_population_measures, generate_measures]
+    needs: [generate_8wk_cohort, generate_measures_8wk]
     outputs:
       moderately_sensitive:
-        plot1: output/monthly_pn_rate_measures_overall.jpeg
-  
+        plot1: output/monthly_pn_rate_measures_8wk.jpeg
+
   ## rate plots by category
   describe_pn_rate_plots_by_age_cat:
     run: r:latest analysis/pn_check_using_measures_by_age_cat_8wk.R
