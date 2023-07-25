@@ -165,7 +165,7 @@ DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
 
 ### plot 
 ##add labels etc
-plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
+plot_ITS_age_cat_edit<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
   
   #actual rate point
   geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
@@ -200,14 +200,14 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
 
 #plot_ITS
 ggsave(
-  plot= plot_ITS,
+  plot= plot_ITS_age_cat_edit,
   filename="plot_ITS_age_cat_edit.jpeg", path=here::here("output"), dpi = 300
   )
 
 #write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
 
 #### creates plot with IRRs and error bars/CIs
-plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
+plot_ITS_age_cat_edit_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
   geom_point()+
   
   geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
@@ -230,7 +230,7 @@ plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
         legend.position="bottom")
 
 ggsave(
-  plot= plot_ITS_IRR_age_cat_edit, 
-  filename="plot_ITS_age_cat_IRR_edit.jpeg", path=here::here("output"), dpi=300
+  plot= plot_ITS_age_cat_edit_2, 
+  filename="plot_ITS_age_cat_edit_2.jpeg", path=here::here("output"), dpi=300
   )
 
