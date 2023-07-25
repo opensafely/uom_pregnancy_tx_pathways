@@ -28,7 +28,6 @@ df <- read_csv(
   na = character()
   )
 
-
 ## remove rows where delivery_code_present == 0 (group_by var in measures)
 df=df%>% filter(delivery_code_present > 0)
 

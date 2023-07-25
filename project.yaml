@@ -323,6 +323,16 @@ actions:
           plot_ITS_IRR_age_cat: output/plot_ITS_age_cat_IRR.jpeg
           plot_ITS_IRR_age_cat_data: output/ITS_plot_age_cat_IRR_overall.csv
 
+  describe_ITS_plot_age_cat_edit:
+     run: r:latest analysis/pn_check_ITS_plot_age_cat_edit.R
+     needs: [generate_8wk_cohort, generate_measures_8wk]
+     outputs:
+       moderately_sensitive:
+          plot_ITS_age_cat_edit: output/plot_ITS_age_cat_edit.jpeg
+          #plot_ITS_age_cat_data: output/plot_ITS_check_age_cat.csv
+          plot_ITS_IRR_age_cat_edit: output/plot_ITS_age_cat_IRR_edit.jpeg
+          #plot_ITS_IRR_age_cat_data: output/ITS_plot_age_cat_IRR_overall.csv
+
   describe_ITS_plot_ethnicity:
      run: r:latest analysis/pn_check_ITS_plot_ethnicity_new.R
      needs: [generate_8wk_cohort, generate_measures_8wk]

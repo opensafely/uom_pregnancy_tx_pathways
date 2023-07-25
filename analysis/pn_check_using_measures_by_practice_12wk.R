@@ -38,9 +38,6 @@ df=df%>% filter(date!=last.date)
 first_mon <- (format(min(df$date), "%m-%Y"))
 last_mon <- (format(max(df$date), "%m-%Y"))
 
-# prescribing_number <- as.data.frame(sum(df$antibacterial_brit,na.rm = TRUE))
-# colnames(prescribing_number) <- "Number of prescriptions"
-
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
 
@@ -69,11 +66,7 @@ df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
 # mean list size per practice 
 #dfls <- df %>% group_by(practice) %>%
-#  mutate(listsize_ave = round(mean(population),digits = 0))
-
-#group by practice here?
-# df_gprate <- df %>% group_by(practice, cal_mon, cal_year) %>%
-#   mutate(ab_rate_1000 = value*1000) 
+#  mutate(listsize_ave = round(mean(population),digits = 0)) 
 
 num_uniq_prac <- as.numeric(dim(table((df_monrate$practice))))
 
@@ -84,10 +77,6 @@ df_mean <- df_gaps %>% group_by(cal_mon, cal_year) %>%
          ninefive= quantile(pn_rate_1000, na.rm=TRUE, c(0.95)),
          five=quantile(pn_rate_1000, na.rm=TRUE, c(0.05)))
 
-#y_max <- max(df_mean$meanABrate) 
-#y_min <- min(df_mean$meanABrate) 
-
-#can change colours
 plot_percentile <- ggplot(df_mean, aes(x=date))+
   geom_line(aes(y=meanPNrate),color="steelblue")+
   geom_point(aes(y=meanPNrate),color="steelblue")+
