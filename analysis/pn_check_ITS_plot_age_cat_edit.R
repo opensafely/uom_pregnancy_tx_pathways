@@ -7,6 +7,10 @@ library("ggpubr")
 #library(modelsummary)
 #library("gtsummary")
 
+#########################################
+## ITS plot with 45-59 age cat removed ##
+#########################################
+
 ## Import data
 df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_age_cat.csv"))
 
@@ -24,7 +28,6 @@ df$month= format(df$date,"%m")
 
 df$times <- as.numeric(as.factor(df$date))
 
-## redaction and rounding
 df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
 df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
@@ -60,7 +63,6 @@ df3=filter(df_plot, age_cat=="25-29")
 df4=filter(df_plot, age_cat=="30-34")
 df5=filter(df_plot, age_cat=="35-39")
 df6=filter(df_plot, age_cat=="40-44")
-df7=filter(df_plot, age_cat=="45-49")
 
 # 14-19
 m1.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df1)
@@ -74,8 +76,6 @@ m4.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded
 m5.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df5)
 # 40-44
 m6.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df6)
-# 45-49
-m7.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df7)
 
 # estimates and confidence intervals 
 ## exp(estimate) - to get IRR
@@ -98,16 +98,13 @@ exp5.1=exp(est5.1)
 # 40-44
 (est6.1 <- cbind(Estimate = coef(m6.1), confint(m6.1)))
 exp6.1=exp(est6.1)
-# 45-49
-(est7.1 <- cbind(Estimate = coef(m7.1), confint(m7.1)))
-exp7.1=exp(est7.1)
 
 # creates combined df with estimates and CIs for each age_cat
-df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,],exp7.1[2,])
+df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
 
 #adds age_cat column
-df_plot_overall$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49")
-df_plot_overall$age_cat=factor(df_plot_overall$age_cat,levels = c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+df_plot_overall$age_cat=c("14-19","20-24","25-29","30-34","35-39","40-44")
+df_plot_overall$age_cat=factor(df_plot_overall$age_cat,levels = c("14-19","20-24","25-29","30-34","35-39","40-44"))
 
 # IRR - incident rate ratio
 names(df_plot_overall)[1]="IRR"
@@ -116,7 +113,7 @@ names(df_plot_overall)[3]="ci_u"
 
 ## add to project.yaml
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall.csv"))
+#write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -126,10 +123,9 @@ df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])
-df7 <- cbind(df7, "resp" = predict(m7.1, type = "response", se.fit = TRUE)[1:2])
 
-DF=rbind(df1,df2,df3,df4,df5,df6,df7)
-DF$age_cat<-factor(DF$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+DF=rbind(df1,df2,df3,df4,df5,df6)
+DF$age_cat<-factor(DF$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))
 
 # prediction -non covid - counterfactual trace
 df1_counter <- subset(df1, select=-c(fit,se.fit))
@@ -162,16 +158,10 @@ df6_counter$covid=as.factor(0)
 df6_counter$time.since=0
 df6_counter  <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
 
-df7_counter <- subset(df7, select=-c(fit,se.fit))
-df7_counter$covid=as.factor(0)
-df7_counter$time.since=0
-df7_counter  <- cbind(df7_counter, "resp" = predict(m7.1, type = "response", se.fit = TRUE, newdata = df7_counter)[1:2])
-
-DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter,df7_counter)
-DF_counter$age_cat=factor(DF_counter$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44","45-49"))
+DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
+DF_counter$age_cat=factor(DF_counter$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))
 
 DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
-
 
 ### plot 
 ##add labels etc
@@ -211,10 +201,10 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
 #plot_ITS
 ggsave(
   plot= plot_ITS,
-  filename="plot_ITS_age_cat.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_age_cat_edit.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
+#write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
 
 #### creates plot with IRRs and error bars/CIs
 plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
@@ -240,7 +230,7 @@ plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
         legend.position="bottom")
 
 ggsave(
-  plot= plot_ITS_age_cat_2, 
-  filename="plot_ITS_age_cat_IRR.jpeg", path=here::here("output"), dpi=300
+  plot= plot_ITS_IRR_age_cat_edit, 
+  filename="plot_ITS_age_cat_IRR_edit.jpeg", path=here::here("output"), dpi=300
   )
 
