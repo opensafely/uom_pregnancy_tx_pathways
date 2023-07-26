@@ -29,6 +29,9 @@ col_types = cols_only(
   #na = character()
   
 
+#### unsure if loading data in properly
+### no 'population variable' when testing line 55
+
 ## remove rows where delivery_code_present == 0 (group_by var in measures)
 df=df%>% filter(delivery_code_present > 0)
 
