@@ -25,7 +25,6 @@ df <- df %>% mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
                                     bmi>29.9 ~"Obese"))
 df$bmi_cat <- as.factor(df$bmi_cat)
 
-# change to factor - do these have/need labels?
 df$imd <- as.factor(df$imd)
 df$ethnicity <- as.factor(df$ethnicity)
 df$region <- as.factor(df$region)
@@ -85,9 +84,6 @@ num_pracs <- length(unique(df_overall3$practice))
 num_pats <- length(unique(df_overall3$patient_id))
 overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
 write_csv(overall_counts, here::here("output", "overall_counts_8wk.csv"))
-
-# just overall or before/after as well?
-# could use as a check for no of patients before/after
 
 num_pracs_before <- length(unique(df_before3$practice))
 num_pats_before <- length(unique(df_before3$patient_id))
