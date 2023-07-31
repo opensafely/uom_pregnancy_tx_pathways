@@ -181,7 +181,6 @@ df9_counter$covid=as.factor(0)
 df9_counter$time.since=0
 df9_counter  <- cbind(df9_counter, "resp" = predict(m9.1, type = "response", se.fit = TRUE, newdata = df9_counter)[1:2])
 
-
 DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter,df7_counter,df8_counter,df9_counter)
 DF_counter$region=factor(DF_counter$region,levels=c("North East", "North West", "Yorkshire and The Humber", "East Midlands", "West Midlands", "East", "London", "South West", "South East"))
 

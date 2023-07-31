@@ -27,15 +27,9 @@ df$month= format(df$date,"%m")
 df$times <- as.numeric(as.factor(df$date))
 
 ## redaction and rounding
-# df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
-# df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
-
 df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
 df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
-
-# df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
-# df$population_redacted <- as.numeric(df$population_redacted)
 
 df$population_redacted <- df$population
 df$population_redacted[which(df$population <=7)] <- NA
@@ -52,7 +46,6 @@ df_plot=df %>% filter(!is.na(rate))
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
-#df_plot<-ungroup(df_plot)
 
 df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
@@ -80,7 +73,7 @@ names(DF)[1]="coefficient & IRR"
 names(DF)[2]="ci_l"
 names(DF)[3]="ci_u"
 
-write_csv(as.data.frame(DF), here::here("output", "ITS_estimates_overall.csv"))
+write_csv(as.data.frame(DF), here::here("output", "ITS_estimates_overall_12wk.csv"))
 
 ## predict
 df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
@@ -88,7 +81,6 @@ df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRU
 df_plot_counter <- df_plot[, c(10:12, 5, 7)] 
 df_plot_counter$covid <- 0
 df_plot_counter$time.since <- 0
-#View(df_plot_counter)
 df_plot_counter$covid<- as.factor(df_plot_counter$covid)
 df_plot_counter <- cbind(df_plot_counter, "resp" = predict(m1.0, type = "response", se.fit = TRUE, newdata = df_plot_counter)[1:2])
 df_plot_counter2<-df_plot_counter[,8:9]
@@ -111,7 +103,6 @@ plot_ITS_overall<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=cov
     geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
     
     #prediction model - no covid - counterfactual
-    #geom_point(shape=4,aes(y=fit*1000/population),color="blue")+
     geom_line(aes(y=resp.fit*1000/population),color="red")+
     geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red") +
     
