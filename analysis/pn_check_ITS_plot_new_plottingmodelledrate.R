@@ -27,15 +27,9 @@ df$month= format(df$date,"%m")
 df$times <- as.numeric(as.factor(df$date))
 
 ## redaction and rounding
-# df$postnatal_8wk_code_present_redacted <- ifelse(df$postnatal_8wk_code_present <= 7, "NA", df$postnatal_8wk_code_present)
-# df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
-
 df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
 df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
-
-# df$population_redacted <- ifelse(df$population <= 7, "NA", df$population)
-# df$population_redacted <- as.numeric(df$population_redacted)
 
 df$population_redacted <- df$population
 df$population_redacted[which(df$population <=7)] <- NA

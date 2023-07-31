@@ -111,9 +111,8 @@ names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
-## add to project.yaml
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
-#write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -204,7 +203,7 @@ ggsave(
   filename="plot_ITS_age_cat_edit.jpeg", path=here::here("output"), dpi = 300
   )
 
-#write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
+write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
 
 #### creates plot with IRRs and error bars/CIs
 plot_ITS_age_cat_edit_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+

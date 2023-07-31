@@ -4,8 +4,6 @@ library('dplyr')
 library('finalfit')
 #library('tableone')
 
-#setwd("C:/Users/mdehsdh7/GitHub/uom_pregnancy_tx_pathways/output/measures")
-
 setwd(here::here("output", "pn8wk"))
 
 #combine all "input_measures" files 
