@@ -59,6 +59,7 @@ bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, del
 bltab_vars_before  <- df_before3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
 bltab_vars_after  <- df_after3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
 
+
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
 colsfortab_before <- colnames(bltab_vars_before)

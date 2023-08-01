@@ -8,7 +8,7 @@ library("ggpubr")
 #library("gtsummary")
 
 #########################################
-## ITS plot with 45-59 age cat removed ##
+## ITS plot with 45-49 age cat removed ##
 #########################################
 
 ## Import data

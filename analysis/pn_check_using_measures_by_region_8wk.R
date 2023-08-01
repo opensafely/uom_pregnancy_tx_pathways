@@ -68,6 +68,9 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 # create dataframe without NA 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
+# removes unknown region
+df_gaps<-filter(df_gaps, region!="1")
+
 plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=region, color=region))+
   geom_line(aes(y=pn_rate_1000))+
   #geom_line(data=df_gaps, linetype="dashed", aes(color+region))+ geom_point(aes(y=pn_rate_1000))+
