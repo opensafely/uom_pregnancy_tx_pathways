@@ -245,7 +245,6 @@ study = StudyDefinition(
 
 
     # Number of delivery codes per person
-    # plot histogram based on this?
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
@@ -308,7 +307,6 @@ study = StudyDefinition(
     ## use postnatal_8wk_code initially, need to review others
 
     # Number of pn codes codes per person
-    # plot histogram based on this?
     pn8wk_code_number=patients.with_these_clinical_events(
     postnatal_8wk_codes_reviewed,
     between=["index_date", "last_day_of_month(index_date)"],
@@ -319,8 +317,6 @@ study = StudyDefinition(
        },
     ),
 
-    #using delivery_code_dates mean that this should only
-    #return codes for those with delivery dates
     postnatal_8wk_code_present=patients.with_these_clinical_events(
     postnatal_8wk_codes_reviewed, 
     between=["delivery_code_date", f"delivery_code_date + {num_days} days"],
@@ -387,22 +383,8 @@ study = StudyDefinition(
     ),
 
     
-
-    # # is there a delivery code in a certain period - this is for 2019
-    # delivery_code_present_2019=patients.with_these_clinical_events(
-    # delivery_codes_reviewed,
-    # between=["index_date", "2019-12-31"],
-    # returning="binary_flag",    
-    # return_expectations={
-    #         "incidence": 0.6,},
-    # ),
 )
 
-##denom num patients delivered that month
-## ^ no of patients w delivery codes per month - delivery_code_present_2019 var above?
-
-## also will have to run measures with postnatal_8wk_code_present_8wks and postnatal_8wk_code_present_6wks
-## as numerators - put this below or create new study def(s)? 
 
 
 measures = [
