@@ -41,7 +41,8 @@ df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
+#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
 #df_plot<-ungroup(df_plot)
