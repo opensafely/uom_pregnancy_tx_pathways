@@ -34,7 +34,8 @@ df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
 df$date <- as.Date(df$date)
-last.date=max(df$date)
+#last.date=max(df$date)
+last.date="2023-06-01"
 df=df%>% filter(date!=last.date)
 
 # define first and last months for automated plot
@@ -74,7 +75,7 @@ df_gaps=filter(df_gaps, age_cat !="45-49")
 plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=age_cat, color=age_cat))+
   geom_line(aes(y=pn_rate_1000))+
   #geom_line(data=df_gaps, linetype="dashed", aes(color+age_cat))+ geom_point(aes(y=pn_rate_1000))+
-  scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month")+
+  scale_x_date(date_labels = "%m-%Y", date_breaks = "3 months")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
   labs(
     title = "Rate of PN checks by month",
