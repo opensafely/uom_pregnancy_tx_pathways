@@ -54,6 +54,9 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
+# write csv for rates
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_region.csv"))
+
 # df for each region
 df1=filter(df_plot, region=="North East")
 df2=filter(df_plot, region=="North West")

@@ -54,6 +54,9 @@ df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
 df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
+# write csv for rates
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_practice.csv"))
+
 df_plot=df%>% group_by(covid, practice)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 

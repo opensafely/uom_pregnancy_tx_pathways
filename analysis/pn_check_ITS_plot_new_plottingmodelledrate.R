@@ -56,6 +56,9 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
+# write csv for rates
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_overall.csv"))
+
 # times (months since start of study) = T
 # covid (binary) = D
 # time.since (months since covid) = P

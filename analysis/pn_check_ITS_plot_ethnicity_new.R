@@ -54,13 +54,15 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
+# write csv for rates
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_ethnicity.csv"))
+
 # df for each category
 df1=filter(df_plot, ethnicity=="White")
 df2=filter(df_plot, ethnicity=="Mixed")
 df3=filter(df_plot, ethnicity=="Asian or Asian British")
 df4=filter(df_plot, ethnicity=="Black or Black British")
 df5=filter(df_plot, ethnicity=="Other")
-
 
 m1.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df1)
 m2.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df2)
