@@ -40,7 +40,8 @@ df=df%>% filter(date!=last.date)
 
 # define first and last months for automated plot
 first_mon <- (format(min(df$date), "%m-%Y"))
-last_mon <- (format(max(df$date), "%m-%Y"))
+#last_mon <- (format(max(df$date), "%m-%Y"))
+last_mon="2023-05"
 
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)

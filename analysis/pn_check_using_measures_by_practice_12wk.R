@@ -37,7 +37,8 @@ df$date <- as.Date(df$date)
 last.date="2023-05-01"
 df=df%>% filter(date!=last.date)
 first_mon <- (format(min(df$date), "%m-%Y"))
-last_mon <- (format(max(df$date), "%m-%Y"))
+#last_mon <- (format(max(df$date), "%m-%Y"))
+last_mon="2023-05"
 
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
