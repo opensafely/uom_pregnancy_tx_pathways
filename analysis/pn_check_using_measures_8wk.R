@@ -6,19 +6,32 @@ library("lubridate")
 
 
 rm(list=ls())
-#setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
+# #setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
 
-## Import data
-df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
-
-# measure_postnatal_check_rate
-#df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
-
-col_types = cols_only(
+# col_types = cols_only(
     
-    #Identifier
-    practice = col_factor(),
+#     #Identifier
+#     practice = col_factor(),
     
+#     # Outcomes
+#     delivery_code_present  = col_double(),
+#     postnatal_8wk_code_present = col_double(),
+#     population  = col_number(),
+#     value = col_number(),
+    
+#     # Date
+#     delivery_code_date = col_date(format="%Y-%m-%d")
+
+#   )
+  
+#   #na = character()
+
+
+
+df <- read_csv(
+  here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"),
+  col_types = cols_only(
+
     # Outcomes
     delivery_code_present  = col_double(),
     postnatal_8wk_code_present = col_double(),
@@ -26,21 +39,17 @@ col_types = cols_only(
     value = col_number(),
     
     # Date
-    delivery_code_date = col_date(format="%Y-%m-%d")
-
+    date = col_date(format="%Y-%m-%d")
+    
+  ),
+  na = character()
   )
-  
-  #na = character()
-  
-
-#### unsure if loading data in properly
-### no 'population variable' when testing line 55
 
 ## remove rows where delivery_code_present == 0 (group_by var in measures)
 df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
-df$date <- as.Date(df$delivery_code_date)
+df$date <- as.Date(df$date)
 #last.date=max(df$date)
 last.date="2023-05-01"
 df=df%>% filter(date!=last.date)
