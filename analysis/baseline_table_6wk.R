@@ -46,9 +46,9 @@ df_before3 <- df_before2 %>% group_by(patient_id)%>% arrange(desc(delivery_code_
 df_after3 <- df_after2 %>% group_by(patient_id)%>% arrange(desc(delivery_code_date)) %>% filter(row_number()==1)
 
 # select variables for the baseline table
-bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
-bltab_vars_before  <- df_before3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
-bltab_vars_after  <- df_after3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd) 
+bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present) 
+bltab_vars_before  <- df_before3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present) 
+bltab_vars_after  <- df_after3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present) 
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
