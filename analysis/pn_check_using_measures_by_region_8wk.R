@@ -33,15 +33,15 @@ df <- read_csv(
 df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
-df$date <- as.Date(df$date)
+#df$date <- as.Date(df$date)
 #last.date=max(df$date)
 last.date="2023-05-01"
-df=df%>% filter(date!=last.date)
+df=df%>% filter(date <=last.date)
 
 # define first and last months for automated plot
 first_mon <- (format(min(df$date), "%m-%Y"))
-#last_mon <- (format(max(df$date), "%m-%Y"))
-last_mon="2023-05"
+last_mon <- (format(max(df$date), "%m-%Y"))
+#last_mon="2023-05"
 
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
@@ -71,7 +71,7 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
 # removes unknown region
-df_gaps<-filter(df_gaps, region!="1")
+#df_gaps<-filter(df_gaps, region!="1")
 
 plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=region, color=region))+
   geom_line(aes(y=pn_rate_1000))+
@@ -82,7 +82,7 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=region, color=region))+
     title = "Rate of PN checks by month",
     subtitle = paste(first_mon,"-",last_mon),
     #caption = paste("Data from approximately", num_uniq_prac,"TPP Practices"),
-    x = "Month",
+    x = "",
     y = "Rate of PN checks per 1000 registered patients")+
   annotate(geom = "rect", xmin = as.Date("2021-01-01"),xmax = as.Date("2021-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-11-01"),xmax = as.Date("2020-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
