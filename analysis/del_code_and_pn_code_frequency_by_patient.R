@@ -31,6 +31,7 @@ ggsave(
 
 
 quant_del_codes<- as.data.frame(quantile(df_grp$total_del_codes))
+quant_del_codes$quant <- c(0,25,50,75,100)
 write_csv(quant_del_codes, here::here("output","del_code_quantiles_by_patients.csv"))
 
 
@@ -56,6 +57,7 @@ ggsave(
 )
 
 quant_pn_codes<- as.data.frame(quantile(df_grp_pn$total_pn_codes))
+quant_pn_codes$quant <- c(0,25,50,75,100)
 write_csv(quant_pn_codes, here::here("output","pn_code_quantiles_by_patients.csv"))
 
 ################

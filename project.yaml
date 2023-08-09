@@ -158,7 +158,7 @@ actions:
 
   # frequency of codes by unique patients
   describe_freq_by_unique_patients:
-     run: r:latest analysis/pn_code_del_code_and_pn_code_frequency_by_patient.R
+     run: r:latest analysis/del_code_and_pn_code_frequency_by_patient.R
      needs: [generate_8wk_cohort]
      outputs:
       moderately_sensitive:
