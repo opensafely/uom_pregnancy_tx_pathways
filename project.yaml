@@ -139,6 +139,7 @@ actions:
     needs: [generate_8wk_cohort]
     outputs:
       moderately_sensitive:
+        hist2: output/pn_code_histogram_reviewed.jpeg
         table1: output/table_pn_codes_reviewed.csv
 
   describe_pn_code_freq_with_names:
@@ -154,6 +155,18 @@ actions:
      outputs:
       moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
+
+  # frequency of codes by unique patients
+  describe_freq_by_unique_patients:
+     run: r:latest analysis/pn_code_del_code_and_pn_code_frequency_by_patient.R
+     needs: [generate_8wk_cohort]
+     outputs:
+      moderately_sensitive:
+         hist_del_code: output/del_code_histogram_reviewed_byPatient.jpeg
+         hist_pn_code: output/pn_code_histogram_reviewed_byPatient.jpeg
+         quantiles_del: output/del_code_quantiles_by_patients.csv
+         quantiles_pn: output/pn_code_quantiles_by_patients.csv
+
 
   ## rate plots 
   # describe_pn_rate_plots:
