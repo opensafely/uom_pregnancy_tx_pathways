@@ -107,7 +107,7 @@ plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=fit*1000/population, group=covid
       geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = df_plot_counter_final)+
       geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = df_plot_counter_final) +
       
-      # them
+      # theme
       theme_bw()+ 
       annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60",alpha=0.5)+   
       
@@ -124,9 +124,6 @@ plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=fit*1000/population, group=covid
         x = "", 
         y = "Number of PN checks per 1000 Delivery codes")
     
-plot_ITS_overall  
-  
-  
 
 ggsave(
    plot= plot_ITS_overall,

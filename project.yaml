@@ -5,14 +5,12 @@ expectations:
 
 actions:
 
-  # this is for number of matches
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition 
     outputs:
       highly_sensitive:
         cohort: output/input.csv
 
-  # this is to generate a date file for each month
   # generate_study_population_monthly:
   #   run: cohortextractor:latest generate_cohort 
   #     --study-definition study_definition_monthly 
@@ -34,8 +32,10 @@ actions:
       highly_sensitive:
         cohort: output/measures/input_*.csv.gz
 
-## num_days added to study def measures, converted to integer,
-## and added to pn_8wk_present variable in study defs
+###################################################################################################
+#### generate cohorts of people with pn codes within 12, 8, 6 weeks of                         ####
+#### date of last delivery code using 'num_days' param - these are used to generate measures   ####
+###################################################################################################
 
   generate_12wk_cohort:
     run: cohortextractor:latest generate_cohort 
@@ -70,7 +70,10 @@ actions:
       highly_sensitive:
         cohort: output/pn6wk/input_*.csv.gz
 
-  ## generate measures for each param (above)
+  ############################################
+  #### generate measures for each cohort  ####
+  ############################################
+
   generate_measures:
     run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures --param num_days=84
     needs: [generate_study_population_measures]
@@ -111,7 +114,11 @@ actions:
       moderately_sensitive:
         measure_csv: output/pn6wk/measure_*.csv
 
-  ## code frequencies
+  #####################################################################
+  #### generate tables with reduced/redacted frequencies and names ####
+  #### of most frequent delivery and postnatal codes               ####
+  #####################################################################
+
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R
     needs: [generate_8wk_cohort]
@@ -155,13 +162,10 @@ actions:
       moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
 
-  ## rate plots 
-  # describe_pn_rate_plots:
-  #   run: r:latest analysis/pn_check_using_measures_8wk.R
-  #   needs: [generate_study_population_measures, generate_measures]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot1: output/monthly_pn_rate_measures_overall.jpeg
+######################################################
+#### plots for rate of postnatal checks over time ####
+#### overall (6/8/12 weeks and by category)       ####
+######################################################
   
   describe_pn_rate_plots_8wk:
     run: r:latest analysis/pn_check_using_measures_8wk.R
@@ -170,7 +174,6 @@ actions:
       moderately_sensitive:
         plot1: output/monthly_pn_rate_measures_8wk.jpeg
 
-  ## rate plots by category
   describe_pn_rate_plots_by_age_cat:
     run: r:latest analysis/pn_check_using_measures_by_age_cat_8wk.R
     needs: [generate_8wk_cohort, generate_measures_8wk]
@@ -192,26 +195,28 @@ actions:
       moderately_sensitive:
         plot4: output/monthly_pn_rate_measures8wkcode_by_imd_8wk.jpeg
   
-  describe_pn_rate_plots_by_practice_8wk:
-    run: r:latest analysis/pn_check_using_measures_by_practice_8wk.R
-    needs: [generate_8wk_cohort, generate_measures_8wk]
-    outputs:
-      moderately_sensitive:
-        plot5: output/monthly_pn_rate_measures8wkcode_by_practice_8wk.jpeg
+  #### rate plots by practice not currently used as data limited####
   
-  describe_pn_rate_plots_by_practice_12wk:
-    run: r:latest analysis/pn_check_using_measures_by_practice_12wk.R
-    needs: [generate_12wk_cohort, generate_measures_12wk]
-    outputs:
-      moderately_sensitive:
-        plot5: output/monthly_pn_rate_measures8wkcode_by_practice_12wk.jpeg
+  # describe_pn_rate_plots_by_practice_8wk:
+  #   run: r:latest analysis/pn_check_using_measures_by_practice_8wk.R
+  #   needs: [generate_8wk_cohort, generate_measures_8wk]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot5: output/monthly_pn_rate_measures8wkcode_by_practice_8wk.jpeg
   
-  describe_pn_rate_plots_by_practice_6wk:
-    run: r:latest analysis/pn_check_using_measures_by_practice_6wk.R
-    needs: [generate_6wk_cohort, generate_measures_6wk]
-    outputs:
-       moderately_sensitive:
-        plot5: output/monthly_pn_rate_measures8wkcode_by_practice_6wk.jpeg
+  # describe_pn_rate_plots_by_practice_12wk:
+  #   run: r:latest analysis/pn_check_using_measures_by_practice_12wk.R
+  #   needs: [generate_12wk_cohort, generate_measures_12wk]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot5: output/monthly_pn_rate_measures8wkcode_by_practice_12wk.jpeg
+  
+  # describe_pn_rate_plots_by_practice_6wk:
+  #   run: r:latest analysis/pn_check_using_measures_by_practice_6wk.R
+  #   needs: [generate_6wk_cohort, generate_measures_6wk]
+  #   outputs:
+  #      moderately_sensitive:
+  #       plot5: output/monthly_pn_rate_measures8wkcode_by_practice_6wk.jpeg
 
   describe_pn_rate_plots_by_region:
     run: r:latest analysis/pn_check_using_measures_by_region_8wk.R
@@ -220,23 +225,10 @@ actions:
       moderately_sensitive:
         plot6: output/monthly_pn_rate_measures8wkcode_by_region_8wk.jpeg
 
-### Generating baseline tables ### 
-#################################
-  # describe_baseline_table:
-  #   run: r:latest analysis/baseline_table.R
-  #   needs: [generate_study_population_measures, generate_measures]
-  #   outputs:
-  #     moderately_sensitive:
-  #       table_overall: output/blt_overall.csv   
-  #       table_before: output/blt_before.csv 
-  #       table_after: output/blt_after.csv 
-  #       table_overall_counts: output/overall_counts.csv
-  #       table_counts_before: output/overall_counts_before.csv
-  #       table_counts_after: output/overall_counts_after.csv 
-
-
-#### code below for baseline tables works on server
-#### commented out as fails locally using dummy data
+################################################
+#### Generating baseline tables for cohorts ####
+#### commented out as fails with dummy data ####
+################################################
 
   describe_baseline_table_12wk_cohort:
     run: r:latest analysis/baseline_table_12wk.R
@@ -301,7 +293,6 @@ actions:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk_new_modelled.jpeg
         estimates: output/ITS_estimates_overall.csv
         plot_ITS_plot_data: output/ITS_plot_data_overall.csv
-
 
   describe_ITS_plot_overall_6wk_new:
     run: r:latest analysis/pn_check_ITS_plot_6wk_new.R
