@@ -6,10 +6,9 @@ library("lubridate")
 
 
 rm(list=ls())
-#setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
 
 df <- read_csv(
-  here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"),
+  here::here("output", "pn12wk", "measure_postnatal_check_rate.csv"),
   col_types = cols_only(
 
     # Outcomes
@@ -80,6 +79,6 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures_8wk.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures_12wk.jpeg", path=here::here("output"),
 )
 
