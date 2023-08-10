@@ -42,6 +42,7 @@ df$region <- as.factor(df$region)
 df_overall <- df
 df_before <- df %>% filter(delivery_code_date < "2020-03-01") 
 df_after <- df %>% filter(delivery_code_date > "2020-02-29") 
+df_after <-df %>% filter(delivery_code_date <= "2023-04-30")
 
 ## 2. filter del codes >0
 df_overall2 <- df_overall %>% filter(delivery_code_present > 0)
