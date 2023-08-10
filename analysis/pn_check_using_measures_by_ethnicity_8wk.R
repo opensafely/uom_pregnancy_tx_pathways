@@ -34,7 +34,7 @@ df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
 #df$date <- as.Date(df$date)
-last.date="2023-05-01"
+last.date="2023-04-30"
 df=df%>% filter(date <=last.date)
 
 # define first and last months for automated plot
