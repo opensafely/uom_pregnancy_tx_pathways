@@ -341,7 +341,7 @@ actions:
        moderately_sensitive:
           plot_ITS_age_cat_edit: output/plot_ITS_age_cat_edit.jpeg
           plot_ITS_age_cat_data: output/plot_ITS_check_age_cat.csv
-          plot_ITS_age_cat_edit_2: output/plot_ITS_age_cat_edit_2.jpeg
+          #plot_ITS_age_cat_edit_2: output/plot_ITS_age_cat_edit_2.jpeg
           plot_ITS_IRR_age_cat_data: output/ITS_plot_age_cat_IRR_overall.csv
           plot_ITS_plot_data: output/ITS_plot_data_age_cat.csv
 
