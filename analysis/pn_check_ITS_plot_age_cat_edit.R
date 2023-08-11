@@ -131,56 +131,114 @@ DF=rbind(df1,df2,df3,df4,df5,df6)
 DF$age_cat<-factor(DF$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))
 
 # prediction -non covid - counterfactual trace
-df1_counter <- subset(df1, select=-c(fit,se.fit))
-df1_counter$covid=as.factor(0)
-df1_counter$time.since=0
-df1_counter  <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
+# df1_counter <- subset(df1, select=-c(fit,se.fit))
+# df1_counter$covid=as.factor(0)
+# df1_counter$time.since=0
+# df1_counter  <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
 
-df2_counter <- subset(df2, select=-c(fit,se.fit))
-df2_counter$covid=as.factor(0)
-df2_counter$time.since=0
-df2_counter  <- cbind(df2_counter, "resp" = predict(m2.1, type = "response", se.fit = TRUE, newdata = df2_counter)[1:2])
+df1_counter <- df1[, c(11:13, 6, 8)] 
+df1_counter$covid <- 0
+df1_counter$time.since <- 0
+#View(df_plot_counter)
+df1_counter$covid<- as.factor(df1_counter$covid)
+df1_counter <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
+df1_counter2<-df1_counter[,8:9]
+df1_plot_f<- cbind(df1,df1_counter2)
 
-df3_counter <- subset(df3, select=-c(fit,se.fit))
-df3_counter$covid=as.factor(0)
-df3_counter$time.since=0
-df3_counter  <- cbind(df3_counter, "resp" = predict(m3.1, type = "response", se.fit = TRUE, newdata = df3_counter)[1:2])
+# df2_counter <- subset(df2, select=-c(fit,se.fit))
+# df2_counter$covid=as.factor(0)
+# df2_counter$time.since=0
+# df2_counter  <- cbind(df2_counter, "resp" = predict(m2.1, type = "response", se.fit = TRUE, newdata = df2_counter)[1:2])
 
-df4_counter <- subset(df4, select=-c(fit,se.fit))
-df4_counter$covid=as.factor(0)
-df4_counter$time.since=0
-df4_counter  <- cbind(df4_counter, "resp" = predict(m4.1, type = "response", se.fit = TRUE, newdata = df4_counter)[1:2])
+# df3_counter <- subset(df3, select=-c(fit,se.fit))
+# df3_counter$covid=as.factor(0)
+# df3_counter$time.since=0
+# df3_counter  <- cbind(df3_counter, "resp" = predict(m3.1, type = "response", se.fit = TRUE, newdata = df3_counter)[1:2])
 
-df5_counter <- subset(df5, select=-c(fit,se.fit))
-df5_counter$covid=as.factor(0)
-df5_counter$time.since=0
-df5_counter  <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.fit = TRUE, newdata = df5_counter)[1:2])
+# df4_counter <- subset(df4, select=-c(fit,se.fit))
+# df4_counter$covid=as.factor(0)
+# df4_counter$time.since=0
+# df4_counter  <- cbind(df4_counter, "resp" = predict(m4.1, type = "response", se.fit = TRUE, newdata = df4_counter)[1:2])
 
-df6_counter <- subset(df6, select=-c(fit,se.fit))
-df6_counter$covid=as.factor(0)
-df6_counter$time.since=0
-df6_counter  <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
+# df5_counter <- subset(df5, select=-c(fit,se.fit))
+# df5_counter$covid=as.factor(0)
+# df5_counter$time.since=0
+# df5_counter  <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.fit = TRUE, newdata = df5_counter)[1:2])
 
-DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
-DF_counter$age_cat=factor(DF_counter$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))
+# df6_counter <- subset(df6, select=-c(fit,se.fit))
+# df6_counter$covid=as.factor(0)
+# df6_counter$time.since=0
+# df6_counter  <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
 
-DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
+df2_counter <- df2[, c(11:13, 6, 8)] 
+df2_counter$covid <- 0
+df2_counter$time.since <- 0
+df2_counter$covid<- as.factor(df2_counter$covid)
+df2_counter <- cbind(df2_counter, "resp" = predict(m2.1, type = "response", se.fit = TRUE, newdata = df2_counter)[1:2])
+df2_counter2<-df2_counter[,8:9]
+df2_plot_f<- cbind(df2,df2_counter2)
+
+df3_counter <- df3[, c(11:13, 6, 8)] 
+df3_counter$covid <- 0
+df3_counter$time.since <- 0
+df3_counter$covid<- as.factor(df3_counter$covid)
+df3_counter <- cbind(df3_counter, "resp" = predict(m3.1, type = "response", se.fit = TRUE, newdata = df3_counter)[1:2])
+df3_counter2<-df3_counter[,8:9]
+df3_plot_f<- cbind(df3,df3_counter2)
+
+df4_counter <- df4[, c(11:13, 6, 8)] 
+df4_counter$covid <- 0
+df4_counter$time.since <- 0
+df4_counter$covid<- as.factor(df4_counter$covid)
+df4_counter <- cbind(df4_counter, "resp" = predict(m4.1, type = "response", se.fit = TRUE, newdata = df4_counter)[1:2])
+df4_counter2<-df4_counter[,8:9]
+df4_plot_f<- cbind(df4,df4_counter2)
+
+df5_counter <- df5[, c(11:13, 6, 8)] 
+df5_counter$covid <- 0
+df5_counter$time.since <- 0
+df5_counter$covid<- as.factor(df5_counter$covid)
+df5_counter <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.fit = TRUE, newdata = df5_counter)[1:2])
+df5_counter2<-df5_counter[,8:9]
+df5_plot_f<- cbind(df5,df5_counter2)
+
+df6_counter <- df6[, c(11:13, 6, 8)] 
+df6_counter$covid <- 0
+df6_counter$time.since <- 0
+df6_counter$covid<- as.factor(df6_counter$covid)
+df6_counter <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
+df6_counter2<-df6_counter[,8:9]
+df6_plot_f<- cbind(df6,df6_counter2)
+
+# DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
+# DF_counter$age_cat=factor(DF_counter$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))
+
+DF_plot_f= rbind(df1_plot_f,df2_plot_f,df3_plot_f,df4_plot_f,df5_plot_f,df6_plot_f)
+DF_plot_f$age_cat=factor(DF_plot_F$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))
+
+#DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
 
 ### plot 
-##add labels etc
-plot_ITS_age_cat_edit<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
+plot_ITS_age_cat_edit<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
+  theme_bw()+ 
+    #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+    #geom_point(shape=4)+   
   
   #actual rate point
-  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
+  geom_point(shape=4,aes(x=date, y=rate*1000))+
+  #geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
   
   # prediction model  
   geom_line(color="blue")+ 
   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
   
-  # prediction model: non covid    
-  geom_line(aes(y=fit*1000/population,x=date),color="red",data = DF_counter)+
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
-  
+  # prediction model: no covid -- counterfactual
+  #geom_line(aes(y=fit*1000/population,x=date),color="red",data = DF_counter)+
+  #geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
+  geom_line(aes(y=resp.fit*1000/population),color="red")+
+  geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red") +
+    
   # group by indication  
   facet_grid(rows = vars(age_cat),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
@@ -190,7 +248,7 @@ plot_ITS_age_cat_edit<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid
   
   # legend  
   scale_x_date(date_labels = "%m-%Y", 
-               breaks = seq(as.Date("2019-01-01"), as.Date(max(DF$date)), 
+               breaks = seq(as.Date("2019-01-01"), as.Date(max(DF_plot_f$date)), 
                             by = "3 months"))+
   theme(axis.text.x = element_text(angle = 60,hjust=1),
         axis.text.y = element_text(size = 6),
