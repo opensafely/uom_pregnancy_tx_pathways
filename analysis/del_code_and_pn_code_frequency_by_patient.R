@@ -61,3 +61,20 @@ quant_pn_codes$quant <- c(0,25,50,75,100)
 write_csv(quant_pn_codes, here::here("output","pn_code_quantiles_by_patients.csv"))
 
 ################
+## what are the most common codes? 
+## overall or by mum? 
+
+## overall del
+table_del_codes <- as.data.frame(table(df_input$delivery_code)) 
+table_del_codes <- table_del_codes[order(-table_del_codes$Freq),]
+# redact small counts
+table_del_codes$Freq <- ifelse(table_del_codes$Freq < 10, "Redacted", table_del_codes$Freq)
+write_csv(table_del_codes, here::here("output","table_del_codes_reviewed_overall.csv"))
+
+## overall pn
+table_pn_codes <- as.data.frame(table(df_input$postnatal_code)) 
+table_pn_codes <- table_pn_codes[order(-table_pn_codes$Freq),]
+# redact small counts
+table_pn_codes$Freq <- ifelse(table_pn_codes$Freq < 10, "Redacted", table_pn_codes$Freq)
+write_csv(table_pn_codes, here::here("output","table_pn_codes_reviewed_overall.csv"))
+
