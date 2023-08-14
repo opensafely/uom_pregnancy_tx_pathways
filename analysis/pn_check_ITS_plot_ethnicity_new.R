@@ -116,47 +116,74 @@ df1_counter <- subset(df1, select=-c(fit,se.fit))
 df1_counter$covid=as.factor(0)
 df1_counter$time.since=0
 df1_counter  <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
+df1_counter_final=df1_counter%>%filter(date>=as.Date("2020-03-01"))
 
 df2_counter <- subset(df2, select=-c(fit,se.fit))
 df2_counter$covid=as.factor(0)
 df2_counter$time.since=0
 df2_counter  <- cbind(df2_counter, "resp" = predict(m2.1, type = "response", se.fit = TRUE, newdata = df2_counter)[1:2])
+df2_counter_final=df2_counter%>%filter(date>=as.Date("2020-03-01"))
 
 df3_counter <- subset(df3, select=-c(fit,se.fit))
 df3_counter$covid=as.factor(0)
 df3_counter$time.since=0
 df3_counter  <- cbind(df3_counter, "resp" = predict(m3.1, type = "response", se.fit = TRUE, newdata = df3_counter)[1:2])
+df3_counter_final=df3_counter%>%filter(date>=as.Date("2020-03-01"))
 
 df4_counter <- subset(df4, select=-c(fit,se.fit))
 df4_counter$covid=as.factor(0)
 df4_counter$time.since=0
 df4_counter  <- cbind(df4_counter, "resp" = predict(m4.1, type = "response", se.fit = TRUE, newdata = df4_counter)[1:2])
+df4_counter_final=df4_counter%>%filter(date>=as.Date("2020-03-01"))
 
 df5_counter <- subset(df5, select=-c(fit,se.fit))
 df5_counter$covid=as.factor(0)
 df5_counter$time.since=0
 df5_counter  <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.fit = TRUE, newdata = df5_counter)[1:2])
+df5_counter_final=df5_counter%>%filter(date>=as.Date("2020-03-01"))
+
+
+DF_plot_f= rbind(df1,df2,df3,df4,df5)
+#DF_plot_f$age_cat=factor(DF_plot_f$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))
+DF_plot_f$ethnicity=factor(DF_plot_f$ethnicity,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
 
 DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter)
 DF_counter$ethnicity=factor(DF_counter$ethnicity,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
 
-DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
-
+#DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
 
 ### plot 
-##add labels etc
-plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
+plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
+  theme_bw()+ 
+    #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
+    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+    #geom_point(shape=4)+   
   
-  #actual rate point
-  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
+  ##actual rate point
+  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population*1000))+ 
+  geom_line(aes(y=postnatal_8wk_code_present_rounded /population*1000),color="grey")+
   
-  # prediction model  
+  #### prediction model  
   geom_line(color="blue")+ 
   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+      
+  # prediction model: no covid -- counterfactual
+  geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = DF_counter)+
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = DF_counter) +
+    
+# ### plot 
+# plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
   
-  # prediction model: non covid    
-  geom_line(aes(y=fit*1000/population,x=date),color="red",data = DF_counter)+
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
+#   #actual rate point
+#   geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
+  
+#   # prediction model  
+#   geom_line(color="blue")+ 
+#   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+  
+#   # prediction model: non covid    
+#   geom_line(aes(y=fit*1000/population,x=date),color="red",data = DF_counter)+
+#   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
   
   # group by indication  
   facet_grid(rows = vars(ethnicity),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
@@ -179,7 +206,6 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
     y = "Number of PN checks per 1000 patients")
 
 #plot_ITS
-
 ggsave(
   plot= plot_ITS,
   filename="plot_ITS_eth_1.jpeg", path=here::here("output"), dpi = 300
