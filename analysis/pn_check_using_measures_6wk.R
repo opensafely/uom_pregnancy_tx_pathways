@@ -6,14 +6,11 @@ library("lubridate")
 
 
 rm(list=ls())
-#setwd(here::here("output", "measures"))
+# #setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
 
 df <- read_csv(
-  here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv"),
+  here::here("output", "pn6wk", "measure_postnatal_check_rate.csv"),
   col_types = cols_only(
-    
-    #Identifier
-    imd = col_factor(),
 
     # Outcomes
     delivery_code_present  = col_double(),
@@ -43,9 +40,6 @@ last_mon <- (format(max(df$date), "%m-%Y"))
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
 
-### imd cat == 0 in dummy data so remove
-df <- df %>% filter(imd != 0)
-
 #redaction
 df2<-df
 df2$postnatal_8wk_code_present_redacted <- df2$postnatal_8wk_code_present
@@ -66,12 +60,12 @@ df_plot=df2 %>% filter(!is.na(value_r))
 ### get monthly rate per 1000 patients
 df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
   mutate(pn_rate_1000 = value_r*1000) 
+
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
-
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=imd, color=imd))+
-  geom_line(aes(y=pn_rate_1000))+
-  geom_point(aes(y=pn_rate_1000))+
+plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
+  geom_line(aes(y=pn_rate_1000),color="steelblue")+
+  geom_point(aes(y=pn_rate_1000),color="steelblue")+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "3 months")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
   labs(
@@ -86,6 +80,6 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=imd, color=imd))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_imd_8wk.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures_6wk.jpeg", path=here::here("output"),
 )
 

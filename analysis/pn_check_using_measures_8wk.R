@@ -6,27 +6,7 @@ library("lubridate")
 
 
 rm(list=ls())
-# #setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
-
-# col_types = cols_only(
-    
-#     #Identifier
-#     practice = col_factor(),
-    
-#     # Outcomes
-#     delivery_code_present  = col_double(),
-#     postnatal_8wk_code_present = col_double(),
-#     population  = col_number(),
-#     value = col_number(),
-    
-#     # Date
-#     delivery_code_date = col_date(format="%Y-%m-%d")
-
-#   )
-  
-#   #na = character()
-
-
+#setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
 
 df <- read_csv(
   here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"),
@@ -49,15 +29,13 @@ df <- read_csv(
 df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
-df$date <- as.Date(df$date)
-#last.date=max(df$date)
-last.date="2023-05-01"
-df=df%>% filter(date!=last.date)
+#df$date <- as.Date(df$date)
+last.date="2023-04-30"
+df=df%>% filter(date <=last.date)
 
 # define first and last months for automated plot
 first_mon <- (format(min(df$date), "%m-%Y"))
-#last_mon <- (format(max(df$date), "%m-%Y"))
-last_mon="2023-05"
+last_mon <- (format(max(df$date), "%m-%Y"))
 
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)

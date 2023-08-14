@@ -7,21 +7,21 @@ library("MASS")
 #library("gtsummary")
 
 ## Import data
-df <- read.csv(
- here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
- 
-#  col_types = cols_only(
-#    delivery_code_present  = col_double(),
-#    postnatal_8wk_code_present = col_double(),
-#    population  = col_number(),
-#    value = col_number(),
-#    measure = col_character(),
-#    ),
-#  )
+df <- read_csv(
+ here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"),
+
+    col_types = cols_only(
+     delivery_code_present  = col_double(),
+     postnatal_8wk_code_present = col_double(),
+     population  = col_number(),
+     value = col_number(),
+     date = col_date(format="%Y-%m-%d")
+     )
+ )
 
 df<-df%>%filter(delivery_code_present>0)
 
-df$date <- as.Date(df$date)
+#df$date <- as.Date(df$date)
 df$month= format(df$date,"%m")
 
 df$times <- as.numeric(as.factor(df$date))
@@ -80,48 +80,50 @@ names(DF)[3]="ci_u"
 
 write_csv(as.data.frame(DF), here::here("output", "ITS_estimates_overall.csv"))
 
-## predict
+## predict using model
 df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
 
-df_plot_counter <- df_plot[, c(10:12, 5, 7)] 
-df_plot_counter$covid <- 0
-df_plot_counter$time.since <- 0
-#View(df_plot_counter)
-df_plot_counter$covid<- as.factor(df_plot_counter$covid)
-df_plot_counter <- cbind(df_plot_counter, "resp" = predict(m1.0, type = "response", se.fit = TRUE, newdata = df_plot_counter)[1:2])
-df_plot_counter2<-df_plot_counter[,8:9]
+## predict counterfactual using model
+df_plot_counter <- subset(df_plot, select=-c(fit,se.fit))
+df_plot_counter$covid=as.factor(0)
+df_plot_counter$time.since=0
+df_plot_counter  <- cbind(df_plot_counter, "resp" = predict(m1.0, type = "response", se.fit = TRUE, newdata = df_plot_counter)[1:2])
 
-df_plot_f<- cbind(df_plot,df_plot_counter2)
+# filter counterfactual data to april 2020 onward for plotting. 
+df_plot_counter_final=df_plot_counter%>%filter(date>=as.Date("2020-03-01"))
 
-##add labels etc
-plot_ITS_overall<-ggplot(df_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ ###fit or rate??
-  theme_bw()+ 
-    #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
-    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
-    #geom_point(shape=4)+ 
-    
-    ## actual rate
-    geom_point(shape=4,aes(x=date, y=rate*1000))+
-    #geom_line(aes(y=rate*1000),color="blue")+
-    
-    #prediction model
-    geom_line(color="blue")+
-    geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
-    
-    #prediction model - no covid - counterfactual
-    #geom_point(shape=4,aes(y=fit*1000/population),color="blue")+
-    geom_line(aes(y=resp.fit*1000/population),color="red")+
-    geom_ribbon(aes(ymin=((resp.fit-1.96*se.fit)*1000)/population, ymax=((resp.fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red") +
-    
-    scale_x_date(date_labels = "%m-%Y", 
-                 breaks = seq(as.Date("2019-01-01"), as.Date(max(df_plot_f$date)), 
-                              by = "3 months"))+
+
+plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=fit*1000/population, group=covid))+ 
+      
+      #actual rate point
+      geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population*1000))+ 
+      geom_line(aes(y=postnatal_8wk_code_present_rounded /population*1000),color="grey")+
+  
+      # prediction model: with covid  
+      geom_line(color="blue")+ 
+      geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+      
+      # prediction model: non covid    
+      geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = df_plot_counter_final)+
+      geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = df_plot_counter_final) +
+      
+      # theme
+      theme_bw()+ 
+      annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60",alpha=0.5)+   
+      
+      # legend  
+      scale_x_date(date_labels = "%m-%Y", 
+                   breaks = seq(as.Date("2019-01-01"), as.Date("2023-04-01"), 
+                                by = "3 months"))+
       theme(axis.text.x = element_text(angle = 60,hjust=1),
-          legend.position = "bottom",legend.title =element_blank())+
-    labs(
-      title = "",
-      x = "", 
-      y = "Number of PN checks per 1000 Delivery codes")
+            axis.text.y = element_text(size = 6),
+            legend.position = "bottom",legend.title =element_blank(),
+            strip.text = element_text(size = 6))+
+      labs(
+        title = "",
+        x = "", 
+        y = "Number of PN checks per 1000 Delivery codes")
+    
 
 ggsave(
    plot= plot_ITS_overall,
