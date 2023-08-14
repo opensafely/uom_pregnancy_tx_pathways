@@ -166,7 +166,10 @@ actions:
          hist_pn_code: output/pn_code_histogram_reviewed_byPatient.jpeg
          quantiles_del: output/del_code_quantiles_by_patients.csv
          quantiles_pn: output/pn_code_quantiles_by_patients.csv
-
+         freq_del: output/table_del_codes_reviewed_overall.csv
+         freq_pn: output/table_pn_codes_reviewed_overall.csv
+         freq_del_namesR: output/table_del_codes_mergedR.csv
+         freq_pn_namesR: output/table_pn_codes_mergedR.csv
 
   ## rate plots 
   # describe_pn_rate_plots:
