@@ -80,6 +80,7 @@ table_del_codes$Freq <- as.numeric(table_del_codes$Freq)
 #table_del_codes$Freq <- ifelse(table_del_codes$Freq < 10, "Redacted", table_del_codes$Freq)
 write_csv(table_del_codes, here::here("output","table_del_codes_reviewed_overall.csv"))
 
+
 ## overall pn
 # filter to rows with pn codes
 df_input<- df_input %>% filter(pn8wk_code_number >0)
