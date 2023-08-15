@@ -420,9 +420,11 @@ actions:
           #mod1_capture: output/mod1_ageadj_capture.csv
           mod2_full_coef: output/mod2_fulladj_coef.csv
           #mod2_full_capture: output/mod2_fulladj_capture.csv
+          mod2_covid_full_coef: output/mod2_covid_fulladj_coef.csv
           mod1_age_OR_CIs: output/mod1_tidy_OR_CI.csv
           mod2_full_OR_CIs: output/mod2_tidy_OR_CI.csv
-          forestplot_2: output/glm_fullAdjs.jpeg
+          mod2_full_covid_OR_CIs: output/mod2_coivd_tidy_OR_CI.csv
+          #forestplot_2: output/glm_fullAdjs.jpeg
           
  
 
