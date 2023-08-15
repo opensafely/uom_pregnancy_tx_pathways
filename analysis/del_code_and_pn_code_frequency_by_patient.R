@@ -22,7 +22,7 @@ num_pats_rd<- round(num_pats/5)*5
 plot_delcode_freq_by_patient <- ggplot(data=df_grp, aes(total_del_codes)) +
   geom_histogram() +
   labs (title = "Total Number of Delivery Codes by Patient",
-        caption = paste("Data from approximately", num_pats_rd,"patients"),
+        caption = paste("Data from approximately", num_pats_rd,"patients*"),
         x = "No. of delivery codes")
 ggsave(
   plot= plot_delcode_freq_by_patient,
@@ -49,7 +49,7 @@ num_pats_pn_rd<- round(num_pats_pn/5)*5
 plot_pn_freq_by_patient <- ggplot(data=df_grp_pn, aes(total_pn_codes)) +
   geom_histogram() +
   labs (title = "Total Number of PN Codes for Patient with Delivery Code",
-        caption = paste("Data from approximately", num_pats_pn_rd,"patients"),
+        caption = paste("Data from approximately", num_pats_pn_rd,"patients*"),
         x = "No. of PN codes")
 ggsave(
   plot= plot_delcode_freq_by_patient,
@@ -67,7 +67,9 @@ write_csv(quant_pn_codes, here::here("output","pn_code_quantiles_by_patients.csv
 ## overall del
 table_del_codes <- as.data.frame(table(df_input$delivery_code)) 
 table_del_codes <- table_del_codes[order(-table_del_codes$Freq),]
+str(table_del_codes)
 # redact small counts
+table_del_codes$Freq <- as.numeric(table_del_codes$Freq)
 table_del_codes$Freq <- ifelse(table_del_codes$Freq < 10, "Redacted", table_del_codes$Freq)
 write_csv(table_del_codes, here::here("output","table_del_codes_reviewed_overall.csv"))
 
@@ -75,6 +77,7 @@ write_csv(table_del_codes, here::here("output","table_del_codes_reviewed_overall
 table_pn_codes <- as.data.frame(table(df_input$postnatal_code)) 
 table_pn_codes <- table_pn_codes[order(-table_pn_codes$Freq),]
 # redact small counts
+table_pn_codes$Freq <- as.numeric(table_pn_codes$Freq)
 table_pn_codes$Freq <- ifelse(table_pn_codes$Freq < 10, "Redacted", table_pn_codes$Freq)
 write_csv(table_pn_codes, here::here("output","table_pn_codes_reviewed_overall.csv"))
 
@@ -114,32 +117,29 @@ table_pn_codes_merged<- table_pn_codes_merged[order(-table_pn_codes_merged$Freq)
 table_del_codes_mergedR <- table_del_codes_merged 
 table_del_codes_mergedR$Freq <- ifelse(table_del_codes_mergedR$Freq <= 7, "[REDACTED]", table_del_codes_mergedR$Freq)
 table_del_codes_mergedR$Freq <- as.numeric(table_del_codes_mergedR$Freq)
+#rounding to nearest 5
+table_del_codes_mergedR$Freq <- round(table_del_codes_mergedR$Freq/5)*5
+## now save merged with names and redacted. 
+write_csv(table_del_codes_mergedR, here::here("output","table_del_codes_mergedR.csv"))
 
+####### changes counts < 6 to "[REDACTED]"
 table_pn_codes_mergedR <- table_pn_codes_merged 
 table_pn_codes_mergedR$Freq <- ifelse(table_pn_codes_mergedR$Freq <= 7, "[REDACTED]", table_pn_codes_mergedR$Freq)
 table_pn_codes_mergedR$Freq <- as.numeric(table_pn_codes_mergedR$Freq)
-
-
 #rounding to nearest 5
-table_del_codes_mergedR$Freq <- round(table_del_codes_mergedR$Freq/5)*5
 table_pn_codes_mergedR$Freq <- round(table_pn_codes_mergedR$Freq/5)*5
+## now save merged with names and redacted. 
+write_csv(table_pn_codes_mergedR, here::here("output","table_pn_codes_mergedR.csv"))
 
-
-### saving
 
 # already saved histograms and quantiles:
 # filename="del_code_histogram_reviewed_byPatient.jpeg"
 # "del_code_quantiles_by_patients.csv"
 # filename="pn_code_histogram_reviewed_byPatient.jpeg"
 # "pn_code_quantiles_by_patients.csv"
-
 ## already saved overall codes without descriptions
 # "table_del_codes_reviewed_overall.csv"
 # "table_pn_codes_reviewed_overall.csv"
-
-## now save merged with names and redacted. 
-write_csv(table_del_codes_mergedR, here::here("output","table_del_codes_mergedR.csv"))
-write_csv(table_pn_codes_mergedR, here::here("output","table_pn_codes_mergedR.csv"))
 
 
 
