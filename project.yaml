@@ -411,5 +411,22 @@ actions:
          plot_ITS_IRR_region_data: output/ITS_plot_region_IRR_overall.csv
          plot_ITS_plot_data: output/ITS_plot_data_region.csv
 
-
+  describe_glm_for_no_pn_check:
+      run: r:latest analysis/glm_for_no_pn_check.r
+      needs: [generate_8wk_cohort]
+      outputs:
+       moderately_sensitive:
+          mod1_age_coef: output/mod1_ageadj_coef.csv
+          #mod1_capture: output/mod1_ageadj_capture.csv
+          mod2_full_coef: output/mod2_fulladj_coef.csv
+          #mod2_full_capture: output/mod2_fulladj_capture.csv
+          mod2_covid_full_coef: output/mod2_covid_fulladj_coef.csv
+          mod1_age_OR_CIs: output/mod1_tidy_OR_CI.csv
+          mod2_full_OR_CIs: output/mod2_tidy_OR_CI.csv
+          mod2_full_covid_OR_CIs: output/mod2_coivd_tidy_OR_CI.csv
+          mod3_sens_first_OR_CIs: output/mod3_first_OR_CI.csv
+          mod3_sens_last_OR_CIs: output/mod3_last_OR_CI.csv
+          #forestplot_2: output/glm_fullAdjs.jpeg
+          
  
+
