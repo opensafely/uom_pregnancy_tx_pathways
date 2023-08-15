@@ -57,14 +57,30 @@ mod2_covid <- glm(postnatal_8wk_code_present~age_cat+
 mod2_coviddf<- as.data.frame(mod2_covid$coefficients)
 write_csv(mod2_coviddf, here::here("output","mod2_covid_fulladj_coef.csv"))
 
+### model on obs per patient ID
+## take one row per patient
+dfone_lats <- df_input %>% group_by(patient_id) %>%
+  arrange(desc(delivery_code_date))%>%
+  filter(row_number()==1)
+
+dfone_first <- df_input %>% group_by(patient_id) %>%
+  arrange((delivery_code_date))%>%
+  filter(row_number()==1)
+
+## sensitivity modelling on obs per person
+mod3first <- glm(postnatal_8wk_code_present~age_cat+
+              ethnicity+region+imd+bmi, family=binomial(link=logit), data=dfone_first)
+mod3last <- glm(postnatal_8wk_code_present~age_cat+
+                   ethnicity+region+imd+bmi, family=binomial(link=logit), data=dfone_lats)
+
 
 # get coefs and CIs and plot
 library(broom)
 tidy1 <- as.data.frame(mod1$coefficients)
 tidy2 <- as.data.frame(mod2$coefficients)
-tidy2.covid <- as.data.frame(mod2_covid$coefficients)
-#head(tidy2, 30)
-#View(tidy2)
+tidy2_covid <- as.data.frame(mod2_covid$coefficients)
+tidy3_first <- as.data.frame(mod3first$coefficients)
+tidy3_last <- as.data.frame(mod3last$coefficients)
 
 # Age adjusted model
 var.diag1 <- diag(vcov(mod1))
@@ -84,11 +100,29 @@ write_csv(tidy2, here::here("output", "mod2_tidy_OR_CI.csv"))
 
 # fully adjusted model plus covid time
 var.diag3 <- diag(vcov(mod2_covid))
-tidy3$OR <- exp(tidy3$`mod2_covid$coefficients`)
-tidy3$Oddstd <- sqrt((tidy3$OR^2)*var.diag3)
-tidy3$LOW <- tidy3$OR-(1.96*tidy3$Oddstd)
-tidy3$HIGH <- tidy3$OR+(1.96*tidy3$Oddstd)
-write_csv(tidy3, here::here("output","mod2_covid_tidy_OR_CI.csv"))
+tidy2_covid$OR <- exp(tidy2_covid$`mod2_covid$coefficients`)
+tidy2_covid$Oddstd <- sqrt((tidy2_covid$OR^2)*var.diag3)
+tidy2_covid$LOW <- tidy2_covid$OR-(1.96*tidy2_covid$Oddstd)
+tidy2_covid$HIGH <- tidy2_covid$OR+(1.96*tidy2_covid$Oddstd)
+write_csv(tidy2_covid, here::here("output","mod2_covid_tidy_OR_CI.csv"))
+
+## sensitivity analysis ORs and CIs
+var.diag4 <- diag(vcov(mod3first))
+tidy3_first$OR <- exp(tidy3_first$`mod3first$coefficients`)
+tidy3_first$Oddstd <- sqrt((tidy3_first$OR^2)*var.diag1)
+tidy3_first$LOW <- tidy3_first$OR-(1.96*tidy3_first$Oddstd)
+tidy3_first$HIGH <- tidy3_first$OR+(1.96*tidy3_first$Oddstd)
+write_csv(tidy3_first, here::here("output","mod3_first_OR_CI.csv"))
+
+var.diag5 <- diag(vcov(mod3last))
+tidy3_last$OR <- exp(tidy3_last$`mod3last$coefficients`)
+tidy3_last$Oddstd <- sqrt((tidy3_last$OR^2)*var.diag1)
+tidy3_last$LOW <- tidy3_last$OR-(1.96*tidy3_last$Oddstd)
+tidy3_last$HIGH <- tidy3_last$OR+(1.96*tidy3_last$Oddstd)
+write_csv(tidy3_last, here::here("output","mod3_last_OR_CI.csv"))
+
+
+
 
 # ## plot
 # library(forestplot)
