@@ -417,8 +417,9 @@ actions:
       outputs:
        moderately_sensitive:
           mod1_age_coef: output/mod1_ageadj_coef.csv
-          mod1_capture: output/mod1_ageadj_capture.csv
+          #mod1_capture: output/mod1_ageadj_capture.csv
           mod2_full_coef: output/mod2_fulladj_coef.csv
-          mod2_full_capture: output/mod2_fulladj_capture.csv
+          #mod2_full_capture: output/mod2_fulladj_capture.csv
+          mod2_full_OR_CIs: output/mod2_tidy_OR_CI.csv
  
 
