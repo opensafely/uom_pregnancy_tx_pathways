@@ -24,6 +24,9 @@ df_input$age_cat<-as.factor(df_input$age_cat)
 
 
 ## simple model 
+## relevel age
+df_input$age_cat <- relevel(df_input$age_cat, "25-29")
+
 mod1 <- glm(postnatal_8wk_code_present~age_cat, family=binomial(link=logit), data=df_input)
 #summary(mod1)
 mod1df<- as.data.frame(mod1$coefficients)
