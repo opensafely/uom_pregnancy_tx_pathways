@@ -411,5 +411,14 @@ actions:
          plot_ITS_IRR_region_data: output/ITS_plot_region_IRR_overall.csv
          plot_ITS_plot_data: output/ITS_plot_data_region.csv
 
-
+  describe_glm_for_no_pn_check:
+      run: r:latest analysis/glm_for_no_pn_check.r
+      needs: [generate_8wk_cohort]
+      outputs:
+       moderately_sensitive:
+          mod1_age_coef: output/mod1_ageadj_coef.csv
+          mod1_capture: output/mod1_ageadj_capture.csv
+          mod2_full_coef: output/mod2_fulladj_coef.csv
+          mod2_full_capture: output/mod2_fulladj_capture.csv
  
+
