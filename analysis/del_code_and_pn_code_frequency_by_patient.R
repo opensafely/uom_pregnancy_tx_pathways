@@ -52,7 +52,7 @@ plot_pn_freq_by_patient <- ggplot(data=df_grp_pn, aes(total_pn_codes)) +
         caption = paste("Data from approximately", num_pats_pn_rd,"patients*"),
         x = "No. of PN codes")
 ggsave(
-  plot= plot_delcode_freq_by_patient,
+  plot= plot_pn_freq_by_patient,
   filename="pn_code_histogram_reviewed_byPatient.jpeg", path=here::here("output"),
 )
 
