@@ -6,6 +6,9 @@ df_input<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv,
 
 #col_types = cols(patient_id = col_integer(),delivery_code_number = col_number(), postnatal_8wk_code_present = col_number())
 
+# no scientific numbers on plots
+options(scipen = 999999)
+
 # population with delivery codes
 df_input<- df_input %>% filter(delivery_code_number >0)
 
@@ -70,7 +73,7 @@ table_del_codes <- table_del_codes[order(-table_del_codes$Freq),]
 str(table_del_codes)
 # redact small counts
 table_del_codes$Freq <- as.numeric(table_del_codes$Freq)
-table_del_codes$Freq <- ifelse(table_del_codes$Freq < 10, "Redacted", table_del_codes$Freq)
+#table_del_codes$Freq <- ifelse(table_del_codes$Freq < 10, "Redacted", table_del_codes$Freq)
 write_csv(table_del_codes, here::here("output","table_del_codes_reviewed_overall.csv"))
 
 ## overall pn
@@ -78,7 +81,7 @@ table_pn_codes <- as.data.frame(table(df_input$postnatal_code))
 table_pn_codes <- table_pn_codes[order(-table_pn_codes$Freq),]
 # redact small counts
 table_pn_codes$Freq <- as.numeric(table_pn_codes$Freq)
-table_pn_codes$Freq <- ifelse(table_pn_codes$Freq < 10, "Redacted", table_pn_codes$Freq)
+#table_pn_codes$Freq <- ifelse(table_pn_codes$Freq < 10, "Redacted", table_pn_codes$Freq)
 write_csv(table_pn_codes, here::here("output","table_pn_codes_reviewed_overall.csv"))
 
 ######### merge with code names
@@ -115,7 +118,7 @@ table_pn_codes_merged<- table_pn_codes_merged[order(-table_pn_codes_merged$Freq)
 #######
 ####### changes counts < 6 to "[REDACTED]"
 table_del_codes_mergedR <- table_del_codes_merged 
-table_del_codes_mergedR$Freq <- ifelse(table_del_codes_mergedR$Freq <= 7, "[REDACTED]", table_del_codes_mergedR$Freq)
+#table_del_codes_mergedR$Freq <- ifelse(table_del_codes_mergedR$Freq <= 7, "[REDACTED]", table_del_codes_mergedR$Freq)
 table_del_codes_mergedR$Freq <- as.numeric(table_del_codes_mergedR$Freq)
 #rounding to nearest 5
 table_del_codes_mergedR$Freq <- round(table_del_codes_mergedR$Freq/5)*5
@@ -124,7 +127,7 @@ write_csv(table_del_codes_mergedR, here::here("output","table_del_codes_mergedR.
 
 ####### changes counts < 6 to "[REDACTED]"
 table_pn_codes_mergedR <- table_pn_codes_merged 
-table_pn_codes_mergedR$Freq <- ifelse(table_pn_codes_mergedR$Freq <= 7, "[REDACTED]", table_pn_codes_mergedR$Freq)
+#table_pn_codes_mergedR$Freq <- ifelse(table_pn_codes_mergedR$Freq <= 7, "[REDACTED]", table_pn_codes_mergedR$Freq)
 table_pn_codes_mergedR$Freq <- as.numeric(table_pn_codes_mergedR$Freq)
 #rounding to nearest 5
 table_pn_codes_mergedR$Freq <- round(table_pn_codes_mergedR$Freq/5)*5
