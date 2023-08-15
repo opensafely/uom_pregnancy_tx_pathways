@@ -15,6 +15,10 @@ df_input<- df_input %>% filter(delivery_code_number >0)
 df_grp <- df_input %>% group_by(patient_id) %>%
   summarise(total_del_codes = sum(delivery_code_number))
 
+df_grpKeep <- df_input %>% group_by(patient_id) %>%
+  summarise(total_del_codes = sum(delivery_code_number), .groups="keep")
+
+
 ## num unique patients with delivery codes. 
 num_pats <- df_input %>%
   distinct(patient_id) %>%
@@ -22,7 +26,7 @@ num_pats <- df_input %>%
 
 num_pats_rd<- round(num_pats/5)*5
 
-plot_delcode_freq_by_patient <- ggplot(data=df_grp, aes(total_del_codes)) +
+plot_delcode_freq_by_patient1 <- ggplot(data=df_grp, aes(total_del_codes)) +
   geom_histogram() +
   labs (title = "Total Number of Delivery Codes by Patient",
         caption = paste("Data from approximately", num_pats_rd,"patients*"),
@@ -77,6 +81,8 @@ table_del_codes$Freq <- as.numeric(table_del_codes$Freq)
 write_csv(table_del_codes, here::here("output","table_del_codes_reviewed_overall.csv"))
 
 ## overall pn
+# filter to rows with pn codes
+df_input<- df_input %>% filter(pn8wk_code_number >0)
 table_pn_codes <- as.data.frame(table(df_input$postnatal_code)) 
 table_pn_codes <- table_pn_codes[order(-table_pn_codes$Freq),]
 # redact small counts
