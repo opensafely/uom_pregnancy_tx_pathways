@@ -8,14 +8,17 @@ library("ggpubr")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv"))
+df <- read_csv(
+ here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv"),
 
-# delivery_code_present  = col_double(),
-# postnatal_8wk_code_present = col_double(),
-# population  = col_number(),
-# value = col_number(),
-# measure = col_character(),
-# )
+    col_types = cols_only(
+     delivery_code_present  = col_double(),
+     postnatal_8wk_code_present = col_double(),
+     population  = col_number(),
+     value = col_number(),
+     date = col_date(format="%Y-%m-%d")
+     )
+ )
 
 df<-df%>%filter(delivery_code_present>0)
 
@@ -193,8 +196,8 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
 #   geom_line(aes(y=fit*1000/population,x=date),color="red",data = DF_counter)+
 #   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
   
-#   # group by indication  
-#   facet_grid(rows = vars(imd),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  # group by indication  
+  facet_grid(rows = vars(imd),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
   # theme
   theme_bw()+ 

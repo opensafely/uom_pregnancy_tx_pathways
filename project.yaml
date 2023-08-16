@@ -332,6 +332,8 @@ actions:
         plot_ITS_overall: output/pn_check_ITS_overall_8wk_new_modelled.jpeg
         estimates: output/ITS_estimates_overall.csv
         plot_ITS_plot_data: output/ITS_plot_data_overall.csv
+        estimates_c: output/ITS_estimates_counter_overall.csv
+        combined: output/ITS_estimates_combined_plot_8wk.csv
 
   describe_ITS_plot_overall_6wk_new:
     run: r:latest analysis/pn_check_ITS_plot_6wk_new.R
@@ -340,6 +342,8 @@ actions:
       moderately_sensitive:
         plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk_new_modelled.jpeg 
         estimates: output/ITS_estimates_overall_6wk.csv
+        estimates_c: output/ITS_estimates_counter_6wk.csv
+        combined: output/ITS_estimates_combined_plot_6wk.csv
 
   describe_ITS_plot_overall_12wk_new:
     run: r:latest analysis/pn_check_ITS_plot_12wk_new.R
@@ -348,6 +352,16 @@ actions:
       moderately_sensitive:
         plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk_new_modelled.jpeg 
         estimates: output/ITS_estimates_overall_12wk.csv
+        estimates_c: output/ITS_estimates_counter_12wk.csv
+        combined: output/ITS_estimates_combined_plot_12wk.csv
+
+  describe_ITS_plot_overall_by_cohort:
+    run: r:latest analysis/pn_check_ITS_plot_combined.R
+    needs: [generate_12wk_cohort, generate_measures_12wk, generate_6wk_cohort, generate_measures_6wk, generate_8wk_cohort, generate_measures_8wk]
+    # check needs
+    outputs:
+      moderately_sensitive:
+        plot_ITS_overall_by_cohort: output/plot_ITS_overall_by_cohort.jpeg 
 
   # describe_ITS_plot_age_cat:
   #    run: r:latest analysis/pn_check_ITS_plot_age_cat_vp.R

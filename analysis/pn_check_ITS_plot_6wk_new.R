@@ -78,6 +78,9 @@ write_csv(as.data.frame(DF), here::here("output", "ITS_estimates_overall_6wk.csv
 ## predict using model
 df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
 
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_estimates_combined_plot_6wk.csv"))
+
+
 ## predict counterfactual using model
 df_plot_counter <- subset(df_plot, select=-c(fit,se.fit))
 df_plot_counter$covid=as.factor(0)
@@ -86,6 +89,8 @@ df_plot_counter  <- cbind(df_plot_counter, "resp" = predict(m1.0, type = "respon
 
 # filter counterfactual data to april 2020 onward for plotting. 
 df_plot_counter_final=df_plot_counter%>%filter(date>=as.Date("2020-03-01"))
+
+write_csv(as.data.frame(df_plot_counter_final), here::here("output", "ITS_estimates_counter_6wk.csv"))
 
 
 plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=fit*1000/population, group=covid))+ 
