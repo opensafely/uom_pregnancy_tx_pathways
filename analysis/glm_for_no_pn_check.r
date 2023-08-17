@@ -91,6 +91,7 @@ tidy1$OR <- exp(tidy1$`mod1$coefficients`)
 tidy1$Oddstd <- sqrt((tidy1$OR^2)*var.diag1)
 tidy1$LOW <- tidy1$OR-(1.96*tidy1$Oddstd)
 tidy1$HIGH <- tidy1$OR+(1.96*tidy1$Oddstd)
+tidy1$names <- row.names(tidy1)
 write_csv(tidy1, here::here("output","mod1_tidy_OR_CI.csv"))
 
 # fully adjusted model 
@@ -99,6 +100,7 @@ tidy2$OR <- exp(tidy2$`mod2$coefficients`)
 tidy2$Oddstd <- sqrt((tidy2$OR^2)*var.diag2)
 tidy2$LOW <- tidy2$OR-(1.96*tidy2$Oddstd)
 tidy2$HIGH <- tidy2$OR+(1.96*tidy2$Oddstd)
+tidy2$names <- row.names(tidy2)
 write_csv(tidy2, here::here("output", "mod2_tidy_OR_CI.csv"))
 
 # fully adjusted model plus covid time
@@ -107,6 +109,7 @@ tidy2_covid$OR <- exp(tidy2_covid$`mod2_covid$coefficients`)
 tidy2_covid$Oddstd <- sqrt((tidy2_covid$OR^2)*var.diag3)
 tidy2_covid$LOW <- tidy2_covid$OR-(1.96*tidy2_covid$Oddstd)
 tidy2_covid$HIGH <- tidy2_covid$OR+(1.96*tidy2_covid$Oddstd)
+tidy2_covid$names <- row.names(tidy2_covid)
 write_csv(tidy2_covid, here::here("output","mod2_covid_tidy_OR_CI.csv"))
 
 ## sensitivity analysis ORs and CIs
@@ -115,6 +118,7 @@ tidy3_first$OR <- exp(tidy3_first$`mod3first$coefficients`)
 tidy3_first$Oddstd <- sqrt((tidy3_first$OR^2)*var.diag4)
 tidy3_first$LOW <- tidy3_first$OR-(1.96*tidy3_first$Oddstd)
 tidy3_first$HIGH <- tidy3_first$OR+(1.96*tidy3_first$Oddstd)
+tidy3_first$names <- row.names(tidy3_first)
 write_csv(tidy3_first, here::here("output","mod3_first_OR_CI.csv"))
 
 var.diag5 <- diag(vcov(mod3last))
@@ -122,6 +126,7 @@ tidy3_last$OR <- exp(tidy3_last$`mod3last$coefficients`)
 tidy3_last$Oddstd <- sqrt((tidy3_last$OR^2)*var.diag5)
 tidy3_last$LOW <- tidy3_last$OR-(1.96*tidy3_last$Oddstd)
 tidy3_last$HIGH <- tidy3_last$OR+(1.96*tidy3_last$Oddstd)
+tidy3_last$names <- row.names(tidy3_last)
 write_csv(tidy3_last, here::here("output","mod3_last_OR_CI.csv"))
 
 
