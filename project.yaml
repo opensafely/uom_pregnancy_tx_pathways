@@ -167,13 +167,13 @@ actions:
 #### overall (6/8/12 weeks and by category)       ####
 ######################################################
   
-  # describe_pn_rate_plots_8wk:
-  #   run: r:latest analysis/pn_check_using_measures_8wk.R
-  #   needs: [generate_8wk_cohort, generate_measures_8wk]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot1: output/monthly_pn_rate_measures_8wk.jpeg
-  #       table1: output/pn_check_combined_plot_8wk.csv
+  describe_pn_rate_plots_8wk:
+    run: r:latest analysis/pn_check_using_measures_8wk.R
+    needs: [generate_8wk_cohort, generate_measures_8wk]
+    outputs:
+      moderately_sensitive:
+        plot11: output/monthly_pn_rate_measures_8wk.jpeg
+        table11: output/pn_check_combined_plot_8wk.csv
 
   # describe_pn_rate_plots_12wk:
   #   run: r:latest analysis/pn_check_using_measures_12wk.R
