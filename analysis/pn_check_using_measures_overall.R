@@ -31,9 +31,9 @@ df <- read_csv(
 df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
-df$date <- as.Date(df$date)
-last.date=max(df$date)
-df=df%>% filter(date!=last.date)
+#df$date <- as.Date(df$date)
+last.date="2023-04-30"
+df=df%>% filter(date <=last.date)
 
 # define first and last months for automated plot
 first_mon <- (format(min(df$date), "%m-%Y"))

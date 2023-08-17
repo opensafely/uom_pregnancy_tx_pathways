@@ -39,9 +39,9 @@ df$region <- as.factor(df$region)
 # df$ethnicity_6 <- as.factor(df$ethnicity_6)
 
 #Creates before/after pandemic dfs as well as overall
-df_overall <- df
-df_before <- df %>% filter(delivery_code_date < "2020-03-01") 
-df_after <- df %>% filter(delivery_code_date > "2020-02-29") 
+df_overall <- df %>% filter(delivery_code_date <= "2023-04-30")
+df_before <- df_overall %>% filter(delivery_code_date < "2020-03-01") 
+df_after <- df_overall %>% filter(delivery_code_date > "2020-02-29") 
 
 ## 2. filter del codes >0
 df_overall2 <- df_overall %>% filter(delivery_code_present > 0)

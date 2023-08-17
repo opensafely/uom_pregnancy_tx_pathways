@@ -34,14 +34,12 @@ df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
 #df$date <- as.Date(df$date)
-#last.date=max(df$date)
-last.date="2023-05-01"
+last.date="2023-04-30"
 df=df%>% filter(date <=last.date)
 
 # define first and last months for automated plot
 first_mon <- (format(min(df$date), "%m-%Y"))
 last_mon <- (format(max(df$date), "%m-%Y"))
-#last_mon="2023-05"
 
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
@@ -71,7 +69,7 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
 # removes unknown region
-#df_gaps<-filter(df_gaps, region!="1")
+df_gaps<-filter(df_gaps, region!="1")
 
 plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=region, color=region))+
   geom_line(aes(y=pn_rate_1000))+

@@ -33,15 +33,13 @@ df <- read_csv(
 df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
-df$date <- as.Date(df$date)
-#last.date=max(df$date)
-last.date="2023-05-01"
-df=df%>% filter(date!=last.date)
+#df$date <- as.Date(df$date)
+last.date="2023-04-30"
+df=df%>% filter(date <=last.date)
 
 # define first and last months for automated plot
 first_mon <- (format(min(df$date), "%m-%Y"))
-#last_mon <- (format(max(df$date), "%m-%Y"))
-last_mon="2023-05"
+last_mon <- (format(max(df$date), "%m-%Y"))
 
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
@@ -82,7 +80,7 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=age_cat, color=age_cat))+
     title = "Rate of PN checks by month",
     subtitle = paste(first_mon,"-",last_mon),
     #caption = paste("Data from approximately", num_uniq_prac,"TPP Practices"),
-    x = "Month",
+    x = "",
     y = "Rate of PN checks per 1000 registered patients")+
   annotate(geom = "rect", xmin = as.Date("2021-01-01"),xmax = as.Date("2021-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-11-01"),xmax = as.Date("2020-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
