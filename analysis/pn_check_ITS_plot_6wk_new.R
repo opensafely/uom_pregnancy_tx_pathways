@@ -80,7 +80,6 @@ df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRU
 
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_estimates_combined_plot_6wk.csv"))
 
-
 ## predict counterfactual using model
 df_plot_counter <- subset(df_plot, select=-c(fit,se.fit))
 df_plot_counter$covid=as.factor(0)

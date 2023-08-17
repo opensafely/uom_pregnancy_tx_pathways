@@ -197,7 +197,31 @@ actions:
     needs: [generate_8wk_cohort, generate_measures_8wk]
     outputs:
       moderately_sensitive:
-        plot1: output/monthly_pn_rate_measures_8wk.jpeg
+        plot11: output/monthly_pn_rate_measures_8wk.jpeg
+        table11: output/pn_check_combined_plot_8wk.csv
+
+  # describe_pn_rate_plots_12wk:
+  #   run: r:latest analysis/pn_check_using_measures_12wk.R
+  #   needs: [generate_12wk_cohort, generate_measures_12wk]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot12: output/monthly_pn_rate_measures_12wk.jpeg
+  #       table12: output/pn_check_combined_plot_12wk.csv
+
+  # describe_pn_rate_plots_6wk:
+  #   run: r:latest analysis/pn_check_using_measures_6wk.R
+  #   needs: [generate_6wk_cohort, generate_measures_6wk]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot13: output/monthly_pn_rate_measures_6wk.jpeg  
+  #       table13: output/pn_check_combined_plot_6wk.csv 
+
+  describe_pn_rate_plots_combined:
+    run: r:latest analysis/pn_check_using_measures_combined.R
+    needs: [generate_6wk_cohort, generate_measures_6wk, generate_12wk_cohort, generate_measures_12wk, generate_8wk_cohort, generate_measures_8wk]
+    outputs:
+      moderately_sensitive:
+        plot1b: output/monthly_pn_rate_measures_combined.jpeg     
 
   describe_pn_rate_plots_6wk:
     run: r:latest analysis/pn_check_using_measures_6wk.R

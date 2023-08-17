@@ -6,7 +6,8 @@ library("lubridate")
 
 
 rm(list=ls())
-# #setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
+
+#setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
 
 df <- read_csv(
   here::here("output", "pn6wk", "measure_postnatal_check_rate.csv"),
@@ -29,6 +30,7 @@ df <- read_csv(
 df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
+
 #df$date <- as.Date(df$date)
 last.date="2023-04-30"
 df=df%>% filter(date <=last.date)
@@ -62,6 +64,8 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
   mutate(pn_rate_1000 = value_r*1000) 
 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
+
+write_csv(as.data.frame(df_gaps), here::here("output", "pn_check_combined_plot_6wk.csv"))
 
 plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
   geom_line(aes(y=pn_rate_1000),color="steelblue")+
