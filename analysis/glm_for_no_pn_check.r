@@ -20,6 +20,7 @@ df_input<- df_input %>% filter(delivery_code_number >0)
 
 ## dependent var is if they had a pn check or not. 
 df_input$postnatal_8wk_code_present <- as.factor(df_input$postnatal_8wk_code_present)
+df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_present, "1")
 df_input$age_cat<-as.factor(df_input$age_cat)
 
 
