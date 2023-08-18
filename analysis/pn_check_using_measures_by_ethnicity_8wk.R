@@ -67,6 +67,9 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
+# remove unknown category
+df_gaps=filter(df_gaps, ethnicity !="Unknown")
+
 plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity, color=ethnicity))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
