@@ -183,19 +183,6 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
   geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = DF_counter)+
   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = DF_counter) +
    
-# plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
-  
-#   #actual rate point
-#   geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
-  
-#   # prediction model  
-#   geom_line(color="blue")+ 
-#   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
-  
-#   # prediction model: non covid    
-#   geom_line(aes(y=fit*1000/population,x=date),color="red",data = DF_counter)+
-#   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
-  
   # group by indication  
   facet_grid(rows = vars(imd),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
