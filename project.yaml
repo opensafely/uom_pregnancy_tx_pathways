@@ -430,7 +430,7 @@ actions:
           plot_ITS_IRR_imd_data: output/ITS_plot_imd_IRR_overall.csv 
           plot_ITS_plot_data: output/ITS_plot_data_imd.csv
 
-   describe_ITS_plot_imd_new_edit:
+  describe_ITS_plot_imd_new_edit:
      run: r:latest analysis/pn_check_ITS_plot_imd_new_edit.R
      needs: [generate_8wk_cohort, generate_measures_8wk]
      outputs:
