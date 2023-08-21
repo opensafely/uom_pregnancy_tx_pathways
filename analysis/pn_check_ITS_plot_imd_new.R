@@ -158,17 +158,17 @@ df6_counter$time.since=0
 df6_counter  <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
 df6_counter_final=df6_counter%>%filter(date>=as.Date("2020-03-01"))
 
-# DF_plot_f= rbind(df1,df2,df3,df4,df5,df6)
-# DF_plot_f$imd=factor(DF_plot_f$imd,levels=c("0","1","2","3","4","5"))
+DF_plot_f= rbind(df1,df2,df3,df4,df5,df6)
+DF_plot_f$imd=factor(DF_plot_f$imd,levels=c("0","1","2","3","4","5"))
 
-# DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
-# DF_counter$imd=factor(DF_counter$imd,levels=c("0","1","2","3","4","5"))
+DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
+DF_counter$imd=factor(DF_counter$imd,levels=c("0","1","2","3","4","5"))
 
-DF_plot_f= rbind(df2,df3,df4,df5,df6)
-DF_plot_f$imd=factor(DF_plot_f$imd,levels=c("1","2","3","4","5"))
+# DF_plot_f= rbind(df2,df3,df4,df5,df6)
+# DF_plot_f$imd=factor(DF_plot_f$imd,levels=c("1","2","3","4","5"))
 
-DF_counter= rbind(df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
-DF_counter$imd=factor(DF_counter$imd,levels=c("1","2","3","4","5"))
+# DF_counter= rbind(df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
+# DF_counter$imd=factor(DF_counter$imd,levels=c("1","2","3","4","5"))
 
 ### plot 
 plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
