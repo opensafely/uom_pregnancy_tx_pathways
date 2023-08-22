@@ -20,6 +20,8 @@ df <- read_csv(
      )
  )
 
+## as in pn_check_ITS_plot_imd_new but without 
+## creating df for imd=="0"
 
 df<-df%>%filter(delivery_code_present>0)
 
@@ -75,7 +77,6 @@ m5.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded
 
 # estimates and confidence intervals 
 ## exp(estimate) - to get IRR
-
 
 (est1.1 <- cbind(Estimate = coef(m1.1), confint(m1.1)))
 exp1.1=exp(est1.1)
