@@ -17,7 +17,7 @@ df <- read_csv(
      population  = col_number(),
      value = col_number(),
      date = col_date(format="%Y-%m-%d"),
-     imd = col_number(),
+     imd = col_number()
      )
  )
 
