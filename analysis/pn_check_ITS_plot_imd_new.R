@@ -16,7 +16,7 @@ df <- read_csv(
      postnatal_8wk_code_present = col_double(),
      population  = col_number(),
      value = col_number(),
-     date = col_date(format="%Y-%m-%d")
+     date = col_date(format="%Y-%m-%d"),
      imd = col_number(),
      )
  )
