@@ -17,6 +17,7 @@ df <- read_csv(
      population  = col_number(),
      value = col_number(),
      date = col_date(format="%Y-%m-%d")
+     imd = col_number(),
      )
  )
 
@@ -61,14 +62,14 @@ df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_imd.csv"))
 
 # df for each imd cat
-df1=filter(df_plot, imd=="0")
+#df1=filter(df_plot, imd=="0")
 df2=filter(df_plot, imd=="1")
 df3=filter(df_plot, imd=="2")
 df4=filter(df_plot, imd=="3")
 df5=filter(df_plot, imd=="4")
 df6=filter(df_plot, imd=="5")
 
-m1.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df1)
+#m1.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df1)
 m2.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df2)
 m3.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df3)
 m4.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df4)
@@ -78,8 +79,8 @@ m6.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded
 # estimates and confidence intervals 
 ## exp(estimate) - to get IRR
 
-(est1.1 <- cbind(Estimate = coef(m1.1), confint(m1.1)))
-exp1.1=exp(est1.1)
+# (est1.1 <- cbind(Estimate = coef(m1.1), confint(m1.1)))
+# exp1.1=exp(est1.1)
 
 (est2.1 <- cbind(Estimate = coef(m2.1), confint(m2.1)))
 exp2.1=exp(est2.1)
@@ -97,10 +98,14 @@ exp5.1=exp(est5.1)
 exp6.1=exp(est6.1)
 
 # creates combined df with estimates and CIs for each imd cat
-df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
+df_plot_overall=bind_rows(exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
+#df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,])
 
-df_plot_overall$imd=c("0","1","2","3","4","5")
-df_plot_overall$imd=factor(df_plot_overall$imd,levels = c("0","1","2","3","4","5"))
+df_plot_overall$imd=c("1","2","3","4","5")
+df_plot_overall$imd=factor(df_plot_overall$imd,levels = c("1","2","3","4","5"))
+
+# df_plot_overall$imd=c("0","1","2","3","4","5")
+# df_plot_overall$imd=factor(df_plot_overall$imd,levels = c("0","1","2","3","4","5"))
 
 # IRR - incident rate ratio
 names(df_plot_overall)[1]="IRR"
@@ -111,22 +116,25 @@ write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_imd_IRR
 
 ## plots for each category ##
 ## model prediction
-df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
+#df1 <- cbind(df1, "resp" = predict(m1.1, type = "response", se.fit = TRUE)[1:2])
 df2 <- cbind(df2, "resp" = predict(m2.1, type = "response", se.fit = TRUE)[1:2])
 df3 <- cbind(df3, "resp" = predict(m3.1, type = "response", se.fit = TRUE)[1:2])
 df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
 df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])
 
-DF=rbind(df1,df2,df3,df4,df5,df6)
-DF$imd<-factor(DF$imd,levels=c("0","1","2","3","4","5"))
+DF=rbind(df2,df3,df4,df5,df6)
+DF$imd<-factor(DF$imd,levels=c("1","2","3","4","5"))
+
+# DF=rbind(df1,df2,df3,df4,df5,df6)
+# DF$imd<-factor(DF$imd,levels=c("0","1","2","3","4","5"))
 
 # prediction -non covid - counterfactual trace
-df1_counter <- subset(df1, select=-c(fit,se.fit))
-df1_counter$covid=as.factor(0)
-df1_counter$time.since=0
-df1_counter  <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
-df1_counter_final=df1_counter%>%filter(date>=as.Date("2020-03-01"))
+# df1_counter <- subset(df1, select=-c(fit,se.fit))
+# df1_counter$covid=as.factor(0)
+# df1_counter$time.since=0
+# df1_counter  <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
+# df1_counter_final=df1_counter%>%filter(date>=as.Date("2020-03-01"))
 
 df2_counter <- subset(df2, select=-c(fit,se.fit))
 df2_counter$covid=as.factor(0)
@@ -164,7 +172,7 @@ df6_counter_final=df6_counter%>%filter(date>=as.Date("2020-03-01"))
 # DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
 # DF_counter$imd=factor(DF_counter$imd,levels=c("0","1","2","3","4","5"))
 
-## plot data without unknown "0" category?
+## plot data without df1
 ## runs in R but error on server 
 DF_plot_f= rbind(df2,df3,df4,df5,df6)
 DF_plot_f$imd=factor(DF_plot_f$imd,levels=c("1","2","3","4","5"))
