@@ -430,16 +430,6 @@ actions:
           plot_ITS_IRR_imd_data: output/ITS_plot_imd_IRR_overall.csv 
           plot_ITS_plot_data: output/ITS_plot_data_imd.csv
 
-  # describe_ITS_plot_imd_new_edit:
-  #    run: r:latest analysis/pn_check_ITS_plot_imd_new_edit.R
-  #    needs: [generate_8wk_cohort, generate_measures_8wk]
-  #    outputs:
-  #      moderately_sensitive:
-  #         plot_ITS_imd_1: output/plot_ITS_imd__edit.jpeg
-  #         #plot_ITS_imd_data: output/plot_ITS_check_imd.csv
-  #         #plot_ITS_IRR_imd_data: output/ITS_plot_imd_IRR_overall_edit.csv 
-  #         plot_ITS_plot_data: output/ITS_plot_data_imd_edit.csv
-
   # describe_ITS_plot_practice:
   #  run: r:latest analysis/pn_check_ITS_plot_practice.R
   #   needs: [generate_8wk_cohort, generate_measures_8wk]
