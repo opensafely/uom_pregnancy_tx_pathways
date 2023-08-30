@@ -15,6 +15,8 @@ df_input<- df_input %>% filter(delivery_code_number >0)
 df_grp <- df_input %>% group_by(patient_id) %>%
   summarise(total_del_codes = sum(delivery_code_number))
 
+write_csv(df_grp, here::here("output","del_code_histogram_data.csv"))
+
 df_grpKeep <- df_input %>% group_by(patient_id) %>%
   summarise(total_del_codes = sum(delivery_code_number), .groups="keep")
 
@@ -45,6 +47,8 @@ write_csv(quant_del_codes, here::here("output","del_code_quantiles_by_patients.c
 ## using same data of delivered women, for the individuals how many pn codes
 df_grp_pn <- df_input %>% group_by(patient_id) %>%
   summarise(total_pn_codes = sum(pn8wk_code_number))
+
+write_csv(df_grp_pn, here::here("output","pn_code_histogram_data.csv"))
 
 ## num unique patients with pn codes. 
 num_pats_pn <- filter(df_grp_pn, total_pn_codes >0) %>%
