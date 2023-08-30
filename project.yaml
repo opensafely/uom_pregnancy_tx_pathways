@@ -178,6 +178,7 @@ actions:
          freq_del_namesR: output/table_del_codes_mergedR.csv
          freq_pn_namesR: output/table_pn_codes_mergedR.csv
          hist_del_code_data: output/del_code_histogram_data.csv
+      highly_sensitive: 
          hist_pn_code_data: output/pn_code_histogram_data.csv
 
   ## rate plots 
