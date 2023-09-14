@@ -2,9 +2,6 @@ library('tidyverse')
 library('lubridate')
 library('dplyr')
 library('finalfit')
-#library('tableone')
-
-#setwd("C:/Users/mdehsdh7/GitHub/uom_pregnancy_tx_pathways/output/measures")
 
 setwd(here::here("output", "pn6wk"))
 

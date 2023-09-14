@@ -2,7 +2,6 @@ library('tidyverse')
 library('lubridate')
 library('dplyr')
 library('finalfit')
-#library('tableone')
 
 setwd(here::here("output", "pn8wk"))
 
@@ -26,17 +25,6 @@ df$bmi_cat <- as.factor(df$bmi_cat)
 df$imd <- as.factor(df$imd)
 df$ethnicity <- as.factor(df$ethnicity)
 df$region <- as.factor(df$region)
-
-# ## ethnicity
-# # replace NA with 6 ("unknown") then convert to factor
-# df$ethnicity=ifelse(is.na(df$ethnicity),6,df$ethnicity)
-# df <- df %>% mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
-#                                  ethnicity == 2  ~ "Mixed",
-#                                  ethnicity == 3  ~ "South Asian",
-#                                  ethnicity == 4  ~ "Black",
-#                                  ethnicity == 5  ~ "Other",
-#                                  ethnicity == 6   ~ "Unknown"))
-# df$ethnicity_6 <- as.factor(df$ethnicity_6)
 
 #Creates before/after pandemic dfs as well as overall
 df_overall <- df %>% filter(delivery_code_date <= "2023-04-30")

@@ -7,8 +7,7 @@ library("ggpubr")
 #library(modelsummary)
 #library("gtsummary")
 
-## is this useful/
-## would we have to map quartiles to individual dfs/estimates
+## not currently in use
 
 ## Import data
 df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_practice.csv"),

@@ -58,14 +58,9 @@ df_after3 <- df_after2 %>% group_by(patient_id)
 
 ## 4. arrange by patient ID then del code date
 # then filter by first row to get last date in study period
-
 df_overall4 <- df_overall3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 df_before4 <- df_before3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
 df_after4 <- df_after3 %>% arrange(patient_id, desc(delivery_code_date)) %>% filter(row_number()==1)
-
-# df4<-df3%>% group_by(patient_id) %>% 
-#   arrange(desc(delivery_code_date), group_by=TRUE) %>%
-#   filter(row_number()==1)
 
 ## 5. Create summary table
 
@@ -92,14 +87,12 @@ str(t3)
 write_csv(t3, here::here("output", "blt_after.csv"))
 
 ## 6. Overall counts
+# before and after lockdown 
 
 num_pracs <- length(unique(df_overall4$practice))
 num_pats <- length(unique(df_overall4$patient_id))
 overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
 write_csv(overall_counts, here::here("output", "overall_counts.csv"))
-
-# just overall or before/after as well?
-# could use as a check for no of patients before/after
 
 num_pracs_before <- length(unique(df_before4$practice))
 num_pats_before <- length(unique(df_before4$patient_id))

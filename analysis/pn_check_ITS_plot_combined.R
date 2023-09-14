@@ -45,9 +45,8 @@ df6$cohort<-"12 weeks"
 df_plot_counter_final<-rbind(df4,df5,df6)
 df_plot_counter_final$cohort=factor(df_plot_counter_final$cohort,levels=c("8 weeks","6 weeks","12 weeks"))
 
-
 ###### plot
-  
+
 plot_ITS_overall_by_cohort<-ggplot(df_plot, aes(x=date, y=fit*1000/population, group=covid))+ 
   theme_bw()+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
@@ -92,5 +91,3 @@ ggsave(
   filename="plot_ITS_overall_by_cohort.jpeg", path=here::here("output"), dpi = 300
   )
 
-
-## would need to run ITS plots again to generate csvs - add to project yaml 

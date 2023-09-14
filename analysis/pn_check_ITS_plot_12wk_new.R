@@ -42,7 +42,6 @@ df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
-#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
@@ -79,7 +78,6 @@ write_csv(as.data.frame(DF), here::here("output", "ITS_estimates_overall_12wk.cs
 df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
 
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_estimates_combined_plot_12wk.csv"))
-
 
 ## predict counterfactual using model
 df_plot_counter <- subset(df_plot, select=-c(fit,se.fit))
