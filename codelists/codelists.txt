@@ -26,3 +26,7 @@ user/yayang/charlson14_moderate_several_renaldiseae/33a36ff2
 user/yayang/charlson15_mi/1a93fcbd
 user/yayang/charlson16_peptic_ulcer/36562fe8
 user/yayang/charlson17_peripheral_vascular/68751652 
+
+opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/24391856
+opensafely/covid-identification-in-primary-care-probable-covid-positive-test/3d488b8b
+opensafely/covid-identification-in-primary-care-probable-covid-sequelae/0b29a521

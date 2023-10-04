@@ -32,16 +32,17 @@ actions:
       highly_sensitive:
         cohort: output/measures/input_*.csv.gz
 
-  generate_study_population_updates:
+# 84 for num_days then generate 8wk cohort?
+  generate_study_population_updated:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_updated 
       --index-date-range "2019-01-01 to today by month" --skip-existing 
-      --output-dir=output/measures 
+      --output-dir=output/measures_update
       --output-format=csv.gz 
       --param num_days=84 
     outputs:
       highly_sensitive:
-        cohort: output/measures/input_*.csv.gz
+        cohort: output/measures_update/input_*.csv.gz
 
 ###################################################################################################
 #### generate cohorts of people with pn codes within 12, 8, 6 weeks of                         ####

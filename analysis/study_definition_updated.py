@@ -117,9 +117,7 @@ study = StudyDefinition(
         }
     ),
 
-
-
-        ### Ethnicity (6 categories)
+    ### Ethnicity (6 categories)
     ethnicity = patients.categorised_as(
         {
             "Unknown": "DEFAULT",
@@ -360,24 +358,24 @@ study = StudyDefinition(
     ## Covid positive test result
 
     # Positive covid test_sgss
-    Covid_test_result_sgss=patients.with_test_result_in_sgss(
-    pathogen="SARS-CoV-2",
-    test_result="positive",
-    #between=["index_date", "last_day_of_month(index_date)"],
-    between=["index_date + 9 months", "last_day_of_month(index_date)"]
-    find_first_match_in_period=True,
-    returning='binary_flag',
-    return_expectations={
-            "incidence": 0.5},
-    ),
+    # Covid_test_result_sgss=patients.with_test_result_in_sgss(
+    # pathogen="SARS-CoV-2",
+    # test_result="positive",
+    # #between=["index_date", "last_day_of_month(index_date)"],
+    # between=["index_date + 9 months", "last_day_of_month(index_date)"]
+    # find_first_match_in_period=True,
+    # returning="binary_flag",
+    # return_expectations={
+    #         "incidence": 0.5},
+    # ),
 
     #covid diagnosis by primary care 
     gp_covid=patients.with_these_clinical_events(
-    any_primary_care_code,
-    between=["index_date + 9 months", "last_day_of_month(index_date)"],
-    returning="binary_flag",
-    find_first_match_in_period=True,
-    return_expectations={"incidence": 0.5},
+        any_primary_care_code,
+        between=["index_date + 9 months", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        return_expectations={"incidence": 0.5},
     ),
 
     ## comorbidities for Charlson score
@@ -521,10 +519,65 @@ study = StudyDefinition(
         return_expectations={"incidence": 0.1, "date": {"earliest": start_date}
         },
     ),
-   
+
+    # Blood pressure
+    # filtering on >0 as missing values are returned as 0
+    bp=patients.categorised_as(
+        {
+            "0": "DEFAULT",
+            "1": """
+                    (bp_sys > 0 AND bp_sys < 120) AND
+                        (bp_dia > 0 AND bp_dia < 80)
+            """,
+            "2": """
+                    ((bp_sys >= 120 AND bp_sys < 130) AND
+                        (bp_dia > 0 AND bp_dia < 80)) OR
+                    ((bp_sys >= 130) OR
+                        (bp_dia >= 80))
+            """,
+        },
+        return_expectations={
+                                "category": {
+                                    "ratios": {
+                                        "0": 0.8,
+                                        "1": 0.1,
+                                        "2": 0.1
+                                        }
+                                    },
+                                },
+        bp_sys=patients.mean_recorded_value(
+            systolic_blood_pressure_codes,
+            on_most_recent_day_of_measurement=True,
+            on_or_before="index_date",
+            include_measurement_date=True,
+            include_month=True,
+            return_expectations={
+                "incidence": 0.6,
+                "float": {"distribution": "normal", "mean": 80, "stddev": 10},
+            },
+        ),
+        bp_dia=patients.mean_recorded_value(
+            diastolic_blood_pressure_codes,
+            on_most_recent_day_of_measurement=True,
+            on_or_before="index_date",
+            include_measurement_date=True,
+            include_month=True,
+            return_expectations={
+                "incidence": 0.6,
+                "float": {"distribution": "normal", "mean": 120, "stddev": 10},
+            },
+        ),
+    ),
+
+# “R code
+#       bp = fct_case_when(
+#         bp == "1" ~ "Normal",
+#         bp == "2" ~ "Elevated/High",
+#         bp == "0" ~ "Unknown"
+#       ),”   
+# )
+
 )
-
-
 
 measures = [
 
@@ -570,7 +623,6 @@ measures = [
             group_by=["delivery_code_present", "region"]
             ),
 
+]
 
     ## add eth2, hyp, charlson, covid to measures
-
-]
