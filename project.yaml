@@ -32,7 +32,6 @@ actions:
       highly_sensitive:
         cohort: output/measures/input_*.csv.gz
 
-# 84 for num_days then generate 8wk cohort?
   generate_study_population_updated:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_updated 
@@ -59,6 +58,17 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/pn12wk/input_*.csv.gz
+
+  generate_12wk_cohort_updated:
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_updated
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-format csv.gz
+      --param num_days=84
+      --output-dir=output/updated_pn12wk
+    outputs:
+      highly_sensitive:
+        cohort: output/updated_pn12wk/input_*.csv.gz
   
   generate_8wk_cohort:
     run: cohortextractor:latest generate_cohort
@@ -71,8 +81,6 @@ actions:
       highly_sensitive:
         cohort: output/pn8wk/input_*.csv.gz
 
-  ## using updated study def with all variables 
-  # check output files 
   generate_8wk_cohort_updated:
     run: cohortextractor:latest generate_cohort
       --study-definition study_definition_updated 
@@ -94,6 +102,17 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/pn6wk/input_*.csv.gz
+
+  generate_6wk_cohort_updated:
+    run: cohortextractor:latest generate_cohort
+      --study-definition study_definition_updated 
+      --index-date-range "2019-01-01 to today by month" --skip-existing 
+      --output-format csv.gz
+      --param num_days=42
+      --output-dir=output/updated_pn6wk
+    outputs:
+      highly_sensitive:
+        cohort: output/updated_pn6wk/input_*.csv.gz
 
   ############################################
   #### generate measures for each cohort  ####

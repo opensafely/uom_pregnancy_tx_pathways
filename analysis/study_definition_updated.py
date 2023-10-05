@@ -531,7 +531,7 @@ study = StudyDefinition(
         },
     ),
 
-    ## any hypertension code
+    # any hypertension code
     hbp_all=patients.with_these_clinical_events(
         hypertension_codes_all,
         between=["index_date - 5 years", "index_date"],
@@ -644,6 +644,13 @@ measures = [
             group_by=["delivery_code_present", "region"]
             ),
 
+
 ]
 
-    ## add eth2, hyp, charlson, covid to measures
+## add eth2, hyp, (charlson, covid?) to measures?
+
+# hbp_pregnancy
+# hbp_all
+# bp
+
+# or is this as subgroup in measures plot files

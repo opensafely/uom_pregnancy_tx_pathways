@@ -181,11 +181,15 @@ hypertension_codes_preg= codelist_from_csv(
   column = "code"
 )
 
-## add billy's hbp codes and combine
+## add billy's hbp codes and combine?
+#hbp_codes
+  #codelists
+  #system
+  #column
 
-# all hypertension codes
+#all hypertension codes
 hypertension_codes_all= codelist_from_csv(
-  "codelists/opensafely-hypertension-snomed.csv"
-  system = "snomed"
-  column = "code"
+  "codelists/opensafely-hypertension-snomed.csv",
+  system = "snomed",
+  column = "id"
 )
