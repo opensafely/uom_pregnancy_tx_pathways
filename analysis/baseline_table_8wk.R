@@ -63,7 +63,7 @@ charlson=c("cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_
 
 df$charlson_score=rowSums(df[charlson])
 
-## Charlson - as a catergorical group variable
+## Charlson - as a categorical group variable
 df <- df %>%
   mutate(charlsonGrp = case_when(charlson_score >0 & charlson_score <=2 ~ 2,
                                 charlson_score >2 & charlson_score <=4 ~ 3,

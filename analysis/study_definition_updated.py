@@ -519,6 +519,28 @@ study = StudyDefinition(
         },
     ),
 
+    #### hypertension codes
+
+    ### history of hypertension in pregnancy
+    hbp_pregnancy=patients.with_these_clinical_events(
+        hypertension_codes_preg,
+        between=["index_date - 5 years", "index_date"],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        return_expectations={"incidence": 0.1, "date": {"earliest": start_date}
+        },
+    ),
+
+    ## any hypertension code
+    hbp_all=patients.with_these_clinical_events(
+        hypertension_codes_all,
+        between=["index_date - 5 years", "index_date"],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        return_expectations={"incidence": 0.1, "date": {"earliest": start_date}
+        },
+    ),
+
     # Blood pressure
     # filtering on >0 as missing values are returned as 0
     # bp=patients.categorised_as(

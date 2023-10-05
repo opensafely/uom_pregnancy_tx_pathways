@@ -175,10 +175,17 @@ charlson17_peripheral_vascular= codelist_from_csv(
 )
 
 #high risk pregnancy code
-hypertension_codes= codelist_from_csv(
+hypertension_codes_preg= codelist_from_csv(
   "codelists/user-djlhayes-high-risk-pregnancy.csv",
   system = "snomed",
   column = "code"
 )
 
 ## add billy's hbp codes and combine
+
+# all hypertension codes
+hypertension_codes_all= codelist_from_csv(
+  "codelists/opensafely-hypertension-snomed.csv"
+  system = "snomed"
+  column = "code"
+)

@@ -179,6 +179,12 @@
       "url": "https://codelists.opensafely.org/codelist/user/djlhayes/high-risk-pregnancy/70b410f6/",
       "downloaded_at": "2023-10-05 10:18:59.514384Z",
       "sha": "553569f906aff2926086b6c770ecf0cf0fb216b7"
+    },
+    "opensafely-hypertension-snomed.csv": {
+      "id": "opensafely/hypertension-snomed/024ab1b0",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/hypertension-snomed/024ab1b0/",
+      "downloaded_at": "2023-10-05 13:06:48.746543Z",
+      "sha": "5d5471bb6a8a01e362b191b3eb8e80c2febeb1da"
     }
   }
 }
