@@ -173,6 +173,12 @@
       "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-sequelae/0b29a521/",
       "downloaded_at": "2023-10-04 12:27:05.261105Z",
       "sha": "38dc0c0a34e2b8b376ba72819923f442c30b4946"
+    },
+    "user-djlhayes-high-risk-pregnancy.csv": {
+      "id": "user/djlhayes/high-risk-pregnancy/70b410f6",
+      "url": "https://codelists.opensafely.org/codelist/user/djlhayes/high-risk-pregnancy/70b410f6/",
+      "downloaded_at": "2023-10-05 10:18:59.514384Z",
+      "sha": "553569f906aff2926086b6c770ecf0cf0fb216b7"
     }
   }
 }

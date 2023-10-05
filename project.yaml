@@ -335,15 +335,22 @@ actions:
 
   describe_baseline_table_8wk_cohort:
      run: r:latest analysis/baseline_table_8wk.R
-     needs: [generate_8wk_cohort]
+     #needs: [generate_8wk_cohort]
+     needs: [generate_study_population_updated]
      outputs:
        moderately_sensitive:
-         table_overall: output/blt_overall_8wk.csv   
-         table_before: output/blt_before_8wk.csv 
-         table_after: output/blt_after_8wk.csv 
-         table_overall_counts: output/overall_counts_8wk.csv
-         table_counts_before: output/overall_counts_before_8wk.csv
-         table_counts_after: output/overall_counts_after_8wk.csv 
+        #  table_overall: output/blt_overall_8wk.csv   
+        #  table_before: output/blt_before_8wk.csv 
+        #  table_after: output/blt_after_8wk.csv 
+        #  table_overall_counts: output/overall_counts_8wk.csv
+        #  table_counts_before: output/overall_counts_before_8wk.csv
+        #  table_counts_after: output/overall_counts_after_8wk.csv 
+         table_overall: output/blt_overall_8wk_updated.csv   
+         table_before: output/blt_before_8wk_updated.csv 
+         table_after: output/blt_after_8wk_updated.csv 
+         table_overall_counts: output/overall_counts_8wk_updated.csv
+         table_counts_before: output/overall_counts_before_8wk_updated.csv
+         table_counts_after: output/overall_counts_after_8wk_updated.csv
 
   describe_baseline_table_6wk_cohort:
     run: r:latest analysis/baseline_table_6wk.R
