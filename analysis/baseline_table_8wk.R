@@ -31,8 +31,14 @@ df$ethnicity <- as.factor(df$ethnicity)
 df$region <- as.factor(df$region)
 
 ## covid positive
-df$gp_covid<-as.factor(df$gp_covid)
-df$Covid_test_result_sgss<- as.factor(df$Covid_test_result_sgss)
+df <- df %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
+                                               Covid_test_result_sgss ==1 ~ "1",
+                                               TRUE ~ "0"))
+
+df$covid_positive<-as.factor(df$covid_positive)
+                                          
+#df$gp_covid<-as.factor(df$gp_covid)
+#df$Covid_test_result_sgss<- as.factor(df$Covid_test_result_sgss)
 
 ## create charlson index
 df$cancer_comor<- ifelse(df$cancer_comor == 1L, 2L, 0L)
@@ -89,9 +95,9 @@ df_after <- df_overall2 %>% filter(delivery_code_date > "2020-02-29")
 
 # select variables for the baseline table
 # add covid, eth2, hyp, charlson
-bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, gp_covid, Covid_test_result_sgss) 
-bltab_vars_before  <- df_before %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, gp_covid, Covid_test_result_sgss) 
-bltab_vars_after  <- df_after %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, gp_covid, Covid_test_result_sgss) 
+bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
+bltab_vars_before  <- df_before %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
+bltab_vars_after  <- df_after %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
