@@ -341,7 +341,7 @@ study = StudyDefinition(
 
     postnatal_other_code_present=patients.with_these_clinical_events(
     postnatal_other_codes,
-    between=["delivery_code_date", "delivery_code_date + 84 days"],
+    between=["delivery_code_date", f"delivery_code_date + {num_days} days"],
     returning="binary_flag",
     return_expectations={
             "incidence": 0.3,},
@@ -349,7 +349,7 @@ study = StudyDefinition(
 
     postnatal_antenatal_code_present=patients.with_these_clinical_events(
     postdel_antenatal_codes,
-    between=["delivery_code_date", "delivery_code_date + 84 days"],
+    between=["delivery_code_date", f"delivery_code_date + {num_days} days"],
     returning="binary_flag",
     return_expectations={
             "incidence": 0.3,},
