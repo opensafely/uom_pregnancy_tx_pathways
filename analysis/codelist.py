@@ -181,18 +181,35 @@ hypertension_codes_preg= codelist_from_csv(
   column = "code"
 )
 
-hbp_codes = codelist_from_csv(
-    "codelists/opensafely-hypertension.csv", 
-    system="ctv3", 
-    column="CTV3ID"
-)
-
 #all hypertension codes
 hypertension_codes_all= codelist_from_csv(
   "codelists/opensafely-hypertension-snomed.csv",
   system = "snomed",
   column = "id"
 )
+
+any_hypertension_code = combine_codelists(
+    hypertension_codes_preg,
+    hypertension_codes_all,
+    )
+
+#bp codes
+hbp_codes = codelist_from_csv(
+    "codelists/opensafely-hypertension.csv", 
+    system="ctv3", 
+    column="CTV3ID"
+)
+
+# Blood pressure
+
+systolic_blood_pressure_codes = codelist(
+    ["2469."],
+    system="ctv3",)
+
+diastolic_blood_pressure_codes = codelist(
+    ["246A."],
+    system="ctv3")
+
 
 # new ethnicity code
 ethnicity_codes = codelist_from_csv(

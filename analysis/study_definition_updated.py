@@ -595,7 +595,7 @@ study = StudyDefinition(
         },
     ),
 
-    # any hypertension code
+    # all hypertension code
     hbp_all=patients.with_these_clinical_events(
         hypertension_codes_all,
         between=["index_date - 5 years", "index_date"],
@@ -605,55 +605,64 @@ study = StudyDefinition(
         },
     ),
 
+    # any hypertension code - combined vars above
+    hbp_any=patients.with_these_clinical_events(
+        any_hypertension_code,
+        between=["index_date - 5 years", "index_date"],
+        returning="binary_flag",
+        find_first_match_in_period=True,
+        return_expectations={"incidence": 0.1, "date": {"earliest": start_date}
+        },
+    ),
 
     # Blood pressure
     
-    # bp=patients.categorised_as(
-    #     {
-    #         "0": "DEFAULT",
-    #         "1": """
-    #                 (bp_sys > 0 AND bp_sys < 120) AND
-    #                     (bp_dia > 0 AND bp_dia < 80)
-    #         """,
-    #         "2": """
-    #                 ((bp_sys >= 120 AND bp_sys < 130) AND
-    #                     (bp_dia > 0 AND bp_dia < 80)) OR
-    #                 ((bp_sys >= 130) OR
-    #                     (bp_dia >= 80))
-    #         """,
-    #     },
-    #     return_expectations={
-    #                             "category": {
-    #                                 "ratios": {
-    #                                     "0": 0.8,
-    #                                     "1": 0.1,
-    #                                     "2": 0.1
-    #                                     }
-    #                                 },
-    #                             },
-    #     bp_sys=patients.mean_recorded_value(
-    #         systolic_blood_pressure_codes,
-    #         on_most_recent_day_of_measurement=True,
-    #         on_or_before="index_date",
-    #         include_measurement_date=True,
-    #         include_month=True,
-    #         return_expectations={
-    #             "incidence": 0.6,
-    #             "float": {"distribution": "normal", "mean": 80, "stddev": 10},
-    #         },
-    #     ),
-    #     bp_dia=patients.mean_recorded_value(
-    #         diastolic_blood_pressure_codes,
-    #         on_most_recent_day_of_measurement=True,
-    #         on_or_before="index_date",
-    #         include_measurement_date=True,
-    #         include_month=True,
-    #         return_expectations={
-    #             "incidence": 0.6,
-    #             "float": {"distribution": "normal", "mean": 120, "stddev": 10},
-    #         },
-    #     ),
-    # ),
+    bp=patients.categorised_as(
+        {
+            "0": "DEFAULT",
+            "1": """
+                    (bp_sys > 0 AND bp_sys < 120) AND
+                        (bp_dia > 0 AND bp_dia < 80)
+            """,
+            "2": """
+                    ((bp_sys >= 120 AND bp_sys < 130) AND
+                        (bp_dia > 0 AND bp_dia < 80)) OR
+                    ((bp_sys >= 130) OR
+                        (bp_dia >= 80))
+            """,
+        },
+        return_expectations={
+                                "category": {
+                                    "ratios": {
+                                        "0": 0.8,
+                                        "1": 0.1,
+                                        "2": 0.1
+                                        }
+                                    },
+                                },
+        bp_sys=patients.mean_recorded_value(
+            systolic_blood_pressure_codes,
+            on_most_recent_day_of_measurement=True,
+            on_or_before="index_date",
+            include_measurement_date=True,
+            include_month=True,
+            return_expectations={
+                "incidence": 0.6,
+                "float": {"distribution": "normal", "mean": 80, "stddev": 10},
+            },
+        ),
+        bp_dia=patients.mean_recorded_value(
+            diastolic_blood_pressure_codes,
+            on_most_recent_day_of_measurement=True,
+            on_or_before="index_date",
+            include_measurement_date=True,
+            include_month=True,
+            return_expectations={
+                "incidence": 0.6,
+                "float": {"distribution": "normal", "mean": 120, "stddev": 10},
+            },
+        ),
+    ),
 
 # “R code
 #       bp = fct_case_when(
@@ -661,7 +670,6 @@ study = StudyDefinition(
 #         bp == "2" ~ "Elevated/High",
 #         bp == "0" ~ "Unknown"
 #       ),”   
-# )
 
 )
 
@@ -716,13 +724,17 @@ measures = [
             group_by=["delivery_code_present", "region"]
             ),
 
+    # rate of postnatal codes over time by delivery code, hbp
+    Measure(id="postnatal_check_rate_by_hbp",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "hbp_any"]
+            ),
 
+    # rate of postnatal codes over time by delivery code, hbp
+    Measure(id="postnatal_check_rate_by_bp",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "bp"]
+            ),
 ]
-
-## add hyp, (charlson, covid?) to measures?
-
-# hbp_pregnancy
-# hbp_all
-# bp
-
-# or is this as subgroup in measures plot files
