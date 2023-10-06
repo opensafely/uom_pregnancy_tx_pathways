@@ -158,6 +158,40 @@ actions:
       moderately_sensitive:
         measure_csv: output/pn6wk/measure_*.csv
 
+## updated measures with new study def
+  generate_measures_12wk_updated:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_updated
+      --skip-existing 
+      --output-dir=output/updated_pn12wk
+      --param num_days=84
+    needs: [generate_12wk_cohort_updated]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/updated_pn12wk/measure_*.csv
+
+  generate_measures_8wk_updated:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_updated
+      --skip-existing 
+      --output-dir=output/updated_pn8wk
+      --param num_days=56
+    needs: [generate_8wk_cohort_updated]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/updated_pn8wk/measure*.csv
+
+  generate_measures_6wk_updated:
+    run: cohortextractor:latest generate_measures 
+      --study-definition study_definition_updated
+      --skip-existing 
+      --output-dir=output/updated_pn6wk
+      --param num_days=42
+    needs: [generate_6wk_cohort_updated]
+    outputs:
+      moderately_sensitive:
+        measure_csv: output/updated_pn6wk/measure_*.csv
+
   #####################################################################
   #### generate tables with reduced/redacted frequencies and names ####
   #### of most frequent delivery and postnatal codes               ####
