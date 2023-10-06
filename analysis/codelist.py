@@ -181,15 +181,23 @@ hypertension_codes_preg= codelist_from_csv(
   column = "code"
 )
 
-## add billy's hbp codes and combine?
-#hbp_codes
-  #codelists
-  #system
-  #column
+hbp_codes = codelist_from_csv(
+    "codelists/opensafely-hypertension.csv", 
+    system="ctv3", 
+    column="CTV3ID"
+)
 
 #all hypertension codes
 hypertension_codes_all= codelist_from_csv(
   "codelists/opensafely-hypertension-snomed.csv",
   system = "snomed",
   column = "id"
+)
+
+# new ethnicity code
+ethnicity_codes = codelist_from_csv(
+    "codelists/opensafely-ethnicity.csv",
+    system="ctv3",
+    column="Code",
+    category_column="Grouping_6",
 )

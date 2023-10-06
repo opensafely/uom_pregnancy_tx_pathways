@@ -275,11 +275,14 @@ actions:
   
   describe_pn_rate_plots_8wk:
     run: r:latest analysis/pn_check_using_measures_8wk.R
-    needs: [generate_8wk_cohort, generate_measures_8wk]
+    #needs: [generate_8wk_cohort, generate_measures_8wk]
+    needs: [generate_8wk_cohort_updated, generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:
-        plot11: output/monthly_pn_rate_measures_8wk.jpeg
-        table11: output/pn_check_combined_plot_8wk.csv
+        #plot11: output/monthly_pn_rate_measures_8wk.jpeg
+        #table11: output/pn_check_combined_plot_8wk.csv
+        plot11: output/monthly_pn_rate_measures_8wk_updated.jpeg
+        table11: output/pn_check_combined_plot_8wk_updated.csv
 
   # describe_pn_rate_plots_12wk:
   #   run: r:latest analysis/pn_check_using_measures_12wk.R

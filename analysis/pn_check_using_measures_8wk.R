@@ -9,7 +9,7 @@ rm(list=ls())
 #setwd(here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"))
 
 df <- read_csv(
-  here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"),
+  here::here("output", "updated_pn8wk", "measure_postnatal_check_rate.csv"),
   col_types = cols_only(
 
     # Outcomes
@@ -63,7 +63,8 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
-write_csv(as.data.frame(df_gaps), here::here("output", "pn_check_combined_plot_8wk.csv"))
+#write_csv(as.data.frame(df_gaps), here::here("output", "pn_check_combined_plot_8wk.csv"))
+write_csv(as.data.frame(df_gaps), here::here("output", "pn_check_combined_plot_8wk_updated.csv"))
 
 plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
   geom_line(aes(y=pn_rate_1000),color="steelblue")+
@@ -80,8 +81,12 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
   annotate(geom = "rect", xmin = as.Date("2020-11-01"),xmax = as.Date("2020-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-06-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)
 
+# ggsave(
+#    plot= plot_pn_rate,
+#    filename="monthly_pn_rate_measures_8wk.jpeg", path=here::here("output"),
+# )
+
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures_8wk.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures_8wk_updated.jpeg", path=here::here("output"),
 )
-

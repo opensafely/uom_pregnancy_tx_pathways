@@ -34,3 +34,5 @@ opensafely/covid-identification-in-primary-care-probable-covid-sequelae/0b29a521
 user/djlhayes/high-risk-pregnancy/70b410f6
 
 opensafely/hypertension-snomed/024ab1b0
+opensafely/hypertension/2020-04-28
+
