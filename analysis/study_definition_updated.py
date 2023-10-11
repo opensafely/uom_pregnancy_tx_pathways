@@ -182,7 +182,7 @@ study = StudyDefinition(
                                 "incidence": 0.75,
                                 },
     ),
-
+    #fill in missing from sus
     ethnicity_sus=patients.with_ethnicity_from_sus(
         returning="group_6",
         use_most_frequent_code=True,

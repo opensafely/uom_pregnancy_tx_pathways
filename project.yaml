@@ -335,6 +335,13 @@ actions:
       moderately_sensitive:
         plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity_8wk_updated.jpeg
 
+  describe_pn_rate_plots_by_ethnicity_2:
+    run: r:latest analysis/pn_check_using_measures_by_ethnicity_2_8wk.R
+    needs: [generate_8wk_cohort_updated, generate_measures_8wk_updated]
+    outputs:
+      moderately_sensitive:
+        plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity_2_8wk_updated.jpeg      
+
   describe_pn_rate_plots_by_imd:
     run: r:latest analysis/pn_check_using_measures_by_imd_8wk.R
     needs: [generate_8wk_cohort_updated, generate_measures_8wk_updated]
