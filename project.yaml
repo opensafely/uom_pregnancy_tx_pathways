@@ -104,8 +104,8 @@ actions:
         cohort: output/pn6wk/input_*.csv.gz
 
   generate_6wk_cohort_updated:
-    run: cohortextractor:latest generate_cohort
-      --study-definition study_definition_updated 
+    run: cohortextractor:latest generate_cohort 
+      --study-definition study_definition_updated
       --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-format csv.gz
       --param num_days=42
@@ -118,12 +118,12 @@ actions:
   #### generate measures for each cohort  ####
   ############################################
 
-  generate_measures:
-    run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures --param num_days=84
-    needs: [generate_study_population_measures]
-    outputs:
-      moderately_sensitive:
-        measure_csv: output/measures/measure_*.csv
+  # generate_measures:
+  #   run: cohortextractor:latest generate_measures --study-definition study_definition_measures --skip-existing --output-dir=output/measures --param num_days=84
+  #   needs: [generate_study_population_measures]
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_csv: output/measures/measure_*.csv
 
   generate_measures_12wk:
     run: cohortextractor:latest generate_measures 
@@ -176,10 +176,10 @@ actions:
       --skip-existing 
       --output-dir=output/updated_pn8wk
       --param num_days=56
-    needs: [generate_8wk_cohort_updated]
+    needs: [generate_12wk_cohort_updated]
     outputs:
       moderately_sensitive:
-        measure_csv: output/updated_pn8wk/measure*.csv
+        measure_csv: output/updated_pn8wk/measure_*.csv
 
   generate_measures_6wk_updated:
     run: cohortextractor:latest generate_measures 
@@ -267,7 +267,6 @@ actions:
   #     moderately_sensitive:
   #       plot1: output/monthly_pn_rate_measures_overall.jpeg
 
-
 ######################################################
 #### plots for rate of postnatal checks over time ####
 #### overall (6/8/12 weeks and by category)       ####
@@ -350,7 +349,6 @@ actions:
         plot4: output/monthly_pn_rate_measures8wkcode_by_imd_8wk_updated.jpeg
   
   ###### ADD ETH, HBP, BP, then ITS
-
 
   #### rate plots by practice not currently used as data limited####
   
