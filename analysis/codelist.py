@@ -60,6 +60,14 @@ ethnicity_codes_6 = codelist_from_csv(
     category_column="Grouping_6",
 )
 
+# new ethnicity code
+ethnicity_codes = codelist_from_csv(
+    "codelists/opensafely-ethnicity.csv",
+    system="ctv3",
+    column="Code",
+    category_column="Grouping_6",
+)
+
 ## for covid variables
 
 covid_primary_care_code = codelist_from_csv(
@@ -211,10 +219,4 @@ diastolic_blood_pressure_codes = codelist(
     system="ctv3")
 
 
-# new ethnicity code
-ethnicity_codes = codelist_from_csv(
-    "codelists/opensafely-ethnicity.csv",
-    system="ctv3",
-    column="Code",
-    category_column="Grouping_6",
-)
+

@@ -9,11 +9,11 @@ rm(list=ls())
 #setwd(here::here("output", "measures"))
 
 df <- read_csv(
-  here::here("output", "updated_pn8wk", "measure_postnatal_check_rate_by_ethnicity.csv"),
+  here::here("output", "updated_pn8wk", "measure_postnatal_check_rate_by_ethnicity_2.csv"),
   col_types = cols_only(
 
     #Identifier
-    ethnicity = col_factor(),
+    ethnicity2 = col_factor(),
     
     # Outcomes
     delivery_code_present  = col_double(),
@@ -68,9 +68,9 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
 # remove unknown category
-df_gaps=filter(df_gaps, ethnicity !="Unknown")
+df_gaps=filter(df_gaps, ethnicity2 !="Unknown")
 
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity, color=ethnicity))+
+plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity2, color=ethnicity2))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "3 months")+
@@ -87,5 +87,5 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity, color=ethnicity))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_ethnicity_8wk_updated.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures8wkcode_by_ethnicity_2_8wk_updated.jpeg", path=here::here("output"),
 )

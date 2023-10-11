@@ -28,6 +28,7 @@ df$bmi_cat <- as.factor(df$bmi_cat)
 
 df$imd <- as.factor(df$imd)
 df$ethnicity <- as.factor(df$ethnicity)
+df$ethnicity2 <- as.factor(df$ethnicity2)
 df$region <- as.factor(df$region)
 
 ## covid positive

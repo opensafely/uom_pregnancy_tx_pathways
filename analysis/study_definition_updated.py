@@ -182,7 +182,7 @@ study = StudyDefinition(
                                 "incidence": 0.75,
                                 },
     ),
-
+    #fill in missing from sus
     ethnicity_sus=patients.with_ethnicity_from_sus(
         returning="group_6",
         use_most_frequent_code=True,
@@ -690,11 +690,11 @@ measures = [
             ),
 
     # rate of postnatal codes over time by delivery code, practice
-    Measure(id="postnatal_check_rate_by_practice",
-            numerator="postnatal_8wk_code_present",
-            denominator="population",
-            group_by=["delivery_code_present", "practice"]
-            ),
+    # Measure(id="postnatal_check_rate_by_practice",
+    #         numerator="postnatal_8wk_code_present",
+    #         denominator="population",
+    #         group_by=["delivery_code_present", "practice"]
+    #         ),
     
     # rate of postnatal codes over time by delivery code, imd
     Measure(id="postnatal_check_rate_by_imd",
@@ -724,17 +724,37 @@ measures = [
             group_by=["delivery_code_present", "region"]
             ),
 
-    # rate of postnatal codes over time by delivery code, hbp
+    # rate of postnatal codes over time by delivery code, history of hypertension
+    Measure(id="postnatal_check_rate_by_hbp_pregnancy",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "hbp_pregnancy"]
+            ), 
+
+    # rate of postnatal codes over time by delivery code, hypertension
+    Measure(id="postnatal_check_rate_by_hbp_all",
+            numerator="postnatal_8wk_code_present",
+            denominator="population",
+            group_by=["delivery_code_present", "hbp_all"]
+            ),
+
+    # rate of postnatal codes over time by delivery code, combined hypertension vars
     Measure(id="postnatal_check_rate_by_hbp",
             numerator="postnatal_8wk_code_present",
             denominator="population",
             group_by=["delivery_code_present", "hbp_any"]
             ),
 
-    # rate of postnatal codes over time by delivery code, hbp
-    Measure(id="postnatal_check_rate_by_bp",
+    # Measure(id="postnatal_check_rate_by_bp",
+    #         numerator="postnatal_8wk_code_present",
+    #         denominator="population",
+    #         group_by=["delivery_code_present", "bp"]
+    #         ),
+
+    # rate of postnatal codes over time by delivery code, history of cardiovasular comorbidities 
+    Measure(id="postnatal_check_rate_by_cardiovasc_comor",
             numerator="postnatal_8wk_code_present",
             denominator="population",
-            group_by=["delivery_code_present", "bp"]
+            group_by=["delivery_code_present", "cardiovascular_comor"]
             ),
 ]
