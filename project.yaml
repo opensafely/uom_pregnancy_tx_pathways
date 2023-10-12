@@ -176,7 +176,7 @@ actions:
       --skip-existing 
       --output-dir=output/updated_pn8wk
       --param num_days=56
-    needs: [generate_12wk_cohort_updated]
+    needs: [generate_8wk_cohort_updated]
     outputs:
       moderately_sensitive:
         measure_csv: output/updated_pn8wk/measure_*.csv
