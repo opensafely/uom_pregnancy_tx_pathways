@@ -30,32 +30,7 @@ study = StudyDefinition(
     index_date=start_date,
 
     ## define the population 
-    population=patients.satisfying(
-        """
-        NOT has_died
-        AND
-        registered
-        AND
-        has_follow_up_previous_year
-        """,
-
-        has_died=patients.died_from_any_cause(
-            on_or_before="index_date",
-            returning="binary_flag",
-        ),
-
-        registered=patients.satisfying(
-            "registered_at_start",
-            registered_at_start=patients.registered_as_of("index_date"),
-        ),
-
-        has_follow_up_previous_year=patients.registered_with_one_practice_between(
-            start_date="index_date - 1 year",
-            end_date="index_date",
-            return_expectations={"incidence": 0.95},
-        ),
-
-    ),
+    population=patients.all(),
      
     ethnicity = patients.categorised_as(
         {
