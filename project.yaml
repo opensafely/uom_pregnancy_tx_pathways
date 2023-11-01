@@ -43,6 +43,16 @@ actions:
       highly_sensitive:
         cohort: output/measures_update/input_*.csv.gz
 
+  generate_study_population_ethnicity:
+     run: cohortextractor:latest generate_cohort 
+       --study-definition study_definition_ethnicity 
+       --output-dir=output  
+       --output-format=csv.gz
+     outputs:
+       highly_sensitive:
+         cohort: output/input_ethnicity.csv.gz
+        
+
 ###################################################################################################
 #### generate cohorts of people with pn codes within 12, 8, 6 weeks of                         ####
 #### date of last delivery code using 'num_days' param - these are used to generate measures   ####

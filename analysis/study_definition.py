@@ -296,25 +296,6 @@ study = StudyDefinition(
       },
     ),
 
-    # map codes to their descriptions in R rather than the below
-
-    # delivery_code_name=patients.with_these_clinical_events(
-    # delivery_codes,
-    # between=["index_date", "today"],
-    # returning="term",
-    # return_expectations={
-    #     "category": {
-    #         "ratios": {
-    #         "Cesarean section":  0.2,
-    #         "Baby male": 0.2,
-    #         "Baby female": 0.2,
-    #         "Place of birth": 0.2,
-    #         "Home birth": 0.2,
-    #         }
-    #     },
-    #     "incidence": 1,
-    #   },
-    # ),
 
 ## next three variables are the same but for different codelists
 
@@ -377,9 +358,6 @@ study = StudyDefinition(
         },
     ),
 
-    # is there a delivery code in a certain period - this is 2019
-    # use this as example for 6WC check
-    # do we need this for each month?
     delivery_code_present_2019=patients.with_these_clinical_events(
     delivery_codes,
     between=["index_date", "2019-12-31"],
@@ -391,16 +369,3 @@ study = StudyDefinition(
     ),
 
 )
-
-# add check for whether postnatal code within 6w
-# this would be same format as postnatal_8wk_code_present?
-
-##add measures
-
-##numerator num patients with pn code in 12 weeks after delivery date
-
-##denom num patients delivered that month
-## ^ no of patients w delivery codes per month
-
-## overall measure, grouped by practice, grouped by age_cat, region
-## develop code for plotting
