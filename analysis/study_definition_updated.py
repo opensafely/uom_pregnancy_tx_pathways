@@ -224,8 +224,6 @@ study = StudyDefinition(
     #         },
     # ),
 
-
-
     practice=patients.registered_practice_as_of(
             "index_date",
             returning="pseudo_id",
