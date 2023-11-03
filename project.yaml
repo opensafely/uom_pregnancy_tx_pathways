@@ -52,6 +52,25 @@ actions:
        highly_sensitive:
          cohort: output/input_ethnicity.csv.gz
         
+  join_cohorts:
+    run: cohort-joiner:v0.0.56
+        --lhs output/measures_update/input_*.csv.gz
+        --rhs output/input_ethnicity.csv.gz
+        --output-dir output/joined
+    needs: [generate_study_population_updated, generate_study_population_ethnicity]
+    outputs:
+      highly_sensitive:
+        cohort: output/joined/input_20*.csv.gz
+
+  # generate_measures:
+  # run: >
+  #   cohortextractor:latest generate_measures
+  #     --study-definition study_definition
+  #     --output-dir output/joined
+  # needs: [join_cohorts]
+  # outputs:
+  #   moderately_sensitive:
+  #     measure: output/joined/measure_*.csv
 
 ###################################################################################################
 #### generate cohorts of people with pn codes within 12, 8, 6 weeks of                         ####
