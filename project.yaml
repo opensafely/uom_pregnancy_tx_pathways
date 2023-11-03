@@ -60,7 +60,9 @@ actions:
     needs: [generate_study_population_updated, generate_study_population_ethnicity]
     outputs:
       highly_sensitive:
-        cohort: output/joined/input_20*.csv.gz
+        cohort: output/joined/input_*.csv.gz
+
+  ### add join_cohorts for 12/8/6 week cohorts
 
   # generate_measures:
   # run: >

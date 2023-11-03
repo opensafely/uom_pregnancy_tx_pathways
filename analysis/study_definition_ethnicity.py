@@ -26,8 +26,7 @@ study = StudyDefinition(
         "incidence": 0.5,
     },
 
-    # Set index date to start date
-    index_date=start_date,
+    index_date=end_date,
 
     ## define the population 
     population=patients.all(),
@@ -80,7 +79,6 @@ study = StudyDefinition(
     eth=patients.with_these_clinical_events(
         ethnicity_codes,
         returning="category",
-        on_or_before="index_date",
         find_last_match_in_period=True,
         include_date_of_match=False,
         return_expectations={
