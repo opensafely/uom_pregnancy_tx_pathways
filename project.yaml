@@ -61,8 +61,36 @@ actions:
   #   outputs:
   #     highly_sensitive:
   #       cohort: output/joined/input_*.csv.gz
+  
+  join_cohorts_12_week:
+    run: cohort-joiner:v0.0.56
+        --lhs output/updated_pn12wk/input_*.csv.gz
+        --rhs output/input_ethnicity.csv.gz
+        --output-dir output/joined
+    needs: [generate_study_population_updated, generate_study_population_ethnicity]
+    outputs:
+      highly_sensitive:
+        cohort: output/joined_12wk/input_*.csv.gz
 
-  ### add join_cohorts for 12/8/6 week cohorts
+  join_cohorts_8_week:
+    run: cohort-joiner:v0.0.56
+        --lhs output/updated_pn8wk/input_*.csv.gz
+        --rhs output/input_ethnicity.csv.gz
+        --output-dir output/joined
+    needs: [generate_study_population_updated, generate_study_population_ethnicity]
+    outputs:
+      highly_sensitive:
+        cohort: output/joined_8wk/input_*.csv.gz
+  
+  join_cohorts_6_week:
+    run: cohort-joiner:v0.0.56
+        --lhs output/updated_pn6wk/input_*.csv.gz
+        --rhs output/input_ethnicity.csv.gz
+        --output-dir output/joined
+    needs: [generate_study_population_updated, generate_study_population_ethnicity]
+    outputs:
+      highly_sensitive:
+        cohort: output/joined_6wk/input_*.csv.gz
 
   # generate_measures:
   # run: >
