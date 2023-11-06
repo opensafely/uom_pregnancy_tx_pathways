@@ -7,6 +7,10 @@ from cohortextractor import (
     params,
 )
 
+##############################################################################
+####### new study definition with additional vars and eth vars removed #######
+##############################################################################
+
 # Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelist import *
 
@@ -77,7 +81,7 @@ study = StudyDefinition(
         },
     ),
 
-    #need to define categories
+
     age_cat=patients.categorised_as(
         {
             "0":"DEFAULT",
@@ -343,8 +347,8 @@ study = StudyDefinition(
     ),
 
     # Returns delivery code - last code by default
-    # can use find_first_match_in_period = True or find_last_match_in_period = True
-    # can also add include_date_of_match to get the date
+    # could use find_first_match_in_period = True or find_last_match_in_period = True
+    # could also add include_date_of_match to get the date
     delivery_code=patients.with_these_clinical_events(
     delivery_codes_reviewed_2,
     between=["index_date", "last_day_of_month(index_date)"],
