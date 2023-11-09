@@ -66,7 +66,7 @@ actions:
     run: cohort-joiner:v0.0.56
         --lhs output/updated_pn12wk/input_*.csv.gz
         --rhs output/input_ethnicity.csv.gz
-        --output-dir output/joined
+        --output-dir output/joined_12wk
     needs: [generate_12wk_cohort_updated, generate_study_population_ethnicity]
     outputs:
       highly_sensitive:
@@ -76,7 +76,7 @@ actions:
     run: cohort-joiner:v0.0.56
         --lhs output/updated_pn8wk/input_*.csv.gz
         --rhs output/input_ethnicity.csv.gz
-        --output-dir output/joined
+        --output-dir output/joined_8wk
     needs: [generate_8wk_cohort_updated, generate_study_population_ethnicity]
     outputs:
       highly_sensitive:
@@ -86,7 +86,7 @@ actions:
     run: cohort-joiner:v0.0.56
         --lhs output/updated_pn6wk/input_*.csv.gz
         --rhs output/input_ethnicity.csv.gz
-        --output-dir output/joined
+        --output-dir output/joined_6wk
     needs: [generate_6wk_cohort_updated, generate_study_population_ethnicity]
     outputs:
       highly_sensitive:
