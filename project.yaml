@@ -207,6 +207,8 @@ actions:
       moderately_sensitive:
         measure_csv: output/pn6wk/measure_*.csv
 
+#### do we want new output folders/files for measures?
+
   generate_measures_12wk_updated:
     run: cohortextractor:latest generate_measures 
       --study-definition study_definition_updated
