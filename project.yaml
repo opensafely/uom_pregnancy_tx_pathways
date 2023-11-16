@@ -207,43 +207,38 @@ actions:
       moderately_sensitive:
         measure_csv: output/pn6wk/measure_*.csv
 
-#### do we want new output folders/files for measures?
-
   generate_measures_12wk_updated:
     run: cohortextractor:latest generate_measures 
       --study-definition study_definition_updated
       --skip-existing 
-      --output-dir=output/updated_pn12wk
+      --output-dir=output/joined_12wk
       --param num_days=84
-    # needs: [generate_12wk_cohort_updated]
     needs: [join_cohorts_12_week]
     outputs:
       moderately_sensitive:
-        measure_csv: output/updated_pn12wk/measure_*.csv
+        measure_csv: output/joined_12wk/measure_*.csv
 
   generate_measures_8wk_updated:
     run: cohortextractor:latest generate_measures 
       --study-definition study_definition_updated
       --skip-existing 
-      --output-dir=output/updated_pn8wk
+      --output-dir=output/joined_8wk
       --param num_days=56
-    #needs:[generate_8wk_cohort_updated]
     needs: [join_cohorts_8_week]
     outputs:
       moderately_sensitive:
-        measure_csv: output/updated_pn8wk/measure_*.csv
+        measure_csv: output/joined_8wk/measure_*.csv
 
   generate_measures_6wk_updated:
     run: cohortextractor:latest generate_measures 
       --study-definition study_definition_updated
       --skip-existing 
-      --output-dir=output/updated_pn6wk
+      --output-dir=output/joined_6wk
       --param num_days=42
-    #needs: [generate_6wk_cohort_updated]
     needs: [join_cohorts_6_week]
     outputs:
       moderately_sensitive:
-        measure_csv: output/updated_pn6wk/measure_*.csv
+        measure_csv: output/joined_6wk/measure_*.csv
 
   #####################################################################
   #### generate tables with reduced/redacted frequencies and names ####
