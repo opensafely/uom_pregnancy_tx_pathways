@@ -8,7 +8,7 @@ library("lubridate")
 rm(list=ls())
 
 df <- read_csv(
-  here::here("output", "updated_pn12wk", "measure_postnatal_check_rate.csv"),
+  here::here("output", "joined_12wk", "measure_postnatal_check_rate.csv"),
   col_types = cols_only(
 
     # Outcomes
