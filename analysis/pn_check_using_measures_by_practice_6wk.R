@@ -9,7 +9,7 @@ rm(list=ls())
 
 # import data
 df <- read_csv(
-  here::here("output", "pn6wk", "measure_postnatal_check_rate_by_practice.csv"),
+  here::here("output", "joined_6wk", "measure_postnatal_check_rate_by_practice.csv"),
   col_types = cols_only(
     
     #Identifier
