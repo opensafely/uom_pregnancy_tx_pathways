@@ -396,7 +396,12 @@ actions:
       moderately_sensitive:
         plot4: output/monthly_pn_rate_measures8wkcode_by_imd_8wk_updated.jpeg
   
-  ###### ADD ETH, HBP, BP, then ITS
+  describe_pn_rate_plots_by_region:
+    run: r:latest analysis/pn_check_using_measures_by_region_8wk.R
+    needs: [generate_8wk_cohort_updated, generate_measures_8wk_updated]
+    outputs:
+      moderately_sensitive:
+        plot6: output/monthly_pn_rate_measures8wkcode_by_region_8wk_updated.jpeg
 
   #### rate plots by practice not currently used as data limited####
   
@@ -421,12 +426,6 @@ actions:
   #      moderately_sensitive:
   #       plot5: output/monthly_pn_rate_measures8wkcode_by_practice_6wk.jpeg
 
-  describe_pn_rate_plots_by_region:
-    run: r:latest analysis/pn_check_using_measures_by_region_8wk.R
-    needs: [generate_8wk_cohort, generate_measures_8wk]
-    outputs:
-      moderately_sensitive:
-        plot6: output/monthly_pn_rate_measures8wkcode_by_region_8wk.jpeg
 
 ################################################
 #### Generating baseline tables for cohorts ####
