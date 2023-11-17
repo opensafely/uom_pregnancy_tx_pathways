@@ -8,7 +8,7 @@ library("MASS")
 
 ## Import data
 df <- read_csv(
- here::here("output", "pn8wk", "measure_postnatal_check_rate.csv"),
+ here::here("output", "joined_8wk", "measure_postnatal_check_rate.csv"),
 
     col_types = cols_only(
      delivery_code_present  = col_double(),
@@ -57,7 +57,7 @@ df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # write csv for rates
-write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_overall.csv"))
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_overall_updated.csv"))
 
 # times (months since start of study) = T
 # covid (binary) = D
@@ -78,12 +78,12 @@ names(DF)[1]="coefficient & IRR"
 names(DF)[2]="ci_l"
 names(DF)[3]="ci_u"
 
-write_csv(as.data.frame(DF), here::here("output", "ITS_estimates_overall.csv"))
+write_csv(as.data.frame(DF), here::here("output", "ITS_estimates_overall_updated.csv"))
 
 ## predict using model
 df_plot <- cbind(df_plot, "resp" = predict(m1.0, type = "response", se.fit = TRUE)[1:2])
 
-write_csv(as.data.frame(df_plot), here::here("output", "ITS_estimates_combined_plot_8wk.csv"))
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_estimates_combined_plot_8wk_updated.csv"))
 
 ## predict counterfactual using model
 df_plot_counter <- subset(df_plot, select=-c(fit,se.fit))
@@ -94,7 +94,7 @@ df_plot_counter  <- cbind(df_plot_counter, "resp" = predict(m1.0, type = "respon
 # filter counterfactual data to april 2020 onward for plotting. 
 df_plot_counter_final=df_plot_counter%>%filter(date>=as.Date("2020-03-01"))
 
-write_csv(as.data.frame(df_plot_counter_final), here::here("output", "ITS_estimates_counter_overall.csv"))
+write_csv(as.data.frame(df_plot_counter_final), here::here("output", "ITS_estimates_counter_overall_updated.csv"))
 
 plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=fit*1000/population, group=covid))+ 
       
@@ -130,5 +130,5 @@ plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=fit*1000/population, group=covid
 
 ggsave(
    plot= plot_ITS_overall,
-   filename="pn_check_ITS_overall_8wk_new_modelled.jpeg", path=here::here("output"),
+   filename="pn_check_ITS_overall_8wk_new_modelled_updated.jpeg", path=here::here("output"),
 )
