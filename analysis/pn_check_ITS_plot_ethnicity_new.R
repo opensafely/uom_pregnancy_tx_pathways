@@ -9,7 +9,7 @@ library("ggpubr")
 
 ## Import data
 df <- read_csv(
- here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_ethnicity_updated.csv"),
+ here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_ethnicity.csv"),
 
     col_types = cols_only(
      delivery_code_present  = col_double(),
