@@ -9,7 +9,7 @@ library("ggpubr")
 
 ## Import data
 df <- read_csv(
- here::here("output", "pn8wk", "measure_postnatal_check_rate_by_imd.csv"),
+ here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_imd.csv"),
 
     col_types = cols_only(
      delivery_code_present  = col_double(),
@@ -59,7 +59,7 @@ df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # write csv for rates
-write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_imd.csv"))
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_imd_updated.csv"))
 
 # df for each imd cat
 #df1=filter(df_plot, imd=="0")
@@ -112,7 +112,7 @@ names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_imd_IRR_overall.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_imd_IRR_overall_updated.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -222,10 +222,10 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
 
 ggsave(
   plot= plot_ITS,
-  filename="plot_ITS_imd_1.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_imd_1_updated.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_imd.csv"))
+write.csv(DF,here::here("output","plot_ITS_check_imd_updated.csv"))
 
 
 #### creates plot with IRRs and error bars/CIs
@@ -255,6 +255,6 @@ plot_ITS_imd_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR))+
 
 ggsave(
   plot= plot_ITS_imd_2, 
-  filename="plot_ITS_imd_2.jpeg", path=here::here("output"), dpi=300
+  filename="plot_ITS_imd_2_updated.jpeg", path=here::here("output"), dpi=300
   )
 
