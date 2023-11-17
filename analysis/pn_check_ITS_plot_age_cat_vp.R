@@ -8,7 +8,7 @@ library("ggpubr")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "pn8wk", "measure_postnatal_check_rate_by_age_cat.csv"))
+df = read.csv(here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_age_cat.csv"))
 
 # delivery_code_present  = col_double(),
 # postnatal_8wk_code_present = col_double(),
@@ -117,7 +117,7 @@ names(df_plot_overall)[3]="ci_u"
 
 ## add to project.yaml
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall_updated.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -212,10 +212,10 @@ plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+
 #plot_ITS
 ggsave(
   plot= plot_ITS,
-  filename="plot_ITS_age_cat.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_age_cat_updated.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
+write.csv(DF,here::here("output","plot_ITS_check_age_cat_updated.csv"))
 
 #### creates plot with IRRs and error bars/CIs
 plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
@@ -242,6 +242,6 @@ plot_ITS_age_cat_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
 
 ggsave(
   plot= plot_ITS_age_cat_2, 
-  filename="plot_ITS_age_cat_IRR.jpeg", path=here::here("output"), dpi=300
+  filename="plot_ITS_age_cat_IRR_updated.jpeg", path=here::here("output"), dpi=300
   )
 
