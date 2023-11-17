@@ -13,7 +13,7 @@ library("ggpubr")
 
 ## Import data
 df <- read_csv(
- here::here("output", "pn8wk", "measure_postnatal_check_rate_by_age_cat.csv"),
+ here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_age_cat.csv"),
 
     col_types = cols_only(
      delivery_code_present  = col_double(),
@@ -61,7 +61,7 @@ df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # write csv for rates
-write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_age_cat.csv"))
+write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_age_cat_updated.csv"))
 
 # df for each age cat
 df1=filter(df_plot, age_cat=="14-19")
@@ -119,7 +119,7 @@ names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall_updated.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -217,10 +217,10 @@ plot_ITS_age_cat_edit<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, grou
 #plot_ITS
 ggsave(
   plot= plot_ITS_age_cat_edit,
-  filename="plot_ITS_age_cat_edit.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_age_cat_edit_updated.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
+write.csv(DF,here::here("output","plot_ITS_check_age_cat_updated.csv"))
 
 #### creates plot with IRRs and error bars/CIs
 #plot_ITS_age_cat_edit_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
@@ -248,6 +248,6 @@ write.csv(DF,here::here("output","plot_ITS_check_age_cat.csv"))
 
 # ggsave(
 #   plot= plot_ITS_age_cat_edit_2, 
-#   filename="plot_ITS_age_cat_edit_2.jpeg", path=here::here("output"), dpi=300
+#   filename="plot_ITS_age_cat_edit_2_updated.jpeg", path=here::here("output"), dpi=300
 #   )
 
