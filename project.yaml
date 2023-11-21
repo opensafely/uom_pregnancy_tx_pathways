@@ -5,11 +5,11 @@ expectations:
 
 actions:
 
-  generate_study_population:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition 
-    outputs:
-      highly_sensitive:
-        cohort: output/input.csv
+  # generate_study_population:
+  #   run: cohortextractor:latest generate_cohort --study-definition study_definition 
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/input.csv
 
   # generate_study_population_monthly:
   #   run: cohortextractor:latest generate_cohort 
@@ -21,16 +21,16 @@ actions:
   #     highly_sensitive:
   #       cohort: output/input_*.csv.gz
 
-  generate_study_population_measures:
-    run: cohortextractor:latest generate_cohort 
-      --study-definition study_definition_measures 
-      --index-date-range "2019-01-01 to today by month" --skip-existing 
-      --output-dir=output/measures 
-      --output-format=csv.gz 
-      --param num_days=84 
-    outputs:
-      highly_sensitive:
-        cohort: output/measures/input_*.csv.gz
+  # generate_study_population_measures:
+  #   run: cohortextractor:latest generate_cohort 
+  #     --study-definition study_definition_measures 
+  #     --index-date-range "2019-01-01 to today by month" --skip-existing 
+  #     --output-dir=output/measures 
+  #     --output-format=csv.gz 
+  #     --param num_days=84 
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/measures/input_*.csv.gz
 
   generate_study_population_updated:
     run: cohortextractor:latest generate_cohort 
@@ -38,7 +38,7 @@ actions:
       --index-date-range "2019-01-01 to today by month" --skip-existing 
       --output-dir=output/measures_update
       --output-format=csv.gz 
-      --param num_days=84 
+      --param num_days=56 
     outputs:
       highly_sensitive:
         cohort: output/measures_update/input_*.csv.gz
@@ -97,16 +97,16 @@ actions:
 #### date of last delivery code using 'num_days' param - these are used to generate measures   ####
 ###################################################################################################
 
-  generate_12wk_cohort:
-    run: cohortextractor:latest generate_cohort 
-      --study-definition study_definition_measures
-      --index-date-range "2019-01-01 to today by month" --skip-existing 
-      --output-format csv.gz
-      --param num_days=84
-      --output-dir=output/pn12wk
-    outputs:
-      highly_sensitive:
-        cohort: output/pn12wk/input_*.csv.gz
+  # generate_12wk_cohort:
+  #   run: cohortextractor:latest generate_cohort 
+  #     --study-definition study_definition_measures
+  #     --index-date-range "2019-01-01 to today by month" --skip-existing 
+  #     --output-format csv.gz
+  #     --param num_days=84
+  #     --output-dir=output/pn12wk
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/pn12wk/input_*.csv.gz
 
   generate_12wk_cohort_updated:
     run: cohortextractor:latest generate_cohort 
@@ -119,16 +119,16 @@ actions:
       highly_sensitive:
         cohort: output/updated_pn12wk/input_*.csv.gz
   
-  generate_8wk_cohort:
-    run: cohortextractor:latest generate_cohort
-      --study-definition study_definition_measures 
-      --index-date-range "2019-01-01 to today by month" --skip-existing 
-      --output-format csv.gz
-      --param num_days=56
-      --output-dir=output/pn8wk
-    outputs:
-      highly_sensitive:
-        cohort: output/pn8wk/input_*.csv.gz
+  # generate_8wk_cohort:
+  #   run: cohortextractor:latest generate_cohort
+  #     --study-definition study_definition_measures 
+  #     --index-date-range "2019-01-01 to today by month" --skip-existing 
+  #     --output-format csv.gz
+  #     --param num_days=56
+  #     --output-dir=output/pn8wk
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/pn8wk/input_*.csv.gz
 
   generate_8wk_cohort_updated:
     run: cohortextractor:latest generate_cohort
@@ -141,16 +141,16 @@ actions:
       highly_sensitive:
         cohort: output/updated_pn8wk/input_*.csv.gz
 
-  generate_6wk_cohort:
-    run: cohortextractor:latest generate_cohort 
-      --study-definition study_definition_measures
-      --index-date-range "2019-01-01 to today by month" --skip-existing 
-      --output-format csv.gz
-      --param num_days=42
-      --output-dir=output/pn6wk
-    outputs:
-      highly_sensitive:
-        cohort: output/pn6wk/input_*.csv.gz
+  # generate_6wk_cohort:
+  #   run: cohortextractor:latest generate_cohort 
+  #     --study-definition study_definition_measures
+  #     --index-date-range "2019-01-01 to today by month" --skip-existing 
+  #     --output-format csv.gz
+  #     --param num_days=42
+  #     --output-dir=output/pn6wk
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/pn6wk/input_*.csv.gz
 
   generate_6wk_cohort_updated:
     run: cohortextractor:latest generate_cohort 
@@ -174,38 +174,38 @@ actions:
   #     moderately_sensitive:
   #       measure_csv: output/measures/measure_*.csv
 
-  generate_measures_12wk:
-    run: cohortextractor:latest generate_measures 
-      --study-definition study_definition_measures 
-      --skip-existing 
-      --output-dir=output/pn12wk
-      --param num_days=84
-    needs: [generate_12wk_cohort]
-    outputs:
-      moderately_sensitive:
-        measure_csv: output/pn12wk/measure_*.csv
+  # generate_measures_12wk:
+  #   run: cohortextractor:latest generate_measures 
+  #     --study-definition study_definition_measures 
+  #     --skip-existing 
+  #     --output-dir=output/pn12wk
+  #     --param num_days=84
+  #   needs: [generate_12wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_csv: output/pn12wk/measure_*.csv
 
-  generate_measures_8wk:
-    run: cohortextractor:latest generate_measures 
-      --study-definition study_definition_measures 
-      --skip-existing 
-      --output-dir=output/pn8wk
-      --param num_days=56
-    needs: [generate_8wk_cohort]
-    outputs:
-      moderately_sensitive:
-        measure_csv: output/pn8wk/measure*.csv
+  # generate_measures_8wk:
+  #   run: cohortextractor:latest generate_measures 
+  #     --study-definition study_definition_measures 
+  #     --skip-existing 
+  #     --output-dir=output/pn8wk
+  #     --param num_days=56
+  #   needs: [generate_8wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_csv: output/pn8wk/measure*.csv
 
-  generate_measures_6wk:
-    run: cohortextractor:latest generate_measures 
-      --study-definition study_definition_measures 
-      --skip-existing 
-      --output-dir=output/pn6wk
-      --param num_days=42
-    needs: [generate_6wk_cohort]
-    outputs:
-      moderately_sensitive:
-        measure_csv: output/pn6wk/measure_*.csv
+  # generate_measures_6wk:
+  #   run: cohortextractor:latest generate_measures 
+  #     --study-definition study_definition_measures 
+  #     --skip-existing 
+  #     --output-dir=output/pn6wk
+  #     --param num_days=42
+  #   needs: [generate_6wk_cohort]
+  #   outputs:
+  #     moderately_sensitive:
+  #       measure_csv: output/pn6wk/measure_*.csv
 
   generate_measures_12wk_updated:
     run: cohortextractor:latest generate_measures 
@@ -247,7 +247,7 @@ actions:
 
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R
-    needs: [generate_8wk_cohort]
+    needs: [generate_8wk_cohort_updated]
     outputs:
       moderately_sensitive:
         hist1: output/del_code_histogram_reviewed.jpeg
@@ -255,21 +255,21 @@ actions:
 
   describe_del_code_freq_with_names:
     run: r:latest analysis/del_code_frequency_with_names.R
-    needs: [generate_8wk_cohort, describe_del_code_freq]
+    needs: [generate_8wk_cohort_updated, describe_del_code_freq]
     outputs:
       moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names.csv
 
   describe_del_code_freq_with_names_reduced:
     run: r:latest analysis/del_code_frequency_with_names_reduced.R
-    needs: [generate_8wk_cohort, describe_del_code_freq_with_names]
+    needs: [generate_8wk_cohort_updated, describe_del_code_freq_with_names]
     outputs:
      moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names_reduced.csv
         
   describe_pn_code_freq:
     run: r:latest analysis/pn_code_frequency.R
-    needs: [generate_8wk_cohort]
+    needs: [generate_8wk_cohort_updated]
     outputs:
       moderately_sensitive:
         hist2: output/pn_code_histogram_reviewed.jpeg
@@ -277,14 +277,14 @@ actions:
 
   describe_pn_code_freq_with_names:
      run: r:latest analysis/pn_code_frequency_with_names.R
-     needs: [generate_8wk_cohort, describe_pn_code_freq]
+     needs: [generate_8wk_cohort_updated, describe_pn_code_freq]
      outputs:
        moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names.csv   
 
   describe_pn_code_freq_with_names_reduced:
      run: r:latest analysis/pn_code_frequency_with_names_reduced.R
-     needs: [generate_8wk_cohort, describe_pn_code_freq_with_names]
+     needs: [generate_8wk_cohort_updated, describe_pn_code_freq_with_names]
      outputs:
       moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
@@ -292,7 +292,7 @@ actions:
   # frequency of codes by unique patients
   describe_freq_by_unique_patients:
      run: r:latest analysis/del_code_and_pn_code_frequency_by_patient.R
-     needs: [generate_8wk_cohort]
+     needs: [generate_8wk_cohort_updated]
      outputs:
       moderately_sensitive:
          hist_del_code: output/del_code_histogram_reviewed_byPatient.jpeg
@@ -349,7 +349,7 @@ actions:
 
   describe_pn_rate_plots_combined:
     run: r:latest analysis/pn_check_using_measures_combined.R
-    needs: [generate_6wk_cohort, generate_measures_6wk, generate_12wk_cohort, generate_measures_12wk, generate_8wk_cohort, generate_measures_8wk]
+    needs: [generate_6wk_cohort_updated, generate_measures_6wk_updated, generate_12wk_cohort_updated, generate_measures_12wk_updated, generate_8wk_cohort_updated, generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:
         plot1b: output/monthly_pn_rate_measures_combined.jpeg     
@@ -521,7 +521,7 @@ actions:
 
   describe_ITS_plot_overall_6wk_new:
     run: r:latest analysis/pn_check_ITS_plot_6wk_new.R
-    needs: [generate_6wk_cohort, generate_measures_6wk]
+    needs: [generate_6wk_cohort_updated, generate_measures_6wk_updated]
     outputs:
       moderately_sensitive:
         plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk_new_modelled.jpeg 
@@ -531,7 +531,7 @@ actions:
 
   describe_ITS_plot_overall_12wk_new:
     run: r:latest analysis/pn_check_ITS_plot_12wk_new.R
-    needs: [generate_12wk_cohort, generate_measures_12wk]
+    needs: [generate_12wk_cohort_updated, generate_measures_12wk_updated]
     outputs:
       moderately_sensitive:
         plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk_new_modelled.jpeg 
@@ -541,7 +541,7 @@ actions:
 
   describe_ITS_plot_overall_by_cohort:
     run: r:latest analysis/pn_check_ITS_plot_combined.R
-    needs: [generate_12wk_cohort, generate_measures_12wk, generate_6wk_cohort, generate_measures_6wk, generate_8wk_cohort, generate_measures_8wk]
+    needs: [generate_12wk_cohort_updated, generate_measures_12wk_updated, generate_6wk_cohort_updated, generate_measures_6wk_updated, generate_8wk_cohort_updated, generate_measures_8wk_updated]
     # check needs
     outputs:
       moderately_sensitive:
@@ -611,7 +611,7 @@ actions:
 
   describe_glm_for_no_pn_check:
       run: r:latest analysis/glm_for_no_pn_check.r
-      needs: [generate_8wk_cohort]
+      needs: [generate_8wk_cohort_updated]
       outputs:
        moderately_sensitive:
           mod1_age_coef: output/mod1_ageadj_coef.csv
