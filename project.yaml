@@ -579,6 +579,18 @@ actions:
           plot_ITS_IRR_eth_data: output/ITS_plot_ethnicity_IRR_overall_updated.csv
           plot_ITS_plot_data: output/ITS_plot_data_ethnicity_updated.csv
 
+  describe_ITS_plot_ethnicity_2:
+     run: r:latest analysis/pn_check_ITS_plot_ethnicity_2.R
+     needs: [generate_8wk_cohort_updated, generate_measures_8wk_updated]
+     outputs:
+       moderately_sensitive:
+          plot_ITS_eth_1: output/plot_ITS_eth2_1_updated.jpeg
+          plot_ITS_eth_2: output/plot_ITS_eth2_2_updated.jpeg
+          plot_ITS_eth_data: output/plot_ITS_check_ethnicity2_updated.csv
+          plot_ITS_IRR_eth_data: output/ITS_plot_ethnicity2_IRR_overall_updated.csv
+          plot_ITS_plot_data: output/ITS_plot_data_ethnicity2_updated.csv
+
+
   describe_ITS_plot_imd_new:
      run: r:latest analysis/pn_check_ITS_plot_imd_new.R
      needs: [generate_8wk_cohort_updated, generate_measures_8wk_updated]
