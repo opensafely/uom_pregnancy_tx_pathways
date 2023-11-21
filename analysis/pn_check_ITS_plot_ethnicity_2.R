@@ -59,12 +59,13 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-df_plot$ethnicity2<-recode(df_plot$ethnicity2, 0 = 'Unknown',
-                                                1 = 'White',
-                                                2 = 'Mixed',
-                                                3 = 'Asian or Asian British',
-                                                4 = 'Black or Black British',
-                                                5 = 'Other')
+df_plot$ethnicity2<- as.factor(df$ethnicity2)
+df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White",
+                                                  ethnicity2== 2 ~ "Mixed",
+                                                  ethnicity2== 3 ~ "Asian or Asian British",
+                                                  ethnicity2== 4 ~ "Black or Black British",
+                                                  ethnicity2== 5 ~ "Other"
+                                                  ethnicity2== 0 ~ "Unknown"))
 
 # write csv for rates
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_ethnicity2_updated.csv"))

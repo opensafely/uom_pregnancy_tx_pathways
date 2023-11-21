@@ -9,12 +9,12 @@ rm(list=ls())
 #setwd(here::here("output", "measures"))
 
 df <- read_csv(
-  here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_ethnicity_2.csv"),
+  here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_hbp.csv"),
   col_types = cols_only(
-
-    #Identifier
-    ethnicity2 = col_factor(),
     
+    #Identifier
+    hbp_any = col_factor(),
+
     # Outcomes
     delivery_code_present  = col_double(),
     postnatal_8wk_code_present = col_double(),
@@ -27,7 +27,6 @@ df <- read_csv(
   ),
   na = character()
   )
-
 
 ## remove rows where delivery_code_present == 0 (group_by var in measures)
 df=df%>% filter(delivery_code_present > 0)
@@ -43,6 +42,9 @@ last_mon <- (format(max(df$date), "%m-%Y"))
 
 df$cal_mon <- month(df$date)
 df$cal_year <- year(df$date)
+
+### imd cat == 0 in dummy data so remove
+#df <- df %>% filter(imd != 0)
 
 #redaction
 df2<-df
@@ -63,29 +65,11 @@ df_plot=df2 %>% filter(!is.na(value_r))
 
 ### get monthly rate per 1000 patients
 df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
-  mutate(pn_rate_1000 = value_r*1000)  
-
+  mutate(pn_rate_1000 = value_r*1000) 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
-df_gaps$ethnicity2<- as.factor(df$ethnicity2)
-df_gaps<- df_gaps%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White",
-                                                  ethnicity2== 2 ~ "Mixed",
-                                                  ethnicity2== 3 ~ "Asian or Asian British",
-                                                  ethnicity2== 4 ~ "Black or Black British",
-                                                  ethnicity2== 5 ~ "Other"
-                                                  ethnicity2== 0 ~ "Unknown"))
 
-# df_gaps$ethnicity2<-recode(df_gaps$ethnicity2, 0 = 'Unknown',
-#                                                 1 = 'White',
-#                                                 2 = 'Mixed',
-#                                                 3 = 'Asian or Asian British',
-#                                                 4 = 'Black or Black British',
-#                                                 5 = 'Other')
-
-# remove unknown category
-df_gaps=filter(df_gaps, ethnicity2 !="Unknown")
-
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity2, color=ethnicity2))+
+plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=hbp_any, color=hbp_any))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "3 months")+
@@ -102,5 +86,6 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity2, color=ethnicity2))
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_ethnicity_2_8wk_updated.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_measures8wkcode_by_hbp_8wk.jpeg", path=here::here("output"),
 )
+

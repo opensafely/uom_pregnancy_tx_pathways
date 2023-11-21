@@ -390,7 +390,19 @@ actions:
       moderately_sensitive:
         plot6: output/monthly_pn_rate_measures8wkcode_by_region_8wk_updated.jpeg
 
-  
+  describe_pn_rate_plots_by_hbp:
+    run: r:latest analysis/pn_check_using_measures_by_hbp.R
+    needs: [generate_8wk_cohort_updated, generate_measures_8wk_updated]
+    outputs:
+      moderately_sensitive:
+        plot4: output/monthly_pn_rate_measures8wkcode_by_hbp_8wk.jpeg
+
+  describe_pn_rate_plots_by_cardiovasc_comor:
+    run: r:latest analysis/pn_check_using_measures_by_cardiovasc_comor.R
+    needs: [generate_8wk_cohort_updated, generate_measures_8wk_updated]
+    outputs:
+      moderately_sensitive:
+        plot4: output/monthly_pn_rate_measures8wkcode_by_cardiovasc_comor_8wk.jpeg
 
 
 ################################################
