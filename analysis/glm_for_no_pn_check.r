@@ -1,7 +1,7 @@
 library('tidyverse')
 library("cowplot")
 
-setwd(here::here("output", "pn8wk"))
+setwd(here::here("output", "updated_pn8wk"))
 df_input<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
 #str(df_input$delivery_code_date)
@@ -39,7 +39,12 @@ write_csv(mod1df, here::here("output","mod1_ageadj_coef.csv"))
 
 ## Adjusted model 
 df_input$ethnicity<-as.factor(df_input$ethnicity)
+df_input$ethnicity2<-as.factor(df_input$ethnicity2)
 df_input$ethnicity <- relevel(df_input$ethnicity, "White")
+
+### neeed to relabel ethnicity 2 and then releve to ref cat white. 
+#df_input$ethnicity2 <- relevel(df_input$ethnicity, "White")
+
 df_input$region<-as.factor(df_input$region)
 df_input$region <- relevel(df_input$region, "London")
 df_input$imd<-as.factor(df_input$imd) 
@@ -130,7 +135,7 @@ tidy3_last$HIGH <- tidy3_last$OR+(1.96*tidy3_last$Oddstd)
 tidy3_last$names <- row.names(tidy3_last)
 write_csv(tidy3_last, here::here("output","mod3_last_OR_CI.csv"))
 
-
+#### filter to highrisk pregnancy (Hypertension disorder before / during)
 
 
 # ## plot

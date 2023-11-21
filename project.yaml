@@ -347,7 +347,7 @@ actions:
         plot1: output/monthly_pn_rate_measures_12wk.jpeg
         table12: output/pn_check_combined_plot_12wk_updated.csv
 
- describe_pn_rate_plots_combined:
+  describe_pn_rate_plots_combined:
     run: r:latest analysis/pn_check_using_measures_combined.R
     needs: [generate_6wk_cohort_updated, generate_measures_6wk_updated, generate_12wk_cohort_updated, generate_measures_12wk_updated, generate_8wk_cohort_updated, generate_measures_8wk_updated]
     outputs:
