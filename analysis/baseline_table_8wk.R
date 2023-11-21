@@ -96,9 +96,9 @@ df_after <- df_overall2 %>% filter(delivery_code_date > "2020-02-29")
 
 # select variables for the baseline table
 # add covid, eth2, hyp, charlson
-bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
-bltab_vars_before  <- df_before %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
-bltab_vars_after  <- df_after %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, ethnicity2, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
+bltab_vars <- df_overall3 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
+bltab_vars_before  <- df_before %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
+bltab_vars_after  <- df_after %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, imd, ethnicity2, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive) 
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
