@@ -8,14 +8,18 @@ library("ggpubr")
 #library("gtsummary")
 
 ## Import data
-df = read.csv(here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_age_cat.csv"))
+df <- read_csv(
+ here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_age_cat.csv"),
 
-# delivery_code_present  = col_double(),
-# postnatal_8wk_code_present = col_double(),
-# population  = col_number(),
-# value = col_number(),
-# measure = col_character(),
-# )
+    col_types = cols_only(
+     delivery_code_present  = col_double(),
+     postnatal_8wk_code_present = col_double(),
+     population  = col_number(),
+     value = col_number(),
+     date = col_date(format="%Y-%m-%d"),
+     age_cat = col_factor()
+     )
+ )
 
 df<-df%>%filter(delivery_code_present>0)
 

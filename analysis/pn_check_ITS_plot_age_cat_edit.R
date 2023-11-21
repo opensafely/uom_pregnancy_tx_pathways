@@ -20,10 +20,10 @@ df <- read_csv(
      postnatal_8wk_code_present = col_double(),
      population  = col_number(),
      value = col_number(),
-     date = col_date(format="%Y-%m-%d")
+     date = col_date(format="%Y-%m-%d"),
+     age_cat = col_factor()
      )
  )
-
 
 df<-df%>%filter(delivery_code_present>0)
 
