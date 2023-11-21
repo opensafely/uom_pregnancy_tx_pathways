@@ -7,9 +7,9 @@ df1 <- read_csv(
   col_types = cols(code = col_number(),Freq=col_number(), term = col_character())
 )
 
-#changes counts under 6 to "[REDACTED]"
+#changes counts under 6 to "[REDACTED]" (now -9)
 df2 <- df1 
-df2$Freq <- ifelse(df2$Freq <= 7, "[REDACTED]", df2$Freq)
+df2$Freq <- ifelse(df2$Freq <= 7, -9, df2$Freq)
 df2$Freq <- as.numeric(df2$Freq)
 
 #rounding to nearest 5

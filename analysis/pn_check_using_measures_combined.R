@@ -5,22 +5,22 @@ library("tidyverse")
 library("MASS")
 
 df1 <- read_csv(
- here::here("output", "pn_check_combined_plot_8wk.csv"),
+ here::here("output", "pn_check_combined_plot_8wk_updated.csv"),
 
-    col_types = cols_only(
+    #col_types = cols_only(
     #  delivery_code_present  = col_double(),
     #  postnatal_8wk_code_present = col_double(),
     #  population  = col_number(),
     #  value = col_number(),
     #  date = col_date(format="%Y-%m-%d")
-     )
+    # )
  )
 
 df2 <- read_csv(
- here::here("output", "pn_check_combined_plot_6wk.csv"))
+ here::here("output", "pn_check_combined_plot_6wk_updated.csv"))
 
 df3 <- read_csv(
- here::here("output", "pn_check_combined_plot_12wk.csv"))
+ here::here("output", "pn_check_combined_plot_12wk_updated.csv"))
 
 df1$cohort<-"8 weeks"
 df2$cohort<-"6 weeks"

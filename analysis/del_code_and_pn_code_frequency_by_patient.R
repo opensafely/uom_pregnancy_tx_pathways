@@ -1,10 +1,10 @@
 library('tidyverse')
 
 
-setwd(here::here("output", "pn8wk"))
+setwd(here::here("output", "updated_pn8wk"))
 df_input<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
-#col_types = cols(patient_id = col_integer(),delivery_code_number = col_number(), postnatal_8wk_code_present = col_number())
+col_types = cols(patient_id = col_integer(), delivery_code_number = col_number(), pn8wk_code_number = col_number())
 
 # no scientific numbers on plots
 options(scipen = 999999)
