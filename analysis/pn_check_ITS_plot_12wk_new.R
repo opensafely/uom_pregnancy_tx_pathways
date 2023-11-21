@@ -8,7 +8,7 @@ library("MASS")
 
 ## Import data
 df <- read_csv(
- here::here("output", "pn12wk", "measure_postnatal_check_rate.csv"),
+ here::here("output", "joined_12wk", "measure_postnatal_check_rate.csv"),
 
     col_types = cols_only(
      delivery_code_present  = col_double(),

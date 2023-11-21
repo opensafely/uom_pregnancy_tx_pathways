@@ -4,7 +4,7 @@ library('dplyr')
 library('finalfit')
 
 #setwd(here::here("output", "pn12wk"))
-setwd(here::here("output", "updated_pn12wk"))
+setwd(here::here("output", "joined_12wk"))
 
 #combine all "input_measures" files 
 df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
