@@ -154,7 +154,6 @@ df5_counter$time.since=0
 df5_counter  <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.fit = TRUE, newdata = df5_counter)[1:2])
 df5_counter_final=df5_counter%>%filter(date>=as.Date("2020-03-01"))
 
-
 DF_plot_f= rbind(df1,df2,df3,df4,df5)
 DF_plot_f$ethnicity2=factor(DF_plot_f$ethnicity2,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
 
