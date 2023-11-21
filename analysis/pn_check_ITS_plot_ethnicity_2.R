@@ -59,6 +59,13 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
+df_plot$ethnicity2<-recode(df_plot$ethnicity2, 0 = 'Unknown',
+                                                1 = 'White',
+                                                2 = 'Mixed',
+                                                3 = 'Asian or Asian British',
+                                                4 = 'Black or Black British',
+                                                5 = 'Other')
+
 # write csv for rates
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_ethnicity2_updated.csv"))
 
@@ -149,7 +156,6 @@ df5_counter_final=df5_counter%>%filter(date>=as.Date("2020-03-01"))
 
 
 DF_plot_f= rbind(df1,df2,df3,df4,df5)
-#DF_plot_f$age_cat=factor(DF_plot_f$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))
 DF_plot_f$ethnicity2=factor(DF_plot_f$ethnicity2,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
 
 DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter)

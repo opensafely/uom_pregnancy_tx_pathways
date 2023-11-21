@@ -67,6 +67,13 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
+df_gaps$ethnicity2<-recode(df_gaps$ethnicity2, 0 = 'Unknown',
+                                                1 = 'White',
+                                                2 = 'Mixed',
+                                                3 = 'Asian or Asian British',
+                                                4 = 'Black or Black British',
+                                                5 = 'Other')
+
 # remove unknown category
 df_gaps=filter(df_gaps, ethnicity2 !="Unknown")
 
