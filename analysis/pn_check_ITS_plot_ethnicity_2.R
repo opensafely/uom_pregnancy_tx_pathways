@@ -64,7 +64,7 @@ df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White"
                                                   ethnicity2== 2 ~ "Mixed",
                                                   ethnicity2== 3 ~ "Asian or Asian British",
                                                   ethnicity2== 4 ~ "Black or Black British",
-                                                  ethnicity2== 5 ~ "Other"
+                                                  ethnicity2== 5 ~ "Other",
                                                   ethnicity2== 0 ~ "Unknown"))
 
 # write csv for rates
