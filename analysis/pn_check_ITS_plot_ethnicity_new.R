@@ -61,6 +61,7 @@ df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # write csv for rates
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_ethnicity_updated.csv"))
+## this csv has 312 rows - error message - value = existing 312 rows, assigned 413 rows
 
 # df for each category
 df1=filter(df_plot, ethnicity=="White")
@@ -146,7 +147,6 @@ df5_counter$covid=as.factor(0)
 df5_counter$time.since=0
 df5_counter  <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.fit = TRUE, newdata = df5_counter)[1:2])
 df5_counter_final=df5_counter%>%filter(date>=as.Date("2020-03-01"))
-
 
 DF_plot_f= rbind(df1,df2,df3,df4,df5)
 #DF_plot_f$age_cat=factor(DF_plot_f$age_cat,levels=c("14-19","20-24","25-29","30-34","35-39","40-44"))

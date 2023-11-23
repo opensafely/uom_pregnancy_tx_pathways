@@ -3,6 +3,9 @@ library('lubridate')
 library('dplyr')
 library('finalfit')
 
+
+dir_create(here::here("output", "joined_8wk"), showWarnings = FALSE, recurse = TRUE)
+
 #setwd(here::here("output", "pn8wk"))
 setwd(here::here("output", "joined_8wk"))
 
