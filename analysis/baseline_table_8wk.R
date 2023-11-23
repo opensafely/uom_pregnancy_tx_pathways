@@ -2,7 +2,7 @@ library('tidyverse')
 library('lubridate')
 library('dplyr')
 library('finalfit')
-
+library('fs')
 
 dir_create(here::here("output", "joined_8wk"), showWarnings = FALSE, recurse = TRUE)
 
