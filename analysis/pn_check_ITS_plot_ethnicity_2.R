@@ -60,22 +60,29 @@ df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 df_plot$ethnicity2<- as.factor(df$ethnicity2)
-df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White",
-                                                  ethnicity2== 2 ~ "Mixed",
-                                                  ethnicity2== 3 ~ "Asian or Asian British",
-                                                  ethnicity2== 4 ~ "Black or Black British",
-                                                  ethnicity2== 5 ~ "Other",
-                                                  ethnicity2== 0 ~ "Unknown"))
+# df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White",
+#                                                   ethnicity2== 2 ~ "Mixed",
+#                                                   ethnicity2== 3 ~ "Asian or Asian British",
+#                                                   ethnicity2== 4 ~ "Black or Black British",
+#                                                   ethnicity2== 5 ~ "Other",
+#                                                   ethnicity2== 0 ~ "Unknown"))
 
 # write csv for rates
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_ethnicity2_updated.csv"))
+## this csv has 312 rows - error message - value = existing 312 rows, assigned 413 rows
 
 # df for each category
-df1=filter(df_plot, ethnicity2=="White")
-df2=filter(df_plot, ethnicity2=="Mixed")
-df3=filter(df_plot, ethnicity2=="Asian or Asian British")
-df4=filter(df_plot, ethnicity2=="Black or Black British")
-df5=filter(df_plot, ethnicity2=="Other")
+# df1=filter(df_plot, ethnicity2=="White")
+# df2=filter(df_plot, ethnicity2=="Mixed")
+# df3=filter(df_plot, ethnicity2=="Asian or Asian British")
+# df4=filter(df_plot, ethnicity2=="Black or Black British")
+# df5=filter(df_plot, ethnicity2=="Other")
+
+df1=filter(df_plot, ethnicity2=="1")
+df2=filter(df_plot, ethnicity2=="2")
+df3=filter(df_plot, ethnicity2=="3")
+df4=filter(df_plot, ethnicity2=="4")
+df5=filter(df_plot, ethnicity2=="5")
 
 m1.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df1)
 m2.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df2)
@@ -104,8 +111,11 @@ exp5.1=exp(est5.1)
 # creates combined df with estimates and CIs for each eth cat
 df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,])
 
-df_plot_overall$ethnicity2=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
-df_plot_overall$ethnicity2=factor(df_plot_overall$ethnicity2,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+# df_plot_overall$ethnicity2=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
+# df_plot_overall$ethnicity2=factor(df_plot_overall$ethnicity2,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+
+df_plot_overall$ethnicity2=c("1", "2", "3", "4", "5")
+df_plot_overall$ethnicity2=factor(df_plot_overall$ethnicity2,levels = c("1", "2", "3", "4", "5"))
 
 names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
@@ -122,7 +132,8 @@ df4 <- cbind(df4, "resp" = predict(m4.1, type = "response", se.fit = TRUE)[1:2])
 df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
 
 DF=rbind(df1,df2,df3,df4,df5)
-DF$ethnicity2<-factor(DF$ethnicity2,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+#DF$ethnicity2<-factor(DF$ethnicity2,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+DF$ethnicity2<-factor(DF$ethnicity2,levels=c("1", "2", "3", "4", "5"))
 
 # prediction -non covid - counterfactual trace
 df1_counter <- subset(df1, select=-c(fit,se.fit))
@@ -156,10 +167,12 @@ df5_counter  <- cbind(df5_counter, "resp" = predict(m5.1, type = "response", se.
 df5_counter_final=df5_counter%>%filter(date>=as.Date("2020-03-01"))
 
 DF_plot_f= rbind(df1,df2,df3,df4,df5)
-DF_plot_f$ethnicity2=factor(DF_plot_f$ethnicity2,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+#DF_plot_f$ethnicity2=factor(DF_plot_f$ethnicity2,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+DF_plot_f$ethnicity2<-factor(DF_plot_f$ethnicity2,levels=c("1", "2", "3", "4", "5"))
 
 DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter)
-DF_counter$ethnicity2=factor(DF_counter$ethnicity2,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+#DF_counter$ethnicity2=factor(DF_counter$ethnicity2,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+DF_counter$ethnicity2<-factor(DF_counter$ethnicity2,levels=c("1", "2", "3", "4", "5"))
 
 #DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
 
