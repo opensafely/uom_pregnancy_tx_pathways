@@ -67,8 +67,23 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
-# remove unknown category
-df_gaps=filter(df_gaps, ethnicity2 !="Unknown")
+# # remove unknown category
+# df_gaps=filter(df_gaps, ethnicity2 !="Unknown")
+
+# df_gaps$ethnicity2<- as.factor(df$ethnicity2)
+# df_gaps<- df_gaps%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White",
+#                                                   ethnicity2== 2 ~ "Mixed",
+#                                                   ethnicity2== 3 ~ "Asian or Asian British",
+#                                                   ethnicity2== 4 ~ "Black or Black British",
+#                                                   ethnicity2== 5 ~ "Other",
+#                                                   ethnicity2== 0 ~ "Unknown"))
+
+# df_gaps$ethnicity2<-recode(df_gaps$ethnicity2, 0 = 'Unknown',
+#                                                 1 = 'White',
+#                                                 2 = 'Mixed',
+#                                                 3 = 'Asian or Asian British',
+#                                                 4 = 'Black or Black British',
+#                                                 5 = 'Other')
 
 plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity2, color=ethnicity2))+
   geom_line(aes(y=pn_rate_1000))+
