@@ -61,7 +61,6 @@ df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # write csv for rates
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_ethnicity_updated.csv"))
-## this csv has 312 rows - error message - value = existing 312 rows, assigned 413 rows
 
 # df for each category
 df1=filter(df_plot, ethnicity=="White")
