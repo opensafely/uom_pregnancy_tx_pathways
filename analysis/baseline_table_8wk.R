@@ -12,7 +12,7 @@ setwd(here::here("output", "joined_8wk"))
 #combine all "input_measures" files 
 df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
-df$delivery_code_date<-as.Date(df$delivery_code_date)
+#df$delivery_code_date<-as.Date(df$delivery_code_date)
 
 ## filter del codes >0
 df <- df %>% filter(delivery_code_present > 0)

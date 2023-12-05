@@ -247,7 +247,7 @@ actions:
 
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R
-    needs: [generate_8wk_cohort_updated]
+    needs: [generate_8wk_cohort_updated, join_cohorts_8_week]
     outputs:
       moderately_sensitive:
         hist1: output/del_code_histogram_reviewed.jpeg
@@ -255,21 +255,21 @@ actions:
 
   describe_del_code_freq_with_names:
     run: r:latest analysis/del_code_frequency_with_names.R
-    needs: [generate_8wk_cohort_updated, describe_del_code_freq]
+    needs: [describe_del_code_freq]
     outputs:
       moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names.csv
 
   describe_del_code_freq_with_names_reduced:
     run: r:latest analysis/del_code_frequency_with_names_reduced.R
-    needs: [generate_8wk_cohort_updated, describe_del_code_freq_with_names]
+    needs: [describe_del_code_freq_with_names]
     outputs:
      moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names_reduced.csv
         
   describe_pn_code_freq:
     run: r:latest analysis/pn_code_frequency.R
-    needs: [generate_8wk_cohort_updated]
+    needs: [join_cohorts_8_week]
     outputs:
       moderately_sensitive:
         hist2: output/pn_code_histogram_reviewed.jpeg
@@ -277,14 +277,14 @@ actions:
 
   describe_pn_code_freq_with_names:
      run: r:latest analysis/pn_code_frequency_with_names.R
-     needs: [generate_8wk_cohort_updated, describe_pn_code_freq]
+     needs: [describe_pn_code_freq]
      outputs:
        moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names.csv   
 
   describe_pn_code_freq_with_names_reduced:
      run: r:latest analysis/pn_code_frequency_with_names_reduced.R
-     needs: [generate_8wk_cohort_updated, describe_pn_code_freq_with_names]
+     needs: [describe_pn_code_freq_with_names]
      outputs:
       moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
@@ -292,7 +292,7 @@ actions:
   # frequency of codes by unique patients
   describe_freq_by_unique_patients:
      run: r:latest analysis/del_code_and_pn_code_frequency_by_patient.R
-     needs: [generate_8wk_cohort_updated]
+     needs: [join_cohorts_8_week]
      outputs:
       moderately_sensitive:
          hist_del_code: output/del_code_histogram_reviewed_byPatient.jpeg
@@ -432,7 +432,7 @@ actions:
   describe_baseline_table_8wk_cohort:
      run: r:latest analysis/baseline_table_8wk.R
      #needs: [generate_8wk_cohort]
-     needs: [generate_8wk_cohort_updated]
+     needs: [join_cohorts_8_week]
      outputs:
        moderately_sensitive:
         #  table_overall: output/blt_overall_8wk.csv   
