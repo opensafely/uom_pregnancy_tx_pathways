@@ -329,9 +329,9 @@ study = StudyDefinition(
     return_expectations={           
         "date": {
             "earliest": "2019-01-01",  
-            "latest": "2023-05-31",
+            "latest": "2023-12-31",
             },
-        "incidence": 0.1,
+        "incidence": 0.5,
         },    
     ),
 

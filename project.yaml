@@ -247,7 +247,7 @@ actions:
 
   describe_del_code_freq:
     run: r:latest analysis/del_code_frequency.R
-    needs: [generate_8wk_cohort_updated]
+    needs: [generate_8wk_cohort_updated, join_cohorts_8_week]
     outputs:
       moderately_sensitive:
         hist1: output/del_code_histogram_reviewed.jpeg
@@ -255,21 +255,21 @@ actions:
 
   describe_del_code_freq_with_names:
     run: r:latest analysis/del_code_frequency_with_names.R
-    needs: [generate_8wk_cohort_updated, describe_del_code_freq]
+    needs: [describe_del_code_freq]
     outputs:
       moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names.csv
 
   describe_del_code_freq_with_names_reduced:
     run: r:latest analysis/del_code_frequency_with_names_reduced.R
-    needs: [generate_8wk_cohort_updated, describe_del_code_freq_with_names]
+    needs: [describe_del_code_freq_with_names]
     outputs:
      moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names_reduced.csv
         
   describe_pn_code_freq:
     run: r:latest analysis/pn_code_frequency.R
-    needs: [generate_8wk_cohort_updated]
+    needs: [join_cohorts_8_week]
     outputs:
       moderately_sensitive:
         hist2: output/pn_code_histogram_reviewed.jpeg
@@ -277,14 +277,14 @@ actions:
 
   describe_pn_code_freq_with_names:
      run: r:latest analysis/pn_code_frequency_with_names.R
-     needs: [generate_8wk_cohort_updated, describe_pn_code_freq]
+     needs: [describe_pn_code_freq]
      outputs:
        moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names.csv   
 
   describe_pn_code_freq_with_names_reduced:
      run: r:latest analysis/pn_code_frequency_with_names_reduced.R
-     needs: [generate_8wk_cohort_updated, describe_pn_code_freq_with_names]
+     needs: [describe_pn_code_freq_with_names]
      outputs:
       moderately_sensitive:
          table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
@@ -292,7 +292,7 @@ actions:
   # frequency of codes by unique patients
   describe_freq_by_unique_patients:
      run: r:latest analysis/del_code_and_pn_code_frequency_by_patient.R
-     needs: [generate_8wk_cohort_updated]
+     needs: [join_cohorts_8_week]
      outputs:
       moderately_sensitive:
          hist_del_code: output/del_code_histogram_reviewed_byPatient.jpeg
@@ -413,77 +413,45 @@ actions:
   describe_baseline_table_12wk_cohort:
     run: r:latest analysis/baseline_table_12wk.R
     #needs: [generate_12wk_cohort]
-    needs: [generate_12wk_cohort_updated]
+    needs: [join_cohorts_12_week]
     outputs:
       moderately_sensitive:
-        # table_overall: output/blt_overall_12wk.csv   
-        # table_before: output/blt_before_12wk.csv 
-        # table_after: output/blt_after_12wk.csv 
-        # table_overall_counts: output/overall_counts_12wk.csv
-        # table_counts_before: output/overall_counts_before_12wk.csv
-        # table_counts_after: output/overall_counts_after_12wk.csv 
         table_overall: output/blt_overall_12wk_update.csv   
         table_before: output/blt_before_12wk_update.csv 
-        table_after: output/blt_after_12wk_update.csv 
+        #table_after: output/blt_after_12wk_update.csv 
         table_overall_counts: output/overall_counts_12wk_update.csv
         table_counts_before: output/overall_counts_before_12wk_update.csv
-        table_counts_after: output/overall_counts_after_12wk_update.csv
+        #table_counts_after: output/overall_counts_after_12wk_update.csv
 
   describe_baseline_table_8wk_cohort:
      run: r:latest analysis/baseline_table_8wk.R
      #needs: [generate_8wk_cohort]
-     needs: [generate_8wk_cohort_updated]
+     needs: [join_cohorts_8_week]
      outputs:
-       moderately_sensitive:
-        #  table_overall: output/blt_overall_8wk.csv   
-        #  table_before: output/blt_before_8wk.csv 
-        #  table_after: output/blt_after_8wk.csv 
-        #  table_overall_counts: output/overall_counts_8wk.csv
-        #  table_counts_before: output/overall_counts_before_8wk.csv
-        #  table_counts_after: output/overall_counts_after_8wk.csv 
+       moderately_sensitive: 
          table_overall: output/blt_overall_8wk_update.csv   
          table_before: output/blt_before_8wk_update.csv 
-         table_after: output/blt_after_8wk_update.csv 
+         #table_after: output/blt_after_8wk_update.csv 
          table_overall_counts: output/overall_counts_8wk_update.csv
          table_counts_before: output/overall_counts_before_8wk_update.csv
-         table_counts_after: output/overall_counts_after_8wk_update.csv
+         #table_counts_after: output/overall_counts_after_8wk_update.csv
 
   describe_baseline_table_6wk_cohort:
     run: r:latest analysis/baseline_table_6wk.R
     #needs: [generate_6wk_cohort]
-    needs: [generate_6wk_cohort_updated]
+    needs: [join_cohorts_6_week]
     outputs:
       moderately_sensitive:
-        # table_overall: output/blt_overall_6wk.csv   
-        # table_before: output/blt_before_6wk.csv 
-        # table_after: output/blt_after_6wk.csv 
-        # table_overall_counts: output/overall_counts_6wk.csv
-        # table_counts_before: output/overall_counts_before_6wk.csv
-        # table_counts_after: output/overall_counts_after_6wk.csv 
         table_overall: output/blt_overall_6wk_update.csv   
         table_before: output/blt_before_6wk_update.csv 
-        table_after: output/blt_after_6wk_update.csv 
+        #table_after: output/blt_after_6wk_update.csv 
         table_overall_counts: output/overall_counts_6wk_update.csv
         table_counts_before: output/overall_counts_before_6wk_update.csv
-        table_counts_after: output/overall_counts_after_6wk_update.csv
+        #table_counts_after: output/overall_counts_after_6wk_update.csv
 
 ##########################
 ###### ITS analyses ######
 ##########################
-
-  # describe_ITS_plot_overall:
-  #   run: r:latest analysis/pn_check_ITS_plot.R
-  #   needs: [generate_8wk_cohort, generate_measures_8wk]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot_ITS_overall: output/pn_check_ITS_overall_8wk.jpeg 
-
-  # describe_ITS_plot_overall_new:
-  #   run: r:latest analysis/pn_check_ITS_plot_new.R
-  #   needs: [generate_8wk_cohort, generate_measures_8wk]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot_ITS_overall: output/pn_check_ITS_overall_8wk_new.jpeg
 
   ## ITS plot with modelled rates using 8 week cohort 
   describe_ITS_plot_overall_new_modelled:
@@ -517,13 +485,13 @@ actions:
         estimates_c: output/ITS_estimates_counter_12wk.csv
         combined: output/ITS_estimates_combined_plot_12wk.csv
 
-  describe_ITS_plot_overall_by_cohort:
-    run: r:latest analysis/pn_check_ITS_plot_combined.R
-    needs: [generate_12wk_cohort_updated, generate_measures_12wk_updated, generate_6wk_cohort_updated, generate_measures_6wk_updated, generate_8wk_cohort_updated, generate_measures_8wk_updated]
-    # check needs
-    outputs:
-      moderately_sensitive:
-        plot_ITS_overall_by_cohort: output/plot_ITS_overall_by_cohort.jpeg 
+  # describe_ITS_plot_overall_by_cohort:
+  #   run: r:latest analysis/pn_check_ITS_plot_combined.R
+  #   needs: [generate_12wk_cohort_updated, generate_measures_12wk_updated, generate_6wk_cohort_updated, generate_measures_6wk_updated, generate_8wk_cohort_updated, generate_measures_8wk_updated]
+  #   # check needs
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot_ITS_overall_by_cohort: output/plot_ITS_overall_by_cohort.jpeg 
 
   # describe_ITS_plot_age_cat:
   #    run: r:latest analysis/pn_check_ITS_plot_age_cat_vp.R
