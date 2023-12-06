@@ -47,7 +47,7 @@ df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
 #breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-09-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
 #df_plot<-ungroup(df_plot)
@@ -66,7 +66,7 @@ df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White"
                                                   ethnicity2== 4 ~ "Black or Black British",
                                                   ethnicity2== 5 ~ "Other",
                                                   ethnicity2== 0 ~ "Unknown"))
-
+df_plot$ethnicity2_labs<- as.factor(df_plot$ethnicity2_labs)
 # write csv for rates
 write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_ethnicity2_updated.csv"))
 
@@ -110,7 +110,7 @@ exp5.1=exp(est5.1)
 # creates combined df with estimates and CIs for each eth cat
 df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,])
 
-df_plot_overall$ethnicity2_labs=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
+#df_plot_overall$ethnicity2_labs=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
 df_plot_overall$ethnicity2_labs=factor(df_plot_overall$ethnicity2_labs,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
 
 # df_plot_overall$ethnicity2=c("1", "2", "3", "4", "5")
@@ -119,6 +119,7 @@ df_plot_overall$ethnicity2_labs=factor(df_plot_overall$ethnicity2_labs,levels = 
 names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
+names(df_plot_overall)[4]="Ethnicity"
 
 write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_ethnicity2_IRR_overall_updated.csv"))
 
@@ -175,6 +176,7 @@ DF_counter$ethnicity2_labs=factor(DF_counter$ethnicity2_labs,levels=c("White", "
 
 #DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
 
+names(DF_plot_f)[16]="Ethnicity"
 ### plot 
 plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
   theme_bw()+ 
@@ -209,7 +211,7 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
 #   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
   
   # group by indication  
-  facet_grid(rows = vars(ethnicity2_labs),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
+  facet_grid(rows = vars(Ethnicity),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
   # theme
   theme_bw()+ 
@@ -239,7 +241,7 @@ write.csv(DF,here::here("output","plot_ITS_check_ethnicity2_updated.csv"))
 
 #### creates plot with IRRs and error bars/CIs
 
-plot_ITS_ethnicity2_2<-ggplot(data=df_plot_overall, aes(y=ethnicity2, x=IRR))+
+plot_ITS_ethnicity2_2<-ggplot(data=df_plot_overall, aes(y=Ethnicity, x=IRR))+
   geom_point()+
   
   geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
@@ -253,7 +255,7 @@ plot_ITS_ethnicity2_2<-ggplot(data=df_plot_overall, aes(y=ethnicity2, x=IRR))+
     x="IRR (95% CI)",
     y=""
   )+
-  facet_grid(ethnicity2~., scales = "free", space = "free")+
+  facet_grid(Ethnicity~., scales = "free", space = "free")+
   theme(strip.text.y = element_text(angle = 0),
         axis.title.y =element_blank(),
         axis.text.y=element_blank(),
