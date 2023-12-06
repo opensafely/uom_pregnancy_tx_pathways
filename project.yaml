@@ -413,7 +413,7 @@ actions:
   describe_baseline_table_12wk_cohort:
     run: r:latest analysis/baseline_table_12wk.R
     #needs: [generate_12wk_cohort]
-    needs: [generate_12wk_cohort_updated]
+    needs: [join_cohorts_12_week]
     outputs:
       moderately_sensitive:
         # table_overall: output/blt_overall_12wk.csv   
@@ -451,7 +451,7 @@ actions:
   describe_baseline_table_6wk_cohort:
     run: r:latest analysis/baseline_table_6wk.R
     #needs: [generate_6wk_cohort]
-    needs: [generate_6wk_cohort_updated]
+    needs: [join_cohorts_6_week]
     outputs:
       moderately_sensitive:
         # table_overall: output/blt_overall_6wk.csv   

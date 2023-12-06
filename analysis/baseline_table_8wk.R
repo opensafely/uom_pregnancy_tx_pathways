@@ -6,6 +6,7 @@ library('finalfit')
 
 #dir_create(here::here("output", "joined_8wk"), showWarnings = FALSE, recurse = TRUE)
 
+
 setwd(here::here("output", "joined_8wk"))
 
 #combine all "input_*" monthly files 
@@ -86,12 +87,18 @@ df_overall$delivery_code_date<-as.Date(df_overall$delivery_code_date)
 df_overall2 <- df_overall %>% group_by(patient_id)%>% arrange(desc(delivery_code_date)) %>% filter(row_number()==1)
 
 #Creates before/after pandemic dfs as well as overall
-df_overall3 <- df_overall2 %>% filter(delivery_code_date <= "2023-04-30")
+df_overall3 <- df_overall2 %>% filter(delivery_code_date <= "2023-09-30")
 df_before <- df_overall2 %>% filter(delivery_code_date < "2020-03-01") 
 df_after <- df_overall2 %>% filter(delivery_code_date > "2020-02-29") 
 
 # select variables for the baseline table
-bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any) 
+bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
+                                     "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
+                                     "heart_failure_comor","connective_tissue_comor", "dementia_comor",
+                                     "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
+                                     "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
+                                     "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
+                                     "peptic_ulcer_comor" , "peripheral_vascular_comor" ) 
 bltab_vars_before  <- df_before %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any) 
 bltab_vars_after  <- df_after %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any) 
 
@@ -101,17 +108,17 @@ colsfortab_before <- colnames(bltab_vars_before)
 colsfortab_after <- colnames(bltab_vars_after)
 
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
-#str(t)
+t<-(t[-1,])
 #write_csv(t, here::here("output", "blt_overall_8wk.csv"))
 write_csv(t, here::here("output", "blt_overall_8wk_update.csv"))
 
 bltab_vars_before %>% summary_factorlist(explanatory = colsfortab_before) -> t2
-#str(t2)
+t2<-(t2[-1,])
 #write_csv(t2, here::here("output", "blt_before_8wk.csv"))
 write_csv(t2, here::here("output", "blt_before_8wk_update.csv"))
 
 # bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
-# #str(t3)
+# t3<-(t3[-1,])
 # #write_csv(t3, here::here("output", "blt_after_8wk.csv"))
 # write_csv(t3, here::here("output", "blt_after_8wk_update.csv"))
 
@@ -122,8 +129,8 @@ overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
 #write_csv(overall_counts, here::here("output", "overall_counts_8wk.csv"))
 write_csv(overall_counts, here::here("output", "overall_counts_8wk_update.csv"))
 
-num_pracs_before <- length(unique(df_before3$practice))
-num_pats_before <- length(unique(df_before3$patient_id))
+num_pracs_before <- length(unique(df_before$practice))
+num_pats_before <- length(unique(df_before$patient_id))
 overall_counts_before <- as.data.frame(cbind(num_pats_before, num_pracs_before))
 #write_csv(overall_counts_before, here::here("output", "overall_counts_before_8wk.csv"))
 write_csv(overall_counts_before, here::here("output", "overall_counts_before_8wk_update.csv"))

@@ -3,16 +3,15 @@ library('lubridate')
 library('dplyr')
 library('finalfit')
 
-#setwd(here::here("output", "pn12wk"))
 setwd(here::here("output", "joined_12wk"))
 
-#combine all "input_measures" files 
+#combine all "input_*" files 
 df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
 df$delivery_code_date<-as.Date(df$delivery_code_date)
 
 ## filter del codes >0
-df <- df %>% filter(delivery_code_present > 0)
+df <- df %>% dplyr::filter(delivery_code_present > 0)
 
 ## 1. Define/clean variables before splitting dfs
 
@@ -37,9 +36,6 @@ df <- df %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
                                                TRUE ~ "0"))
 
 df$covid_positive<-as.factor(df$covid_positive)
-                                          
-#df$gp_covid<-as.factor(df$gp_covid)
-#df$Covid_test_result_sgss<- as.factor(df$Covid_test_result_sgss)
 
 ## create charlson index
 df$cancer_comor<- ifelse(df$cancer_comor == 1L, 2L, 0L)
@@ -90,14 +86,14 @@ df_overall <- df
 df_overall2 <- df_overall %>% group_by(patient_id)%>% arrange(desc(delivery_code_date)) %>% filter(row_number()==1)
 
 #Creates before/after pandemic dfs as well as overall
-df_overall3 <- df_overall2 %>% filter(delivery_code_date <= "2023-04-30")
+df_overall3 <- df_overall2 %>% filter(delivery_code_date <= "2023-09-30")
 df_before <- df_overall2 %>% filter(delivery_code_date < "2020-03-01") 
 df_after <- df_overall2 %>% filter(delivery_code_date > "2020-02-29") 
 
 # select variables for the baseline table
-bltab_vars <- df_overall3 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any)  
-bltab_vars_before  <- df_before3 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any) 
-bltab_vars_after  <- df_after3 %>% select(age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any) 
+bltab_vars <- df_overall3 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any)  
+bltab_vars_before  <- df_before %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any) 
+bltab_vars_after  <- df_after %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, imd, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any) 
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
@@ -105,19 +101,19 @@ colsfortab_before <- colnames(bltab_vars_before)
 colsfortab_after <- colnames(bltab_vars_after)
 
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
-#str(t)
+t<-(t[-1,])
 #write_csv(t, here::here("output", "blt_overall_12wk.csv"))
 write_csv(t, here::here("output", "blt_overall_12wk_update.csv"))
 
 bltab_vars_before %>% summary_factorlist(explanatory = colsfortab_before) -> t2
-#str(t2)
+t2<-(t2[-1,])
 #write_csv(t2, here::here("output", "blt_before_12wk.csv"))
 write_csv(t2, here::here("output", "blt_before_12wk_update.csv"))
 
-bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
-#str(t3)
+#bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
+#t3<-(t3[-1,])
 #write_csv(t3, here::here("output", "blt_after_12wk.csv"))
-write_csv(t3, here::here("output", "blt_after_12wk_update.csv"))
+#write_csv(t3, here::here("output", "blt_after_12wk_update.csv"))
 
 ## 6. Overall counts
 num_pracs <- length(unique(df_overall3$practice))
@@ -126,15 +122,15 @@ overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
 #write_csv(overall_counts, here::here("output", "overall_counts_12wk.csv"))
 write_csv(overall_counts, here::here("output", "overall_counts_12wk_update.csv"))
 
-num_pracs_before <- length(unique(df_before3$practice))
-num_pats_before <- length(unique(df_before3$patient_id))
+num_pracs_before <- length(unique(df_before$practice))
+num_pats_before <- length(unique(df_before$patient_id))
 overall_counts_before <- as.data.frame(cbind(num_pats_before, num_pracs_before))
 #write_csv(overall_counts_before, here::here("output", "overall_counts_before_12wk.csv"))
 write_csv(overall_counts_before, here::here("output", "overall_counts_before_12wk_update.csv"))
 
-num_pracs_after <- length(unique(df_after3$practice))
-num_pats_after <- length(unique(df_after3$patient_id))
-overall_counts_after <- as.data.frame(cbind(num_pats_after, num_pracs_after))
+#num_pracs_after <- length(unique(df_after$practice))
+#num_pats_after <- length(unique(df_after$patient_id))
+#overall_counts_after <- as.data.frame(cbind(num_pats_after, num_pracs_after))
 #write_csv(overall_counts_after, here::here("output", "overall_counts_after_12wk.csv"))
-write_csv(overall_counts_after, here::here("output", "overall_counts_after_12wk_update.csv"))
+#write_csv(overall_counts_after, here::here("output", "overall_counts_after_12wk_update.csv"))
 
