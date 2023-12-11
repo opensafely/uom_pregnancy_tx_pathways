@@ -50,7 +50,7 @@ df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
 #breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-12-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
 
