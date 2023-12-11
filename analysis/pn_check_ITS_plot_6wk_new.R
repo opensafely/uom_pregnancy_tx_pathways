@@ -42,7 +42,7 @@ df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-12-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
 
@@ -111,7 +111,7 @@ plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=fit*1000/population, group=covid
       
       # legend  
       scale_x_date(date_labels = "%m-%Y", 
-                   breaks = seq(as.Date("2019-01-01"), as.Date("2023-04-01"), 
+                   breaks = seq(as.Date("2019-01-01"), as.Date("2023-12-01"), 
                                 by = "3 months"))+ 
       theme(axis.text.x = element_text(angle = 60,hjust=1),
           legend.position = "bottom",legend.title =element_blank())+

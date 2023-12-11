@@ -33,7 +33,7 @@ df=df%>% filter(delivery_code_present > 0)
 
 # remove last month data
 #df$date <- as.Date(df$date)
-last.date="2023-04-30"
+last.date="2023-08-31"
 df=df%>% filter(date <=last.date)
 
 # define first and last months for automated plot
@@ -78,6 +78,7 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=imd, color=imd))+
     title = "Rate of PN checks by month",
     subtitle = paste(first_mon,"-",last_mon),
     #caption = paste("Data from approximately", num_uniq_prac,"TPP Practices"),
+    color="IMD Quintile",
     x = "",
     y = "Rate of PN checks per 1000 registered patients")+
   annotate(geom = "rect", xmin = as.Date("2021-01-01"),xmax = as.Date("2021-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
