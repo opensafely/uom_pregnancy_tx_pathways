@@ -10,11 +10,13 @@ library('finalfit')
 setwd(here::here("output", "joined_8wk"))
 
 #combine all "input_*" monthly files 
-df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
+#df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
+df <- read_rds('basic_joined_8wk_records_2019.rds')
 
 ## filter del codes >0
+df$delivery_code_present <- as.numeric(df$delivery_code_present)
 df <- df %>% dplyr::filter(delivery_code_present > 0)
-
+df$delivery_code_present <- as.factor(df$delivery_code_present)
 ## 1. Define/clean variables before splitting dfs
 
 # bmi - numeric
@@ -110,12 +112,12 @@ colsfortab_after <- colnames(bltab_vars_after)
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 t<-(t[-1,])
 #write_csv(t, here::here("output", "blt_overall_8wk.csv"))
-write_csv(t, here::here("output", "blt_overall_8wk_update.csv"))
+write_csv(t, here::here("output", "blt_overall_8wk_update_2019.csv"))
 
 bltab_vars_before %>% summary_factorlist(explanatory = colsfortab_before) -> t2
 t2<-(t2[-1,])
 #write_csv(t2, here::here("output", "blt_before_8wk.csv"))
-write_csv(t2, here::here("output", "blt_before_8wk_update.csv"))
+write_csv(t2, here::here("output", "blt_before_8wk_update_2019.csv"))
 
 # bltab_vars_after %>% summary_factorlist(explanatory = colsfortab_after) -> t3
 # t3<-(t3[-1,])
@@ -127,13 +129,13 @@ num_pracs <- length(unique(df_overall3$practice))
 num_pats <- length(unique(df_overall3$patient_id))
 overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
 #write_csv(overall_counts, here::here("output", "overall_counts_8wk.csv"))
-write_csv(overall_counts, here::here("output", "overall_counts_8wk_update.csv"))
+write_csv(overall_counts, here::here("output", "overall_counts_8wk_update_2019.csv"))
 
 num_pracs_before <- length(unique(df_before$practice))
 num_pats_before <- length(unique(df_before$patient_id))
 overall_counts_before <- as.data.frame(cbind(num_pats_before, num_pracs_before))
 #write_csv(overall_counts_before, here::here("output", "overall_counts_before_8wk.csv"))
-write_csv(overall_counts_before, here::here("output", "overall_counts_before_8wk_update.csv"))
+write_csv(overall_counts_before, here::here("output", "overall_counts_before_8wk_update_2019.csv"))
 
 # num_pracs_after <- length(unique(df_after3$practice))
 # num_pats_after <- length(unique(df_after3$patient_id))
