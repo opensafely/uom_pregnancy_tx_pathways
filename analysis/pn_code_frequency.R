@@ -9,14 +9,18 @@ library('tidyverse')
 setwd(here::here("output", "joined_8wk"))
 df_input<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 
-col_types = cols(patient_id = col_integer(),pn8wk_code_number = col_number())
+#col_types = cols(patient_id = col_integer(),pn8wk_code_number = col_number())
 
 df_input<- df_input %>% filter(pn8wk_code_number >0)
+##col 14: pn8wk_code_number & 16: postnatal_code
 
-plot_pn_code_frequency <- ggplot(data=df_input, aes(df_input$pn8wk_code_number)) +
+df_input<- df_input[,c(14, 16)]
+
+plot_pn_code_frequency <- ggplot(data=df_input, aes(pn8wk_code_number)) +
 geom_histogram() +
 labs (title = "Postnatal Code Distribution",
 x = "No. of postnatal codes")
+
 
 ggsave(
   plot= plot_pn_code_frequency,
