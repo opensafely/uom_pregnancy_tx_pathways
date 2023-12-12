@@ -374,11 +374,11 @@ actions:
   #         rds5: output/joined_8wk/basic_joined_8wk_records_2023.rds
 
   describe_csvs_to_rds_for_2019:
-      run: r:latest analysis/baseline_variables_transform_8wk_2019.R
-        needs: [join_cohorts_8_week]
-        outputs:
-          highly_sensitive:
-            rds1: output/joined_8wk/basic_joined_8wk_records_2019.rds
+    run: r:latest analysis/baseline_variables_transform_8wk_2019.R
+    needs: [join_cohorts_8_week]
+    outputs:
+      highly_sensitive:
+        rds1: output/joined_8wk/basic_joined_8wk_records_2019.rds
             
 
   describe_baseline_table_12wk_cohort:
