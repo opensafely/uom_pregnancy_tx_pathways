@@ -31,7 +31,7 @@ for (i in seq_along(csvFiles_19)){
                         age = col_integer(),
                         age_cat = col_factor(),
                         sex = col_factor(),
-                        #practice = col_integer(),
+                        practice = col_integer(),
                         region = col_factor(),
                         imd = col_factor(),
                         bmi = col_number(),
@@ -41,11 +41,11 @@ for (i in seq_along(csvFiles_19)){
                         delivery_code = col_character(),
                         pn8wk_code_number = col_number(),
                         postnatal_8wk_code_present = col_factor(),
-                        #postnatal_code = col_character(),
+                        postnatal_code = col_character(),
                         #postnatal_other_code_present = col_factor(),
-                        postnatal_antenatal_code_present = col_factor(),
+                        #postnatal_antenatal_code_present = col_factor(),
                         Covid_test_result_sgss = col_factor(),
-                        gp_covid = col_factor(), 
+                        gp_covid = col_factor(),
                         cancer_comor = col_integer(),
                         cardiovascular_comor = col_integer(),
                         chronic_obstructive_pulmonary_comor = col_integer(),
@@ -75,9 +75,9 @@ for (i in seq_along(csvFiles_19)){
                       ),
                       na = character()
   )
-  
+
   temp_df$date=date_19[i]
-  
+
   #add df to list
   temp[[i]] <- temp_df
   rm(temp_df)
@@ -100,7 +100,7 @@ for (i in seq_along(csvFiles_20)){
                         age = col_integer(),
                         age_cat = col_factor(),
                         sex = col_factor(),
-                        #practice = col_integer(),
+                        practice = col_integer(),
                         region = col_factor(),
                         imd = col_factor(),
                         bmi = col_number(),
@@ -114,7 +114,7 @@ for (i in seq_along(csvFiles_20)){
                         #postnatal_other_code_present = col_factor(),
                         #postnatal_antenatal_code_present = col_factor(),
                         Covid_test_result_sgss = col_factor(),
-                        gp_covid = col_factor(), 
+                        gp_covid = col_factor(),
                         cancer_comor = col_integer(),
                         cardiovascular_comor = col_integer(),
                         chronic_obstructive_pulmonary_comor = col_integer(),
@@ -169,7 +169,7 @@ for (i in seq_along(csvFiles_21)){
                         age = col_integer(),
                         age_cat = col_factor(),
                         sex = col_factor(),
-                        #practice = col_integer(),
+                        practice = col_integer(),
                         region = col_factor(),
                         imd = col_factor(),
                         bmi = col_number(),
@@ -183,7 +183,7 @@ for (i in seq_along(csvFiles_21)){
                         #postnatal_other_code_present = col_factor(),
                         #postnatal_antenatal_code_present = col_factor(),
                         Covid_test_result_sgss = col_factor(),
-                        gp_covid = col_factor(), 
+                        gp_covid = col_factor(),
                         cancer_comor = col_integer(),
                         cardiovascular_comor = col_integer(),
                         chronic_obstructive_pulmonary_comor = col_integer(),
@@ -238,7 +238,7 @@ for (i in seq_along(csvFiles_22)){
                         age = col_integer(),
                         age_cat = col_factor(),
                         sex = col_factor(),
-                        #practice = col_integer(),
+                        practice = col_integer(),
                         region = col_factor(),
                         imd = col_factor(),
                         bmi = col_number(),
@@ -252,7 +252,7 @@ for (i in seq_along(csvFiles_22)){
                         #postnatal_other_code_present = col_factor(),
                         #postnatal_antenatal_code_present = col_factor(),
                         Covid_test_result_sgss = col_factor(),
-                        gp_covid = col_factor(), 
+                        gp_covid = col_factor(),
                         cancer_comor = col_integer(),
                         cardiovascular_comor = col_integer(),
                         chronic_obstructive_pulmonary_comor = col_integer(),
@@ -309,7 +309,7 @@ for (i in seq_along(csvFiles_23)){
                         age = col_integer(),
                         age_cat = col_factor(),
                         sex = col_factor(),
-                        #practice = col_integer(),
+                        practice = col_integer(),
                         region = col_factor(),
                         imd = col_factor(),
                         bmi = col_number(),
@@ -323,7 +323,7 @@ for (i in seq_along(csvFiles_23)){
                         #postnatal_other_code_present = col_factor(),
                         #postnatal_antenatal_code_present = col_factor(),
                         Covid_test_result_sgss = col_factor(),
-                        gp_covid = col_factor(), 
+                        gp_covid = col_factor(),
                         cancer_comor = col_integer(),
                         cardiovascular_comor = col_integer(),
                         chronic_obstructive_pulmonary_comor = col_integer(),
