@@ -13,8 +13,17 @@ setwd(here::here("output", "joined_8wk"))
 #df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
 df <- read_rds('basic_joined_8wk_records_2019.rds')
 
-## filter del codes >0
+tabdelcodes <- as.data.frame(table(df$delivery_code_present))
+write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2019.csv"))
+rm(tabdelcodes)
+
+## filter del codes >0 (must be numeric)
 df$delivery_code_present <- as.numeric(df$delivery_code_present)
+##test 0 and 1 or 1 and 2 after converted to numeric for filtering
+tabdelcodes <- as.data.frame(table(df$delivery_code_present))
+write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2019_after_numeric.csv"))
+
+
 df <- df %>% dplyr::filter(delivery_code_present > 0)
 df$delivery_code_present <- as.factor(df$delivery_code_present)
 ## 1. Define/clean variables before splitting dfs
