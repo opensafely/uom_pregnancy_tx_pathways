@@ -27,10 +27,10 @@ rm(tabdelcodes)
 df <- df %>% dplyr::filter(delivery_code_present > 1)
 tabdelcodes <- as.data.frame(table(df$delivery_code_present))
 write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2019_after_filter.csv"))
-
-
+rm(tabdelcodes)
 
 df$delivery_code_present <- as.factor(df$delivery_code_present)
+
 ## 1. Define/clean variables before splitting dfs
 
 # bmi - numeric
@@ -47,6 +47,10 @@ df$imd <- as.factor(df$imd)
 df$ethnicity <- as.factor(df$ethnicity)
 df$ethnicity2 <- as.factor(df$ethnicity2)
 df$region <- as.factor(df$region)
+df <- df %>% group_by(region) %>% filter(n() >= 40)
+ungroup(df)
+
+df <- df %>% group_by(ethnicity) %>% filter(n() >= 5)
 
 ## covid positive
 df <- df %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
