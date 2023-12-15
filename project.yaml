@@ -391,7 +391,7 @@ actions:
         overall_delcodes_numeric: output/table_delcodes_8wk_update_2019_after_numeric.csv
         overall_delcodes_filter: output/table_delcodes_8wk_update_2019_after_filter.csv
         table_overall_counts: output/overall_counts_8wk_update_2019.csv
-        #table_overall: output/blt_overall_8wk_update_2019.csv   
+        table_overall: output/blt_overall_8wk_update_2019.csv   
         
 
   # #2020
