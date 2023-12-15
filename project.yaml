@@ -299,12 +299,13 @@ actions:
         plot1: output/monthly_pn_rate_measures_12wk_updated.jpeg
         table12: output/pn_check_combined_plot_12wk_updated.csv
 
-  # describe_pn_rate_plots_combined:
-  #   run: r:latest analysis/pn_check_using_measures_combined.R
-  #   needs: [generate_6wk_cohort_updated, generate_measures_6wk_updated, generate_12wk_cohort_updated, generate_measures_12wk_updated, generate_8wk_cohort_updated, generate_measures_8wk_updated]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot1b: output/monthly_pn_rate_measures_combined.jpeg   
+  describe_pn_rate_plots_combined:
+    run: r:latest analysis/pn_check_using_measures_combined.R
+    needs: [generate_measures_6wk_updated, generate_measures_12wk_updated, generate_measures_8wk_updated]
+    outputs:
+      moderately_sensitive:
+        plot1b: output/monthly_pn_rate_measures_combined.jpeg 
+        table_combined: output/pn_check_6wk_8wk_12wk_plot_updated.csv  
 
 
   describe_pn_rate_plots_by_age_cat:
@@ -313,6 +314,8 @@ actions:
     outputs:
       moderately_sensitive:
         plot2: output/monthly_pn_rate_measures8wkcode_by_age_cat_8wk_updated.jpeg
+        tab_pn_age: output/monthly_pn_rate_measures_8wk_plotdata_age_cat.csv
+        tab_pn_age_R: output/monthly_pn_rate_measures_8wk_plotdata_reduced_age_cat.csv
 
   describe_pn_rate_plots_by_ethnicity:
     run: r:latest analysis/pn_check_using_measures_by_ethnicity_8wk.R
@@ -320,6 +323,8 @@ actions:
     outputs:
       moderately_sensitive:
         plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity_8wk_updated.jpeg
+        tab_pn_ethnicity: output/monthly_pn_rate_measures_8wk_plotdata_ethnicity.csv
+        tab_pn_ethnicity_R: output/monthly_pn_rate_measures_8wk_plotdata_reduced_ethnicity.csv
 
   describe_pn_rate_plots_by_ethnicity_2:
     run: r:latest analysis/pn_check_using_measures_by_ethnicity_2_8wk.R
@@ -334,6 +339,7 @@ actions:
     outputs:
       moderately_sensitive:
         plot4: output/monthly_pn_rate_measures8wkcode_by_imd_8wk_updated.jpeg
+        tab_pn_imd: output/monthly_pn_rate_measures_8wk_plotdata_IMD.csv
   
   describe_pn_rate_plots_by_region:
     run: r:latest analysis/pn_check_using_measures_by_region_8wk.R
@@ -341,6 +347,7 @@ actions:
     outputs:
       moderately_sensitive:
         plot6: output/monthly_pn_rate_measures8wkcode_by_region_8wk_updated.jpeg
+        tab_pn_region: output/monthly_pn_rate_measures_8wk_plotdata_region.csv
 
   describe_pn_rate_plots_by_hbp:
     run: r:latest analysis/pn_check_using_measures_by_hbp.R
@@ -373,12 +380,15 @@ actions:
         rds4: output/joined_8wk/basic_joined_8wk_records_2022.rds
         rds5: output/joined_8wk/basic_joined_8wk_records_2023.rds
 
-  # describe_csvs_to_rds_for_2019:
-  #   run: r:latest analysis/baseline_variables_transform_8wk_2019.R
-  #   needs: [join_cohorts_8_week]
-  #   outputs:
-  #     highly_sensitive:
-  #       rds1: output/joined_8wk/basic_joined_8wk_records_2019.rds
+  describe_baseline_table_8wk_cohort:
+     run: r:latest analysis/baseline_table_8wk_using_rds.R
+     needs: [describe_basic_record_to_rds_process]
+     outputs:
+       moderately_sensitive: 
+         overall_delcodes: output/table_delcodes_8wk_update.csv
+         table_overall_counts: output/overall_counts_8wk_update.csv
+         table_overall: output/blt_overall_8wk_update_overall.csv  
+
 
   ### baseline tables by year for 8wk cohort:
   #2019
@@ -456,18 +466,6 @@ actions:
   #       table_counts_before: output/overall_counts_before_12wk_update.csv
   #       #table_counts_after: output/overall_counts_after_12wk_update.csv
 
-  # describe_baseline_table_8wk_cohort:
-  #    run: r:latest analysis/baseline_table_8wk.R
-  #    #needs: [generate_8wk_cohort]
-  #    needs: [join_cohorts_8_week]
-  #    outputs:
-  #      moderately_sensitive: 
-  #        table_overall: output/blt_overall_8wk_update.csv   
-  #        table_before: output/blt_before_8wk_update.csv 
-  #        #table_after: output/blt_after_8wk_update.csv 
-  #        table_overall_counts: output/overall_counts_8wk_update.csv
-  #        table_counts_before: output/overall_counts_before_8wk_update.csv
-  #        #table_counts_after: output/overall_counts_after_8wk_update.csv
 
   # describe_baseline_table_6wk_cohort:
   #   run: r:latest analysis/baseline_table_6wk.R
@@ -488,7 +486,7 @@ actions:
 
   ## ITS plot with modelled rates using 8 week cohort 
   describe_ITS_plot_overall_new_modelled:
-    run: r:latest analysis/pn_check_ITS_plot_new_plottingmodelledrate.R
+    run: r:latest analysis/pn_check_ITS_plot_8wk_new.R
     needs: [generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:

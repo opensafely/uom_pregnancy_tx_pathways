@@ -72,7 +72,7 @@ df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=hbp_any, color=hbp_any))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
-  scale_x_date(date_labels = "%m-%Y", date_breaks = "3 months")+
+  scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
   labs(
     title = "Rate of PN checks by month",
