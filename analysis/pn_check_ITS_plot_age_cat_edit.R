@@ -50,7 +50,7 @@ df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
 #breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-12-01"))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
 
@@ -205,7 +205,7 @@ plot_ITS_age_cat_edit<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, grou
   # legend  
   scale_x_date(date_labels = "%m-%Y", 
                breaks = seq(as.Date("2019-01-01"), as.Date(max(DF_plot_f$date)), 
-                            by = "3 months"))+
+                            by = "2 months"))+
   theme(axis.text.x = element_text(angle = 60,hjust=1),
         axis.text.y = element_text(size = 6),
         legend.position = "bottom",legend.title =element_blank(),

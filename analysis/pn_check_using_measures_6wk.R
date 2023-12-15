@@ -71,10 +71,10 @@ write_csv(as.data.frame(df_gaps), here::here("output", "pn_check_combined_plot_6
 plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
   geom_line(aes(y=pn_rate_1000),color="steelblue")+
   geom_point(aes(y=pn_rate_1000),color="steelblue")+
-  scale_x_date(date_labels = "%m-%Y", date_breaks = "3 months")+
+  scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months")+
   theme(axis.text.x=element_text(angle=60,hjust=1))+
   labs(
-    title = "Rate of PN checks by month",
+    title = "Rate of PN checks within 6 weeks by month",
     subtitle = paste(first_mon,"-",last_mon),
     #caption = paste("Data from approximately", num_uniq_prac,"TPP Practices"),
     x = "",
@@ -83,10 +83,7 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date))+
   annotate(geom = "rect", xmin = as.Date("2020-11-01"),xmax = as.Date("2020-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-03-01"),xmax = as.Date("2020-06-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)
 
-# ggsave(
-#    plot= plot_pn_rate,
-#    filename="monthly_pn_rate_measures_6wk.jpeg", path=here::here("output"),
-# )
+
 
 ggsave(
    plot= plot_pn_rate,
