@@ -11,23 +11,23 @@ setwd(here::here("output", "joined_8wk"))
 
 #combine all "input_*" monthly files 
 #df<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
-df <- read_rds('basic_joined_8wk_records_2021.rds')
+df <- read_rds('basic_joined_8wk_records_2023.rds')
 
 ## count patients with delivery codes (potential record for patient each month)
 tabdelcodes <- as.data.frame(table(df$delivery_code_present))
-write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2021.csv"))
+write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2023.csv"))
 rm(tabdelcodes)
 
 ## filter del codes >0 (must be numeric)
 df$delivery_code_present <- as.numeric(df$delivery_code_present)
 ##test 0 and 1 or 1 and 2 after converted to numeric for filtering
 tabdelcodes <- as.data.frame(table(df$delivery_code_present))
-write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2021_after_numeric.csv"))
+write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2023_after_numeric.csv"))
 rm(tabdelcodes)
 
 df <- df %>% dplyr::filter(delivery_code_present > 1)
 tabdelcodes <- as.data.frame(table(df$delivery_code_present))
-write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2021_after_filter.csv"))
+write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update_2023_after_filter.csv"))
 rm(tabdelcodes)
 
 df$delivery_code_present <- as.factor(df$delivery_code_present)
@@ -44,7 +44,7 @@ rm(df)
 num_pracs <- length(unique(df2$practice))
 num_pats <- length(unique(df2$patient_id))
 overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
-write_csv(overall_counts, here::here("output", "overall_counts_8wk_update_2021.csv"))
+write_csv(overall_counts, here::here("output", "overall_counts_8wk_update_2023.csv"))
 
 ## Define/clean variables before baseline table
 
@@ -146,4 +146,7 @@ colsfortab <- colnames(bltab_vars)
 
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 t<-(t[-1,])
-write_csv(t, here::here("output", "blt_overall_8wk_update_2021.csv"))
+write_csv(t, here::here("output", "blt_overall_8wk_update_2023.csv"))
+
+
+

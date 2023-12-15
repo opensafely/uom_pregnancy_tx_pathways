@@ -395,86 +395,92 @@ actions:
         
 
   # #2020
-  # describe_baseline_table_8wk_cohort_2020:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2020.R
-  #   needs: [describe_basic_record_to_rds_process]
-  #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2020.csv
-  #       table_overall: output/blt_overall_8wk_update_2020.csv   
-  #       table_before: output/blt_before_8wk_update_2020.csv 
-  #       table_overall_counts: output/overall_counts_8wk_update_2020.csv
-  #       table_counts_before: output/overall_counts_before_8wk_update_2020.csv
+  describe_baseline_table_8wk_cohort_2020:
+    run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2020.R
+    needs: [describe_basic_record_to_rds_process]
+    outputs:
+      moderately_sensitive: 
+        overall_delcodes: output/table_delcodes_8wk_update_2020.csv
+        overall_delcodes_numeric: output/table_delcodes_8wk_update_2020_after_numeric.csv
+        overall_delcodes_filter: output/table_delcodes_8wk_update_2020_after_filter.csv
+        table_overall_counts: output/overall_counts_8wk_update_2020.csv
+        table_overall: output/blt_overall_8wk_update_2020.csv  
 
   # #2021
-  # describe_baseline_table_8wk_cohort_2021:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2021.R
-  #   needs: [describe_basic_record_to_rds_process]
-  #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2021.csv
-  #       table_overall: output/blt_overall_8wk_update_2021.csv   
-  #       table_overall_counts: output/overall_counts_8wk_update_2021.csv
+  describe_baseline_table_8wk_cohort_2021:
+    run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2021.R
+    needs: [describe_basic_record_to_rds_process]
+    outputs:
+      moderately_sensitive: 
+        overall_delcodes: output/table_delcodes_8wk_update_2021.csv
+        overall_delcodes_numeric: output/table_delcodes_8wk_update_2021_after_numeric.csv
+        overall_delcodes_filter: output/table_delcodes_8wk_update_2021_after_filter.csv
+        table_overall_counts: output/overall_counts_8wk_update_2021.csv
+        table_overall: output/blt_overall_8wk_update_2021.csv   
 
   # #2022 
-  # describe_baseline_table_8wk_cohort_2022:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2022.R
-  #   needs: [describe_basic_record_to_rds_process]
-  #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2022.csv
-  #       table_overall: output/blt_overall_8wk_update_2022.csv   
-  #       table_overall_counts: output/overall_counts_8wk_update_2022.csv
+  describe_baseline_table_8wk_cohort_2022:
+    run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2022.R
+    needs: [describe_basic_record_to_rds_process]
+    outputs:
+      moderately_sensitive: 
+        overall_delcodes: output/table_delcodes_8wk_update_2022.csv
+        overall_delcodes_numeric: output/table_delcodes_8wk_update_2022_after_numeric.csv
+        overall_delcodes_filter: output/table_delcodes_8wk_update_2022_after_filter.csv
+        table_overall_counts: output/overall_counts_8wk_update_2022.csv
+        table_overall: output/blt_overall_8wk_update_2022.csv
 
   # #2023
-  # describe_baseline_table_8wk_cohort_2023:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2023.R
-  #   needs: [describe_basic_record_to_rds_process]
+  describe_baseline_table_8wk_cohort_2023:
+    run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2023.R
+    needs: [describe_basic_record_to_rds_process]
+    outputs:
+      moderately_sensitive: 
+        overall_delcodes: output/table_delcodes_8wk_update_2023.csv
+        overall_delcodes_numeric: output/table_delcodes_8wk_update_2023_after_numeric.csv
+        overall_delcodes_filter: output/table_delcodes_8wk_update_2023_after_filter.csv
+        table_overall_counts: output/overall_counts_8wk_update_2023.csv
+        table_overall: output/blt_overall_8wk_update_2023.csv
+
+
+  # describe_baseline_table_12wk_cohort:
+  #   run: r:latest analysis/baseline_table_12wk.R
+  #   #needs: [generate_12wk_cohort]
+  #   needs: [join_cohorts_12_week]
   #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2023.csv
-  #       table_overall: output/blt_overall_8wk_update_2020.csv   
-  #       table_overall_counts: output/overall_counts_8wk_update_2023.csv
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall_12wk_update.csv   
+  #       table_before: output/blt_before_12wk_update.csv 
+  #       #table_after: output/blt_after_12wk_update.csv 
+  #       table_overall_counts: output/overall_counts_12wk_update.csv
+  #       table_counts_before: output/overall_counts_before_12wk_update.csv
+  #       #table_counts_after: output/overall_counts_after_12wk_update.csv
 
+  # describe_baseline_table_8wk_cohort:
+  #    run: r:latest analysis/baseline_table_8wk.R
+  #    #needs: [generate_8wk_cohort]
+  #    needs: [join_cohorts_8_week]
+  #    outputs:
+  #      moderately_sensitive: 
+  #        table_overall: output/blt_overall_8wk_update.csv   
+  #        table_before: output/blt_before_8wk_update.csv 
+  #        #table_after: output/blt_after_8wk_update.csv 
+  #        table_overall_counts: output/overall_counts_8wk_update.csv
+  #        table_counts_before: output/overall_counts_before_8wk_update.csv
+  #        #table_counts_after: output/overall_counts_after_8wk_update.csv
 
-  describe_baseline_table_12wk_cohort:
-    run: r:latest analysis/baseline_table_12wk.R
-    #needs: [generate_12wk_cohort]
-    needs: [join_cohorts_12_week]
-    outputs:
-      moderately_sensitive:
-        table_overall: output/blt_overall_12wk_update.csv   
-        table_before: output/blt_before_12wk_update.csv 
-        #table_after: output/blt_after_12wk_update.csv 
-        table_overall_counts: output/overall_counts_12wk_update.csv
-        table_counts_before: output/overall_counts_before_12wk_update.csv
-        #table_counts_after: output/overall_counts_after_12wk_update.csv
-
-  describe_baseline_table_8wk_cohort:
-     run: r:latest analysis/baseline_table_8wk.R
-     #needs: [generate_8wk_cohort]
-     needs: [join_cohorts_8_week]
-     outputs:
-       moderately_sensitive: 
-         table_overall: output/blt_overall_8wk_update.csv   
-         table_before: output/blt_before_8wk_update.csv 
-         #table_after: output/blt_after_8wk_update.csv 
-         table_overall_counts: output/overall_counts_8wk_update.csv
-         table_counts_before: output/overall_counts_before_8wk_update.csv
-         #table_counts_after: output/overall_counts_after_8wk_update.csv
-
-  describe_baseline_table_6wk_cohort:
-    run: r:latest analysis/baseline_table_6wk.R
-    #needs: [generate_6wk_cohort]
-    needs: [join_cohorts_6_week]
-    outputs:
-      moderately_sensitive:
-        table_overall: output/blt_overall_6wk_update.csv   
-        table_before: output/blt_before_6wk_update.csv 
-        #table_after: output/blt_after_6wk_update.csv 
-        table_overall_counts: output/overall_counts_6wk_update.csv
-        table_counts_before: output/overall_counts_before_6wk_update.csv
-        #table_counts_after: output/overall_counts_after_6wk_update.csv
+  # describe_baseline_table_6wk_cohort:
+  #   run: r:latest analysis/baseline_table_6wk.R
+  #   #needs: [generate_6wk_cohort]
+  #   needs: [join_cohorts_6_week]
+  #   outputs:
+  #     moderately_sensitive:
+  #       table_overall: output/blt_overall_6wk_update.csv   
+  #       table_before: output/blt_before_6wk_update.csv 
+  #       #table_after: output/blt_after_6wk_update.csv 
+  #       table_overall_counts: output/overall_counts_6wk_update.csv
+  #       table_counts_before: output/overall_counts_before_6wk_update.csv
+  #       #table_counts_after: output/overall_counts_after_6wk_update.csv
 
 ##########################
 ###### ITS analyses ######
