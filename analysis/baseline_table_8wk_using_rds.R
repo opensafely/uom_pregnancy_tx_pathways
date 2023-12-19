@@ -39,7 +39,7 @@ df23 <- read_rds('basic_joined_8wk_records_2023.rds')
 df23$delivery_code_present <- as.numeric(df23$delivery_code_present)
 df23 <- df23 %>% dplyr::filter(delivery_code_present > 1)
 
-df <- rbind(df19,df20,df21,df22)
+df <- rbind(df19,df20,df21,df22,df23)
 rm(df19,df20,df21,df22,df23)
 
 ## count patients with delivery codes (potential record for patient each month)
@@ -88,19 +88,18 @@ df2$ethnicity_sus <- as.factor(df2$ethnicity_sus)
 
 ## ethnicity (based on snomed codelist)
 ## https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/
-df2$ethnicity=ifelse(is.na(df2$ethnicity),"6",df2$ethnicity)
+df2$ethnicity=ifelse(is.na(df2$ethnicity), "6", df2$ethnicity)
 df2 <- df2 %>% 
-  mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
-                                 ethnicity == 2  ~ "Mixed",
-                                 ethnicity == 3  ~ "Asian or Asian British",
-                                 ethnicity == 4  ~ "Black or Blsck British",
-                                 ethnicity == 5  ~ "Chinese or Other Ethnic Groups",
-                                 ethnicity == 6   ~ "Unknown"))
+  mutate(ethnicity_6 = case_when(ethnicity == "1" ~ "White",
+                                 ethnicity == "2"  ~ "Mixed",
+                                 ethnicity == "3"  ~ "Asian or Asian British",
+                                 ethnicity == "4"  ~ "Black or Black British",
+                                 ethnicity == "5"  ~ "Chinese or Other Ethnic Groups",
+                                 ethnicity == "6"  ~ "Unknown"))
 df2$ethnicity_6 <- as.factor(df2$ethnicity_6)
 
 
-df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5)
-ungroup(df2)
+df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5) %>% ungroup()
 
 ## covid positive
 df2 <- df2 %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
@@ -161,7 +160,7 @@ bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_co
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
 
-bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
+bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
 t<-(t[-1,])
 write_csv(t, here::here("output", "blt_overall_8wk_update_overall.csv"))
 
