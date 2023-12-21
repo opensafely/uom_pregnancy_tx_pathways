@@ -317,14 +317,14 @@ actions:
         tab_pn_age: output/monthly_pn_rate_measures_8wk_plotdata_age_cat.csv
         tab_pn_age_R: output/monthly_pn_rate_measures_8wk_plotdata_reduced_age_cat.csv
 
-  describe_pn_rate_plots_by_ethnicity:
-    run: r:latest analysis/pn_check_using_measures_by_ethnicity_8wk.R
-    needs: [generate_measures_8wk_updated]
-    outputs:
-      moderately_sensitive:
-        plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity_8wk_updated.jpeg
-        tab_pn_ethnicity: output/monthly_pn_rate_measures_8wk_plotdata_ethnicity.csv
-        tab_pn_ethnicity_R: output/monthly_pn_rate_measures_8wk_plotdata_reduced_ethnicity.csv
+  # describe_pn_rate_plots_by_ethnicity:
+  #   run: r:latest analysis/pn_check_using_measures_by_ethnicity_8wk.R
+  #   needs: [generate_measures_8wk_updated]
+  #   outputs:
+  #     moderately_sensitive:
+  #       plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity_8wk_updated.jpeg
+  #       tab_pn_ethnicity: output/monthly_pn_rate_measures_8wk_plotdata_ethnicity.csv
+  #       tab_pn_ethnicity_R: output/monthly_pn_rate_measures_8wk_plotdata_reduced_ethnicity.csv
 
   describe_pn_rate_plots_by_ethnicity_2:
     run: r:latest analysis/pn_check_using_measures_by_ethnicity_2_8wk.R
