@@ -78,8 +78,8 @@ df2$bmi_cat <- as.factor(df2$bmi_cat)
 df2$imd <- as.factor(df2$imd)
 
 df2$region <- as.factor(df2$region)
-df2 <- df2 %>% group_by(region) %>% filter(n() >= 40)
-ungroup(df2)
+#df2 <- df2 %>% group_by(region) %>% filter(n() >= 40)
+#ungroup(df2)
 
 df2$ethnicity <- as.factor(df2$ethnicity)
 df2$ethnicity2 <- as.factor(df2$ethnicity2)
@@ -99,7 +99,7 @@ df2 <- df2 %>%
 df2$ethnicity_6 <- as.factor(df2$ethnicity_6)
 
 
-df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5) %>% ungroup()
+#df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5) %>% ungroup()
 
 ## covid positive
 df2 <- df2 %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
@@ -159,8 +159,8 @@ bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_co
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
-
-bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
+#bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
+bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 t<-(t[-1,])
 write_csv(t, here::here("output", "blt_overall_8wk_update_overall.csv"))
 
