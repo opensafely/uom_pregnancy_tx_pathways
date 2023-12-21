@@ -31,6 +31,10 @@ df<-df%>%filter(delivery_code_present>0)
 df$date <- as.Date(df$date)
 df$month= format(df$date,"%m")
 
+# remove last few months
+last.date="2023-08-31"
+df=df%>% filter(date <=last.date)
+
 df$times <- as.numeric(as.factor(df$date))
 
 df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
@@ -58,7 +62,7 @@ df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
 df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
-df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
+df_plot=df_plot%>% group_by(covid, age_cat)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # write csv for rates
@@ -181,7 +185,7 @@ DF_counter$age_cat=factor(DF_counter$age_cat,levels=c("14-19","20-24","25-29","3
 ### plot 
 plot_ITS_age_cat_edit<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
   theme_bw()+ 
-    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+  
+    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+  
   
   ##actual rate point
   geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population*1000))+ 

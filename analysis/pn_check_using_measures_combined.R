@@ -121,7 +121,7 @@ write_csv(as.data.frame(df_gaps), here::here("output", "pn_check_6wk_8wk_12wk_pl
     subtitle = paste(first_mon,"-",last_mon),
     color = "Cohort",
     #caption = paste("Data from approximately", num_uniq_prac,"TPP Practices"),
-    x = "Month",
+    x = "",
     y = "Rate of PN checks per 1000 registered patients")+
   annotate(geom = "rect", xmin = as.Date("2021-01-01"),xmax = as.Date("2021-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
   annotate(geom = "rect", xmin = as.Date("2020-11-01"),xmax = as.Date("2020-12-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+
