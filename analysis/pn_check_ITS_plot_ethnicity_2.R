@@ -17,15 +17,19 @@ df <- read_csv(
      population  = col_number(),
      value = col_number(),
      date = col_date(format="%Y-%m-%d"),
-     ethnicity2 = col_factor()
+     ethnicity2 = col_number()
      )
  )
 
 
-df<-df%>% dplyr::filter(delivery_code_present>0)
+df<-df%>%filter(delivery_code_present>0)
 
 df$date <- as.Date(df$date)
 df$month= format(df$date,"%m")
+
+# remove last few months
+last.date="2023-08-31"
+df=df%>% filter(date <=last.date)
 
 df$times <- as.numeric(as.factor(df$date))
 
@@ -46,8 +50,8 @@ df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
-#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-09-01"))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
+#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-09-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
 #df_plot<-ungroup(df_plot)
@@ -56,10 +60,10 @@ df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
 df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
-df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
+df_plot=df_plot%>% group_by(covid, ethnicity2)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-df_plot$ethnicity2<- as.factor(df_plot$ethnicity2)
+#df_plot$ethnicity2<- as.factor(df_plot$ethnicity2)
 df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White",
                                                   ethnicity2== 2 ~ "Mixed",
                                                   ethnicity2== 3 ~ "Asian or Asian British",
@@ -111,7 +115,7 @@ exp5.1=exp(est5.1)
 df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,])
 
 #df_plot_overall$ethnicity2_labs=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
-df_plot_overall$ethnicity2_labs=factor(df_plot_overall$ethnicity2_labs,levels = c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
+df_plot_overall$Ethnicity= c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
 
 # df_plot_overall$ethnicity2=c("1", "2", "3", "4", "5")
 # df_plot_overall$ethnicity2=factor(df_plot_overall$ethnicity2,levels = c("1", "2", "3", "4", "5"))
@@ -181,7 +185,7 @@ names(DF_plot_f)[16]="Ethnicity"
 plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
   theme_bw()+ 
     #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
-    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     #geom_point(shape=4)+   
   
   ##actual rate point
@@ -196,20 +200,7 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
   geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = DF_counter)+
   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = DF_counter) +
     
-# ### plot 
-# plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
-  
-#   #actual rate point
-#   geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
-  
-#   # prediction model  
-#   geom_line(color="blue")+ 
-#   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
-  
-#   # prediction model: non covid    
-#   geom_line(aes(y=fit*1000/population,x=date),color="red",data = DF_counter)+
-#   geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
-  
+ 
   # group by indication  
   facet_grid(rows = vars(Ethnicity),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
@@ -220,7 +211,7 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
   # legend  
   scale_x_date(date_labels = "%m-%Y", 
                breaks = seq(as.Date("2019-01-01"), as.Date(max(DF$date)), 
-                            by = "3 months"))+
+                            by = "2 months"))+
   theme(axis.text.x = element_text(angle = 60,hjust=1),
         axis.text.y = element_text(size = 6),
         legend.position = "bottom",legend.title =element_blank(),

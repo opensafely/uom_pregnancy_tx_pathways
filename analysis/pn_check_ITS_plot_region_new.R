@@ -27,6 +27,10 @@ df<-df%>%filter(delivery_code_present>0)
 df$date <- as.Date(df$date)
 df$month= format(df$date,"%m")
 
+# remove last few months
+last.date="2023-08-31"
+df=df%>% filter(date <=last.date)
+
 df$times <- as.numeric(as.factor(df$date))
 
 #redaction of small values
@@ -46,8 +50,8 @@ df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
-#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
+#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
 #df_plot<-ungroup(df_plot)
@@ -56,7 +60,7 @@ df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
 df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
-df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
+df_plot=df_plot%>% group_by(covid,region)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 # write csv for rates
@@ -208,7 +212,7 @@ DF_counter$region=factor(DF_counter$region,levels=c("North East", "North West", 
 plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
   theme_bw()+ 
     #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
-    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-05-11"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
+    annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     #geom_point(shape=4)+   
   
   ##actual rate point 
@@ -246,7 +250,7 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
   # legend  
   scale_x_date(date_labels = "%m-%Y", 
                breaks = seq(as.Date("2019-01-01"), as.Date(max(DF$date)), 
-                            by = "3 months"))+
+                            by = "2 months"))+
   theme(axis.text.x = element_text(angle = 60,hjust=1),
         axis.text.y = element_text(size = 6),
         legend.position = "bottom",legend.title =element_blank(),

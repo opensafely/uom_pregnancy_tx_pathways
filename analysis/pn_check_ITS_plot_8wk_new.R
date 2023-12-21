@@ -21,8 +21,12 @@ df <- read_csv(
 
 df<-df%>%filter(delivery_code_present>0)
 
-#df$date <- as.Date(df$date)
+df$date <- as.Date(df$date)
 df$month= format(df$date,"%m")
+
+# remove last few months
+last.date="2023-08-31"
+df=df%>% filter(date <=last.date)
 
 df$times <- as.numeric(as.factor(df$date))
 
