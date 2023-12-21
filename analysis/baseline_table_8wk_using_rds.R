@@ -68,7 +68,7 @@ rm(num_pracs, num_pats, overall_counts)
 # bmi - numeric
 # remove bmi outliers - this replaces <8 or >50 with NA
 df2$bmi <- ifelse(df2$bmi <8 | df2$bmi>50, NA, df2$bmi)
-df2 <- df2 %>% mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
+df2 <- df2 %>% dplyr::mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
                                     bmi>=8 & bmi< 18.5 ~ "Underweight",
                                     bmi>=18.5 & bmi<=24.9 ~ "Healthy weight",
                                     bmi>24.9 & bmi<=29.9 ~ "Overweight",
@@ -90,7 +90,7 @@ df2$ethnicity_sus <- as.factor(df2$ethnicity_sus)
 ## https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/
 df2$ethnicity=ifelse(is.na(df2$ethnicity), "6", df2$ethnicity)
 df2 <- df2 %>% 
-  mutate(ethnicity_6 = case_when(ethnicity == "1" ~ "White",
+  dplyr::mutate(ethnicity_6 = case_when(ethnicity == "1" ~ "White",
                                  ethnicity == "2"  ~ "Mixed",
                                  ethnicity == "3"  ~ "Asian or Asian British",
                                  ethnicity == "4"  ~ "Black or Black British",
@@ -138,7 +138,7 @@ df2$charlson_score=rowSums(df2[charlson])
 
 ## Charlson - as a categorical group variable
 df2 <- df2 %>%
-  mutate(charlsonGrp = case_when(charlson_score >0 & charlson_score <=2 ~ 2,
+  dplyr::mutate(charlsonGrp = case_when(charlson_score >0 & charlson_score <=2 ~ 2,
                                 charlson_score >2 & charlson_score <=4 ~ 3,
                                 charlson_score >4 & charlson_score <=6 ~ 4,
                                 charlson_score >=7 ~ 5,
