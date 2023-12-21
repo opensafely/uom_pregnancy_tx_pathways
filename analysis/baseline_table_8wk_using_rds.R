@@ -13,31 +13,31 @@ setwd(here::here("output", "joined_8wk"))
 df19 <- read_rds('basic_joined_8wk_records_2019.rds')
 ## filter del codes >0 (must be numeric)
 df19$delivery_code_present <- as.numeric(df19$delivery_code_present)
-df19 <- df19 %>% dplyr::filter(delivery_code_present > 1)
+df19 <- df19 %>% dplyr::filter(delivery_code_present > 0)
 
 #2020
 df20 <- read_rds('basic_joined_8wk_records_2020.rds')
 ## filter del codes >0 (must be numeric)
 df20$delivery_code_present <- as.numeric(df20$delivery_code_present)
-df20 <- df20 %>% dplyr::filter(delivery_code_present > 1)
+df20 <- df20 %>% dplyr::filter(delivery_code_present > 0)
 
 #2021
 df21 <- read_rds('basic_joined_8wk_records_2021.rds')
 ## filter del codes >0 (must be numeric)
 df21$delivery_code_present <- as.numeric(df21$delivery_code_present)
-df21 <- df21 %>% dplyr::filter(delivery_code_present > 1)
+df21 <- df21 %>% dplyr::filter(delivery_code_present > 0)
 
 #2022
 df22 <- read_rds('basic_joined_8wk_records_2022.rds')
 ## filter del codes >0 (must be numeric)
 df22$delivery_code_present <- as.numeric(df22$delivery_code_present)
-df22 <- df22 %>% dplyr::filter(delivery_code_present > 1)
+df22 <- df22 %>% dplyr::filter(delivery_code_present > 0)
 
 #2023
 df23 <- read_rds('basic_joined_8wk_records_2023.rds')
 ## filter del codes >0 (must be numeric)
 df23$delivery_code_present <- as.numeric(df23$delivery_code_present)
-df23 <- df23 %>% dplyr::filter(delivery_code_present > 1)
+df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
 
 df <- rbind(df19,df20,df21,df22,df23)
 rm(df19,df20,df21,df22,df23)
