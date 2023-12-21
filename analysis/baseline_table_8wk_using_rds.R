@@ -13,33 +13,33 @@ setwd(here::here("output", "joined_8wk"))
 df19 <- read_rds('basic_joined_8wk_records_2019.rds')
 ## filter del codes >0 (must be numeric)
 df19$delivery_code_present <- as.numeric(df19$delivery_code_present)
-df19 <- df19 %>% dplyr::filter(delivery_code_present > 1)
+df19 <- df19 %>% dplyr::filter(delivery_code_present > 0)
 
 #2020
 df20 <- read_rds('basic_joined_8wk_records_2020.rds')
 ## filter del codes >0 (must be numeric)
 df20$delivery_code_present <- as.numeric(df20$delivery_code_present)
-df20 <- df20 %>% dplyr::filter(delivery_code_present > 1)
+df20 <- df20 %>% dplyr::filter(delivery_code_present > 0)
 
 #2021
 df21 <- read_rds('basic_joined_8wk_records_2021.rds')
 ## filter del codes >0 (must be numeric)
 df21$delivery_code_present <- as.numeric(df21$delivery_code_present)
-df21 <- df21 %>% dplyr::filter(delivery_code_present > 1)
+df21 <- df21 %>% dplyr::filter(delivery_code_present > 0)
 
 #2022
 df22 <- read_rds('basic_joined_8wk_records_2022.rds')
 ## filter del codes >0 (must be numeric)
 df22$delivery_code_present <- as.numeric(df22$delivery_code_present)
-df22 <- df22 %>% dplyr::filter(delivery_code_present > 1)
+df22 <- df22 %>% dplyr::filter(delivery_code_present > 0)
 
 #2023
 df23 <- read_rds('basic_joined_8wk_records_2023.rds')
 ## filter del codes >0 (must be numeric)
 df23$delivery_code_present <- as.numeric(df23$delivery_code_present)
-df23 <- df23 %>% dplyr::filter(delivery_code_present > 1)
+df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
 
-df <- rbind(df19,df20,df21,df22)
+df <- rbind(df19,df20,df21,df22,df23)
 rm(df19,df20,df21,df22,df23)
 
 ## count patients with delivery codes (potential record for patient each month)
@@ -68,7 +68,7 @@ rm(num_pracs, num_pats, overall_counts)
 # bmi - numeric
 # remove bmi outliers - this replaces <8 or >50 with NA
 df2$bmi <- ifelse(df2$bmi <8 | df2$bmi>50, NA, df2$bmi)
-df2 <- df2 %>% mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
+df2 <- df2 %>% dplyr::mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
                                     bmi>=8 & bmi< 18.5 ~ "Underweight",
                                     bmi>=18.5 & bmi<=24.9 ~ "Healthy weight",
                                     bmi>24.9 & bmi<=29.9 ~ "Overweight",
@@ -78,8 +78,8 @@ df2$bmi_cat <- as.factor(df2$bmi_cat)
 df2$imd <- as.factor(df2$imd)
 
 df2$region <- as.factor(df2$region)
-df2 <- df2 %>% group_by(region) %>% filter(n() >= 40)
-ungroup(df2)
+#df2 <- df2 %>% group_by(region) %>% filter(n() >= 40)
+#ungroup(df2)
 
 df2$ethnicity <- as.factor(df2$ethnicity)
 df2$ethnicity2 <- as.factor(df2$ethnicity2)
@@ -88,19 +88,18 @@ df2$ethnicity_sus <- as.factor(df2$ethnicity_sus)
 
 ## ethnicity (based on snomed codelist)
 ## https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/
-df2$ethnicity=ifelse(is.na(df2$ethnicity),"6",df2$ethnicity)
+df2$ethnicity=ifelse(is.na(df2$ethnicity), "6", df2$ethnicity)
 df2 <- df2 %>% 
-  mutate(ethnicity_6 = case_when(ethnicity == 1 ~ "White",
-                                 ethnicity == 2  ~ "Mixed",
-                                 ethnicity == 3  ~ "Asian or Asian British",
-                                 ethnicity == 4  ~ "Black or Blsck British",
-                                 ethnicity == 5  ~ "Chinese or Other Ethnic Groups",
-                                 ethnicity == 6   ~ "Unknown"))
+  dplyr::mutate(ethnicity_6 = case_when(ethnicity == "1" ~ "White",
+                                 ethnicity == "2"  ~ "Mixed",
+                                 ethnicity == "3"  ~ "Asian or Asian British",
+                                 ethnicity == "4"  ~ "Black or Black British",
+                                 ethnicity == "5"  ~ "Chinese or Other Ethnic Groups",
+                                 ethnicity == "6"  ~ "Unknown"))
 df2$ethnicity_6 <- as.factor(df2$ethnicity_6)
 
 
-df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5)
-ungroup(df2)
+#df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5) %>% ungroup()
 
 ## covid positive
 df2 <- df2 %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
@@ -139,7 +138,7 @@ df2$charlson_score=rowSums(df2[charlson])
 
 ## Charlson - as a categorical group variable
 df2 <- df2 %>%
-  mutate(charlsonGrp = case_when(charlson_score >0 & charlson_score <=2 ~ 2,
+  dplyr::mutate(charlsonGrp = case_when(charlson_score >0 & charlson_score <=2 ~ 2,
                                 charlson_score >2 & charlson_score <=4 ~ 3,
                                 charlson_score >4 & charlson_score <=6 ~ 4,
                                 charlson_score >=7 ~ 5,
@@ -160,7 +159,7 @@ bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_co
 
 # columns for baseline table
 colsfortab <- colnames(bltab_vars)
-
+#bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 t<-(t[-1,])
 write_csv(t, here::here("output", "blt_overall_8wk_update_overall.csv"))
