@@ -1,46 +1,83 @@
 library('tidyverse')
 library("cowplot")
+library("dplyr")
+setwd(here::here("output", "joined_8wk"))
 
-setwd(here::here("output", "updated_pn8wk"))
-df_input<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv, stringsAsFactors=F) %>% bind_rows()
+#2019
+df19 <- read_rds('basic_joined_8wk_records_2019.rds')
+## filter del codes >0 (must be numeric)
+df19$delivery_code_present <- as.numeric(df19$delivery_code_present)
+df19 <- df19 %>% dplyr::filter(delivery_code_present > 0)
 
-#str(df_input$delivery_code_date)
-df_input$delivery_code_date<-as.Date(df_input$delivery_code_date)
+#2020
+df20 <- read_rds('basic_joined_8wk_records_2020.rds')
+## filter del codes >0 (must be numeric)
+df20$delivery_code_present <- as.numeric(df20$delivery_code_present)
+df20 <- df20 %>% dplyr::filter(delivery_code_present > 0)
+
+#2021
+df21 <- read_rds('basic_joined_8wk_records_2021.rds')
+## filter del codes >0 (must be numeric)
+df21$delivery_code_present <- as.numeric(df21$delivery_code_present)
+df21 <- df21 %>% dplyr::filter(delivery_code_present > 0)
+
+#2022
+df22 <- read_rds('basic_joined_8wk_records_2022.rds')
+## filter del codes >0 (must be numeric)
+df22$delivery_code_present <- as.numeric(df22$delivery_code_present)
+df22 <- df22 %>% dplyr::filter(delivery_code_present > 0)
+
+#2023
+df23 <- read_rds('basic_joined_8wk_records_2023.rds')
+## filter del codes >0 (must be numeric)
+df23$delivery_code_present <- as.numeric(df23$delivery_code_present)
+df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
+
+df <- rbind(df19,df20,df21,df22,df23)
+rm(df19,df20,df21,df22,df23)
+
+# remove last month data - to match other plots
+last.date="2023-08-31"
+df=df%>% filter(date <=last.date)
+
 
 ## make covid variable
 ## define dates
-breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
-df_input=df_input%>%mutate(covid=cut(delivery_code_date,breaks,labels = c("0","1"),include.lowest = TRUE))
+breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
+df_input=df%>%mutate(covid=cut(delivery_code_date,breaks,labels = c("0","1"),include.lowest = TRUE))
 df_input$covid <- as.factor(df_input$covid)
 
-
-# population with delivery codes
-df_input<- df_input %>% filter(delivery_code_number >0)
+# 
+# # population with delivery codes
+# df_input<- df_input %>% filter(delivery_code_number >0)
 
 
 ## dependent var is if they had a pn check or not. 
 df_input$postnatal_8wk_code_present <- as.factor(df_input$postnatal_8wk_code_present)
+#str(df_input$postnatal_8wk_code_present)
+## glm is risk of no pn check, ie risk of == 0
+## relevel to pn check as reference
 df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_present, "1")
+
 df_input$age_cat<-as.factor(df_input$age_cat)
+df_input$age_cat <- relevel(df_input$age_cat, "25-29")
 
 
 ## simple model 
-## relevel age
-df_input$age_cat <- relevel(df_input$age_cat, "25-29")
-
 mod1 <- glm(postnatal_8wk_code_present~age_cat, family=binomial(link=logit), data=df_input)
-#summary(mod1)
-mod1df<- as.data.frame(mod1$coefficients)
 #df_capture <-as.data.frame(capture.output(summary(mod1), 'output.txt'))
-
-write_csv(mod1df, here::here("output","mod1_ageadj_coef.csv"))
+mod1df <- cbind(Estimate = coef(mod1), confint(mod1))
+mod1df.exp=round(exp(mod1df), digits = 2)
+pval<- coef(summary(mod1))[,4]
+mod1df.exp<-cbind(mod1df.exp, pval)
+write_csv(mod1df.exp, here::here("output","mod1_ageadj_coef.csv"))
 #write_csv(df_capture, here::here("output","mod1_ageadj_capture.csv"))
 
 
 ## Adjusted model 
-df_input$ethnicity<-as.factor(df_input$ethnicity)
+#df_input$ethnicity<-as.factor(df_input$ethnicity)
 df_input$ethnicity2<-as.factor(df_input$ethnicity2)
-df_input$ethnicity <- relevel(df_input$ethnicity, "White")
+df_input$ethnicity2 <- relevel(df_input$ethnicity2, "1") #white as reference
 
 ### neeed to relabel ethnicity 2 and then releve to ref cat white. 
 #df_input$ethnicity2 <- relevel(df_input$ethnicity, "White")
@@ -48,22 +85,38 @@ df_input$ethnicity <- relevel(df_input$ethnicity, "White")
 df_input$region<-as.factor(df_input$region)
 df_input$region <- relevel(df_input$region, "London")
 df_input$imd<-as.factor(df_input$imd) 
-df_input$imd <- relevel(df_input$imd, "1") 
+df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
 
+# bmi - numeric
+# remove bmi outliers - this replaces <8 or >50 with NA
+df_input$bmi <- ifelse(df_input$bmi <8 | df_input$bmi>50, NA, df_input$bmi)
+df_input <- df_input %>% dplyr::mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
+                                                 bmi>=8 & bmi< 18.5 ~ "Underweight",
+                                                 bmi>=18.5 & bmi<=24.9 ~ "Healthy weight",
+                                                 bmi>24.9 & bmi<=29.9 ~ "Overweight",
+                                                 bmi>29.9 ~"Obese"))
+df_input$bmi_cat <- as.factor(df_input$bmi_cat)
 
 mod2 <- glm(postnatal_8wk_code_present~age_cat+
-              ethnicity+region+imd+bmi, family=binomial(link=logit), data=df_input)
+              ethnicity2+region+imd+bmi_cat, family=binomial(link=logit), data=df_input)
 #summary(mod2)
-mod2df<- as.data.frame(mod2$coefficients)
+mod2df <- cbind(Estimate = coef(mod2), confint(mod2))
+mod2df.exp=round(exp(mod2df), digits = 2)
+pval2<- coef(summary(mod2))[,4]
+mod2df.exp<-cbind(mod2df.exp, pval2)
+write_csv(mod2df.exp, here::here("output","mod2_fulladj_coef.csv"))
 #df2_capture <-as.data.frame(capture.output(summary(mod2), 'output.txt'))
 
-write_csv(mod2df, here::here("output","mod2_fulladj_coef.csv"))
-#write_csv(df2_capture, here::here("output","mod2_fulladj_capture.csv"))
-
-
+#covid
 mod2_covid <- glm(postnatal_8wk_code_present~age_cat+
-                ethnicity+region+imd+bmi+covid, family=binomial(link=logit), data=df_input)
-mod2_coviddf<- as.data.frame(mod2_covid$coefficients)
+                ethnicity+region+imd+bmi_cat+covid, family=binomial(link=logit), data=df_input)
+mod2covid_df <- cbind(Estimate = coef(mod2_covid), confint(mod2_covid))
+mod2covid_df.exp=round(exp(mod2covid_df), digits = 2)
+pval2<- coef(summary(mod2_covid))[,4]
+mod2df.exp<-cbind(mod2df.exp, pval2)
+
+
+
 write_csv(mod2_coviddf, here::here("output","mod2_covid_fulladj_coef.csv"))
 
 ### model on obs per patient ID
