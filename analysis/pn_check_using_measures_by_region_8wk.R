@@ -9,23 +9,23 @@ rm(list=ls())
 #setwd(here::here("output", "measures"))
 
 df <- read_csv(
-  here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_region.csv"),
-  col_types = cols_only(
-
-    #Identifier
-    region = col_factor(),
-    
-    # Outcomes
-    delivery_code_present  = col_double(),
-    postnatal_8wk_code_present = col_double(),
-    population  = col_number(),
-    value = col_number(),
-    
-    # Date
-    date = col_date(format="%Y-%m-%d")
-    
-  ),
-  na = character()
+  here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_region.csv")#,
+  # col_types = cols_only(
+  # 
+  #   #Identifier
+  #   #region = col_factor(),
+  #   
+  #   # Outcomes
+  #   delivery_code_present  = col_double(),
+  #   postnatal_8wk_code_present = col_double(),
+  #   population  = col_number(),
+  #   value = col_number(),
+  #   
+  #   # Date
+  #   date = col_date(format="%Y-%m-%d")
+  #   
+  # ),
+  # na = character()
   )
 
 
@@ -68,8 +68,9 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 # create dataframe without NA 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 df_gaps$region<-as.factor(df$region)
-# removes unknown region
-#df_gaps<-filter(df_gaps, region!="1")
+## reduce data to remove raw counts and redacted counts (as some identical),
+## leave rounded counts for output
+df_gaps<-df_gaps[,-c(1,3,4,5,9,10)]
 write_csv(as.data.frame(df_gaps), here::here("output", "monthly_pn_rate_measures_8wk_plotdata_region.csv"))
 
 
