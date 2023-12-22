@@ -67,7 +67,7 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 
 # create dataframe without NA 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
-df_gaps$region<-as.factor(df$region)
+#df_gaps$region<-as.factor(df$region)
 ## reduce data to remove raw counts and redacted counts (as some identical),
 ## leave rounded counts for output
 df_gaps<-df_gaps[,-c(1,3,4,5,9,10)]
