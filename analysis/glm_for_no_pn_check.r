@@ -1,7 +1,7 @@
 library('tidyverse')
-#library('lubridate')
+library('lubridate')
 library('dplyr')
-#library("cowplot")
+
 
 setwd(here::here("output", "joined_8wk"))
 
@@ -38,6 +38,7 @@ df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
 df <- rbind(df19,df20,df21,df22,df23)
 rm(df19,df20,df21,df22,df23)
 
+
 # remove last month data - to match other plots
 last.date="2023-08-31"
 df=df%>% filter(date <=last.date)
@@ -72,6 +73,7 @@ mod1df <- cbind(Estimate = coef(mod1), confint(mod1))
 mod1df.exp=round(exp(mod1df), digits = 2)
 pval<- coef(summary(mod1))[,4]
 mod1df.exp<-cbind(mod1df.exp, pval)
+mod1df.exp<- as.data.frame(mod1df.exp)
 write_csv(mod1df.exp, here::here("output","mod1_ageadj_coef.csv"))
 #write_csv(df_capture, here::here("output","mod1_ageadj_capture.csv"))
 
@@ -153,6 +155,7 @@ mod2df <- cbind(Estimate = coef(mod2), confint(mod2))
 mod2df.exp=round(exp(mod2df), digits = 2)
 pval2<- coef(summary(mod2))[,4]
 mod2df.exp<-cbind(mod2df.exp, pval2)
+mod2df.exp<- as.data.frame(mod2df.exp)
 write_csv(mod2df.exp, here::here("output","mod2_fulladj_coef.csv"))
 #df2_capture <-as.data.frame(capture.output(summary(mod2), 'output.txt'))
 
@@ -163,6 +166,7 @@ mod2covid_df <- cbind(Estimate = coef(mod2_covid), confint(mod2_covid))
 mod2covid_df.exp=round(exp(mod2covid_df), digits = 2)
 pval2<- coef(summary(mod2_covid))[,4]
 mod2covid_df.exp<-cbind(mod2covid_df.exp, pval2)
+mod2covid_df.exp<- as.data.frame(mod2covid_df.exp)
 write_csv(mod2covid_df.exp, here::here("output","mod2_covid_fulladj_coef.csv"))
 
 
@@ -186,6 +190,7 @@ mod3last_df <- cbind(Estimate = coef(mod3last), confint(mod3last))
 mod3last_df.exp=round(exp(mod3last_df), digits = 2)
 pval3last<- coef(summary(mod3last))[,4]
 mod3last_df.exp<-cbind(mod3last_df.exp, pval3last)
+mod3last_df.exp<- as.data.frame(mod3last_df.exp)
 write_csv(mod3last_df.exp, here::here("output","mod3_fulladj_last.csv"))
 
 
