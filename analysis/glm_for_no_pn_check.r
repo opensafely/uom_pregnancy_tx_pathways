@@ -1,7 +1,7 @@
 library('tidyverse')
-#library('lubridate')
+library('lubridate')
 library('dplyr')
-#library("cowplot")
+
 
 setwd(here::here("output", "joined_8wk"))
 
@@ -38,6 +38,7 @@ df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
 df <- rbind(df19,df20,df21,df22,df23)
 rm(df19,df20,df21,df22,df23)
 
+
 # remove last month data - to match other plots
 last.date="2023-08-31"
 df=df%>% filter(date <=last.date)
@@ -72,6 +73,7 @@ mod1df <- cbind(Estimate = coef(mod1), confint(mod1))
 mod1df.exp=round(exp(mod1df), digits = 2)
 pval<- coef(summary(mod1))[,4]
 mod1df.exp<-cbind(mod1df.exp, pval)
+mod1df.exp<- as.data.frame(mod1df.exp)
 write_csv(mod1df.exp, here::here("output","mod1_ageadj_coef.csv"))
 #write_csv(df_capture, here::here("output","mod1_ageadj_capture.csv"))
 
@@ -153,17 +155,19 @@ mod2df <- cbind(Estimate = coef(mod2), confint(mod2))
 mod2df.exp=round(exp(mod2df), digits = 2)
 pval2<- coef(summary(mod2))[,4]
 mod2df.exp<-cbind(mod2df.exp, pval2)
+mod2df.exp<- as.data.frame(mod2df.exp)
 write_csv(mod2df.exp, here::here("output","mod2_fulladj_coef.csv"))
 #df2_capture <-as.data.frame(capture.output(summary(mod2), 'output.txt'))
 
 #covid
-mod2_covid <- glm(postnatal_8wk_code_present~age_cat+
-                ethnicity2+region+imd+bmi_cat+charlsonGrp+covid, family=binomial(link=logit), data=df_input)
-mod2covid_df <- cbind(Estimate = coef(mod2_covid), confint(mod2_covid))
-mod2covid_df.exp=round(exp(mod2covid_df), digits = 2)
-pval2<- coef(summary(mod2_covid))[,4]
-mod2covid_df.exp<-cbind(mod2covid_df.exp, pval2)
-write_csv(mod2covid_df.exp, here::here("output","mod2_covid_fulladj_coef.csv"))
+# mod2_covid <- glm(postnatal_8wk_code_present~age_cat+
+#                 ethnicity2+region+imd+bmi_cat+charlsonGrp+covid, family=binomial(link=logit), data=df_input)
+# mod2covid_df <- cbind(Estimate = coef(mod2_covid), confint(mod2_covid))
+# mod2covid_df.exp=round(exp(mod2covid_df), digits = 2)
+# pval2<- coef(summary(mod2_covid))[,4]
+# mod2covid_df.exp<-cbind(mod2covid_df.exp, pval2)
+# mod2covid_df.exp<- as.data.frame(mod2covid_df.exp)
+# write_csv(mod2covid_df.exp, here::here("output","mod2_covid_fulladj_coef.csv"))
 
 
 ### model on obs per patient ID
@@ -186,61 +190,57 @@ mod3last_df <- cbind(Estimate = coef(mod3last), confint(mod3last))
 mod3last_df.exp=round(exp(mod3last_df), digits = 2)
 pval3last<- coef(summary(mod3last))[,4]
 mod3last_df.exp<-cbind(mod3last_df.exp, pval3last)
+mod3last_df.exp<- as.data.frame(mod3last_df.exp)
 write_csv(mod3last_df.exp, here::here("output","mod3_fulladj_last.csv"))
 
 
 ## plot
-library(forestplot)
-
+#library(forestplot)
+library(ggplot2)
 # remove intercept
 mod2df.exp<- mod2df.exp[c(-1),]
 colnames(mod2df.exp)[2]<-"LOW"
 colnames(mod2df.exp)[3]<-"HIGH"
-# plottext2<- row.names(tidy2rd)
-# print(plottext2)
-blank_row <- data.frame(Estimate = "", LOW = "", HIGH = "",pval2 = "")
+mod2df.exp$predictors<-as.factor(row.names(mod2df.exp))
+# Define the predictor groups
+# Create a new column indicating overarching predictor names
+mod2df.exp$predictor_gp <- ifelse(grepl("^age", mod2df.exp$predictors), "Age",
+                                  ifelse(grepl("^ethnicity", mod2df.exp$predictors), "Ethnicity",
+                                         ifelse(grepl("^region", mod2df.exp$predictors), "Region",
+                                                ifelse(grepl("^imd", mod2df.exp$predictors), "IMD",
+                                                       ifelse(grepl("^bmi", mod2df.exp$predictors), "BMI",
+                                                              ifelse(grepl("^charlsonGrp", mod2df.exp$predictors), "Charlson", NA))))))
 
-dfplot <- rbind(blank_row, mod2df.exp[1:6,],blank_row, blank_row, mod2df.exp[7:11,],
-                blank_row, blank_row, mod2df.exp[12:19,], blank_row,blank_row, mod2df.exp[20:24,],
-                blank_row, blank_row, mod2df.exp[25:27,],blank_row, blank_row, mod2df.exp[29:32,])
+# Convert predictor_gp to factor to maintain the order
+mod2df.exp$predictor_gp <- factor(mod2df.exp$predictor_gp, levels = c("Age", "Ethnicity", "Region", "IMD", "BMI", "Charlson"))
+#table(mod2df.exp$predictor_gp)
 
-plottext2 <- c("Age:", "14-19","20-24","30-34","35-39","40-44","45-49",
-               "","Ethnicity:",
-              # "Asian or Asian British", "Black or Black British", "Mixed", "Other",
-               "0", "2", "3", "4", "5",
-                "","Region:",
-               "East", "East Midlands", "North East", "North West", "South East",
-               "South West", "West Midlands","Yorkshire and The Humber",
-               "","IMD:",
-              "imd:0", "imd:1", "imd:2", "imd:3", "imd:4",
-               "", "BMI",
-              "Obese", "Overweight", "Underweight", "", "Charlson Gp",
-              "Low", "Medium", "High", "Very High")
+# Create the forest plot
+plot2 <- ggplot(mod2df.exp, aes(x = Estimate, y = predictors)) +
+  geom_point(size = 2, position = position_dodge(width = 0.5)) +
+  geom_errorbarh(aes(xmin = LOW, xmax = HIGH), height = 0.2, position = position_dodge(width = 0.5)) +
+  labs(title = "Adjusted Odds Ratios (ORs)",
+       x = "OR and 95% CI", y = "") +
+  geom_vline(xintercept = 1, lty = 2) +
+  facet_wrap(~ predictor_gp, scales = "free_y", ncol = 1) +
+  theme(strip.background = element_blank(),
+        strip.text = element_blank())
 
-dfplot <- dfplot %>% mutate_at(c(2:4), as.numeric)
-
-plot_mod2<-forestplot(labeltext=plottext2,
-                      mean = c(dfplot$Estimate), lower = c(dfplot$LOW), upper = c(dfplot$HIGH),
-                      ci.vertices = TRUE, ci.vertices.height = 0.2,
-                      col=fpColors(box= "royalblue", line="darkblue", zero="gray", hrz_lines="black"),
-                      title="Odds Ratio [95% CI]",
-                      txt_gp=fpTxtGp(label=gpar(cex=1.2), ticks=gpar(cex=1.1)),
-                      grid=TRUE,
-                      boxsize=0.3,
-                      zero=1,
-                      xticks=c(0.5, 0.75, 1.0,1.5,2.0), lwd.ci=1)
+ggsave(
+  plot= plot2,
+  filename="glm_fullAdjs.jpeg", path=here::here("output"), dpi = 300
+)
 
 
-save_plot(here::here("output", "glm_fullAdjs.jpeg"),
-          plot_mod2,
-          base_width = 9, base_height = 10
-          )
-
-# save_forest(plot= plot_mod2,
-#   filename="glm_fullAdjs.jpeg", path=here::here("output"),
-# )
-#
-
-##compare with glmer() repeated delcodes per mum..
-##or select one row per mum as sensitivity.
+# #           plot_mod2,
+# #           base_width = 9, base_height = 10
+# #           )
+# 
+# # save_forest(plot= plot_mod2,
+# #   filename="glm_fullAdjs.jpeg", path=here::here("output"),
+# # )
+# #
+# 
+# ##compare with glmer() repeated delcodes per mum..
+# ##or select one row per mum as sensitivity.
 
