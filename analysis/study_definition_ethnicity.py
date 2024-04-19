@@ -33,12 +33,12 @@ study = StudyDefinition(
      
     ethnicity = patients.categorised_as(
         {
-            "Unknown": "DEFAULT",
-            "White": "eth6='1'",
-            "Mixed": "eth6='2'",
-            "Asian or Asian British": "eth6='3'",
-            "Black or Black British": "eth6='4'",
-            "Other": "eth6='5'",
+            "6": "DEFAULT",
+            "1": "eth6='1'",
+            "2": "eth6='2'",
+            "3": "eth6='3'",
+            "4": "eth6='4'",
+            "5": "eth6='5'",
         },
         eth6 = patients.with_these_clinical_events(
             ethnicity_codes_6,
@@ -63,12 +63,12 @@ study = StudyDefinition(
             "rate": "universal",
             "category": {
                 "ratios": {
-                    "White": 0.30,
-                    "Mixed": 0.20,
-                    "Asian or Asian British": 0.20,
-                    "Black or Black British": 0.20,
-                    "Other": 0.05,
-                    "Unknown": 0.05,
+                    "1": 0.30,
+                    "2": 0.20,
+                    "3": 0.20,
+                    "4": 0.20,
+                    "5": 0.05,
+                    "6": 0.05,
                 },
             },
         },
@@ -77,7 +77,7 @@ study = StudyDefinition(
     ## ethnicity using codelist
 
     eth=patients.with_these_clinical_events(
-        ethnicity_codes,
+        ethnicity_codes_6,
         returning="category",
         find_last_match_in_period=True,
         include_date_of_match=False,
@@ -135,7 +135,6 @@ study = StudyDefinition(
                 "rate": "universal",
             },
     ),
-    
 
 )
 
