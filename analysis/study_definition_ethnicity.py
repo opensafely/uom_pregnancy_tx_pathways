@@ -82,17 +82,17 @@ study = StudyDefinition(
         find_last_match_in_period=True,
         include_date_of_match=False,
         return_expectations={
-                                "category": {
-                                    "ratios": {
-                                        "1": 0.2,
-                                        "2": 0.2,
-                                        "3": 0.2,
-                                        "4": 0.2,
-                                        "5": 0.2
-                                        }
-                                    },
-                                "incidence": 0.75,
+                            "category": {
+                                "ratios": {
+                                    "1": 0.2,
+                                    "2": 0.2,
+                                    "3": 0.2,
+                                    "4": 0.2,
+                                    "5": 0.2
+                                    }
                                 },
+                            "incidence": 0.75,
+                            },
     ),
     
     ethnicity_sus=patients.with_ethnicity_from_sus(
