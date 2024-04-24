@@ -28,7 +28,7 @@ ggsave(
 )
  
 
-table_pn_codes <- as.data.frame(table(df_input$postnatal_code)) 
-table_pn_codes <- table_pn_codes[order(-table_pn_codes$Freq),]
-
-write_csv(table_pn_codes, here::here("output","table_pn_codes_reviewed.csv"))
+# table_pn_codes <- as.data.frame(table(df_input$postnatal_code)) 
+# table_pn_codes <- table_pn_codes[order(-table_pn_codes$Freq),]
+# 
+# write_csv(table_pn_codes, here::here("output","table_pn_codes_reviewed.csv"))
