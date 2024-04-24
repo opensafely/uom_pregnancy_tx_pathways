@@ -192,7 +192,6 @@ study = StudyDefinition(
 
 
 
-
     # Number of delivery codes per person
     delivery_code_number=patients.with_these_clinical_events(
     delivery_codes_reviewed,

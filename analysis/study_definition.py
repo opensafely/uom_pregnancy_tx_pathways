@@ -228,7 +228,6 @@ study = StudyDefinition(
         },
     ),
 
-    # ## GP consultations - may adjust models for contact in 12m before
     # gp_count=patients.with_gp_consultations(
     #     between=["index_date - 12 months", "index_date"],
     #     returning="number_of_matches_in_period",

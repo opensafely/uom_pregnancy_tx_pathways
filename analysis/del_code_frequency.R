@@ -12,7 +12,6 @@ df_input<-list.files(pattern = "input", full.names = FALSE) %>% lapply(read.csv,
 
 df_input <- df_input %>% dplyr::filter(delivery_code_number >0)
 
-#might need library('dplyr')
 
 plot_delivery_code_frequency <- ggplot(data=df_input, aes(df_input$delivery_code_number)) + 
 geom_histogram() +
