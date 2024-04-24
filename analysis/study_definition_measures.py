@@ -233,16 +233,7 @@ study = StudyDefinition(
         },
     ),
 
-    ## GP consultations - may adjust models for contact in 12m before
-    gp_count=patients.with_gp_consultations(
-        between=["index_date - 12 months", "index_date"],
-        returning="number_of_matches_in_period",
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 6, "stddev": 3},
-            "incidence": 0.6,
-        },
-    ),
-
+    
 
     # Number of delivery codes per person
     delivery_code_number=patients.with_these_clinical_events(

@@ -230,27 +230,27 @@ actions:
      moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names_reduced.csv
         
-  describe_pn_code_freq:
-    run: r:latest analysis/pn_code_frequency.R
-    needs: [join_cohorts_8_week]
-    outputs:
-      moderately_sensitive:
-        hist2: output/pn_code_histogram_reviewed.jpeg
-        table1: output/table_pn_codes_reviewed.csv
+  # describe_pn_code_freq:
+  #   run: r:latest analysis/pn_code_frequency.R
+  #   needs: [join_cohorts_8_week]
+  #   outputs:
+  #     moderately_sensitive:
+  #       hist2: output/pn_code_histogram_reviewed.jpeg
+  #       table1: output/table_pn_codes_reviewed.csv
 
-  describe_pn_code_freq_with_names:
-     run: r:latest analysis/pn_code_frequency_with_names.R
-     needs: [describe_pn_code_freq]
-     outputs:
-       moderately_sensitive:
-         table1: output/table_pn_codes_reviewed_with_names.csv   
+  # describe_pn_code_freq_with_names:
+  #    run: r:latest analysis/pn_code_frequency_with_names.R
+  #    needs: [describe_pn_code_freq]
+  #    outputs:
+  #      moderately_sensitive:
+  #        table1: output/table_pn_codes_reviewed_with_names.csv   
 
-  describe_pn_code_freq_with_names_reduced:
-     run: r:latest analysis/pn_code_frequency_with_names_reduced.R
-     needs: [describe_pn_code_freq_with_names]
-     outputs:
-      moderately_sensitive:
-         table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
+  # describe_pn_code_freq_with_names_reduced:
+  #    run: r:latest analysis/pn_code_frequency_with_names_reduced.R
+  #    needs: [describe_pn_code_freq_with_names]
+  #    outputs:
+  #     moderately_sensitive:
+  #        table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
 
   # frequency of codes by unique patients
   # describe_freq_by_unique_patients:
