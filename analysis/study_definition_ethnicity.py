@@ -44,6 +44,7 @@ study = StudyDefinition(
             ethnicity_codes_6,
             returning = "category",
             find_last_match_in_period = True,
+            on_or_before="index_date",
             include_date_of_match = False,
             return_expectations = {
                 "incidence": 0.75,
@@ -80,6 +81,7 @@ study = StudyDefinition(
         ethnicity_codes_6,
         returning="category",
         find_last_match_in_period=True,
+        on_or_before="index_date",
         include_date_of_match=False,
         return_expectations={
                                 "category": {
@@ -124,8 +126,8 @@ study = StudyDefinition(
             return_expectations={
                 "category": {
                                 "ratios": {
-                                    "0": 0.5,  # missing in 50%
-                                    "1": 0.1,
+                                    "0": 0.1,  
+                                    "1": 0.5,
                                     "2": 0.1,
                                     "3": 0.1,
                                     "4": 0.1,
@@ -134,6 +136,26 @@ study = StudyDefinition(
                                 },
                 "rate": "universal",
             },
+    ),
+
+    eth_old=patients.with_these_clinical_events(
+        ethnicity_codes,
+        returning="category",
+        find_last_match_in_period=True,
+        on_or_before="index_date",
+        include_date_of_match=False,
+        return_expectations={
+                                "category": {
+                                    "ratios": {
+                                        "1": 0.2,
+                                        "2": 0.2,
+                                        "3": 0.2,
+                                        "4": 0.2,
+                                        "5": 0.2
+                                        }
+                                    },
+                                "incidence": 0.75,
+                                },
     ),
 
 )
