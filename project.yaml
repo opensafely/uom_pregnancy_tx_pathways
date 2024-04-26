@@ -51,7 +51,16 @@ actions:
      outputs:
        highly_sensitive:
          cohort: output/input_ethnicity.csv.gz
-        
+
+
+  ## check this new ethnicity extract
+  describe_baseline_new_ethnicity_extract_check:
+     run: r:latest analysis/ethnicity_extract_check.R
+     needs: [generate_study_population_ethnicity]
+     outputs:
+       moderately_sensitive: 
+         overall_ethtable: output/blt_new_ethnicity_extract_check.csv
+
   # join_cohorts:
   #   run: cohort-joiner:v0.0.56
   #       --lhs output/measures_update/input_*.csv.gz
