@@ -43,6 +43,17 @@ actions:
   #     highly_sensitive:
   #       cohort: output/measures_update/input_*.csv.gz
 
+  ########## Short Data Review Work ###################
+  generate_study_population_SDR:
+     run: cohortextractor:latest generate_cohort 
+       --study-definition study_definition_SDR 
+       --output-dir=output  
+       --output-format=csv.gz
+     outputs:
+       highly_sensitive:
+         cohort_SDR: output/input_SDR.csv.gz
+
+
   generate_study_population_ethnicity:
      run: cohortextractor:latest generate_cohort 
        --study-definition study_definition_ethnicity 
