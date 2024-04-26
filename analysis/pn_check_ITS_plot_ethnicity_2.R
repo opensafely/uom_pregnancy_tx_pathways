@@ -64,7 +64,8 @@ df_plot=df_plot%>% group_by(covid, ethnicity2)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
 #df_plot$ethnicity2<- as.factor(df_plot$ethnicity2)
-df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White",
+df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(is.na(ethnicity2) ~ "Unknown",
+                                                  ethnicity2== 1 ~ "White",
                                                   ethnicity2== 2 ~ "Mixed",
                                                   ethnicity2== 3 ~ "Asian or Asian British",
                                                   ethnicity2== 4 ~ "Black or Black British",
