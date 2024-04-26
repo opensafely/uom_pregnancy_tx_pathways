@@ -51,7 +51,16 @@ actions:
      outputs:
        highly_sensitive:
          cohort: output/input_ethnicity.csv.gz
-        
+
+
+  ## check this new ethnicity extract
+  describe_baseline_new_ethnicity_extract_check:
+     run: r:latest analysis/ethnicity_extract_check.R
+     needs: [generate_study_population_ethnicity]
+     outputs:
+       moderately_sensitive: 
+         overall_ethtable: output/blt_new_ethnicity_extract_check.csv
+
   # join_cohorts:
   #   run: cohort-joiner:v0.0.56
   #       --lhs output/measures_update/input_*.csv.gz
@@ -390,69 +399,6 @@ actions:
          table_overall: output/blt_overall_8wk_update_overall.csv  
 
 
-  # ### baseline tables by year for 8wk cohort:
-  # #2019
-  # describe_baseline_table_8wk_cohort_2019:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2019.R
-  #   needs: [describe_basic_record_to_rds_process]
-  #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2019.csv
-  #       overall_delcodes_numeric: output/table_delcodes_8wk_update_2019_after_numeric.csv
-  #       overall_delcodes_filter: output/table_delcodes_8wk_update_2019_after_filter.csv
-  #       table_overall_counts: output/overall_counts_8wk_update_2019.csv
-  #       table_overall: output/blt_overall_8wk_update_2019.csv   
-        
-
-  # # #2020
-  # describe_baseline_table_8wk_cohort_2020:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2020.R
-  #   needs: [describe_basic_record_to_rds_process]
-  #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2020.csv
-  #       overall_delcodes_numeric: output/table_delcodes_8wk_update_2020_after_numeric.csv
-  #       overall_delcodes_filter: output/table_delcodes_8wk_update_2020_after_filter.csv
-  #       table_overall_counts: output/overall_counts_8wk_update_2020.csv
-  #       table_overall: output/blt_overall_8wk_update_2020.csv  
-
-  # # #2021
-  # describe_baseline_table_8wk_cohort_2021:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2021.R
-  #   needs: [describe_basic_record_to_rds_process]
-  #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2021.csv
-  #       overall_delcodes_numeric: output/table_delcodes_8wk_update_2021_after_numeric.csv
-  #       overall_delcodes_filter: output/table_delcodes_8wk_update_2021_after_filter.csv
-  #       table_overall_counts: output/overall_counts_8wk_update_2021.csv
-  #       table_overall: output/blt_overall_8wk_update_2021.csv   
-
-  # # #2022 
-  # describe_baseline_table_8wk_cohort_2022:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2022.R
-  #   needs: [describe_basic_record_to_rds_process]
-  #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2022.csv
-  #       overall_delcodes_numeric: output/table_delcodes_8wk_update_2022_after_numeric.csv
-  #       overall_delcodes_filter: output/table_delcodes_8wk_update_2022_after_filter.csv
-  #       table_overall_counts: output/overall_counts_8wk_update_2022.csv
-  #       table_overall: output/blt_overall_8wk_update_2022.csv
-
-  # # #2023
-  # describe_baseline_table_8wk_cohort_2023:
-  #   run: r:latest analysis/baseline_table_8wk_using_rds_by_yr2023.R
-  #   needs: [describe_basic_record_to_rds_process]
-  #   outputs:
-  #     moderately_sensitive: 
-  #       overall_delcodes: output/table_delcodes_8wk_update_2023.csv
-  #       overall_delcodes_numeric: output/table_delcodes_8wk_update_2023_after_numeric.csv
-  #       overall_delcodes_filter: output/table_delcodes_8wk_update_2023_after_filter.csv
-  #       table_overall_counts: output/overall_counts_8wk_update_2023.csv
-  #       table_overall: output/blt_overall_8wk_update_2023.csv
-
-
   # describe_baseline_table_12wk_cohort:
   #   run: r:latest analysis/baseline_table_12wk.R
   #   #needs: [generate_12wk_cohort]
@@ -516,23 +462,6 @@ actions:
         estimates_c: output/ITS_estimates_counter_12wk.csv
         combined: output/ITS_estimates_combined_plot_12wk.csv
 
-  # describe_ITS_plot_overall_by_cohort:
-  #   run: r:latest analysis/pn_check_ITS_plot_combined.R
-  #   needs: [generate_12wk_cohort_updated, generate_measures_12wk_updated, generate_6wk_cohort_updated, generate_measures_6wk_updated, generate_8wk_cohort_updated, generate_measures_8wk_updated]
-  #   # check needs
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot_ITS_overall_by_cohort: output/plot_ITS_overall_by_cohort.jpeg 
-
-  # describe_ITS_plot_age_cat:
-  #    run: r:latest analysis/pn_check_ITS_plot_age_cat_vp.R
-  #    needs: [generate_8wk_cohort, generate_measures_8wk]
-  #    outputs:
-  #      moderately_sensitive:
-  #         plot_ITS_age_cat: output/plot_ITS_age_cat.jpeg
-  #         plot_ITS_age_cat_data: output/plot_ITS_check_age_cat.csv
-  #         plot_ITS_IRR_age_cat: output/plot_ITS_age_cat_IRR.jpeg
-  #         plot_ITS_IRR_age_cat_data: output/ITS_plot_age_cat_IRR_overall.csv
 
   describe_ITS_plot_age_cat_edit:
      run: r:latest analysis/pn_check_ITS_plot_age_cat_edit.R
@@ -579,14 +508,7 @@ actions:
           plot_ITS_IRR_imd_data: output/ITS_plot_imd_IRR_overall_updated.csv 
           plot_ITS_plot_data: output/ITS_plot_data_imd_updated.csv
 
-  # describe_ITS_plot_practice:
-  #  run: r:latest analysis/pn_check_ITS_plot_practice.R
-  #   needs: [generate_8wk_cohort, generate_measures_8wk]
-  #   outputs:
-  #     moderately_sensitive:
-  #        plot_ITS_practice_1: output/plot_ITS_practice_1.jpeg
-  #        plot_ITS_practice_2: output/plot_ITS_practice_2.jpeg
-
+  
   describe_ITS_plot_region:
      run: r:latest analysis/pn_check_ITS_plot_region_new.R
      needs: [generate_measures_8wk_updated]
