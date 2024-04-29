@@ -4,37 +4,37 @@ library('dplyr')
 library('finalfit')
 #library('fs')
 
-#dir_create(here::here("output", "joined_8wk"), showWarnings = FALSE, recurse = TRUE)
+#dir_create(here::here("output", "joined_12wk"), showWarnings = FALSE, recurse = TRUE)
 
 
-setwd(here::here("output", "joined_8wk"))
+setwd(here::here("output", "joined_12wk"))
 
 #2019
-df19 <- read_rds('basic_joined_8wk_records_2019.rds')
+df19 <- read_rds('basic_joined_12wk_records_2019.rds')
 ## filter del codes >0 (must be numeric)
 df19$delivery_code_present <- as.numeric(df19$delivery_code_present)
 df19 <- df19 %>% dplyr::filter(delivery_code_present > 0)
 
 #2020
-df20 <- read_rds('basic_joined_8wk_records_2020.rds')
+df20 <- read_rds('basic_joined_12wk_records_2020.rds')
 ## filter del codes >0 (must be numeric)
 df20$delivery_code_present <- as.numeric(df20$delivery_code_present)
 df20 <- df20 %>% dplyr::filter(delivery_code_present > 0)
 
 #2021
-df21 <- read_rds('basic_joined_8wk_records_2021.rds')
+df21 <- read_rds('basic_joined_12wk_records_2021.rds')
 ## filter del codes >0 (must be numeric)
 df21$delivery_code_present <- as.numeric(df21$delivery_code_present)
 df21 <- df21 %>% dplyr::filter(delivery_code_present > 0)
 
 #2022
-df22 <- read_rds('basic_joined_8wk_records_2022.rds')
+df22 <- read_rds('basic_joined_12wk_records_2022.rds')
 ## filter del codes >0 (must be numeric)
 df22$delivery_code_present <- as.numeric(df22$delivery_code_present)
 df22 <- df22 %>% dplyr::filter(delivery_code_present > 0)
 
 #2023
-df23 <- read_rds('basic_joined_8wk_records_2023.rds')
+df23 <- read_rds('basic_joined_12wk_records_2023.rds')
 ## filter del codes >0 (must be numeric)
 df23$delivery_code_present <- as.numeric(df23$delivery_code_present)
 df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
@@ -62,14 +62,14 @@ rm(df)
 tabdelcodes2 <- as.data.frame(table(df2$delivery_code_present))
 
 tabdelcodes_both <- rbind(tabdelcodes, tabdelcodes2)
-write_csv(tabdelcodes_both, here::here("output", "table_delcodes_8wk_update.csv"))
+write_csv(tabdelcodes_both, here::here("output", "table_delcodes_12wk_update.csv"))
 rm(tabdelcodes)
 
 ## count overall practices and patients:
 num_pracs <- length(unique(df2$practice))
 num_pats <- length(unique(df2$patient_id))
 overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
-write_csv(overall_counts, here::here("output", "overall_counts_8wk_update.csv"))
+write_csv(overall_counts, here::here("output", "overall_counts_12wk_update.csv"))
 rm(num_pracs, num_pats, overall_counts)
 
 ## Define/clean variables before baseline table
@@ -174,7 +174,7 @@ colsfortab <- colnames(bltab_vars)
 #bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
 bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
 t<-(t[-1,])
-write_csv(t, here::here("output", "blt_overall_8wk_update_overall.csv"))
+write_csv(t, here::here("output", "blt_overall_12wk_update_overall.csv"))
 
 
 

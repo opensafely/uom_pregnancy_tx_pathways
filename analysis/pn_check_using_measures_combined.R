@@ -63,9 +63,9 @@ df1$cohort<-"8 weeks"
 df2$cohort<-"6 weeks"
 df3$cohort<-"12 weeks"
 
-df<-rbind(df1,df2,df3)
+df<-rbind(df2,df1,df3)
 rm(df1,df2,df3)
-df$cohort=factor(df$cohort,levels=c("8 weeks","6 weeks","12 weeks"))
+df$cohort=factor(df$cohort,levels=c("6 weeks","8 weeks","12 weeks"))
 
 
 ## remove rows where delivery_code_present == 0 (group_by var in measures)

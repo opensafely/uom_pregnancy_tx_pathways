@@ -77,17 +77,6 @@ actions:
 #### date of last delivery code using 'num_days' param - these are used to generate measures   ####
 ###################################################################################################
 
-  # generate_12wk_cohort:
-  #   run: cohortextractor:latest generate_cohort 
-  #     --study-definition study_definition_measures
-  #     --index-date-range "2019-01-01 to today by month" --skip-existing 
-  #     --output-format csv.gz
-  #     --param num_days=84
-  #     --output-dir=output/pn12wk
-  #   outputs:
-  #     highly_sensitive:
-  #       cohort: output/pn12wk/input_*.csv.gz
-
   generate_12wk_cohort_updated:
     run: cohortextractor:latest generate_cohort 
       --study-definition study_definition_updated
@@ -98,17 +87,6 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/updated_pn12wk/input_*.csv.gz
-  
-  # generate_8wk_cohort:
-  #   run: cohortextractor:latest generate_cohort
-  #     --study-definition study_definition_measures 
-  #     --index-date-range "2019-01-01 to today by month" --skip-existing 
-  #     --output-format csv.gz
-  #     --param num_days=56
-  #     --output-dir=output/pn8wk
-  #   outputs:
-  #     highly_sensitive:
-  #       cohort: output/pn8wk/input_*.csv.gz
 
   generate_8wk_cohort_updated:
     run: cohortextractor:latest generate_cohort
@@ -120,17 +98,6 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/updated_pn8wk/input_*.csv.gz
-
-  # generate_6wk_cohort:
-  #   run: cohortextractor:latest generate_cohort 
-  #     --study-definition study_definition_measures
-  #     --index-date-range "2019-01-01 to today by month" --skip-existing 
-  #     --output-format csv.gz
-  #     --param num_days=42
-  #     --output-dir=output/pn6wk
-  #   outputs:
-  #     highly_sensitive:
-  #       cohort: output/pn6wk/input_*.csv.gz
 
   generate_6wk_cohort_updated:
     run: cohortextractor:latest generate_cohort 
@@ -375,9 +342,9 @@ actions:
 
   ################################################
   #### Generating baseline tables for cohorts ####
-  #### commented out as fails with dummy data ####
   ################################################
 
+  ### first transform monthly csv files to annual rds files to speed up loading data
   describe_basic_record_to_rds_process:
     run: r:latest analysis/baseline_variables_transform_8wk.R
     needs: [join_cohorts_8_week]
@@ -389,6 +356,30 @@ actions:
         rds4: output/joined_8wk/basic_joined_8wk_records_2022.rds
         rds5: output/joined_8wk/basic_joined_8wk_records_2023.rds
 
+  describe_basic_record_to_rds_process_6wkcohort:
+    run: r:latest analysis/baseline_variables_transform_6wk.R
+    needs: [join_cohorts_6_week]
+    outputs:
+      highly_sensitive:
+        rds1: output/joined_6wk/basic_joined_6wk_records_2019.rds
+        rds2: output/joined_6wk/basic_joined_6wk_records_2020.rds
+        rds3: output/joined_6wk/basic_joined_6wk_records_2021.rds
+        rds4: output/joined_6wk/basic_joined_6wk_records_2022.rds
+        rds5: output/joined_6wk/basic_joined_6wk_records_2023.rds
+
+  describe_basic_record_to_rds_process_12wkcohort:
+    run: r:latest analysis/baseline_variables_transform_12wk.R
+    needs: [join_cohorts_12_week]
+    outputs:
+      highly_sensitive:
+        rds1: output/joined_12wk/basic_joined_12wk_records_2019.rds
+        rds2: output/joined_12wk/basic_joined_12wk_records_2020.rds
+        rds3: output/joined_12wk/basic_joined_12wk_records_2021.rds
+        rds4: output/joined_12wk/basic_joined_12wk_records_2022.rds
+        rds5: output/joined_12wk/basic_joined_12wk_records_2023.rds
+
+
+  ### baseline table for each cohort. 
   describe_baseline_table_8wk_cohort:
      run: r:latest analysis/baseline_table_8wk_using_rds.R
      needs: [describe_basic_record_to_rds_process]
@@ -398,37 +389,27 @@ actions:
          table_overall_counts: output/overall_counts_8wk_update.csv
          table_overall: output/blt_overall_8wk_update_overall.csv  
 
+  describe_baseline_table_6wk_cohort:
+     run: r:latest analysis/baseline_table_6wk_using_rds.R
+     needs: [describe_basic_record_to_rds_process_6wkcohort]
+     outputs:
+       moderately_sensitive: 
+         overall_delcodes: output/table_delcodes_6wk_update.csv
+         table_overall_counts: output/overall_counts_6wk_update.csv
+         table_overall: output/blt_overall_6wk_update_overall.csv 
 
-  # describe_baseline_table_12wk_cohort:
-  #   run: r:latest analysis/baseline_table_12wk.R
-  #   #needs: [generate_12wk_cohort]
-  #   needs: [join_cohorts_12_week]
-  #   outputs:
-  #     moderately_sensitive:
-  #       table_overall: output/blt_overall_12wk_update.csv   
-  #       table_before: output/blt_before_12wk_update.csv 
-  #       #table_after: output/blt_after_12wk_update.csv 
-  #       table_overall_counts: output/overall_counts_12wk_update.csv
-  #       table_counts_before: output/overall_counts_before_12wk_update.csv
-  #       #table_counts_after: output/overall_counts_after_12wk_update.csv
+  describe_baseline_table_12wk_cohort:
+     run: r:latest analysis/baseline_table_12wk_using_rds.R
+     needs: [describe_basic_record_to_rds_process_12wkcohort]
+     outputs:
+       moderately_sensitive: 
+         overall_delcodes: output/table_delcodes_12wk_update.csv
+         table_overall_counts: output/overall_counts_12wk_update.csv
+         table_overall: output/blt_overall_12wk_update_overall.csv 
 
-
-  # describe_baseline_table_6wk_cohort:
-  #   run: r:latest analysis/baseline_table_6wk.R
-  #   #needs: [generate_6wk_cohort]
-  #   needs: [join_cohorts_6_week]
-  #   outputs:
-  #     moderately_sensitive:
-  #       table_overall: output/blt_overall_6wk_update.csv   
-  #       table_before: output/blt_before_6wk_update.csv 
-  #       #table_after: output/blt_after_6wk_update.csv 
-  #       table_overall_counts: output/overall_counts_6wk_update.csv
-  #       table_counts_before: output/overall_counts_before_6wk_update.csv
-  #       #table_counts_after: output/overall_counts_after_6wk_update.csv
-
-##########################
-###### ITS analyses ######
-##########################
+  ##########################
+  ###### ITS analyses ######
+  ##########################
 
   ## ITS plot with modelled rates using 8 week cohort 
   describe_ITS_plot_overall_new_modelled:
