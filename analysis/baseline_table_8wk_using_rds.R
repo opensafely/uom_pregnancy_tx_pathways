@@ -44,17 +44,26 @@ rm(df19,df20,df21,df22,df23)
 
 ## count patients with delivery codes (potential record for patient each month)
 tabdelcodes <- as.data.frame(table(df$delivery_code_present))
-write_csv(tabdelcodes, here::here("output", "table_delcodes_8wk_update.csv"))
-rm(tabdelcodes)
 
 
 ####
 ## filter to one observation per patient 
 df$delivery_code_date<-as.Date(df$delivery_code_date)
+
+### make variable for total delivery codes on EHR
+df <- df %>% group_by(patient_id) %>%
+  mutate(sum_delivery_codes = sum(delivery_code_number, na.rm = TRUE))
+
+
 ## group by patient ID, then arrange by delivery code date
 ## take first match per patient. 
 df2 <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
 rm(df)
+tabdelcodes2 <- as.data.frame(table(df2$delivery_code_present))
+
+tabdelcodes_both <- rbind(tabdelcodes, tabdelcodes2)
+write_csv(tabdelcodes_both, here::here("output", "table_delcodes_8wk_update.csv"))
+rm(tabdelcodes)
 
 ## count overall practices and patients:
 num_pracs <- length(unique(df2$practice))
@@ -88,15 +97,15 @@ df2$ethnicity_sus <- as.factor(df2$ethnicity_sus)
 
 ## ethnicity (based on snomed codelist)
 ## https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/
-df2$ethnicity=ifelse(is.na(df2$ethnicity), "6", df2$ethnicity)
+df2$ethnicity2=ifelse(is.na(df2$ethnicity2), "0", df2$ethnicity2)
 df2 <- df2 %>% 
-  dplyr::mutate(ethnicity_6 = case_when(ethnicity == "1" ~ "White",
-                                 ethnicity == "2"  ~ "Mixed",
-                                 ethnicity == "3"  ~ "Asian or Asian British",
-                                 ethnicity == "4"  ~ "Black or Black British",
-                                 ethnicity == "5"  ~ "Chinese or Other Ethnic Groups",
-                                 ethnicity == "6"  ~ "Unknown"))
-df2$ethnicity_6 <- as.factor(df2$ethnicity_6)
+  dplyr::mutate(Ethnicity = case_when(ethnicity2 == "1" ~ "White",
+                                 ethnicity2 == "2"  ~ "Mixed",
+                                 ethnicity2 == "3"  ~ "Asian or Asian British",
+                                 ethnicity2 == "4"  ~ "Black or Black British",
+                                 ethnicity2 == "5"  ~ "Chinese or Other Ethnic Groups",
+                                 ethnicity2 == "0"  ~ "Unknown"))
+df2$Ethnicity <- as.factor(df2$Ethnicity)
 
 
 #df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5) %>% ungroup()
@@ -148,8 +157,11 @@ df2$charlsonGrp <- as.factor(df2$charlsonGrp)
 df2$charlsonGrp <- factor(df2$charlsonGrp, 
                                  labels = c("zero", "low", "medium", "high", "very high"))
 
+
+
+
 # select variables for the baseline table
-bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, region, ethnicity, ethnicity2, ethnicity_6, imd, eth, ethnicity_sus, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
+bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
                                      "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
                                      "heart_failure_comor","connective_tissue_comor", "dementia_comor",
                                      "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
