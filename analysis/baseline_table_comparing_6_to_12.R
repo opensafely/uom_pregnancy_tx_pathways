@@ -106,6 +106,10 @@ df <- df %>% group_by(patient_id) %>%
 df <- df %>% group_by(patient_id) %>%
   mutate(sum_pn_codes = sum(pn8wk_code_number, na.rm = TRUE))
 
+### filter to cohort of checks in 6 weeks 
+df <- df %>% group_by(patient_id) %>%
+  filter(postnatal_8wk_code_present == 1)
+
 ## group by patient ID, then arrange by delivery code date
 ## take first match per patient. 
 df12wk <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
@@ -203,7 +207,7 @@ df2$charlsonGrp <- factor(df2$charlsonGrp,
 
 
 # select variables for the baseline table
-variables_names <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, sum_pn_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
+variables_names <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, sum_pn_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, charlsonGrp, covid_positive, hbp_any,
                                      "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
                                      "heart_failure_comor","connective_tissue_comor", "dementia_comor",
                                      "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
