@@ -108,8 +108,7 @@ df2 <- df2 %>%
                                       ethnicity2 == "4"  ~ "Black or Black British",
                                       ethnicity2 == "5"  ~ "Chinese or Other Ethnic Groups",
                                       ethnicity2 == "0"  ~ "Unknown"))
-df2$Ethnicity <- as.factor(df2$Ethnicity)df2$Ethnicity <- as.factor(df2$Ethnicity)
-
+df2$Ethnicity <- as.factor(df2$Ethnicity)
 
 #df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5) %>% ungroup()
 
