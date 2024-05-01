@@ -2,11 +2,64 @@ library('tidyverse')
 library('lubridate')
 library('dplyr')
 library('finalfit')
-#library('fs')
 
-#dir_create(here::here("output", "joined_12wk"), showWarnings = FALSE, recurse = TRUE)
+setwd(here::here("output", "joined_6wk"))
+
+#2019
+df19 <- read_rds('basic_joined_6wk_records_2019.rds')
+## filter del codes >0 (must be numeric)
+df19$delivery_code_present <- as.numeric(df19$delivery_code_present)
+df19 <- df19 %>% dplyr::filter(delivery_code_present > 0)
+
+#2020
+df20 <- read_rds('basic_joined_6wk_records_2020.rds')
+## filter del codes >0 (must be numeric)
+df20$delivery_code_present <- as.numeric(df20$delivery_code_present)
+df20 <- df20 %>% dplyr::filter(delivery_code_present > 0)
+
+#2021
+df21 <- read_rds('basic_joined_6wk_records_2021.rds')
+## filter del codes >0 (must be numeric)
+df21$delivery_code_present <- as.numeric(df21$delivery_code_present)
+df21 <- df21 %>% dplyr::filter(delivery_code_present > 0)
+
+#2022
+df22 <- read_rds('basic_joined_6wk_records_2022.rds')
+## filter del codes >0 (must be numeric)
+df22$delivery_code_present <- as.numeric(df22$delivery_code_present)
+df22 <- df22 %>% dplyr::filter(delivery_code_present > 0)
+
+#2023
+df23 <- read_rds('basic_joined_6wk_records_2023.rds')
+## filter del codes >0 (must be numeric)
+df23$delivery_code_present <- as.numeric(df23$delivery_code_present)
+df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
+
+df <- rbind(df19,df20,df21,df22,df23)
+rm(df19,df20,df21,df22,df23)
+
+####
+## filter to one observation per patient 
+df$delivery_code_date<-as.Date(df$delivery_code_date)
+
+### make variable for total delivery codes on EHR
+df <- df %>% group_by(patient_id) %>%
+  mutate(sum_delivery_codes = sum(delivery_code_number, na.rm = TRUE))
+### make variable for total pn codes on EHR
+df <- df %>% group_by(patient_id) %>%
+  mutate(sum_pn_codes = sum(pn8wk_code_number, na.rm = TRUE))
+### filter to cohort of checks in 6 weeks 
+df <- df %>% group_by(patient_id) %>%
+  filter(postnatal_8wk_code_present == 1)
 
 
+## group by patient ID, then arrange by delivery code date
+## take first match per patient. 
+df6wk <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
+rm(df)
+df6wk$cohort <- "within six weeks"
+
+############ load in 12wk cohort.
 setwd(here::here("output", "joined_12wk"))
 
 #2019
@@ -42,11 +95,7 @@ df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
 df <- rbind(df19,df20,df21,df22,df23)
 rm(df19,df20,df21,df22,df23)
 
-## count patients with delivery codes (potential record for patient each month)
-tabdelcodes <- as.data.frame(table(df$delivery_code_present))
 
-
-####
 ## filter to one observation per patient 
 df$delivery_code_date<-as.Date(df$delivery_code_date)
 
@@ -59,20 +108,13 @@ df <- df %>% group_by(patient_id) %>%
 
 ## group by patient ID, then arrange by delivery code date
 ## take first match per patient. 
-df2 <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
+df12wk <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
 rm(df)
-tabdelcodes2 <- as.data.frame(table(df2$delivery_code_present))
+df12wk$cohort <- "within 12 weeks"
 
-tabdelcodes_both <- rbind(tabdelcodes, tabdelcodes2)
-write_csv(tabdelcodes_both, here::here("output", "table_delcodes_12wk_update.csv"))
-rm(tabdelcodes)
-
-## count overall practices and patients:
-num_pracs <- length(unique(df2$practice))
-num_pats <- length(unique(df2$patient_id))
-overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
-write_csv(overall_counts, here::here("output", "overall_counts_12wk_update.csv"))
-rm(num_pracs, num_pats, overall_counts)
+df2 <- rbind(df6wk, df12wk)
+df2$cohort<-as.factor(df2$cohort)
+df2$cohort<-relevel(df2$cohort, ref="within six weeks")
 
 ## Define/clean variables before baseline table
 
@@ -109,8 +151,6 @@ df2 <- df2 %>%
                                       ethnicity2 == "5"  ~ "Chinese or Other Ethnic Groups",
                                       ethnicity2 == "0"  ~ "Unknown"))
 df2$Ethnicity <- as.factor(df2$Ethnicity)
-
-#df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5) %>% ungroup()
 
 ## covid positive
 df2 <- df2 %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
@@ -163,7 +203,7 @@ df2$charlsonGrp <- factor(df2$charlsonGrp,
 
 
 # select variables for the baseline table
-bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, sum_pn_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
+variables_names <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, sum_pn_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
                                      "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
                                      "heart_failure_comor","connective_tissue_comor", "dementia_comor",
                                      "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
@@ -171,12 +211,15 @@ bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_co
                                      "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
                                      "peptic_ulcer_comor" , "peripheral_vascular_comor" ) 
 
-# columns for baseline table
-colsfortab <- colnames(bltab_vars)
-#bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
-bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
-t<-(t[-1,])
-write_csv(t, here::here("output", "blt_overall_12wk_update_overall.csv"))
+explanatory=colnames(variables_names)
+dependent="cohort"
+
+df2 %>%
+  summary_factorlist(dependent, explanatory, p = TRUE, na_include = TRUE) -> t
+# #bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
+# bltab_vars %>% summary_factorlist(dependent=dependent, explanatory = colsfortab, p=TRUE, na_include = TRUE) -> t
+summary_table<-(t[-1,])
+write_csv(summary_table, here::here("output", "blt_6v12_weeks.csv"))
 
 
 

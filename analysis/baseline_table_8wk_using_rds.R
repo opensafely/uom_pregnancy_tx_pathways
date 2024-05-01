@@ -53,7 +53,9 @@ df$delivery_code_date<-as.Date(df$delivery_code_date)
 ### make variable for total delivery codes on EHR
 df <- df %>% group_by(patient_id) %>%
   mutate(sum_delivery_codes = sum(delivery_code_number, na.rm = TRUE))
-
+### make variable for total pn codes on EHR
+df <- df %>% group_by(patient_id) %>%
+  mutate(sum_pn_codes = sum(pn8wk_code_number, na.rm = TRUE))
 
 ## group by patient ID, then arrange by delivery code date
 ## take first match per patient. 
@@ -97,9 +99,10 @@ df2$ethnicity_sus <- as.factor(df2$ethnicity_sus)
 
 ## ethnicity (based on snomed codelist)
 ## https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/
-df2$ethnicity2=ifelse(is.na(df2$ethnicity2), "0", df2$ethnicity2)
+#df2$ethnicity2=ifelse(is.na(df2$ethnicity2), "0", df2$ethnicity2)
 df2 <- df2 %>% 
-  dplyr::mutate(Ethnicity = case_when(ethnicity2 == "1" ~ "White",
+  dplyr::mutate(Ethnicity = case_when(is.na(ethnicity2) ~ "Unknown",
+                                 ethnicity2 == "1" ~ "White",
                                  ethnicity2 == "2"  ~ "Mixed",
                                  ethnicity2 == "3"  ~ "Asian or Asian British",
                                  ethnicity2 == "4"  ~ "Black or Black British",
@@ -161,7 +164,7 @@ df2$charlsonGrp <- factor(df2$charlsonGrp,
 
 
 # select variables for the baseline table
-bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
+bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, sum_pn_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
                                      "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
                                      "heart_failure_comor","connective_tissue_comor", "dementia_comor",
                                      "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
