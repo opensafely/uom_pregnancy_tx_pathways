@@ -57,7 +57,66 @@ df <- df %>% group_by(patient_id) %>%
 ## take first match per patient. 
 df6wk <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
 rm(df)
-df6wk$cohort <- "within six weeks"
+df6wk$cohort <- "within 6 weeks"
+
+
+
+############ load in 8wk cohort.
+setwd(here::here("output", "joined_8wk"))
+
+#2019
+df19 <- read_rds('basic_joined_8wk_records_2019.rds')
+## filter del codes >0 (must be numeric)
+df19$delivery_code_present <- as.numeric(df19$delivery_code_present)
+df19 <- df19 %>% dplyr::filter(delivery_code_present > 0)
+
+#2020
+df20 <- read_rds('basic_joined_8wk_records_2020.rds')
+## filter del codes >0 (must be numeric)
+df20$delivery_code_present <- as.numeric(df20$delivery_code_present)
+df20 <- df20 %>% dplyr::filter(delivery_code_present > 0)
+
+#2021
+df21 <- read_rds('basic_joined_8wk_records_2021.rds')
+## filter del codes >0 (must be numeric)
+df21$delivery_code_present <- as.numeric(df21$delivery_code_present)
+df21 <- df21 %>% dplyr::filter(delivery_code_present > 0)
+
+#2022
+df22 <- read_rds('basic_joined_8wk_records_2022.rds')
+## filter del codes >0 (must be numeric)
+df22$delivery_code_present <- as.numeric(df22$delivery_code_present)
+df22 <- df22 %>% dplyr::filter(delivery_code_present > 0)
+
+#2023
+df23 <- read_rds('basic_joined_8wk_records_2023.rds')
+## filter del codes >0 (must be numeric)
+df23$delivery_code_present <- as.numeric(df23$delivery_code_present)
+df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
+
+df <- rbind(df19,df20,df21,df22,df23)
+rm(df19,df20,df21,df22,df23)
+
+####
+df$delivery_code_date<-as.Date(df$delivery_code_date)
+
+### make variable for total delivery codes on EHR
+df <- df %>% group_by(patient_id) %>%
+  mutate(sum_delivery_codes = sum(delivery_code_number, na.rm = TRUE))
+### make variable for total pn codes on EHR
+df <- df %>% group_by(patient_id) %>%
+  mutate(sum_pn_codes = sum(pn8wk_code_number, na.rm = TRUE))
+### filter to cohort of checks in 8 weeks 
+df <- df %>% group_by(patient_id) %>%
+  filter(postnatal_8wk_code_present == 1)
+
+## group by patient ID, then arrange by delivery code date
+## take first match per patient. 
+df8wk <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
+rm(df)
+df8wk$cohort <- "within 8 weeks"
+
+
 
 ############ load in 12wk cohort.
 setwd(here::here("output", "joined_12wk"))
@@ -106,20 +165,32 @@ df <- df %>% group_by(patient_id) %>%
 df <- df %>% group_by(patient_id) %>%
   mutate(sum_pn_codes = sum(pn8wk_code_number, na.rm = TRUE))
 
-### filter to cohort of checks in 6 weeks 
-df <- df %>% group_by(patient_id) %>%
+### filter to cohort of checks in 12 weeks y / n pn check 
+dfpn_y <- df %>% group_by(patient_id) %>%
   filter(postnatal_8wk_code_present == 1)
-
+dfpn_n <- df %>% group_by(patient_id) %>%
+  filter(postnatal_8wk_code_present == 0)
+rm(df)
 ## group by patient ID, then arrange by delivery code date
 ## take first match per patient. 
-df12wk <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
-rm(df)
-df12wk$cohort <- "within 12 weeks"
+dfpn_y_onepat <- dfpn_y %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
+dfpn_n_onepat <- dfpn_n %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
 
-df2 <- rbind(df6wk, df12wk)
+
+dfpn_y_onepat$cohort <- "within 12 weeks"
+dfpn_n_onepat$cohort <- "not within 12 weeks"
+
+
+## error binding as 'ethnicity' var is character or numberic in 3 cohorts
+df6wk$ethnicity<- as.factor(df6wk$ethnicity)
+df8wk$ethnicity<- as.factor(df8wk$ethnicity)
+dfpn_y_onepat$ethnicity<- as.factor(dfpn_y_onepat$ethnicity)
+dfpn_n_onepat$ethnicity<- as.factor(dfpn_n_onepat$ethnicity)
+
+df2 <- rbind(df6wk,df8wk, dfpn_y_onepat, dfpn_n_onepat)
 df2$cohort<-as.factor(df2$cohort)
-df2$cohort<-relevel(df2$cohort, ref="within six weeks")
-
+df2$cohort<-relevel(df2$cohort, ref="within 6 weeks")
+df2$cohort<-factor(df2$cohort, levels= c("within 6 weeks","within 8 weeks","within 12 weeks","not within 12 weeks"))
 ## Define/clean variables before baseline table
 
 # bmi - numeric
