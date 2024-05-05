@@ -175,7 +175,7 @@ rm(df)
 ## take first match per patient. 
 dfpn_y_onepat <- dfpn_y %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
 dfpn_n_onepat <- dfpn_n %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
-
+rm(dfpn_n, dfpn_y)
 
 dfpn_y_onepat$cohort <- "within 12 weeks"
 dfpn_n_onepat$cohort <- "not within 12 weeks"
