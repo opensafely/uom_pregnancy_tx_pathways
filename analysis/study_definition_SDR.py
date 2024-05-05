@@ -250,6 +250,30 @@ study = StudyDefinition(
       },
     ),
 
+    # Number of ANY antenatal codes per persons
+    antenatal_num=patients.with_these_clinical_events(
+        antenatal_codes,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
+
+    # Number of postterm codes per persons
+    postterm_num=patients.with_these_clinical_events(
+        postterm_codes,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
+
+
+
     ####################################### 
     ### Outcomes from CPRD paper
     ####################################### 
@@ -275,6 +299,26 @@ study = StudyDefinition(
             },
         ),  
 
+    miscarrage_num=patients.with_these_clinical_events(
+        miscarrage,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
+
+    molar_num=patients.with_these_clinical_events(
+        molar,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ), 
+
     # Number of stillbirth codes per persons
     stillbirth_num=patients.with_these_clinical_events(
         stillbirth_codes,
@@ -286,6 +330,104 @@ study = StudyDefinition(
             },
         ),  
 
+    ## any loss combining above 5 variables    
+    loss_any_num=patients.with_these_clinical_events(
+        loss_any_codes,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ), 
+
+    ### multiples
+    multips_num=patients.with_these_clinical_events(
+        multi_pregnancy,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ), 
+
+    ## codelist created using opencodelist searches
+    ## preeclampsia, eclampsia
+    preeclampsia_num=patients.with_these_clinical_events(
+        preeclampsia,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ), 
+
+    ### TOPS
+
+    #tops only
+    top_num=patients.with_these_clinical_events(
+        tops,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ), 
+    
+    top_probable_num=patients.with_these_clinical_events(
+        tops_probable,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ), 
+
+    tops_any_num=patients.with_these_clinical_events(
+        tops_any_codes,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),
+
+    ########################    
+    ## dating related codes:
+    lmp_num=patients.with_these_clinical_events(
+        lmp_codes,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
+
+    edd_num=patients.with_these_clinical_events(
+        edd_codes,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
+
+    edc_num=patients.with_these_clinical_events(
+        edc_codes,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
 
     # #### hypertension codes
 

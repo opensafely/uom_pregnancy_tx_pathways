@@ -25,6 +25,19 @@ postdel_antenatal_codes = codelist_from_csv(
     column="code",
 )
 
+antenatal_codes= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_antenatal_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
+
+postterm_codes= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_postterm_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
 
 ## outcomes
 blighted_ovum= codelist_from_csv(
@@ -39,8 +52,77 @@ ectopic= codelist_from_csv(
     column="code",
 )
 
+miscarrage= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_miscarriage_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
+molar= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_molar_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
 stillbirth_codes= codelist_from_csv(
     "codelists/user-VickiPalin-pregnancy_stillbrith_snomed_reviewed.csv",
+    system="snomed",
+    column="code",
+)
+
+loss_any_codes = combine_codelists(
+        blighted_ovum,
+        ectopic,
+        miscarrage,
+        molar,
+        stillbirth_codes
+)
+
+
+multi_pregnancy=codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_multiple_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
+preeclampsia=codelist_from_csv(
+    "codelists/user-VickiPalin-preeclampsia.csv",
+    system="snomed",
+    column="code",
+)
+
+tops=codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_top_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
+tops_probable=codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_top-probable_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
+tops_any_codes = combine_codelists(
+        tops,
+        tops_probable
+)
+
+#### dating codes 
+lmp_codes= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_lmp_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
+edd_codes= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_edd_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
+edc_codes= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_edc_snomed.csv",
     system="snomed",
     column="code",
 )

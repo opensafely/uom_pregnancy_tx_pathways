@@ -1,0 +1,54 @@
+code,term
+16356006,Multiple pregnancy
+169828005,Twins - both live born
+169829002,Twins - one still and one live born
+169830007,Twins - both stillborn
+169831006,Triplets - all live born
+169832004,Triplets - two live and one stillborn
+169834003,Triplets - three stillborn
+169950007,One of triplets
+199305006,Complications specific to multiple gestation
+199317008,Twin pregnancy - delivered
+199318003,Twin pregnancy with antenatal problem
+199321001,Triplet pregnancy - delivered
+199329004,"Multiple delivery, all spontaneous"
+199330009,"Multiple delivery, all by forceps and vacuum extractor"
+199331008,"Multiple delivery, all by cesarean section"
+199378009,Multiple pregnancy with malpresentation
+199787003,Locked twins - delivered
+199860006,"Delayed delivery of second twin, triplet etc"
+199862003,Delayed delivery second twin - delivered
+199863008,Delayed delivery second twin with antenatal problem
+206046007,Fetal or neonatal effect of multiple pregnancy
+206048008,Fetal or neonatal effect of twin pregnancy
+206049000,Fetal or neonatal effect of triplet pregnancy
+206083007,Fetal or neonatal effect of twin-to-twin transplacental transfusion
+237364002,Stillbirth
+268478005,One of twins
+268953001,On examination - multiple presentation
+275966003,On examination - triplet presentation
+275967007,On examination - twin presentation
+28030000,Twin birth
+281050002,Livebirth
+281052005,Triplet birth
+283811000000108,Percutaneous serial drainage of amniotic fluid for twin-twin transfusion syndrome
+289256000,Mother delivered
+313415001,Identical twin
+313416000,Fraternal twin
+370386005,Ultrasound scan - multiple fetus
+38697006,Polycythemia due to donor twin transfusion
+391171000000100,"[V]Twin, unspecified, NOS"
+415981000000108,"[V]Twin, mate live born"
+426691000000104,"[V]Twin, unspecified"
+426737000,Endoscopic serial drainage of amniotic fluid for twin-twin transfusion syndrome
+428121000000105,"[V]Twin, mate liveborn NOS"
+442327001,Twin liveborn born in hospital
+445585003,Livebirth born before admission to hospital
+452451000000109,"[V]Twin, mate stillborn"
+452531000000101,"[V]Twin, mate stillborn NOS"
+45384004,Multiple birth
+64254006,Triplet pregnancy
+65147003,Twin pregnancy
+69777007,Interlocked twins
+790111000000101,One of multiple birth
+843251000000106,Therapeutic percutaneous operation for twin-twin transfusion syndrome
