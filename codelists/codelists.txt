@@ -5,6 +5,22 @@ user/VickiPalin/pregnancy_postdel_antenatal_snomed/22287ec9
 user/VickiPalin/pregnancy_postnatal_8wk_snomed_reviewed/021cbb8d
 user/VickiPalin/pregnancy_delivery_snomed_reviewed/343ba1f7
 user/VickiPalin/pregnancy_delivery_snomed_reviewed_2/39a121e3
+user/VickiPalin/pregnancy_antenatal_snomed/61667fb8
+user/VickiPalin/pregnancy_postterm_snomed/56fa2529
+user/VickiPalin/pregnancy_blighted_ovum_snomed/48570c83
+user/VickiPalin/pregnancy_ectopic_snomed/16382619
+user/VickiPalin/pregnancy_miscarriage_snomed/6d56d868
+user/VickiPalin/pregnancy_molar_snomed/54476533
+user/VickiPalin/pregnancy_stillbrith_snomed_reviewed/15ecde31
+user/VickiPalin/pregnancy_multiple_snomed/3b37f1fe
+user/VickiPalin/preeclampsia/63cdf7c6
+
+user/VickiPalin/pregnancy_top_snomed/7cdd6afb
+user/VickiPalin/pregnancy_top-probable_snomed/3deab1f4
+
+user/VickiPalin/pregnancy_lmp_snomed/06664b9e
+user/VickiPalin/pregnancy_edd_snomed/64193fae
+user/VickiPalin/pregnancy_edc_snomed/7d28b2e3
 
 opensafely/ethnicity/2020-04-27
 opensafely/ethnicity-snomed-0removed/2e641f61
