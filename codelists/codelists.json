@@ -2,193 +2,199 @@
   "files": {
     "user-VickiPalin-pregnancy_delivery_snomed.csv": {
       "id": "user/VickiPalin/pregnancy_delivery_snomed/2f47994e",
-      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_delivery_snomed/2f47994e/",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_delivery_snomed/2f47994e/",
       "downloaded_at": "2023-03-01 11:12:34.108972Z",
       "sha": "a894dc7c77f660566ddf18e056f519ff8b7720b7"
     },
     "user-VickiPalin-pregnancy_postnatal_8wk_snomed.csv": {
       "id": "user/VickiPalin/pregnancy_postnatal_8wk_snomed/09190b94",
-      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_postnatal_8wk_snomed/09190b94/",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_postnatal_8wk_snomed/09190b94/",
       "downloaded_at": "2023-03-01 16:12:31.614611Z",
       "sha": "0ce4f99b63973a6a5b8a2d16540e823aa3df3bf9"
     },
     "user-VickiPalin-pregnancy_postnatal_other_snomed.csv": {
       "id": "user/VickiPalin/pregnancy_postnatal_other_snomed/7009985e",
-      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_postnatal_other_snomed/7009985e/",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_postnatal_other_snomed/7009985e/",
       "downloaded_at": "2023-03-01 16:12:32.604725Z",
       "sha": "600d3e7e6ffee80150e42ebace5be1426574a65c"
     },
     "user-VickiPalin-pregnancy_postdel_antenatal_snomed.csv": {
       "id": "user/VickiPalin/pregnancy_postdel_antenatal_snomed/22287ec9",
-      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_postdel_antenatal_snomed/22287ec9/",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_postdel_antenatal_snomed/22287ec9/",
       "downloaded_at": "2023-03-01 16:12:33.581947Z",
       "sha": "b837b062b663f17a820193e541a60426f12384cf"
     },
     "user-VickiPalin-pregnancy_postnatal_8wk_snomed_reviewed.csv": {
       "id": "user/VickiPalin/pregnancy_postnatal_8wk_snomed_reviewed/021cbb8d",
-      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_postnatal_8wk_snomed_reviewed/021cbb8d/",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_postnatal_8wk_snomed_reviewed/021cbb8d/",
       "downloaded_at": "2023-06-14 14:23:54.580097Z",
       "sha": "d76e606ef3c67934af526a6650e1481fc175cdb7"
     },
     "user-VickiPalin-pregnancy_delivery_snomed_reviewed.csv": {
       "id": "user/VickiPalin/pregnancy_delivery_snomed_reviewed/343ba1f7",
-      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_delivery_snomed_reviewed/343ba1f7/",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_delivery_snomed_reviewed/343ba1f7/",
       "downloaded_at": "2023-06-14 14:23:54.836459Z",
       "sha": "a081490d585f05eca181f14e472d9fefb34e2c2a"
     },
     "user-VickiPalin-pregnancy_delivery_snomed_reviewed_2.csv": {
       "id": "user/VickiPalin/pregnancy_delivery_snomed_reviewed_2/39a121e3",
-      "url": "https://codelists.opensafely.org/codelist/user/VickiPalin/pregnancy_delivery_snomed_reviewed_2/39a121e3/",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_delivery_snomed_reviewed_2/39a121e3/",
       "downloaded_at": "2023-06-22 15:46:13.858595Z",
       "sha": "bc80f516cff58f1ca299d519b6ee28e1f2a85740"
     },
+    "user-VickiPalin-pregnancy_stillbrith_snomed_reviewed.csv": {
+      "id": "user/VickiPalin/pregnancy_stillbrith_snomed_reviewed/15ecde31",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_stillbrith_snomed_reviewed/15ecde31/",
+      "downloaded_at": "2024-05-05 08:32:10.969674Z",
+      "sha": "af9216b76b9374f2190b6e1d39e346cf8553155f"
+    },
     "opensafely-ethnicity.csv": {
       "id": "opensafely/ethnicity/2020-04-27",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity/2020-04-27/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/ethnicity/2020-04-27/",
       "downloaded_at": "2023-06-15 09:26:35.549256Z",
       "sha": "3d2f3998b71863a80b24d60f6f4282e14191ae13"
     },
     "opensafely-ethnicity-snomed-0removed.csv": {
       "id": "opensafely/ethnicity-snomed-0removed/2e641f61",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/",
       "downloaded_at": "2023-06-15 09:58:31.533059Z",
       "sha": "8b849b5b785d80306e488d0109640c8c1d2da01b"
     },
     "user-yayang-charlson01_cancer.csv": {
       "id": "user/yayang/charlson01_cancer/796c49a5",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson01_cancer/796c49a5/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson01_cancer/796c49a5/",
       "downloaded_at": "2023-10-04 12:25:58.915431Z",
       "sha": "895fcd0b8035397a388040bb336eec5b8593171a"
     },
     "user-yayang-charlson02_cvd.csv": {
       "id": "user/yayang/charlson02_cvd/605cd670",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson02_cvd/605cd670/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson02_cvd/605cd670/",
       "downloaded_at": "2023-10-04 12:25:59.631042Z",
       "sha": "f4726f905db6d93ea972b0e01e6e86d72577954e"
     },
     "user-yayang-charlson03_copd.csv": {
       "id": "user/yayang/charlson03_copd/474d633b",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson03_copd/474d633b/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson03_copd/474d633b/",
       "downloaded_at": "2023-10-04 12:26:00.379712Z",
       "sha": "1e629952ccb5f524588396b20355a05f24d6aa0e"
     },
     "user-yayang-charlson04_heart_failure.csv": {
       "id": "user/yayang/charlson04_heart_failure/2e3df006",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson04_heart_failure/2e3df006/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson04_heart_failure/2e3df006/",
       "downloaded_at": "2023-10-04 12:26:01.227598Z",
       "sha": "50de55d8d4c507b68dbec1ec8aab3b9290600d58"
     },
     "user-yayang-charlson05_connective_tissue.csv": {
       "id": "user/yayang/charlson05_connective_tissue/152e7cd1",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson05_connective_tissue/152e7cd1/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson05_connective_tissue/152e7cd1/",
       "downloaded_at": "2023-10-04 12:26:02.102744Z",
       "sha": "bb42e79479af0bd2d54d33c003d9f267a571c69b"
     },
     "user-yayang-charlson06_dementia.csv": {
       "id": "user/yayang/charlson06_dementia/7c1f099b",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson06_dementia/7c1f099b/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson06_dementia/7c1f099b/",
       "downloaded_at": "2023-10-04 12:26:02.655729Z",
       "sha": "0259d6178b270cff103a5d83ba57ad1c1919b490"
     },
     "user-yayang-charlson07_diabetes.csv": {
       "id": "user/yayang/charlson07_diabetes/630f9666",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson07_diabetes/630f9666/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson07_diabetes/630f9666/",
       "downloaded_at": "2023-10-04 12:26:03.196395Z",
       "sha": "4a7a09759af3c3034ecf97e0aaa6db8f13ba58d9"
     },
     "user-yayang-charlson08_diabetes_with_complications.csv": {
       "id": "user/yayang/charlson08_diabetes_with_complications/4a002331",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson08_diabetes_with_complications/4a002331/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson08_diabetes_with_complications/4a002331/",
       "downloaded_at": "2023-10-04 12:26:03.976632Z",
       "sha": "f1de834ca2112506250f8d119671659f9bfbd0d7"
     },
     "user-yayang-charlson09_hemiplegia.csv": {
       "id": "user/yayang/charlson09_hemiplegia/30f0affc",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson09_hemiplegia/30f0affc/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson09_hemiplegia/30f0affc/",
       "downloaded_at": "2023-10-04 12:26:04.536902Z",
       "sha": "9f87a677e6f3ce68706582206011f0ce09299c83"
     },
     "user-yayang-charlson10_hiv.csv": {
       "id": "user/yayang/charlson10_hiv/17e13cc7",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson10_hiv/17e13cc7/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson10_hiv/17e13cc7/",
       "downloaded_at": "2023-10-04 12:26:05.121825Z",
       "sha": "67c7437c41c6a271ce573ce5cf07cf30278175bd"
     },
     "user-yayang-charlson11_metastatic_cancer.csv": {
       "id": "user/yayang/charlson11_metastatic_cancer/7ed1c991",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson11_metastatic_cancer/7ed1c991/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson11_metastatic_cancer/7ed1c991/",
       "downloaded_at": "2023-10-04 12:26:05.631558Z",
       "sha": "e9f5858aad1cc6ab8ec5b0ae819759ab5fb23ed2"
     },
     "user-yayang-charlson12_mild_liver.csv": {
       "id": "user/yayang/charlson12_mild_liver/65c2565c",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson12_mild_liver/65c2565c/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson12_mild_liver/65c2565c/",
       "downloaded_at": "2023-10-04 12:26:06.261516Z",
       "sha": "3b0412d99b325c7b144ab9a7a8da8ff980dbe06c"
     },
     "user-yayang-charlson13_mod_severe_liver.csv": {
       "id": "user/yayang/charlson13_mod_severe_liver/4cb2e327",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson13_mod_severe_liver/4cb2e327/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson13_mod_severe_liver/4cb2e327/",
       "downloaded_at": "2023-10-04 12:26:07.055733Z",
       "sha": "7e96302542b2eaed3437c3f4424681893819fb89"
     },
     "user-yayang-charlson14_moderate_several_renaldiseae.csv": {
       "id": "user/yayang/charlson14_moderate_several_renaldiseae/33a36ff2",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson14_moderate_several_renaldiseae/33a36ff2/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson14_moderate_several_renaldiseae/33a36ff2/",
       "downloaded_at": "2023-10-04 12:26:07.845661Z",
       "sha": "41ad0e621a42a813917dbe89640360bdfcd3f825"
     },
     "user-yayang-charlson15_mi.csv": {
       "id": "user/yayang/charlson15_mi/1a93fcbd",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson15_mi/1a93fcbd/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson15_mi/1a93fcbd/",
       "downloaded_at": "2023-10-04 12:26:08.815459Z",
       "sha": "e603d8a43f47bb9d3449563689880ce725fa0f19"
     },
     "user-yayang-charlson16_peptic_ulcer.csv": {
       "id": "user/yayang/charlson16_peptic_ulcer/36562fe8",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson16_peptic_ulcer/36562fe8/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson16_peptic_ulcer/36562fe8/",
       "downloaded_at": "2023-10-04 12:26:09.485836Z",
       "sha": "9499cc50f98fda64906379448027c59e8fde8e39"
     },
     "user-yayang-charlson17_peripheral_vascular.csv": {
       "id": "user/yayang/charlson17_peripheral_vascular/68751652",
-      "url": "https://codelists.opensafely.org/codelist/user/yayang/charlson17_peripheral_vascular/68751652/",
+      "url": "https://www.opencodelists.org/codelist/user/yayang/charlson17_peripheral_vascular/68751652/",
       "downloaded_at": "2023-10-04 12:26:10.069219Z",
       "sha": "93cdab3534d0c44371d41ab73d861aaafba20270"
     },
     "opensafely-covid-identification-in-primary-care-probable-covid-clinical-code.csv": {
       "id": "opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/24391856",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/24391856/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/24391856/",
       "downloaded_at": "2023-10-04 12:27:03.075135Z",
       "sha": "5de38f993b166d6ef97c6ea822635317a6c7ae85"
     },
     "opensafely-covid-identification-in-primary-care-probable-covid-positive-test.csv": {
       "id": "opensafely/covid-identification-in-primary-care-probable-covid-positive-test/3d488b8b",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-positive-test/3d488b8b/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-positive-test/3d488b8b/",
       "downloaded_at": "2023-10-04 12:27:04.170497Z",
       "sha": "563b536aaf850da011233653e91e10030a5bc15f"
     },
     "opensafely-covid-identification-in-primary-care-probable-covid-sequelae.csv": {
       "id": "opensafely/covid-identification-in-primary-care-probable-covid-sequelae/0b29a521",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-sequelae/0b29a521/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-sequelae/0b29a521/",
       "downloaded_at": "2023-10-04 12:27:05.261105Z",
       "sha": "38dc0c0a34e2b8b376ba72819923f442c30b4946"
     },
     "user-djlhayes-high-risk-pregnancy.csv": {
       "id": "user/djlhayes/high-risk-pregnancy/70b410f6",
-      "url": "https://codelists.opensafely.org/codelist/user/djlhayes/high-risk-pregnancy/70b410f6/",
+      "url": "https://www.opencodelists.org/codelist/user/djlhayes/high-risk-pregnancy/70b410f6/",
       "downloaded_at": "2023-10-05 10:18:59.514384Z",
       "sha": "553569f906aff2926086b6c770ecf0cf0fb216b7"
     },
     "opensafely-hypertension-snomed.csv": {
       "id": "opensafely/hypertension-snomed/024ab1b0",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/hypertension-snomed/024ab1b0/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/hypertension-snomed/024ab1b0/",
       "downloaded_at": "2023-10-05 13:06:48.746543Z",
       "sha": "5d5471bb6a8a01e362b191b3eb8e80c2febeb1da"
     },
     "opensafely-hypertension.csv": {
       "id": "opensafely/hypertension/2020-04-28",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/hypertension/2020-04-28/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/hypertension/2020-04-28/",
       "downloaded_at": "2023-10-06 14:17:56.403680Z",
       "sha": "b0d7bbf6ea767366db458bc6f6d37955ae331cc7"
     }

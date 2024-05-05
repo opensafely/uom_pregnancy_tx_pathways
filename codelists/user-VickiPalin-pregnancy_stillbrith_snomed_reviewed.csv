@@ -1,0 +1,18 @@
+code,term
+169827000,Single stillbirth
+169829002,Twins - one still and one live born
+169830007,Twins - both stillborn
+169832004,Triplets - two live and one stillborn
+169834003,Triplets - three stillborn
+199607009,Intrauterine death - delivered
+200154000,Deliveries by destructive operation
+206258000,Fetal death due to prelabor anoxia
+206259008,Fetal death due to labor anoxia
+237364002,Stillbirth
+237365001,Fresh stillbirth
+237366000,Macerated stillbirth
+270101008,Medical certificate of still-birth
+452451000000109,"[V]Twin, mate stillborn"
+452531000000101,"[V]Twin, mate stillborn NOS"
+62726004,Fetal clavicotomy
+713202001,Antepartum stillbirth

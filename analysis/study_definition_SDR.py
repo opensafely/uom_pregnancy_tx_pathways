@@ -1,7 +1,9 @@
 
 ##### Pregnancy Short Data Review #####
 ##### Starting cohort for 2023 #####
-
+##### interested in frequency of pregnancy related codes and outcomes ####
+##### based on CPRD paper https://doi.org/10.1002/pds.4811 ####
+##### Read converted to SNOMED and outcomes reviewed ####
 
 from cohortextractor import ( 
     StudyDefinition, 
@@ -249,8 +251,16 @@ study = StudyDefinition(
     ),
 
     ### Outcomes from CPRD paper 
-    # stillbirth
-    
+    # Number of stillbirth codes per persons
+    stillbirth_num=patients.with_these_clinical_events(
+        stillbirth_codes,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
 
 
 
