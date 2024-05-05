@@ -42,6 +42,18 @@
       "downloaded_at": "2023-06-22 15:46:13.858595Z",
       "sha": "bc80f516cff58f1ca299d519b6ee28e1f2a85740"
     },
+    "user-VickiPalin-pregnancy_blighted_ovum_snomed.csv": {
+      "id": "user/VickiPalin/pregnancy_blighted_ovum_snomed/48570c83",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_blighted_ovum_snomed/48570c83/",
+      "downloaded_at": "2024-05-05 09:36:07.999693Z",
+      "sha": "40fdc2933b98d853f4edc56931daa3648497119b"
+    },
+    "user-VickiPalin-pregnancy_ectopic_snomed.csv": {
+      "id": "user/VickiPalin/pregnancy_ectopic_snomed/16382619",
+      "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_ectopic_snomed/16382619/",
+      "downloaded_at": "2024-05-05 09:40:12.387853Z",
+      "sha": "8d556d12ce176b2af75a6ba65c0ef70e597d88b3"
+    },
     "user-VickiPalin-pregnancy_stillbrith_snomed_reviewed.csv": {
       "id": "user/VickiPalin/pregnancy_stillbrith_snomed_reviewed/15ecde31",
       "url": "https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_stillbrith_snomed_reviewed/15ecde31/",

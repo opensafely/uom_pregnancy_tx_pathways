@@ -27,8 +27,20 @@ postdel_antenatal_codes = codelist_from_csv(
 
 
 ## outcomes
+blighted_ovum= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_blighted_ovum_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
+ectopic= codelist_from_csv(
+    "codelists/user-VickiPalin-pregnancy_ectopic_snomed.csv",
+    system="snomed",
+    column="code",
+)
+
 stillbirth_codes= codelist_from_csv(
-    "codelists/user-VickiPalin-pregnancy_stillbirth_snomed_reviewed.csv",
+    "codelists/user-VickiPalin-pregnancy_stillbrith_snomed_reviewed.csv",
     system="snomed",
     column="code",
 )

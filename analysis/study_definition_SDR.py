@@ -250,7 +250,31 @@ study = StudyDefinition(
       },
     ),
 
-    ### Outcomes from CPRD paper 
+    ####################################### 
+    ### Outcomes from CPRD paper
+    ####################################### 
+    
+    # Number of blighted ovum codes per persons
+    blightedovum_num=patients.with_these_clinical_events(
+        blighted_ovum,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
+
+    ectopic_num=patients.with_these_clinical_events(
+        ectopic,
+        between=["2023-01-01", "2024-01-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+            "incidence": 0.6
+            },
+        ),  
+
     # Number of stillbirth codes per persons
     stillbirth_num=patients.with_these_clinical_events(
         stillbirth_codes,
@@ -261,8 +285,6 @@ study = StudyDefinition(
             "incidence": 0.6
             },
         ),  
-
-
 
 
     # #### hypertension codes
