@@ -425,6 +425,7 @@ actions:
       outputs:
         moderately_sensitive:
           comparing_6_12_cohorts: output/blt_6v12_weeks.csv
+          comparing_6_8_12_rounded: output/blt_6v12_weeks_rounded.csv
 
   ##########################
   ###### ITS analyses ######

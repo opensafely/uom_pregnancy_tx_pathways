@@ -179,7 +179,7 @@ dfpn_n_onepat <- dfpn_n %>% group_by(patient_id)%>% arrange((delivery_code_date)
 
 dfpn_y_onepat$cohort <- "within 12 weeks"
 dfpn_n_onepat$cohort <- "not within 12 weeks"
-
+rm(dfpn_y, dfpn_n)
 
 ## error binding as 'ethnicity' var is character or numberic in 3 cohorts
 df6wk$ethnicity<- as.factor(df6wk$ethnicity)
@@ -192,6 +192,7 @@ df2$cohort<-as.factor(df2$cohort)
 df2$cohort<-relevel(df2$cohort, ref="within 6 weeks")
 df2$cohort<-factor(df2$cohort, levels= c("within 6 weeks","within 8 weeks","within 12 weeks","not within 12 weeks"))
 ## Define/clean variables before baseline table
+rm(df6wk, df8wk, dfpn_y_onepat, dfpn_n_onepat)
 
 # bmi - numeric
 # remove bmi outliers - this replaces <8 or >50 with NA
@@ -291,10 +292,38 @@ dependent="cohort"
 
 df2 %>%
   summary_factorlist(dependent, explanatory, p = TRUE, na_include = TRUE) -> t
-# #bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
-# bltab_vars %>% summary_factorlist(dependent=dependent, explanatory = colsfortab, p=TRUE, na_include = TRUE) -> t
 summary_table<-(t[-1,])
+
+## round to 5
+## split cols out
+# Function to round counts to the nearest 5 and recalculate percentages
+round_counts <- function(summary_table) {
+  # Extract counts and percentages
+  counts <- as.numeric(sub("\\s*\\(.*", "", summary_table$`within 6 weeks`))
+  counts8 <- as.numeric(sub("\\s*\\(.*", "", summary_table$`within 8 weeks`))
+  counts12y <- as.numeric(sub("\\s*\\(.*", "", summary_table$`within 12 weeks`))
+  counts12n <- as.numeric(sub("\\s*\\(.*", "", summary_table$`not within 12 weeks`))
+  
+  # Round counts to the nearest 5
+  rounded_counts <- round(counts / 5) * 5
+  rounded_counts8 <- round(counts8 / 5) * 5
+  rounded_counts12y <- round(counts12y / 5) * 5
+  rounded_counts12n <- round(counts12n / 5) * 5
+  
+  # Update the columns with rounded counts 
+  summary_table$`within 6 weeks` <- paste(rounded_counts)
+  summary_table$`within 8 weeks` <- paste(rounded_counts8)
+  summary_table$`within 12 weeks` <- paste(rounded_counts12y)
+  summary_table$`not within 12 weeks` <- paste(rounded_counts12n)
+  
+  return(summary_table)
+}
+
+# Apply the function to the data
+data <- round_counts(summary_table)
+
 write_csv(summary_table, here::here("output", "blt_6v12_weeks.csv"))
+write_csv(data, here::here("output", "blt_6v12_weeks_rounded.csv"))
 
 
 
