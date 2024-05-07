@@ -67,7 +67,15 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
 
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=cardiovascular_comor, color=cardiovascular_comor))+
+## save rounded and redacted data
+df_gaps2 <- df_gaps %>%
+  select(cardiovascular_comor,date,cal_mon,cal_year,
+         postnatal_8wk_code_present_rounded, population_rounded,pn_rate_1000)
+write_csv(df_gaps2, here::here("output", "monthly_pn_rate_8wk_plotdata_cardiovascular.csv"))
+
+
+
+plot_pn_rate <- ggplot(df_gaps2, aes(x=date, group=cardiovascular_comor, color=cardiovascular_comor))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months")+
@@ -85,6 +93,6 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=cardiovascular_comor, color=ca
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_cardiovasc_comor_8wk.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_by_cardiovasc_comor_8wk.jpeg", path=here::here("output"),
 )
 

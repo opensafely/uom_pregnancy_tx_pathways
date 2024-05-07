@@ -106,11 +106,19 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
-write_csv(as.data.frame(df_gaps), here::here("output", "pn_check_6wk_8wk_12wk_plot_updated.csv"))
+
+
+## save rounded and redacted data
+# df_gaps2 <- df_gaps %>%
+#   select(cohort,date,cal_mon,cal_year,
+#          postnatal_8wk_code_present_rounded, population_rounded,pn_rate_1000)
+df_gaps2 <- df_gaps[,c(6,5,7,8,11,12,14)]
+write_csv(df_gaps2, here::here("output", "monthly_pn_rate_6_8_12wk_plotdata_combined.csv"))
+
 
 
 ###### plot
- plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=cohort, color=cohort))+
+ plot_pn_rate <- ggplot(df_gaps2, aes(x=date, group=cohort, color=cohort))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   #geom_line(data=df_gaps, linetype="dashed", aes(color+age_cat))+ geom_point(aes(y=pn_rate_1000))+

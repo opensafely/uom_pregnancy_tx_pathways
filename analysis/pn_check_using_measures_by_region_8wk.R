@@ -66,14 +66,16 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 
 # create dataframe without NA 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
-#df_gaps$region<-as.factor(df$region)
-## reduce data to remove raw counts and redacted counts (as some identical),
-## leave rounded counts for output
-df_gaps<-df_gaps[,-c(1,3,4,5,9,10)]
-write_csv(as.data.frame(df_gaps), here::here("output", "monthly_pn_rate_measures_8wk_plotdata_region.csv"))
 
 
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=region, color=region))+
+## save rounded and redacted data
+df_gaps2 <- df_gaps %>%
+  select(region,date,cal_mon,cal_year,
+         postnatal_8wk_code_present_rounded, population_rounded,pn_rate_1000)
+write_csv(df_gaps2, here::here("output", "monthly_pn_rate_8wk_plotdata_region.csv"))
+
+
+plot_pn_rate <- ggplot(df_gaps2, aes(x=date, group=region, color=region))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   #geom_line(data=df_gaps, linetype="dashed", aes(color+region))+ geom_point(aes(y=pn_rate_1000))+
@@ -92,5 +94,5 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=region, color=region))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_region_8wk_updated.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_by_region_8wk_updated.jpeg", path=here::here("output"),
 )

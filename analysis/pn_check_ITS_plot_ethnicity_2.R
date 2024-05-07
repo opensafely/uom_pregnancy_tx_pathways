@@ -4,8 +4,6 @@ library("dplyr")
 library("tidyverse")
 library("MASS")
 library("ggpubr")
-#library(modelsummary)
-#library("gtsummary")
 
 ## Import data
 df <- read_csv(
@@ -51,10 +49,8 @@ df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
-#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-09-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
-#df_plot<-ungroup(df_plot)
 
 df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
@@ -72,8 +68,6 @@ df_plot<- df_plot%>% mutate(ethnicity2_labs = case_when(is.na(ethnicity2) ~ "Unk
                                                   ethnicity2== 5 ~ "Other",
                                                   ethnicity2== 0 ~ "Unknown"))
 df_plot$ethnicity2_labs<- as.factor(df_plot$ethnicity2_labs)
-# write csv for rates
-write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_ethnicity2_updated.csv"))
 
 #df for each category
 df1=filter(df_plot, ethnicity2_labs=="White")
@@ -81,12 +75,6 @@ df2=filter(df_plot, ethnicity2_labs=="Mixed")
 df3=filter(df_plot, ethnicity2_labs=="Asian or Asian British")
 df4=filter(df_plot, ethnicity2_labs=="Black or Black British")
 df5=filter(df_plot, ethnicity2_labs=="Other")
-
-# df1=filter(df_plot, ethnicity2=="1")
-# df2=filter(df_plot, ethnicity2=="2")
-# df3=filter(df_plot, ethnicity2=="3")
-# df4=filter(df_plot, ethnicity2=="4")
-# df5=filter(df_plot, ethnicity2=="5")
 
 m1.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df1)
 m2.1 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since , data = df2)
@@ -118,15 +106,12 @@ df_plot_overall=bind_rows(exp1.1[2,],exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,]
 #df_plot_overall$ethnicity2_labs=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
 df_plot_overall$Ethnicity= c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other")
 
-# df_plot_overall$ethnicity2=c("1", "2", "3", "4", "5")
-# df_plot_overall$ethnicity2=factor(df_plot_overall$ethnicity2,levels = c("1", "2", "3", "4", "5"))
-
 names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 names(df_plot_overall)[4]="Ethnicity"
 
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_ethnicity2_IRR_overall_updated.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_estimates_IRR_ethnicity2.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -138,7 +123,6 @@ df5 <- cbind(df5, "resp" = predict(m5.1, type = "response", se.fit = TRUE)[1:2])
 
 DF=rbind(df1,df2,df3,df4,df5)
 DF$ethnicity2_labs<-factor(DF$ethnicity2_labs,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
-#DF$ethnicity2_labs<-factor(DF$ethnicity2_labs,levels=c("1", "2", "3", "4", "5"))
 
 # prediction -non covid - counterfactual trace
 df1_counter <- subset(df1, select=-c(fit,se.fit))
@@ -173,36 +157,40 @@ df5_counter_final=df5_counter%>%filter(date>=as.Date("2020-03-01"))
 
 DF_plot_f= rbind(df1,df2,df3,df4,df5)
 DF_plot_f$ethnicity2_labs=factor(DF_plot_f$ethnicity2_labs,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
-#DF_plot_f$ethnicity2<-factor(DF_plot_f$ethnicity2,levels=c("1", "2", "3", "4", "5"))
 
 DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter)
 DF_counter$ethnicity2_labs=factor(DF_counter$ethnicity2_labs,levels=c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other"))
-#DF_counter$ethnicity2<-factor(DF_counter$ethnicity2,levels=c("1", "2", "3", "4", "5"))
-
-#DF_counter=DF_counter%>%filter(date>=as.Date("2020-04-01"))
 
 names(DF_plot_f)[16]="Ethnicity"
+
+DF_plot_f$Ethnicity <- factor(DF_plot_f$Ethnicity, 
+                              levels = c("Asian or Asian British",
+                                         "Black or Black British",
+                                         "Mixed",
+                                         "Other",
+                                         "White"))
+
 ### plot 
-plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
+plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population_rounded, group=covid))+ 
   theme_bw()+ 
     #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     #geom_point(shape=4)+   
   
   ##actual rate point
-  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population*1000))+ 
-  geom_line(aes(y=postnatal_8wk_code_present_rounded /population*1000),color="grey")+
+  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population_rounded*1000))+ 
+  geom_line(aes(y=postnatal_8wk_code_present_rounded /population_rounded*1000),color="grey")+
   
   #### prediction model  
   geom_line(color="blue")+ 
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population_rounded, ymax=((fit+1.96*se.fit)*1000)/population_rounded),alpha=0.2,fill="blue") +
       
   # prediction model: no covid -- counterfactual
-  geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = DF_counter)+
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = DF_counter) +
+  geom_line(aes(y=fit*1000/population_rounded,x=date),color="lightgreen",data = DF_counter)+
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population_rounded, ymax=((fit+1.96*se.fit)*1000)/population_rounded),alpha=0.2,fill="lightgreen",data = DF_counter) +
     
  
-  # group by indication  
+  # group by ethnicity  
   facet_grid(rows = vars(Ethnicity),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
   # theme
@@ -228,10 +216,15 @@ ggsave(
   filename="plot_ITS_eth_1_updated.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_ethnicity2_updated.csv"))
+DF_plot_f <- DF_plot_f[,-c(1,3:5,9:10)]
+DF_counter <- DF_counter[,-c(1,3:5,9:10)]
+
+write.csv(DF_plot_f,here::here("output","plot_data_ITS_ethnicity2.csv"))
+write.csv(DF_counter,here::here("output","plot_data_ITS_ethnicity2_counterfactual.csv"))
 
 
 #### creates plot with IRRs and error bars/CIs
+#df_plot_overall$Ethnicity <- factor(df_plot_overall$Ethnicity, levels = c("Ethnicity_Level_1", "Ethnicity_Level_2", ...))
 
 plot_ITS_ethnicity2_2<-ggplot(data=df_plot_overall, aes(y=Ethnicity, x=IRR))+
   geom_point()+
@@ -247,6 +240,7 @@ plot_ITS_ethnicity2_2<-ggplot(data=df_plot_overall, aes(y=Ethnicity, x=IRR))+
     x="IRR (95% CI)",
     y=""
   )+
+  
   facet_grid(Ethnicity~., scales = "free", space = "free")+
   theme(strip.text.y = element_text(angle = 0),
         axis.title.y =element_blank(),
@@ -257,6 +251,6 @@ plot_ITS_ethnicity2_2<-ggplot(data=df_plot_overall, aes(y=Ethnicity, x=IRR))+
 
 ggsave(
   plot= plot_ITS_ethnicity2_2, 
-  filename="plot_ITS_eth2_2_updated.jpeg", path=here::here("output"), dpi=300
+  filename="plot_ITS_ethnicity_IRRs.jpeg", path=here::here("output"), dpi=300
 )
 

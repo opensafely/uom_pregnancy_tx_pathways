@@ -4,8 +4,6 @@ library("dplyr")
 library("tidyverse")
 library("MASS")
 library("ggpubr")
-#library(modelsummary)
-#library("gtsummary")
 
 #########################################
 ## ITS plot with 45-49 age cat removed ##
@@ -37,6 +35,7 @@ df=df%>% filter(date <=last.date)
 
 df$times <- as.numeric(as.factor(df$date))
 
+## redaction and rounding
 df$postnatal_8wk_code_present_redacted <- df$postnatal_8wk_code_present
 df$postnatal_8wk_code_present_redacted[which(df$postnatal_8wk_code_present_redacted <=7)] <- NA
 df$postnatal_8wk_code_present_redacted <- as.numeric(df$postnatal_8wk_code_present_redacted)
@@ -53,7 +52,6 @@ df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
-#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
@@ -65,8 +63,6 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid, age_cat)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-# write csv for rates
-write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_age_cat_updated.csv"))
 
 # df for each age cat
 df1=filter(df_plot, age_cat=="14-19")
@@ -124,7 +120,7 @@ names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
 # gives df_plot_overall with IRR, LCI, UCI, age_cat and 7 rows
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_age_cat_IRR_overall_updated.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_estimates_IRR_age_cat.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -183,21 +179,21 @@ DF_counter$age_cat=factor(DF_counter$age_cat,levels=c("14-19","20-24","25-29","3
 
 
 ### plot 
-plot_ITS_age_cat_edit<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
+plot_ITS_age_cat_edit<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population_rounded, group=covid))+ 
   theme_bw()+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+  
   
   ##actual rate point
-  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population*1000))+ 
-  geom_line(aes(y=postnatal_8wk_code_present_rounded /population*1000),color="grey")+
+  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population_rounded*1000))+ 
+  geom_line(aes(y=postnatal_8wk_code_present_rounded /population_rounded*1000),color="grey")+
   
   #### prediction model  
   geom_line(color="blue")+ 
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population_rounded, ymax=((fit+1.96*se.fit)*1000)/population_rounded),alpha=0.2,fill="blue") +
       
   # prediction model: no covid -- counterfactual
-  geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = DF_counter)+
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = DF_counter) +
+  geom_line(aes(y=fit*1000/population_rounded,x=date),color="lightgreen",data = DF_counter)+
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population_rounded, ymax=((fit+1.96*se.fit)*1000)/population_rounded),alpha=0.2,fill="lightgreen",data = DF_counter) +
       
   # group by indication  
   facet_grid(rows = vars(age_cat),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
@@ -222,37 +218,41 @@ plot_ITS_age_cat_edit<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, grou
 #plot_ITS
 ggsave(
   plot= plot_ITS_age_cat_edit,
-  filename="plot_ITS_age_cat_edit_updated.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_by_age_cat.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_age_cat_updated.csv"))
+
+DF_plot_f <- DF_plot_f[,-c(1,3:5,9:10)]
+DF_counter <- DF_counter[,-c(1,3:5,9:10)]
+
+write.csv(DF_plot_f,here::here("output","plot_data_ITS_age_cat.csv"))
+write.csv(DF_counter,here::here("output","plot_data_ITS_age_cat_counterfactual.csv"))
 
 #### creates plot with IRRs and error bars/CIs
-#plot_ITS_age_cat_edit_2<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
-# plot_ITS_age_cat_edit_2<-ggplot(data=DF_plot_f, aes(y=age_cat, x=IRR))+
-#   geom_point()+
+plot_ITS_age_cat<-ggplot(data=df_plot_overall, aes(y=age_cat, x=IRR))+
+  geom_point()+
   
-#   geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
+  geom_errorbarh(aes(xmin=ci_l, xmax=ci_u))+
   
-#   geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
-#   theme_bw()+
-#   theme(text=element_text(family="times",size=18, color="black"))+
-#   theme(panel.spacing = unit(1, "lines"))+
-#   labs(
-#     title = "",
-#     x="IRR (95% CI)",
-#     y=""
-#   )+
-#   facet_grid(age_cat~., scales = "free", space = "free")+
-#   theme(strip.text.y = element_text(angle = 0),
-#         axis.title.y =element_blank(),
-#         axis.text.y=element_blank(),
-#         axis.ticks.y=element_blank(),
-#         legend.title=element_blank(),
-#         legend.position="bottom")
+  geom_vline(xintercept=1, color="black", linetype="dashed", alpha=.5)+
+  theme_bw()+
+  theme(text=element_text(family="times",size=18, color="black"))+
+  theme(panel.spacing = unit(1, "lines"))+
+  labs(
+    title = "",
+    x="IRR (95% CI)",
+    y=""
+  )+
+  facet_grid(age_cat~., scales = "free", space = "free")+
+  theme(strip.text.y = element_text(angle = 0),
+        axis.title.y =element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.title=element_blank(),
+        legend.position="bottom")
 
-# ggsave(
-#   plot= plot_ITS_age_cat_edit_2, 
-#   filename="plot_ITS_age_cat_edit_2_updated.jpeg", path=here::here("output"), dpi=300
-#   )
+ggsave(
+  plot= plot_ITS_age_cat, 
+  filename="plot_ITS_age_cat_IRRs.jpeg", path=here::here("output"), dpi=300
+  )
 

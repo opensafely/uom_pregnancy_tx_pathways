@@ -68,7 +68,8 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
 
-df_gaps<- df_gaps%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White",
+df_gaps<- df_gaps%>% mutate(ethnicity2_labs = case_when(is.na(ethnicity2) ~ "Unknown",
+                                                  ethnicity2== 1 ~ "White",
                                                   ethnicity2== 2 ~ "Mixed",
                                                   ethnicity2== 3 ~ "Asian or Asian British",
                                                   ethnicity2== 4 ~ "Black or Black British",
@@ -76,10 +77,16 @@ df_gaps<- df_gaps%>% mutate(ethnicity2_labs = case_when(ethnicity2== 1 ~ "White"
                                                   ethnicity2== 0 ~ "Unknown"))
 # remove unknown category
 df_gaps=filter(df_gaps, ethnicity2_labs !="Unknown")
-#df_gaps$ethnicity2_labs<- as.factor(df$ethnicity2_labs)
+
+## save rounded and redacted data
+df_gaps2 <- df_gaps %>%
+  select(ethnicity2_labs,date,cal_mon,cal_year,
+         postnatal_8wk_code_present_rounded, population_rounded,pn_rate_1000)
+write_csv(df_gaps2, here::here("output", "monthly_pn_rate_8wk_plotdata_ethnicity.csv"))
 
 
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity2_labs, color=ethnicity2_labs))+
+
+plot_pn_rate <- ggplot(df_gaps2, aes(x=date, group=ethnicity2_labs, color=ethnicity2_labs))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months")+
@@ -97,5 +104,5 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=ethnicity2_labs, color=ethnici
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_ethnicity_2_8wk_updated.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_by_ethnicity_2_8wk_updated.jpeg", path=here::here("output"),
 )

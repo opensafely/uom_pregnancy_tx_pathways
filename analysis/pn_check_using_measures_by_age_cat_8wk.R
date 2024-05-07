@@ -72,13 +72,17 @@ df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 df_gaps=filter(df_gaps, age_cat !="45-49")
 df_gaps$age_cat<-droplevels(df_gaps$age_cat)
 
-write_csv(as.data.frame(df_gaps), here::here("output", "monthly_pn_rate_measures_8wk_plotdata_age_cat.csv"))
-##remove columns of raw data and output only redacted and rounded
-df_gaps<-df_gaps[,c(1,2,5:8,11:14)]
-write_csv(as.data.frame(df_gaps), here::here("output", "monthly_pn_rate_measures_8wk_plotdata_reduced_age_cat.csv"))
+
+## save rounded and redacted data
+df_gaps2 <- df_gaps %>%
+  select(age_cat,date,cal_mon,cal_year,
+         postnatal_8wk_code_present_rounded, population_rounded,
+         pn_rate_1000)
+write_csv(df_gaps2, here::here("output", "monthly_pn_rate_8wk_plotdata_age_cat.csv"))
 
 
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=age_cat, color=age_cat))+
+
+plot_pn_rate <- ggplot(df_gaps2, aes(x=date, group=age_cat, color=age_cat))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   #geom_line(data=df_gaps, linetype="dashed", aes(color+age_cat))+ geom_point(aes(y=pn_rate_1000))+
@@ -97,5 +101,5 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=age_cat, color=age_cat))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_age_cat_8wk_updated.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_by_age_cat_8wk_updated.jpeg", path=here::here("output"),
 )

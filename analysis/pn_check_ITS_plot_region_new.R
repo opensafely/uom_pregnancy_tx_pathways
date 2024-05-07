@@ -4,8 +4,6 @@ library("dplyr")
 library("tidyverse")
 library("MASS")
 library("ggpubr")
-#library(modelsummary)
-#library("gtsummary")
 
 ## Import data
 df <- read_csv(
@@ -51,10 +49,8 @@ df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
-#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
-#df_plot<-ungroup(df_plot)
 
 df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
@@ -62,9 +58,6 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
 df_plot=df_plot%>% group_by(covid,region)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
-
-# write csv for rates
-write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_region_updated.csv"))
 
 # df for each region
 df1=filter(df_plot, region=="North East")
@@ -130,7 +123,7 @@ names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
 # gives df_plot_overall with IRR, LCI, UCI, region and 7 rows
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_region_IRR_overall_updated.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_estimates_IRR_region.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -209,38 +202,23 @@ DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df
 DF_counter$region=factor(DF_counter$region,levels=c("North East", "North West", "Yorkshire and The Humber", "East Midlands", "West Midlands", "East", "London", "South West", "South East"))
 
 ### plot 
-plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
+plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population_rounded, group=covid))+ 
   theme_bw()+ 
-    #annotate(geom = "rect", xmin = as.Date("2019-12-01"),xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey60", alpha=0.5)+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
-    #geom_point(shape=4)+   
   
   ##actual rate point 
-  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population*1000))+ 
-  geom_line(aes(y=postnatal_8wk_code_present_rounded /population*1000),color="grey")+
+  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population_rounded*1000))+ 
+  geom_line(aes(y=postnatal_8wk_code_present_rounded /population_rounded*1000),color="grey")+
   
   #### prediction model  
   geom_line(color="blue")+ 
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population_rounded, ymax=((fit+1.96*se.fit)*1000)/population_rounded),alpha=0.2,fill="blue") +
       
   # prediction model: no covid -- counterfactual
-  geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = DF_counter)+
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = DF_counter) +
-   
-  # plot_ITS<-ggplot(DF, aes(x=date, y=fit*1000/population, group=covid))+ 
-  
-  # #actual rate point
-  # geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded/population*1000))+ 
-  
-  # # prediction model  
-  # geom_line(color="blue")+ 
-  # geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
-  
-  # # prediction model: non covid    
-  # geom_line(aes(y=fit*1000/population,x=date),color="red",data = DF_counter)+
-  # geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="red",data = DF_counter) +
-  
-  # group by indication  
+  geom_line(aes(y=fit*1000/population_rounded,x=date),color="lightgreen",data = DF_counter)+
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population_rounded, ymax=((fit+1.96*se.fit)*1000)/population_rounded),alpha=0.2,fill="lightgreen",data = DF_counter) +
+     
+  # group by region  
   facet_grid(rows = vars(region),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
   
   # theme
@@ -263,10 +241,14 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
 #plot_ITS
 ggsave(
   plot= plot_ITS,
-  filename="plot_ITS_region_1_updated.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_by_region.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_region_updated.csv"))
+DF_plot_f <- DF_plot_f[,-c(1,3:5,9:10)]
+DF_counter <- DF_counter[,-c(1,3:5,9:10)]
+
+write.csv(DF_plot_f,here::here("output","plot_data_ITS_region.csv"))
+write.csv(DF_counter,here::here("output","plot_data_ITS_region_counterfactual.csv"))
 
 #### plot with IRRs and error bars/CIs
 plot_ITS_region_2<-ggplot(data=df_plot_overall, aes(y=region, x=IRR))+
@@ -293,6 +275,6 @@ plot_ITS_region_2<-ggplot(data=df_plot_overall, aes(y=region, x=IRR))+
 
 ggsave(
   plot= plot_ITS_region_2, 
-  filename="plot_ITS_region_2_updated.jpeg", path=here::here("output"), dpi=300
+  filename="plot_ITS_region_IRRs.jpeg", path=here::here("output"), dpi=300
   )
 
