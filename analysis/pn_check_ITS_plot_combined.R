@@ -5,16 +5,7 @@ library("tidyverse")
 library("MASS")
 
 df1 <- read_csv(
- here::here("output", "ITS_plot_data_overall_rates_and_predicted.csv"),
-
-    col_types = cols_only(
-    #  delivery_code_present  = col_double(),
-    #  postnatal_8wk_code_present = col_double(),
-    #  population  = col_number(),
-    #  value = col_number(),
-    #  date = col_date(format="%Y-%m-%d")
-     )
- )
+ here::here("output", "ITS_plot_data_overall_rates_and_predicted.csv"))
 
 df2 <- read_csv(
  here::here("output", "ITS_plot_data_overall_rates_and_predicted_6wk.csv"))

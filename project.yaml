@@ -456,7 +456,7 @@ actions:
 
   describe_ITS_plot_combined:
     run: r:latest analysis/pn_check_ITS_plot_combined.R
-    needs: [generate_measures_8wk_updated,generate_measures_6wk_updated,generate_measures_12wk_updated]
+    needs: [describe_ITS_plot_overall_new_modelled,describe_ITS_plot_overall_6wk_new,describe_ITS_plot_overall_12wk_new]
     outputs:
       moderately_sensitive:
         plot_combined: output/plot_ITS_overall_by_cohort.jpeg

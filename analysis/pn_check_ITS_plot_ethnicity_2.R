@@ -4,8 +4,6 @@ library("dplyr")
 library("tidyverse")
 library("MASS")
 library("ggpubr")
-#library(modelsummary)
-#library("gtsummary")
 
 ## Import data
 df <- read_csv(
