@@ -268,7 +268,7 @@ actions:
     outputs:
       moderately_sensitive:
         plot11: output/monthly_pn_rate_measures_8wk_updated.jpeg
-        table11: output/pn_check_combined_plot_8wk_updated.csv
+        table11: output/monthly_pn_rate_8wk_updated.csv
 
   describe_pn_rate_plots_6wk:
     run: r:latest analysis/pn_check_using_measures_6wk.R
@@ -276,7 +276,7 @@ actions:
     outputs:
       moderately_sensitive:
         plot1: output/monthly_pn_rate_measures_6wk_updated.jpeg
-        table:13: output/pn_check_combined_plot_6wk_updated.csv 
+        table:13: output/monthly_pn_rate_6wk_updated.csv 
 
   describe_pn_rate_plots_12wk:
     run: r:latest analysis/pn_check_using_measures_12wk.R
@@ -284,7 +284,7 @@ actions:
     outputs:
       moderately_sensitive:
         plot1: output/monthly_pn_rate_measures_12wk_updated.jpeg
-        table12: output/pn_check_combined_plot_12wk_updated.csv
+        table12: output/monthly_pn_rate_12wk_updated.csv
 
   describe_pn_rate_plots_combined:
     run: r:latest analysis/pn_check_using_measures_combined.R
@@ -292,49 +292,39 @@ actions:
     outputs:
       moderately_sensitive:
         plot1b: output/monthly_pn_rate_measures_combined.jpeg 
-        table_combined: output/pn_check_6wk_8wk_12wk_plot_updated.csv  
-
+        table_combined: output/monthly_pn_rate_6_8_12wk_plotdata_combined.csv  
 
   describe_pn_rate_plots_by_age_cat:
     run: r:latest analysis/pn_check_using_measures_by_age_cat_8wk.R
     needs: [generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:
-        plot2: output/monthly_pn_rate_measures8wkcode_by_age_cat_8wk_updated.jpeg
-        tab_pn_age: output/monthly_pn_rate_measures_8wk_plotdata_age_cat.csv
-        tab_pn_age_R: output/monthly_pn_rate_measures_8wk_plotdata_reduced_age_cat.csv
-
-  # describe_pn_rate_plots_by_ethnicity:
-  #   run: r:latest analysis/pn_check_using_measures_by_ethnicity_8wk.R
-  #   needs: [generate_measures_8wk_updated]
-  #   outputs:
-  #     moderately_sensitive:
-  #       plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity_8wk_updated.jpeg
-  #       tab_pn_ethnicity: output/monthly_pn_rate_measures_8wk_plotdata_ethnicity.csv
-  #       tab_pn_ethnicity_R: output/monthly_pn_rate_measures_8wk_plotdata_reduced_ethnicity.csv
-
+        plot2: output/monthly_pn_rate_by_age_cat_8wk_updated.jpeg
+        tab_pn_age: output/monthly_pn_rate_8wk_plotdata_age_cat.csv
+       
   describe_pn_rate_plots_by_ethnicity_2:
     run: r:latest analysis/pn_check_using_measures_by_ethnicity_2_8wk.R
     needs: [generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:
-        plot3: output/monthly_pn_rate_measures8wkcode_by_ethnicity_2_8wk_updated.jpeg      
+        plot3: output/monthly_pn_rate_by_ethnicity_2_8wk_updated.jpeg 
+        tab_pn_eth: output/monthly_pn_rate_8wk_plotdata_ethnicity.csv     
 
   describe_pn_rate_plots_by_imd:
     run: r:latest analysis/pn_check_using_measures_by_imd_8wk.R
     needs: [generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:
-        plot4: output/monthly_pn_rate_measures8wkcode_by_imd_8wk_updated.jpeg
-        tab_pn_imd: output/monthly_pn_rate_measures_8wk_plotdata_IMD.csv
+        plot4: output/monthly_pn_rate_by_imd_8wk_updated.jpeg
+        tab_pn_imd: output/monthly_pn_rate_8wk_plotdata_imd.csv
   
   describe_pn_rate_plots_by_region:
     run: r:latest analysis/pn_check_using_measures_by_region_8wk.R
     needs: [generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:
-        plot6: output/monthly_pn_rate_measures8wkcode_by_region_8wk_updated.jpeg
-        tab_pn_region: output/monthly_pn_rate_measures_8wk_plotdata_region.csv
+        plot6: output/monthly_pn_rate_by_region_8wk_updated.jpeg
+        tab_pn_region: output/monthly_pn_rate_8wk_plotdata_region.csv
 
   describe_pn_rate_plots_by_hbp:
     run: r:latest analysis/pn_check_using_measures_by_hbp.R
@@ -342,13 +332,15 @@ actions:
     outputs:
       moderately_sensitive:
         plot4: output/monthly_pn_rate_measures8wkcode_by_hbp_8wk.jpeg
+        tab_pn_hbp: output/monthly_pn_rate_8wk_plotdata_hbp.csv
 
   describe_pn_rate_plots_by_cardiovasc_comor:
     run: r:latest analysis/pn_check_using_measures_by_cardiovasc_comor.R
     needs: [generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:
-        plot4: output/monthly_pn_rate_measures8wkcode_by_cardiovasc_comor_8wk.jpeg
+        plot4: output/monthly_pn_rate_by_cardiovasc_comor_8wk.jpeg
+        tab_pn_cardiovasc: output/monthly_pn_rate_8wk_plotdata_cardiovascular.csv
 
 
   ################################################
@@ -437,11 +429,11 @@ actions:
     needs: [generate_measures_8wk_updated]
     outputs:
       moderately_sensitive:
-        plot_ITS_overall: output/pn_check_ITS_overall_8wk_new_modelled_updated.jpeg
-        estimates: output/ITS_estimates_overall_updated.csv
-        plot_ITS_plot_data: output/ITS_plot_data_overall_updated.csv
-        estimates_c: output/ITS_estimates_counter_overall_updated.csv
-        combined: output/ITS_estimates_combined_plot_8wk_updated.csv
+        estimates: output/ITS_estimates_overall.csv
+        data_tab: output/ITS_plot_data_overall_rates_and_predicted.csv
+        data_tab_counter: output/ITS_plot_data_overall_rates_and_predicted_counterfact.csv
+        plot_ITS_overall: output/pn_check_ITS_overall_8wk_new_modelled_updated.jpeg        
+
 
   describe_ITS_plot_overall_6wk_new:
     run: r:latest analysis/pn_check_ITS_plot_6wk_new.R

@@ -68,10 +68,15 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
   mutate(pn_rate_1000 = value_r*1000) 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 
-write_csv(as.data.frame(df_gaps), here::here("output", "monthly_pn_rate_measures_8wk_plotdata_IMD.csv"))
 
+## save rounded and redacted data
+df_gaps2 <- df_gaps %>%
+  select(imd,date,cal_mon,cal_year,
+         postnatal_8wk_code_present_rounded, population_rounded,pn_rate_1000)
+write_csv(df_gaps2, here::here("output", "monthly_pn_rate_8wk_plotdata_imd.csv"))
 
-plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=imd, color=imd))+
+#plot
+plot_pn_rate <- ggplot(df_gaps2, aes(x=date, group=imd, color=imd))+
   geom_line(aes(y=pn_rate_1000))+
   geom_point(aes(y=pn_rate_1000))+
   scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months")+
@@ -89,6 +94,6 @@ plot_pn_rate <- ggplot(df_gaps, aes(x=date, group=imd, color=imd))+
 
 ggsave(
    plot= plot_pn_rate,
-   filename="monthly_pn_rate_measures8wkcode_by_imd_8wk_updated.jpeg", path=here::here("output"),
+   filename="monthly_pn_rate_by_imd_8wk_updated.jpeg", path=here::here("output"),
 )
 
