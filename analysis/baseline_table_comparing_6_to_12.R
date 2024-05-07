@@ -187,6 +187,19 @@ df8wk$ethnicity<- as.factor(df8wk$ethnicity)
 dfpn_y_onepat$ethnicity<- as.factor(dfpn_y_onepat$ethnicity)
 dfpn_n_onepat$ethnicity<- as.factor(dfpn_n_onepat$ethnicity)
 
+############ how many unique patients in each cohort
+df6wk_pats <- length(unique(df6wk$patient_id))
+df8wk_pats <- length(unique(df8wk$patient_id))
+df12wky_pats <- length(unique(dfpn_y_onepat$patient_id))
+df12wkn_pats <- length(unique(dfpn_n_onepat$patient_id))
+patient_numbers_df <- data.frame(
+  Cohort = c("6 weeks", "8 weeks", "12 weeks (yes)", "12 weeks (no)"),
+  Number_of_Unique_Patients = c(df6wk_pats, df8wk_pats, df12wky_pats, df12wkn_pats)
+)
+patient_numbers_df$Number_of_Unique_Patients<- round(patient_numbers_df$Number_of_Unique_Patients / 5) * 5
+write_csv(patient_numbers_df, here::here("output", "blt_6v12_weeks_patient_numbers.csv"))
+
+
 df2 <- rbind(df6wk,df8wk, dfpn_y_onepat, dfpn_n_onepat)
 df2$cohort<-as.factor(df2$cohort)
 df2$cohort<-relevel(df2$cohort, ref="within 6 weeks")
@@ -278,31 +291,50 @@ df2$charlsonGrp <- factor(df2$charlsonGrp,
 
 
 
-# select variables for the baseline table
-variables_names <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, sum_pn_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, charlsonGrp, covid_positive, hbp_any,
-                                     "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
-                                     "heart_failure_comor","connective_tissue_comor", "dementia_comor",
-                                     "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
-                                     "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
-                                     "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
-                                     "peptic_ulcer_comor" , "peripheral_vascular_comor" ) 
+# select continuous variables for the baseline table
+variables_names_contin <- df2 %>% 
+  select(patient_id, age, bmi, sum_delivery_codes, sum_pn_codes) 
 
-explanatory=colnames(variables_names)
+# select categorical variables for the baseline table - for rounding counts. 
+variables_names_categorical <- df2 %>% 
+  select(patient_id, age_cat, bmi_cat, region, Ethnicity, imd, charlsonGrp, covid_positive, hbp_any,
+                                  "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
+                                  "heart_failure_comor","connective_tissue_comor", "dementia_comor",
+                                  "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
+                                  "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
+                                  "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
+                                  "peptic_ulcer_comor" , "peripheral_vascular_comor" ) 
+
+
+
+explanatory=colnames(variables_names_contin)
 dependent="cohort"
 
 df2 %>%
-  summary_factorlist(dependent, explanatory, p = TRUE, na_include = TRUE) -> t
-summary_table<-(t[-1,])
+  summary_factorlist(dependent, explanatory, p = TRUE, na_include = TRUE) -> t_continuous 
+summary_table<-(t_continuous[-1,])
+
+write_csv(summary_table, here::here("output", "blt_6v12_weeks_continuous_vars.csv"))
+
+
+## catagorical variables and rounding 
+explanatory=colnames(variables_names_categorical)
+dependent="cohort"
+
+df2 %>%
+  summary_factorlist(dependent, explanatory, na_include = TRUE) -> t_categorical 
+summary_table2<-(t_categorical[-1,])
+
 
 ## round to 5
 ## split cols out
 # Function to round counts to the nearest 5 and recalculate percentages
-round_counts <- function(summary_table) {
+round_counts <- function(summary_table2) {
   # Extract counts and percentages
-  counts <- as.numeric(sub("\\s*\\(.*", "", summary_table$`within 6 weeks`))
-  counts8 <- as.numeric(sub("\\s*\\(.*", "", summary_table$`within 8 weeks`))
-  counts12y <- as.numeric(sub("\\s*\\(.*", "", summary_table$`within 12 weeks`))
-  counts12n <- as.numeric(sub("\\s*\\(.*", "", summary_table$`not within 12 weeks`))
+  counts <- as.numeric(sub("\\s*\\(.*", "", summary_table2$`within 6 weeks`))
+  counts8 <- as.numeric(sub("\\s*\\(.*", "", summary_table2$`within 8 weeks`))
+  counts12y <- as.numeric(sub("\\s*\\(.*", "", summary_table2$`within 12 weeks`))
+  counts12n <- as.numeric(sub("\\s*\\(.*", "", summary_table2$`not within 12 weeks`))
   
   # Round counts to the nearest 5
   rounded_counts <- round(counts / 5) * 5
@@ -311,19 +343,23 @@ round_counts <- function(summary_table) {
   rounded_counts12n <- round(counts12n / 5) * 5
   
   # Update the columns with rounded counts 
-  summary_table$`within 6 weeks` <- paste(rounded_counts)
-  summary_table$`within 8 weeks` <- paste(rounded_counts8)
-  summary_table$`within 12 weeks` <- paste(rounded_counts12y)
-  summary_table$`not within 12 weeks` <- paste(rounded_counts12n)
+  summary_table2$`within 6 weeks` <- paste(rounded_counts)
+  summary_table2$`within 8 weeks` <- paste(rounded_counts8)
+  summary_table2$`within 12 weeks` <- paste(rounded_counts12y)
+  summary_table2$`not within 12 weeks` <- paste(rounded_counts12n)
   
-  return(summary_table)
+  return(summary_table2)
 }
 
 # Apply the function to the data
-data <- round_counts(summary_table)
+data <- round_counts(summary_table2)
+#redact any counts <7 
+data <- data %>%
+  mutate(across(3:6, ~ ifelse(. <= 7, "redacted", .)))
 
-write_csv(summary_table, here::here("output", "blt_6v12_weeks.csv"))
-write_csv(data, here::here("output", "blt_6v12_weeks_rounded.csv"))
 
+write_csv(summary_table2, here::here("output", "blt_6v12_weeks_categorical.csv"))
+write_csv(data, here::here("output", "blt_6v12_weeks_categorical_rounded.csv"))
 
+ 
 
