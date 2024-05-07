@@ -72,87 +72,149 @@ t_m1.df <- as.data.frame(t_m1)
 write_csv(t_m1[[1]], here::here("output","mod1_ageadj.csv"))
 write_csv(t_m1.df, here::here("output","mod1_ageadj_matrix.csv"))
 
-# ## Adjusted model 
-# #df_input$ethnicity<-as.factor(df_input$ethnicity)
-# df_input$ethnicity2<-as.factor(df_input$ethnicity2)
-# df_input$ethnicity2 <- relevel(df_input$ethnicity2, "1") #white as reference
-# 
-# ### neeed to relabel ethnicity 2 and then releve to ref cat white. 
-# #df_input$ethnicity2 <- relevel(df_input$ethnicity, "White")
-# 
-# df_input$region<-as.factor(df_input$region)
-# df_input$region <- relevel(df_input$region, "London")
-# df_input$imd<-as.factor(df_input$imd) 
-# df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
-# 
-# # bmi - numeric
-# # remove bmi outliers - this replaces <8 or >50 with NA
-# df_input$bmi <- ifelse(df_input$bmi <8 | df_input$bmi>50, NA, df_input$bmi)
-# df_input <- df_input %>% dplyr::mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
-#                                                  bmi>=8 & bmi< 18.5 ~ "Underweight",
-#                                                  bmi>=18.5 & bmi<=24.9 ~ "Healthy weight",
-#                                                  bmi>24.9 & bmi<=29.9 ~ "Overweight",
-#                                                  bmi>29.9 ~"Obese"))
-# df_input$bmi_cat <- as.factor(df_input$bmi_cat)
-# 
-# #### highrisk pregnancy
-# ## comorbidities. (Hypertension disorder before / during)
-# ## create charlson index
-# df_input$cancer_comor<- ifelse(df_input$cancer_comor == 1L, 2L, 0L)
-# df_input$cardiovascular_comor <- ifelse(df_input$cardiovascular_comor == 1L, 1L, 0L)
-# df_input$chronic_obstructive_pulmonary_comor <- ifelse(df_input$chronic_obstructive_pulmonary_comor == 1L, 1L, 0)
-# df_input$heart_failure_comor <- ifelse(df_input$heart_failure_comor == 1L, 1L, 0L)
-# df_input$connective_tissue_comor <- ifelse(df_input$connective_tissue_comor == 1L, 1L, 0L)
-# df_input$dementia_comor <- ifelse(df_input$dementia_comor == 1L, 1L, 0L)
-# df_input$diabetes_comor <- ifelse(df_input$diabetes_comor == 1L, 1L, 0L)
-# df_input$diabetes_complications_comor <- ifelse(df_input$diabetes_complications_comor == 1L, 2L, 0L)
-# df_input$hemiplegia_comor <- ifelse(df_input$hemiplegia_comor == 1L, 2L, 0L)
-# df_input$hiv_comor <- ifelse(df_input$hiv_comor == 1L, 6L, 0L)
-# df_input$metastatic_cancer_comor <- ifelse(df_input$metastatic_cancer_comor == 1L, 6L, 0L)
-# df_input$mild_liver_comor <- ifelse(df_input$mild_liver_comor == 1L, 1L, 0L)
-# df_input$mod_severe_liver_comor <- ifelse(df_input$mod_severe_liver_comor == 1L, 3L, 0L)
-# df_input$mod_severe_renal_comor <- ifelse(df_input$mod_severe_renal_comor == 1L, 2L, 0L)
-# df_input$mi_comor <- ifelse(df_input$mi_comor == 1L, 1L, 0L)
-# df_input$peptic_ulcer_comor <- ifelse(df_input$peptic_ulcer_comor == 1L, 1L, 0L)
-# df_input$peripheral_vascular_comor <- ifelse(df_input$peripheral_vascular_comor == 1L, 1L, 0L)
-# 
-# ## total charlson for each patient 
-# charlson=c("cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
-#            "heart_failure_comor","connective_tissue_comor", "dementia_comor",
-#            "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
-#            "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
-#            "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
-#            "peptic_ulcer_comor" , "peripheral_vascular_comor" )
-# 
-# df_input$charlson_score=rowSums(df_input[charlson])
-# 
-# ## Charlson - as a categorical group variable
-# df_input <- df_input %>%
-#   dplyr::mutate(charlsonGrp = case_when(charlson_score >0 & charlson_score <=2 ~ 2,
-#                                         charlson_score >2 & charlson_score <=4 ~ 3,
-#                                         charlson_score >4 & charlson_score <=6 ~ 4,
-#                                         charlson_score >=7 ~ 5,
-#                                         charlson_score == 0 ~ 1))
-# 
-# df_input$charlsonGrp <- as.factor(df_input$charlsonGrp)
-# df_input$charlsonGrp <- factor(df_input$charlsonGrp, 
-#                                labels = c("zero", "low", "medium", "high", "very high"))
-# 
-# 
-# 
-# 
-# 
-# mod2 <- glm(postnatal_8wk_code_present~age_cat+
-#               ethnicity2+region+imd+bmi_cat+charlsonGrp, family=binomial(link=logit), data=df_input)
-# #summary(mod2)
-# mod2df <- cbind(Estimate = coef(mod2), confint(mod2))
-# mod2df.exp=round(exp(mod2df), digits = 2)
-# pval2<- coef(summary(mod2))[,4]
-# mod2df.exp<-cbind(mod2df.exp, pval2)
-# mod2df.exp<- as.data.frame(mod2df.exp)
-# write_csv(mod2df.exp, here::here("output","mod2_fulladj_coef.csv"))
-# #df2_capture <-as.data.frame(capture.output(summary(mod2), 'output.txt'))
-# 
+## Adjusted model
+df_input$ethnicity2<-as.factor(df_input$ethnicity2)
+df_input <- df_input %>% 
+                dplyr::mutate(Ethnicity = case_when(is.na(ethnicity2) ~ "Unknown",
+                                                    ethnicity2 == "1" ~ "White",
+                                                    ethnicity2 == "2"  ~ "Mixed",
+                                                    ethnicity2 == "3"  ~ "Asian or Asian British",
+                                                    ethnicity2 == "4"  ~ "Black or Black British",
+                                                    ethnicity2 == "5"  ~ "Chinese or Other Ethnic Groups",
+                                                    ethnicity2 == "0"  ~ "Unknown"))
+df_input$Ethnicity <- as.factor(df_input$Ethnicity)
+df_input$Ethnicity <- relevel(df_input$Ethnicity, "White") #white as reference
+
+df_input$region<-as.factor(df_input$region)
+df_input$region <- relevel(df_input$region, "London")
+df_input$imd<-as.factor(df_input$imd)
+df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
+ 
+# bmi - numeric
+# remove bmi outliers - this replaces <8 or >50 with NA
+df_input$bmi <- ifelse(df_input$bmi <8 | df_input$bmi>50, NA, df_input$bmi)
+df_input <- df_input %>% dplyr::mutate(bmi_cat = case_when(is.na(bmi) ~ "Unknown",
+                                                 bmi>=8 & bmi< 18.5 ~ "Underweight",
+                                                 bmi>=18.5 & bmi<=24.9 ~ "Healthy weight",
+                                                 bmi>24.9 & bmi<=29.9 ~ "Overweight",
+                                                 bmi>29.9 ~"Obese"))
+df_input$bmi_cat <- as.factor(df_input$bmi_cat)
+
+#### high risk pregnancy
+## comorbidities. (Hypertension disorder before / during)
+## create charlson index
+df_input$cancer_comor<- ifelse(df_input$cancer_comor == 1L, 2L, 0L)
+df_input$cardiovascular_comor <- ifelse(df_input$cardiovascular_comor == 1L, 1L, 0L)
+df_input$chronic_obstructive_pulmonary_comor <- ifelse(df_input$chronic_obstructive_pulmonary_comor == 1L, 1L, 0)
+df_input$heart_failure_comor <- ifelse(df_input$heart_failure_comor == 1L, 1L, 0L)
+df_input$connective_tissue_comor <- ifelse(df_input$connective_tissue_comor == 1L, 1L, 0L)
+df_input$dementia_comor <- ifelse(df_input$dementia_comor == 1L, 1L, 0L)
+df_input$diabetes_comor <- ifelse(df_input$diabetes_comor == 1L, 1L, 0L)
+df_input$diabetes_complications_comor <- ifelse(df_input$diabetes_complications_comor == 1L, 2L, 0L)
+df_input$hemiplegia_comor <- ifelse(df_input$hemiplegia_comor == 1L, 2L, 0L)
+df_input$hiv_comor <- ifelse(df_input$hiv_comor == 1L, 6L, 0L)
+df_input$metastatic_cancer_comor <- ifelse(df_input$metastatic_cancer_comor == 1L, 6L, 0L)
+df_input$mild_liver_comor <- ifelse(df_input$mild_liver_comor == 1L, 1L, 0L)
+df_input$mod_severe_liver_comor <- ifelse(df_input$mod_severe_liver_comor == 1L, 3L, 0L)
+df_input$mod_severe_renal_comor <- ifelse(df_input$mod_severe_renal_comor == 1L, 2L, 0L)
+df_input$mi_comor <- ifelse(df_input$mi_comor == 1L, 1L, 0L)
+df_input$peptic_ulcer_comor <- ifelse(df_input$peptic_ulcer_comor == 1L, 1L, 0L)
+df_input$peripheral_vascular_comor <- ifelse(df_input$peripheral_vascular_comor == 1L, 1L, 0L)
+
+## total charlson for each patient
+charlson=c("cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
+           "heart_failure_comor","connective_tissue_comor", "dementia_comor",
+           "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
+           "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
+           "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
+           "peptic_ulcer_comor" , "peripheral_vascular_comor" )
+
+df_input$charlson_score=rowSums(df_input[charlson])
+
+## Charlson - as a categorical group variable
+df_input <- df_input %>%
+  dplyr::mutate(Charlson = case_when(charlson_score >0 & charlson_score <=2 ~ 2,
+                                        charlson_score >2 & charlson_score <=4 ~ 3,
+                                        charlson_score >4 & charlson_score <=6 ~ 4,
+                                        charlson_score >=7 ~ 5,
+                                        charlson_score == 0 ~ 1))
+
+df_input$Charlson <- as.factor(df_input$Charlson)
+df_input$Charlson <- factor(df_input$Charlson,
+                               labels = c("zero", "low", "medium", "high", "very high"))
+
+## covid positive
+df_input <- df_input %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
+                                                 Covid_test_result_sgss ==1 ~ "1",
+                                                 TRUE ~ "0"))
+df_input$covid_positive<-as.factor(df_input$covid_positive)
+
+
+# select variables for modelling
+colnames(df_input)[3]<-"Age"
+colnames(df_input)[7]<-"Region"
+colnames(df_input)[8]<-"IMD"
+colnames(df_input)[9]<-"BMI"
+colnames(df_input)[53]<-"Charlson"
+colnames(df_input)[40]<-"HBP"
+
+df_input <- df_input %>% filter(Ethnicity != "Unknown")
+df_input$Ethnicity<-droplevels(df_input$Ethnicity)
+variables_names <- df_input %>% dplyr::select(Age, BMI, Region, Ethnicity, IMD, 
+                                  Charlson, covid_positive, HBP)
+
+explanatory_m2=colnames(variables_names)
+dependent="postnatal_8wk_code_present"
+
+df_input %>%
+  finalfit(dependent, explanatory_m2, 
+           dependent_label_prefix= "", metrics = TRUE) -> t_m2
+t_m2.df <- as.data.frame(t_m2)
+write_csv(t_m2[[1]], here::here("output","mod2_fulladj.csv"))
+write_csv(t_m2.df, here::here("output","mod2_fulladj_matrix.csv"))
+t_m2.df_adj <- t_m2.df[,-c(3:5)]
+write_csv(t_m2.df_adj, here::here("output","mod2_fulladj_matrix_reduced.csv"))
+
+
+mod2_plot<- df_input %>% 
+                or_plot(dependent, explanatory_m2)#, 
+                    #breaks = c(0.5, 1, 5, 10, 20, 30))
+
+
+ggsave(
+  plot= mod2_plot, 
+  filename="mod2_plot.jpeg", path=here::here("output"), dpi=300
+)
+
+
+## 
+# Load the necessary library
+library(stringr)
+
+# Function to extract values from the string
+extract_values <- function(row) {
+  values <- str_extract(row, "\\d+\\.?\\d*")  # Extract numeric values
+  values <- as.numeric(values)  # Convert to numeric
+  return(values)
+}
+
+# Apply the function to create a matrix of values
+values_matrix <- t(sapply(t_m2.df_adj$OR..multivariable., extract_values))
+
+# Convert the matrix to a data frame
+extracted_values_df <- as.data.frame(values_matrix)
+
+# Rename the columns
+colnames(extracted_values_df) <- c("OR", "CI_lower", "CI_upper")
+
+# Append the extracted values to the original data frame
+t_m2.df_adj2 <- cbind(t_m2.df_adj, extracted_values_df)
+
+write_csv(t_m2.df_adj2, here::here("output","mod2_fulladj_matrix_reduced_2.csv"))
+
+
+
+
 # #covid
 # # mod2_covid <- glm(postnatal_8wk_code_present~age_cat+
 # #                 ethnicity2+region+imd+bmi_cat+charlsonGrp+covid, family=binomial(link=logit), data=df_input)

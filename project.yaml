@@ -516,8 +516,11 @@ actions:
        moderately_sensitive:
           mod1_age_coef: output/mod1_ageadj.csv
           mod1_age_matrix: output/mod1_ageadj_matrix.csv
-          #mod2_full_coef: output/mod2_fulladj_coef.csv
-          #mod2_covid_full_coef: output/mod2_covid_fulladj_coef.csv
+          mod2_full_coef: output/mod2_fulladj.csv
+          mod2_full_maxtrix: output/mod2_fulladj_matrix.csv
+          mod2_full_maxtrix_r: output/mod2_fulladj_matrix_reduced.csv
+          mod2_full_plot: output/mod2_plot.jpeg
+          mod2_full_maxtrix_r2: output/mod2_fulladj_matrix_reduced_2.csv
           #mod3_sens_last_OR_CIs: output/mod3_fulladj_last.csv
           #forestplot_1: output/glm_fullAdjs.jpeg
           
