@@ -4,8 +4,6 @@ library("dplyr")
 library("tidyverse")
 library("MASS")
 library("ggpubr")
-#library(modelsummary)
-#library("gtsummary")
 
 ## Import data
 df <- read_csv(
@@ -50,10 +48,8 @@ df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
-#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max("2023-05-01"))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
-#df_plot<-ungroup(df_plot)
 
 df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
@@ -61,9 +57,6 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 
 df_plot=df_plot%>% group_by(covid, imd)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
-
-# write csv for rates
-write_csv(as.data.frame(df_plot), here::here("output", "ITS_plot_data_imd_updated.csv"))
 
 # df for each imd cat
 #df1=filter(df_plot, imd=="0")
@@ -108,15 +101,12 @@ df_plot_overall=bind_rows(exp2.1[2,],exp3.1[2,],exp4.1[2,],exp5.1[2,],exp6.1[2,]
 df_plot_overall$imd=c("1","2","3","4","5")
 df_plot_overall$imd=factor(df_plot_overall$imd,levels = c("1","2","3","4","5"))
 
-# df_plot_overall$imd=c("0","1","2","3","4","5")
-# df_plot_overall$imd=factor(df_plot_overall$imd,levels = c("0","1","2","3","4","5"))
-
 # IRR - incident rate ratio
 names(df_plot_overall)[1]="IRR"
 names(df_plot_overall)[2]="ci_l"
 names(df_plot_overall)[3]="ci_u"
 
-write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_plot_imd_IRR_overall_updated.csv"))
+write_csv(as.data.frame(df_plot_overall), here::here("output", "ITS_estimates_IRR_imd.csv"))
 
 ## plots for each category ##
 ## model prediction
@@ -130,16 +120,7 @@ df6 <- cbind(df6, "resp" = predict(m6.1, type = "response", se.fit = TRUE)[1:2])
 DF=rbind(df2,df3,df4,df5,df6)
 DF$imd<-factor(DF$imd,levels=c("1","2","3","4","5"))
 
-# DF=rbind(df1,df2,df3,df4,df5,df6)
-# DF$imd<-factor(DF$imd,levels=c("0","1","2","3","4","5"))
-
 # prediction -non covid - counterfactual trace
-# df1_counter <- subset(df1, select=-c(fit,se.fit))
-# df1_counter$covid=as.factor(0)
-# df1_counter$time.since=0
-# df1_counter  <- cbind(df1_counter, "resp" = predict(m1.1, type = "response", se.fit = TRUE, newdata = df1_counter)[1:2])
-# df1_counter_final=df1_counter%>%filter(date>=as.Date("2020-03-01"))
-
 df2_counter <- subset(df2, select=-c(fit,se.fit))
 df2_counter$covid=as.factor(0)
 df2_counter$time.since=0
@@ -170,12 +151,6 @@ df6_counter$time.since=0
 df6_counter  <- cbind(df6_counter, "resp" = predict(m6.1, type = "response", se.fit = TRUE, newdata = df6_counter)[1:2])
 df6_counter_final=df6_counter%>%filter(date>=as.Date("2020-03-01"))
 
-# DF_plot_f= rbind(df1,df2,df3,df4,df5,df6)
-# DF_plot_f$imd=factor(DF_plot_f$imd,levels=c("0","1","2","3","4","5"))
-
-# DF_counter= rbind(df1_counter,df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
-# DF_counter$imd=factor(DF_counter$imd,levels=c("0","1","2","3","4","5"))
-
 ## plot data without df1
 ## runs in R but error on server 
 DF_plot_f= rbind(df2,df3,df4,df5,df6)
@@ -185,22 +160,22 @@ DF_counter= rbind(df2_counter,df3_counter,df4_counter,df5_counter,df6_counter)
 DF_counter$imd=factor(DF_counter$imd,levels=c("1","2","3","4","5"))
 
 ### plot 
-plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+ 
+plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population_rounded, group=covid))+ 
   theme_bw()+ 
     annotate(geom = "rect", xmin = as.Date("2020-03-01"), xmax = as.Date("2020-04-01"),ymin = -Inf, ymax = Inf,fill="grey80", alpha=0.5)+ 
     #geom_point(shape=4)+   
   
   ##actual rate point
-  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population*1000))+ 
-  geom_line(aes(y=postnatal_8wk_code_present_rounded /population*1000),color="grey")+
+  geom_point(shape=4, aes(x=date, y=postnatal_8wk_code_present_rounded /population_rounded*1000))+ 
+  geom_line(aes(y=postnatal_8wk_code_present_rounded /population_rounded*1000),color="grey")+
   
   #### prediction model  
   geom_line(color="blue")+ 
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="blue") +
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population_rounded, ymax=((fit+1.96*se.fit)*1000)/population_rounded),alpha=0.2,fill="blue") +
       
   # prediction model: no covid -- counterfactual
-  geom_line(aes(y=fit*1000/population,x=date),color="lightgreen",data = DF_counter)+
-  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population, ymax=((fit+1.96*se.fit)*1000)/population),alpha=0.2,fill="lightgreen",data = DF_counter) +
+  geom_line(aes(y=fit*1000/population_rounded,x=date),color="lightgreen",data = DF_counter)+
+  geom_ribbon(aes(ymin=((fit-1.96*se.fit)*1000)/population_rounded, ymax=((fit+1.96*se.fit)*1000)/population_rounded),alpha=0.2,fill="lightgreen",data = DF_counter) +
    
   # group by indication  
   facet_grid(rows = vars(imd),scales="free_y",labeller = label_wrap_gen(width = 2, multi_line = TRUE))+
@@ -226,10 +201,14 @@ plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population, group=covid))+
 
 ggsave(
   plot= plot_ITS,
-  filename="plot_ITS_imd_1_updated.jpeg", path=here::here("output"), dpi = 300
+  filename="plot_ITS_by_imd.jpeg", path=here::here("output"), dpi = 300
   )
 
-write.csv(DF,here::here("output","plot_ITS_check_imd_updated.csv"))
+DF_plot_f <- DF_plot_f[,-c(1,3:5,9:10)]
+DF_counter <- DF_counter[,-c(1,3:5,9:10)]
+
+write.csv(DF_plot_f,here::here("output","plot_data_ITS_imd.csv"))
+write.csv(DF_counter,here::here("output","plot_data_ITS_imd_counterfactual.csv"))
 
 
 #### creates plot with IRRs and error bars/CIs
@@ -259,6 +238,6 @@ plot_ITS_imd_2<-ggplot(data=df_plot_overall, aes(y=imd, x=IRR))+
 
 ggsave(
   plot= plot_ITS_imd_2, 
-  filename="plot_ITS_imd_2_updated.jpeg", path=here::here("output"), dpi=300
+  filename="plot_ITS_imd_IRRs.jpeg", path=here::here("output"), dpi=300
   )
 
