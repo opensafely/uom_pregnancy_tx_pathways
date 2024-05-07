@@ -45,6 +45,9 @@ df6$cohort<-"12 weeks"
 df_plot_counter_final<-rbind(df4,df5,df6)
 df_plot_counter_final$cohort=factor(df_plot_counter_final$cohort,levels=c("8 weeks","6 weeks","12 weeks"))
 
+df_plot$date <- as.Date(df_plot$date)
+df_plot_counter_final$date <- as.Date(df_plot_counter_final$date)
+
 ###### plot
 
 plot_ITS_overall_by_cohort<-ggplot(df_plot, aes(x=date, y=fit*1000/population_rounded, group=covid))+ 
