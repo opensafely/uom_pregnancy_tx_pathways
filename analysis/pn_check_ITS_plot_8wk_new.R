@@ -3,8 +3,7 @@ library("data.table")
 library("dplyr")
 library("tidyverse")
 library("MASS")
-#library(modelsummary)
-#library("gtsummary")
+
 
 ## Import data
 df <- read_csv(
@@ -47,11 +46,9 @@ df$rate=df$postnatal_8wk_code_present_rounded/df$population_rounded
 df_plot=df %>% filter(!is.na(rate))
 
 ## define dates
-#breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 breaks <- c(as.Date("2019-01-01"), as.Date("2020-03-01"), max(df$date))
 
 df_plot=df_plot%>%mutate(covid=cut(date,breaks,labels = 1:2))
-#df_plot<-ungroup(df_plot)
 
 df_plot=df_plot%>% filter(covid==1 | covid==2)
 df_plot$covid= recode(df_plot$covid, '1'="0", '2'="1")
@@ -60,20 +57,13 @@ df_plot$covid <- factor(df_plot$covid, levels=c("0","1"))
 df_plot=df_plot%>% group_by(covid)%>%mutate(time.since=1:n())
 df_plot$time.since <- ifelse(df_plot$covid==0,0,df_plot$time.since)
 
-# # write csv for rates
-# df_plot_copy <- df_plot[,-c(1:4, 8,9)]
-# write_csv(as.data.frame(df_plot_copy), here::here("output", "ITS_plot_data_overall_rates.csv"))
-# rm(df_plot_copy)
-
-
-
 ### ITS analysis: 
 # times (months since start of study) = T
 # covid (binary) = D
 # time.since (months since covid) = P
 # our outcome var is rate (value) = Y
 
-m1.0 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since  , data = df_plot)
+m1.0 <- glm.nb(postnatal_8wk_code_present_rounded~ offset(log(population_rounded)) + covid + times + time.since, data = df_plot)
 
 # estimates and confidence intervals 
 est1.0 <- cbind(Estimate = coef(m1.0), confint(m1.0))
@@ -140,7 +130,7 @@ plot_ITS_overall<-ggplot(df_plot, aes(x=date, y=fit*1000/population_rounded, gro
             legend.position = "bottom",legend.title =element_blank(),
             strip.text = element_text(size = 6))+
       labs(
-        title = "",
+        title = "8 week cohort",
         x = "", 
         y = "Number of PN checks per 1000 Delivery codes")
     

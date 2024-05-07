@@ -434,50 +434,45 @@ actions:
         data_tab_counter: output/ITS_plot_data_overall_rates_and_predicted_counterfact.csv
         plot_ITS_overall: output/pn_check_ITS_overall_8wk_new_modelled_updated.jpeg        
 
-
   describe_ITS_plot_overall_6wk_new:
     run: r:latest analysis/pn_check_ITS_plot_6wk_new.R
     needs: [generate_measures_6wk_updated]
     outputs:
       moderately_sensitive:
-        plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk_new_modelled.jpeg 
         estimates: output/ITS_estimates_overall_6wk.csv
-        estimates_c: output/ITS_estimates_counter_6wk.csv
-        combined: output/ITS_estimates_combined_plot_6wk.csv
+        data_tab: output/ITS_plot_data_overall_rates_and_predicted_6wk.csv
+        data_tab_counter: output/ITS_plot_data_overall_rates_and_predicted_counterfact_6wk.csv
+        plot_ITS_overall_6wk: output/pn_check_ITS_overall_6wk_new_modelled_updated.jpeg 
 
   describe_ITS_plot_overall_12wk_new:
     run: r:latest analysis/pn_check_ITS_plot_12wk_new.R
     needs: [generate_measures_12wk_updated]
     outputs:
       moderately_sensitive:
-        plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk_new_modelled.jpeg 
         estimates: output/ITS_estimates_overall_12wk.csv
-        estimates_c: output/ITS_estimates_counter_12wk.csv
-        combined: output/ITS_estimates_combined_plot_12wk.csv
+        data_tab: output/ITS_plot_data_overall_rates_and_predicted_12wk.csv
+        data_tab_counter: output/ITS_plot_data_overall_rates_and_predicted_counterfact_12wk.csv
+        plot_ITS_overall_12wk: output/pn_check_ITS_overall_12wk_new_modelled_updated.jpeg 
 
+  describe_ITS_plot_combined:
+    run: r:latest analysis/pn_check_ITS_plot_combined.R
+    needs: [generate_measures_8wk_updated,generate_measures_6wk_updated,generate_measures_12wk_updated]
+    outputs:
+      moderately_sensitive:
+        plot_combined: output/plot_ITS_overall_by_cohort.jpeg
 
-  describe_ITS_plot_age_cat_edit:
+  describe_ITS_plot_age_cat:
      run: r:latest analysis/pn_check_ITS_plot_age_cat_edit.R
      needs: [generate_measures_8wk_updated]
      outputs:
        moderately_sensitive:
-          plot_ITS_age_cat_edit: output/plot_ITS_age_cat_edit_updated.jpeg
-          plot_ITS_age_cat_data: output/plot_ITS_check_age_cat_updated.csv
-          #plot_ITS_age_cat_edit_2: output/plot_ITS_age_cat_edit_2_updated.jpeg
-          plot_ITS_IRR_age_cat_data: output/ITS_plot_age_cat_IRR_overall_updated.csv
-          plot_ITS_plot_data: output/ITS_plot_data_age_cat_updated.csv
+          estimates: output/ITS_estimates_IRR_age_cat.csv
+          plot_ITS_age_cat: output/plot_ITS_by_age_cat.jpeg
+          plot_ITS_age_cat_plot_data: output/plot_data_ITS_age_cat.csv
+          plot_ITS_age_cat_plot_data_cf: output/plot_data_ITS_age_cat_counterfactual.csv
+          plot_irr: output/plot_ITS_age_cat_IRRs.jpeg
 
-  # describe_ITS_plot_ethnicity:
-  #    run: r:latest analysis/pn_check_ITS_plot_ethnicity_new.R
-  #    needs: [generate_measures_8wk_updated]
-  #    outputs:
-  #      moderately_sensitive:
-  #         plot_ITS_eth_1: output/plot_ITS_eth_1_updated.jpeg
-  #         plot_ITS_eth_2: output/plot_ITS_eth_2_updated.jpeg
-  #         plot_ITS_eth_data: output/plot_ITS_check_ethnicity_updated.csv
-  #         plot_ITS_IRR_eth_data: output/ITS_plot_ethnicity_IRR_overall_updated.csv
-  #         plot_ITS_plot_data: output/ITS_plot_data_ethnicity_updated.csv
-
+ 
   describe_ITS_plot_ethnicity_2:
      run: r:latest analysis/pn_check_ITS_plot_ethnicity_2.R
      needs: [generate_measures_8wk_updated]
