@@ -520,7 +520,6 @@ actions:
           mod2_full_maxtrix: output/mod2_fulladj_matrix.csv
           mod2_full_maxtrix_r: output/mod2_fulladj_matrix_reduced_Charlson.csv
           mod2_full_plot: output/mod2_plot_charlson.jpeg
-          mod2_full_maxtrix_r2: output/mod2_fulladj_matrix_reduced_2.csv
           mod3_full_coef: output/mod3_fulladj.csv
           mod3_full_maxtrix: output/mod3_fulladj_matrix.csv
           mod3_full_maxtrix_r: output/mod3_fulladj_matrix_reduced_comorbids.csv
