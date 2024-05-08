@@ -76,7 +76,7 @@ study = StudyDefinition(
 
     
     age=patients.age_as_of(
-        "2023-01-01",
+        "start_date",
         return_expectations={
             "rate": "universal",
             "int": {"distribution": "population_ages"},
@@ -173,21 +173,11 @@ study = StudyDefinition(
     ),   
     
 
-    # Number of delivery codes per person
-    delivery_code_number=patients.with_these_clinical_events(
-    delivery_codes_reviewed_2,
-    between=[start_date, end_date],
-    returning="number_of_matches_in_period",
-    return_expectations={
-       "int": {"distribution": "normal", "mean": 1, "stddev": 1},
-       "incidence": 0.6
-       },
-    ),
-
-    # Date of first delivery code
+    
+    # Date of first delivery code in present year ("index delivery")
     delivery_code_date=patients.with_these_clinical_events(
     delivery_codes_reviewed_2,
-    between=[start_date, end_date], 
+    between=["start_date", "end_date"], 
     returning="date",
     date_format="YYYY-MM-DD",
     find_last_match_in_period=False,
@@ -203,7 +193,7 @@ study = StudyDefinition(
     # Returns delivery code - first code
     delivery_code=patients.with_these_clinical_events(
     delivery_codes_reviewed_2,
-    between=[start_date, end_date],
+    between=["start_date", "end_date"], 
     find_last_match_in_period=False,
     returning="code", 
     return_expectations={
@@ -220,8 +210,32 @@ study = StudyDefinition(
       },
     ),
 
+    # Number of delivery CODES per person - around the time of the index delivery
+    delivery_code_number=patients.with_these_clinical_events(
+    delivery_codes_reviewed_2,
+    on_or_after = "delivery_code_date + 84 days",
+    returning="number_of_matches_in_period",
+    return_expectations={
+       "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+       "incidence": 0.6
+       },
+    ),
+    
 
-    # Is there pn code present - Y/N
+    # Number of PRIOR delivery EPISODES per person - at least 84 days apart
+    delivery_code_number=patients.with_these_clinical_events(
+    delivery_codes_reviewed_2,
+    on_or_before = "delivery_code_date - 84 days",
+    returning="number_of_episodes",
+    episode_defined_as = "series of events each <= 84 days apart"
+    return_expectations={
+       "int": {"distribution": "normal", "mean": 1, "stddev": 1},
+       "incidence": 0.6
+       },
+    ),
+
+
+    # Is there pn code present - Y/N - after delivery
     PN_code=patients.with_these_clinical_events(
     postnatal_8wk_codes_reviewed,
     between=["delivery_code_date", "delivery_code_date + 84 days"], 
@@ -232,11 +246,12 @@ study = StudyDefinition(
        },
     ),
 
-
+    # first pn code
     postnatal_code=patients.with_these_clinical_events(
     postnatal_8wk_codes_reviewed,
     between=["delivery_code_date", "delivery_code_date + 84 days"],
     returning="code", 
+    find_last_match_in_period=False,
     return_expectations={
         "category": {
             "ratios": {
@@ -370,7 +385,7 @@ study = StudyDefinition(
     #tops only
     top_num=patients.with_these_clinical_events(
         tops,
-        between=["2023-01-01", "2024-01-01"],
+        between=[start_date, end_date],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -380,7 +395,7 @@ study = StudyDefinition(
     
     top_probable_num=patients.with_these_clinical_events(
         tops_probable,
-        between=["2023-01-01", "2024-01-01"],
+        between=[start_date, end_date],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -390,7 +405,7 @@ study = StudyDefinition(
 
     tops_any_num=patients.with_these_clinical_events(
         tops_any_codes,
-        between=["2023-01-01", "2024-01-01"],
+        between=[start_date, end_date],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -402,7 +417,7 @@ study = StudyDefinition(
     ## dating related codes:
     lmp_num=patients.with_these_clinical_events(
         lmp_codes,
-        between=["2023-01-01", "2024-01-01"],
+        between=[start_date, end_date],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -412,7 +427,7 @@ study = StudyDefinition(
 
     edd_num=patients.with_these_clinical_events(
         edd_codes,
-        between=["2023-01-01", "2024-01-01"],
+        between=[start_date, end_date],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -422,7 +437,7 @@ study = StudyDefinition(
 
     edc_num=patients.with_these_clinical_events(
         edc_codes,
-        between=["2023-01-01", "2024-01-01"],
+        between=[start_date, end_date],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -435,7 +450,7 @@ study = StudyDefinition(
     ### history of hypertension in pregnancy
     hbp_pregnancy=patients.with_these_clinical_events(
         hypertension_codes_preg,
-        between=["delivery_code_date - 9 months", "delivery_code_date"],
+        between=["delivery_code_date - 270 days", "delivery_code_date"],
         returning="binary_flag",
         find_first_match_in_period=True,
         return_expectations={"incidence": 0.1, "date": {"earliest": start_date}
@@ -445,7 +460,7 @@ study = StudyDefinition(
     # all hypertension code
     hbp_all=patients.with_these_clinical_events(
         hypertension_codes_all,
-        between=["delivery_code_date - 9 months", "delivery_code_date"],
+        between=["delivery_code_date - 270 days", "delivery_code_date"],
         returning="binary_flag",
         find_first_match_in_period=True,
         return_expectations={"incidence": 0.1, "date": {"earliest": start_date}
@@ -455,7 +470,7 @@ study = StudyDefinition(
     # any hypertension code - combined vars above
     hbp_any=patients.with_these_clinical_events(
         any_hypertension_code,
-        between=["delivery_code_date - 9 months", "delivery_code_date"],
+        between=["delivery_code_date - 270 days", "delivery_code_date"],
         returning="binary_flag",
         find_first_match_in_period=True,
         return_expectations={"incidence": 0.1, "date": {"earliest": start_date}
