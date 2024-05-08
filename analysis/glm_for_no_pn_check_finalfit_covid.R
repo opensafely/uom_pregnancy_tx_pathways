@@ -250,17 +250,17 @@ fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
 
 write_csv(fit_covid_results, here::here("output","mod7_covid_traditional.csv"))
 
-## finalfit() glm
-explanatory_m2_covid=c("Age*covid2","BMI*covid2","Region*covid2" , "Ethnicity*covid2" ,"IMD*covid2", "Charlson_Gp*covid2"  )
+# ## finalfit() glm
+# explanatory_m2_covid=c("Age*covid2","BMI*covid2","Region*covid2" , "Ethnicity*covid2" ,"IMD*covid2", "Charlson_Gp*covid2"  )
 
-df_input %>%
-  finalfit.glm(dependent, explanatory_m2_covid, add_dependent_label = F,
-               dependent_label_prefix= "", metrics = TRUE) -> t_m7
-t_m7.df <- as.data.frame(t_m7)
-write_csv(t_m7[[1]], here::here("output","mod7_fulladj.csv"))
-write_csv(t_m7.df, here::here("output","mod7_fulladj_matrix.csv"))
-t_m7.df_adj <- t_m7.df[,-c(3:5)]
-write_csv(t_m7.df_adj, here::here("output","mod7_finalfit_covid.csv"))
+# df_input %>%
+#   finalfit.glm(dependent, explanatory_m2_covid, add_dependent_label = F,
+#                dependent_label_prefix= "", metrics = TRUE) -> t_m7
+# t_m7.df <- as.data.frame(t_m7)
+# #write_csv(t_m7[[1]], here::here("output","mod7_fulladj.csv"))
+# #write_csv(t_m7.df, here::here("output","mod7_fulladj_matrix.csv"))
+# t_m7.df_adj <- t_m7.df[,-c(3:5)]
+# write_csv(t_m7.df_adj, here::here("output","mod7_finalfit_covid.csv"))
 
 
 

@@ -341,39 +341,43 @@ ggsave(
 )
 
 
-## covid time
+### covid time
 
 ### dummy data dates not working (only 2019 generated)
 ## recreate covid variable to include nas as a level - na wont be introduced on real data 
-str(df_input$covid)
-df_input <- df_input %>% dplyr::mutate(covid = case_when(is.na(covid) ~ 9,
+#str(df_input$covid)
+df_input <- df_input %>% dplyr::mutate(covid2 = case_when(is.na(covid) ~ 9,
                                                            covid == 0~ 0,
                                                          covid ==1 ~1))
-df_input$covid <- as.factor(df_input$covid)
-variables_names_charlgp_covid <- df_input %>% dplyr::select(Age, BMI, Region, Ethnicity, IMD,
-                                                            covid_positive, Charlson_Gp, covid)
+df_input$covid2 <- as.factor(df_input$covid2)
 
-
-#model_covid <- glm(postnatal_8wk_code_present ~ (Age+BMI+Region+Ethnicity+IMD+Charlson_Gp) * covid, data = df_input, family = binomial(link = "logit"))
-
-
-explanatory_m2_covid=c("Age*covid","BMI*covid","Region*covid" , "Ethnicity*covid" ,"IMD*covid", "Charlson_Gp*covid"  )
-
-df_input %>%
-  finalfit.glm(dependent, explanatory_m2_covid, add_dependent_label = F,
-               dependent_label_prefix= "", metrics = TRUE) -> t_m7
-t_m7.df <- as.data.frame(t_m7)
-# write_csv(t_m7[[1]], here::here("output","mod7_fulladj.csv"))
-# write_csv(t_m7.df, here::here("output","mod7_fulladj_matrix.csv"))
-t_m7.df_adj <- t_m7.df[,-c(3:5)]
-write_csv(t_m7.df_adj, here::here("output","mod7_fulladj_matrix_reduced_covid.csv"))
 
 ## traditional glm()
 model_covid <- glm(postnatal_8wk_code_present ~ (Age+BMI+Region+Ethnicity+IMD+Charlson_Gp) * covid2, data = df_input, family = binomial(link = "logit"))
 library('broom')
-tidy(model_covid)
-fit_covid <- as.data.frame(augment((model_covid)))
-write_csv(fit_covid, here::here("output","mod7_fulladj_traditional_reduced_covid.csv"))
+
+# Extract coefficient estimates and exponentiate them
+fit_covid_results <- tidy(model_covid, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals <- confint(model_covid)
+exp_conf_intervals <- exp(conf_intervals)
+# Append exponentiated confidence intervals to the data frame
+fit_covid_results$exp_conf_low <- exp_conf_intervals[, 1]
+fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
+
+write_csv(fit_covid_results, here::here("output","mod7_fulladj_traditional_reduced_covid.csv"))
+
+# ## finalfit() glm
+# explanatory_m2_covid=c("Age*covid2","BMI*covid2","Region*covid2" , "Ethnicity*covid2" ,"IMD*covid2", "Charlson_Gp*covid2"  )
+
+# df_input %>%
+#   finalfit.glm(dependent, explanatory_m2_covid, add_dependent_label = F,
+#                dependent_label_prefix= "", metrics = TRUE) -> t_m7
+# t_m7.df <- as.data.frame(t_m7)
+# #write_csv(t_m7[[1]], here::here("output","mod7_fulladj.csv"))
+# #write_csv(t_m7.df, here::here("output","mod7_fulladj_matrix.csv"))
+# t_m7.df_adj <- t_m7.df[,-c(3:5)]
+# write_csv(t_m7.df_adj, here::here("output","mod7_finalfit_covid.csv"))
 
 
 
