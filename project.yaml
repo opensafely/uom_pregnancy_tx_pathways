@@ -527,12 +527,13 @@ actions:
           mod3_full_plot: output/mod3_plot_comor.jpeg
           mod4_full_coef: output/mod4_fulladj.csv
           mod4_full_maxtrix: output/mod4_fulladj_matrix.csv
-          mod4_full_maxtrix_r: output/mod4_fulladj_matrix_reduced_hbp_pregnancy.csv.csv
+          mod4_full_maxtrix_r: output/mod4_fulladj_matrix_reduced_hbp_pregnancy.csv
           mod4_full_plot: output/mod4_plot_hpb.jpeg
-          mod5_full_maxtrix_r: output/mod5_fulladj_matrix_reduced_onepat.csv.csv.csv
+          mod5_full_maxtrix_r: output/mod5_fulladj_matrix_reduced_onepat.csv
           mod5_full_plot: output/mod5_plot_sensitivity_onepat.jpeg
           mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_22onwards.csv
           mod6_full_plot: output/mod6_plot_sensitivity_22onwards.jpeg
+          mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_covid.csv
           #mod3_sens_last_OR_CIs: output/mod3_fulladj_last.csv
           #forestplot_1: output/glm_fullAdjs.jpeg
           
