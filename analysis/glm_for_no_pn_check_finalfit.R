@@ -155,66 +155,212 @@ colnames(df_input)[3]<-"Age"
 colnames(df_input)[7]<-"Region"
 colnames(df_input)[8]<-"IMD"
 colnames(df_input)[9]<-"BMI"
-colnames(df_input)[40]<-"HBP"
+#colnames(df_input)[40]<-"HBP"
+
 
 df_input <- df_input %>% filter(Ethnicity != "Unknown")
 df_input$Ethnicity<-droplevels(df_input$Ethnicity)
-variables_names <- df_input %>% dplyr::select(Age, BMI)#, Region, Ethnicity, IMD, 
-                                              #Charlson_Gp, covid_positive, HBP)
 
-explanatory_m2=colnames(variables_names)
+
+## convert numeric to factor levels 
+#str(df_input)
+df_input <- df_input %>% mutate_at(c("cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
+                                     "heart_failure_comor","connective_tissue_comor", "dementia_comor",
+                                     "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
+                                     "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
+                                     "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
+                                     "peptic_ulcer_comor" , "peripheral_vascular_comor",
+                                     "hbp_pregnancy", "hbp_all", "hbp_any"), as.factor)
+
+
+###remove _comor from column names for plotting
+
+for ( col in 1:ncol(df_input)){
+  colnames(df_input)[col] <-  sub("_comor.*", "", colnames(df_input)[col])
+}
+#colnames(df_input)
+
+### age & bmi adj
+variables_names <- df_input %>% dplyr::select(Age, BMI)
+explanatory_m1=colnames(variables_names)
 dependent="postnatal_8wk_code_present"
 
 df_input %>%
-  finalfit(dependent, explanatory_m2, 
+  finalfit.glm(dependent, explanatory_m1, add_dependent_label = F,
+               dependent_label_prefix= "", metrics = TRUE) -> t_m1
+t_m1.df <- as.data.frame(t_m1)
+write_csv(t_m1[[1]], here::here("output","mod1_age_bmi.csv"))
+write_csv(t_m1.df, here::here("output","mod1_age_bmi_matrix.csv"))
+
+
+## select variable for fully adjusted model
+###########################################
+###### Charlson Gp ##################
+variables_names_charlgp <- df_input %>% dplyr::select(Age, BMI, Region, Ethnicity, IMD,
+                                                      covid_positive, Charlson_Gp)
+
+variables_names_charlgp_covid <- df_input %>% dplyr::select(Age, BMI, Region, Ethnicity, IMD,
+                                                      covid_positive, Charlson_Gp, covid)
+
+
+
+variables_names_comor <- df_input %>% 
+                  dplyr::select(Age, BMI, Region, Ethnicity, IMD, covid_positive,
+                                "cancer","cardiovascular","chronic_obstructive_pulmonary",
+                                "heart_failure","connective_tissue", "dementia",
+                                "diabetes","diabetes_complications","hemiplegia",
+                                "hiv","metastatic_cancer" ,"mild_liver",
+                                "mod_severe_liver", "mod_severe_renal", "mi",
+                                "peptic_ulcer" , "peripheral_vascular")
+
+variables_names_hbp_pregnancy <- df_input %>% dplyr::select(Age, BMI, Region, 
+                                                            Ethnicity, IMD, covid_positive, hbp_pregnancy)
+
+
+explanatory_m2=colnames(variables_names_charlgp)
+explanatory_m2_covid=colnames(variables_names_charlgp_covid)
+explanatory_m3=colnames(variables_names_comor)
+explanatory_m4=colnames(variables_names_hbp_pregnancy)
+
+dependent="postnatal_8wk_code_present"
+
+df_input %>%
+  finalfit.glm(dependent, explanatory_m2, add_dependent_label = F,
            dependent_label_prefix= "", metrics = TRUE) -> t_m2
 t_m2.df <- as.data.frame(t_m2)
 write_csv(t_m2[[1]], here::here("output","mod2_fulladj.csv"))
 write_csv(t_m2.df, here::here("output","mod2_fulladj_matrix.csv"))
 t_m2.df_adj <- t_m2.df[,-c(3:5)]
-write_csv(t_m2.df_adj, here::here("output","mod2_fulladj_matrix_reduced.csv"))
+write_csv(t_m2.df_adj, here::here("output","mod2_fulladj_matrix_reduced_Charlson.csv"))
 
 
 mod2_plot<- df_input %>% 
-                or_plot(dependent, explanatory_m2)#, 
-                    #breaks = c(0.5, 1, 5, 10, 20, 30))
-
-df_input %>% 
-  ff_glimpse(dependent, explanatory_m2)
-
+                or_plot(dependent, explanatory_m2, 
+                        column_space = c(-0.5, -0.1, 0.5),
+                        add_dependent_label = F,
+                        width = 10, height = 7,
+                        dependent_label = "No PN Check",
+                        table_text_size = 3)
 
 ggsave(
-  plot= mod2_plot, 
-  filename="mod2_plot.jpeg", path=here::here("output"), dpi=300
+  plot= mod2_plot, width = 11.5, height = 8,
+  filename="mod2_plot_charlson.jpeg", path=here::here("output"), dpi=300
 )
 
 
-## 
-# Load the necessary library
-library(stringr)
-
-# Function to extract values from the string
-extract_values <- function(row) {
-  values <- str_extract(row, "\\d+\\.?\\d*")  # Extract numeric values
-  values <- as.numeric(values)  # Convert to numeric
-  return(values)
-}
-
-# Apply the function to create a matrix of values
-values_matrix <- t(sapply(t_m2.df_adj$OR..multivariable., extract_values))
-
-# Convert the matrix to a data frame
-extracted_values_df <- as.data.frame(values_matrix)
-
-# Rename the columns
-colnames(extracted_values_df) <- c("OR", "CI_lower", "CI_upper")
-
-# Append the extracted values to the original data frame
-t_m2.df_adj2 <- cbind(t_m2.df_adj, extracted_values_df)
-
-write_csv(t_m2.df_adj2, here::here("output","mod2_fulladj_matrix_reduced_2.csv"))
+df_input %>%
+  finalfit.glm(dependent, explanatory_m3, add_dependent_label = F,
+               dependent_label_prefix= "", metrics = TRUE) -> t_m3
+t_m3.df <- as.data.frame(t_m3)
+write_csv(t_m3[[1]], here::here("output","mod3_fulladj.csv"))
+write_csv(t_m3.df, here::here("output","mod3_fulladj_matrix.csv"))
+t_m3.df_adj <- t_m3.df[,-c(3:5)]
+write_csv(t_m3.df_adj, here::here("output","mod3_fulladj_matrix_reduced_comorbids.csv"))
 
 
+mod3_plot<- df_input %>% 
+  or_plot(dependent, explanatory_m3, 
+          column_space = c(-0.5, -0.1, 0.5),
+          add_dependent_label = F,
+          width = 10, height = 7,
+          dependent_label = "No PN Check",
+          table_text_size = 3,
+          remove_ref = TRUE)
+
+ggsave(
+  plot= mod3_plot, width = 11.5, height = 8,
+  filename="mod3_plot_comor.jpeg", path=here::here("output"), dpi=300
+)
+
+##### HBP
+df_input %>%
+  finalfit.glm(dependent, explanatory_m4, add_dependent_label = F,
+               dependent_label_prefix= "", metrics = TRUE) -> t_m4
+t_m4.df <- as.data.frame(t_m4)
+write_csv(t_m4[[1]], here::here("output","mod4_fulladj.csv"))
+write_csv(t_m4.df, here::here("output","mod4_fulladj_matrix.csv"))
+t_m4.df_adj <- t_m4.df[,-c(3:5)]
+write_csv(t_m4.df_adj, here::here("output","mod4_fulladj_matrix_reduced_hbp_pregnancy.csv"))
+
+
+mod4_plot<- df_input %>% 
+  or_plot(dependent, explanatory_m4, 
+          column_space = c(-0.5, -0.1, 0.5),
+          add_dependent_label = F,
+          width = 10, height = 7,
+          dependent_label = "No PN Check",
+          table_text_size = 3)
+
+ggsave(
+  plot= mod4_plot, width = 11.5, height = 8,
+  filename="mod4_plot_hpb.jpeg", path=here::here("output"), dpi=300
+)
+
+
+##### sensitivityanalysis 
+### model on obs per patient ID
+
+### take one random row per patient
+dfone <- df_input %>% group_by(patient_id) %>%
+  slice_sample(n=1)
+dfone %>%
+  finalfit.glm(dependent, explanatory_m2, add_dependent_label = F,
+               dependent_label_prefix= "", metrics = TRUE) -> t_m5
+t_m5.df <- as.data.frame(t_m5)
+t_m5.df_adj <- t_m5.df[,-c(3:5)]
+write_csv(t_m5.df_adj, here::here("output","mod5_fulladj_matrix_reduced_onepat.csv"))
+
+
+mod5_plot<- dfone %>% 
+  or_plot(dependent, explanatory_m2, 
+          column_space = c(-0.5, -0.1, 0.5),
+          add_dependent_label = F,
+          width = 10, height = 7,
+          dependent_label = "No PN Check",
+          table_text_size = 3)
+
+ggsave(
+  plot= mod2_plot, width = 11.5, height = 8,
+  filename="mod5_plot_sensitivity_onepat.jpeg", path=here::here("output"), dpi=300
+)
+
+
+
+
+### take data from 2022 onwards
+df22onward<- df_input %>% filter(delivery_code_date > "31-12-2021")
+  
+df22onward %>%
+  finalfit.glm(dependent, explanatory_m2, add_dependent_label = F,
+               dependent_label_prefix= "", metrics = TRUE) -> t_m6
+t_m6.df <- as.data.frame(t_m6)
+t_m6.df_adj <- t_m6.df[,-c(3:5)]
+write_csv(t_m6.df_adj, here::here("output","mod6_fulladj_matrix_reduced_22onwards.csv"))
+
+
+mod6_plot<- df22onward %>% 
+  or_plot(dependent, explanatory_m2, 
+          column_space = c(-0.5, -0.1, 0.5),
+          add_dependent_label = F,
+          width = 10, height = 7,
+          dependent_label = "No PN Check",
+          table_text_size = 3)
+
+ggsave(
+  plot= mod6_plot, width = 11.5, height = 8,
+  filename="mod6_plot_sensitivity_22onwards.jpeg", path=here::here("output"), dpi=300
+)
+
+
+## covid time
+df_input %>%
+  finalfit.glm(dependent, explanatory_m2, add_dependent_label = F,
+               dependent_label_prefix= "", metrics = TRUE) -> t_m2
+t_m2.df <- as.data.frame(t_m2)
+write_csv(t_m2[[1]], here::here("output","mod2_fulladj.csv"))
+write_csv(t_m2.df, here::here("output","mod2_fulladj_matrix.csv"))
+t_m2.df_adj <- t_m2.df[,-c(3:5)]
+write_csv(t_m2.df_adj, here::here("output","mod2_fulladj_matrix_reduced_Charlson.csv"))
 
 
 # #covid
@@ -256,7 +402,7 @@ write_csv(t_m2.df_adj2, here::here("output","mod2_fulladj_matrix_reduced_2.csv")
 # #library(forestplot)
 # library(ggplot2)
 # # remove intercept
-# mod2df.exp<- mod2df.exp[c(-1),]
+# #mod2df.exp<- mod2df.exp[c(-1),]
 # colnames(mod2df.exp)[2]<-"LOW"
 # colnames(mod2df.exp)[3]<-"HIGH"
 # mod2df.exp$predictors<-as.factor(row.names(mod2df.exp))
@@ -272,7 +418,7 @@ write_csv(t_m2.df_adj2, here::here("output","mod2_fulladj_matrix_reduced_2.csv")
 # # Convert predictor_gp to factor to maintain the order
 # mod2df.exp$predictor_gp <- factor(mod2df.exp$predictor_gp, levels = c("Age", "Ethnicity", "Region", "IMD", "BMI", "Charlson"))
 # #table(mod2df.exp$predictor_gp)
-# 
+
 # # Create the forest plot
 # plot2 <- ggplot(mod2df.exp, aes(x = Estimate, y = predictors)) +
 #   geom_point(size = 2, position = position_dodge(width = 0.5)) +

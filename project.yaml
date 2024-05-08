@@ -510,17 +510,29 @@ actions:
          plot_ITS_plot_data: output/ITS_plot_data_region_updated.csv
 
   describe_glm_for_no_pn_check:
-      run: r:latest analysis/glm_for_no_pn_check.r
+      run: r:latest analysis/glm_for_no_pn_check_finalfit.R
       needs: [describe_basic_record_to_rds_process]
       outputs:
        moderately_sensitive:
-          mod1_age_coef: output/mod1_ageadj.csv
-          mod1_age_matrix: output/mod1_ageadj_matrix.csv
+          mod1_age_coef: output/mod1_age_bmi.csv
+          mod1_age_matrix: output/mod1_age_bmi_matrix.csv
           mod2_full_coef: output/mod2_fulladj.csv
           mod2_full_maxtrix: output/mod2_fulladj_matrix.csv
-          mod2_full_maxtrix_r: output/mod2_fulladj_matrix_reduced.csv
-          mod2_full_plot: output/mod2_plot.jpeg
+          mod2_full_maxtrix_r: output/mod2_fulladj_matrix_reduced_Charlson.csv
+          mod2_full_plot: output/mod2_plot_charlson.jpeg
           mod2_full_maxtrix_r2: output/mod2_fulladj_matrix_reduced_2.csv
+          mod3_full_coef: output/mod3_fulladj.csv
+          mod3_full_maxtrix: output/mod3_fulladj_matrix.csv
+          mod3_full_maxtrix_r: output/mod3_fulladj_matrix_reduced_comorbids.csv
+          mod3_full_plot: output/mod3_plot_comor.jpeg
+          mod4_full_coef: output/mod4_fulladj.csv
+          mod4_full_maxtrix: output/mod4_fulladj_matrix.csv
+          mod4_full_maxtrix_r: output/mod4_fulladj_matrix_reduced_hbp_pregnancy.csv.csv
+          mod4_full_plot: output/mod4_plot_hpb.jpeg
+          mod5_full_maxtrix_r: output/mod5_fulladj_matrix_reduced_onepat.csv.csv.csv
+          mod5_full_plot: output/mod5_plot_sensitivity_onepat.jpeg
+          mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_22onwards.csv
+          mod6_full_plot: output/mod6_plot_sensitivity_22onwards.jpeg
           #mod3_sens_last_OR_CIs: output/mod3_fulladj_last.csv
           #forestplot_1: output/glm_fullAdjs.jpeg
           
