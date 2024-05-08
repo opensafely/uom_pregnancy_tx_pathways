@@ -238,9 +238,17 @@ df_input$covid2 <- as.factor(df_input$covid2)
 ## traditional glm()
 model_covid <- glm(postnatal_8wk_code_present ~ (Age+BMI+Region+Ethnicity+IMD+Charlson_Gp) * covid2, data = df_input, family = binomial(link = "logit"))
 library('broom')
-tidy(model_covid)
-fit_covid <- as.data.frame(augment((model_covid)))
-write_csv(fit_covid, here::here("output","mod7_covid_traditional.csv"))
+
+# Extract coefficient estimates and exponentiate them
+fit_covid_results <- tidy(model_covid, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals <- confint(model_covid)
+exp_conf_intervals <- exp(conf_intervals)
+# Append exponentiated confidence intervals to the data frame
+fit_covid_results$exp_conf_low <- exp_conf_intervals[, 1]
+fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
+
+write_csv(fit_covid_results, here::here("output","mod7_covid_traditional.csv"))
 
 ## finalfit() glm
 explanatory_m2_covid=c("Age*covid2","BMI*covid2","Region*covid2" , "Ethnicity*covid2" ,"IMD*covid2", "Charlson_Gp*covid2"  )
