@@ -223,7 +223,7 @@ study = StudyDefinition(
     
 
     # Number of PRIOR delivery EPISODES per person - at least 84 days apart
-    delivery_code_number=patients.with_these_clinical_events(
+    prior_deliveries=patients.with_these_clinical_events(
     delivery_codes_reviewed_2,
     on_or_before = "delivery_code_date - 84 days",
     returning="number_of_episodes",
