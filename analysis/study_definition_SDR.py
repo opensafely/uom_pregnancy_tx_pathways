@@ -227,7 +227,7 @@ study = StudyDefinition(
     delivery_codes_reviewed_2,
     on_or_before = "delivery_code_date - 84 days",
     returning="number_of_episodes",
-    episode_defined_as = "series of events each <= 84 days apart"
+    episode_defined_as = "series of events each <= 84 days apart",
     return_expectations={
        "int": {"distribution": "normal", "mean": 1, "stddev": 1},
        "incidence": 0.6
