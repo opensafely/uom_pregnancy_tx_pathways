@@ -10,13 +10,6 @@ df <- read_csv(here::here("output","input_SDR.csv.gz"))
 df$delivery_code_date<-as.Date(df$delivery_code_date)
 
 
-# ## group by patient ID, then arrange by delivery code date
-# ## take first match per patient. 
-# df6wk <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
-# rm(df)
-# df6wk$cohort <- "within 6 weeks"
-
-
 ############ how many unique patients in each cohort
 n_pats <- round(length(unique(df$patient_id))/5)*5
 n_pats_df <- data.frame(n_pats)
@@ -36,9 +29,9 @@ df$hbp_any <- as.factor(df$hbp_any)
 
 # select continuous variables for the baseline table
 variables_names_contin <- df %>% 
-  select(patient_id, age, delivery_code_number,
+  select(patient_id, age, delivery_code_number,prior_deliveries,
               antenatal_num,postterm_num,blightedovum_num,
-              ectopic_num,miscarrage_num,molar_num,
+              ectopic_num,miscarriage_num,molar_num,
               stillbirth_num,loss_any_num,multips_num,preeclampsia_num,
               top_num,top_probable_num,tops_any_num, lmp_num,edd_num,
               edc_num) 
@@ -145,3 +138,9 @@ data_age <- data_age %>%
 write_csv(data_age, here::here("output", "SDR_table_categorical_age.csv"))
 #write_csv(data, here::here("output", "blt_6v12_weeks_categorical_rounded.csv"))
 
+## overall table:
+# columns for baseline table
+colsfortab <- colnames(df)
+df %>% summary_factorlist(explanatory = colsfortab) -> t_overall
+t_overall<-(t_overall[-1,])
+write_csv(t_overall, here::here("output", "SDR_table_all.csv"))
