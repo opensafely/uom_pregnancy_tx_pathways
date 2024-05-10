@@ -42,7 +42,7 @@ study = StudyDefinition(
         AND
         registered
         AND
-        (age >= min_age AND age < max_age)
+        (age >= 14 AND age < 50)
         AND
         has_follow_up_previous_year
         AND
@@ -76,7 +76,7 @@ study = StudyDefinition(
 
     
     age=patients.age_as_of(
-        "start_date",
+        "index_date",
         return_expectations={
             "rate": "universal",
             "int": {"distribution": "population_ages"},
@@ -177,7 +177,7 @@ study = StudyDefinition(
     # Date of first delivery code in present year ("index delivery")
     delivery_code_date=patients.with_these_clinical_events(
     delivery_codes_reviewed_2,
-    between=["start_date", "end_date"], 
+    between=["index_date", "2024-01-01"], 
     returning="date",
     date_format="YYYY-MM-DD",
     find_last_match_in_period=False,
@@ -193,7 +193,7 @@ study = StudyDefinition(
     # Returns delivery code - first code
     delivery_code=patients.with_these_clinical_events(
     delivery_codes_reviewed_2,
-    between=["start_date", "end_date"], 
+    between=["index_date", "2024-01-01"],  
     find_last_match_in_period=False,
     returning="code", 
     return_expectations={
@@ -280,7 +280,7 @@ study = StudyDefinition(
     # Number of postterm codes per person
     postterm_num=patients.with_these_clinical_events(
         postterm_codes,
-        between=["delivery_code_date - 30 days", "delivery_code_date+ + 3 days"],
+        between=["delivery_code_date - 30 days", "delivery_code_date + 3 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -297,7 +297,7 @@ study = StudyDefinition(
     # Number of blighted ovum codes per persons
     blightedovum_num=patients.with_these_clinical_events(
         blighted_ovum,
-        between=["delivery_code_date - 84 days", "delivery_code_date+ + 3 days"],
+        between=["delivery_code_date - 84 days", "delivery_code_date + 3 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -307,7 +307,7 @@ study = StudyDefinition(
 
     ectopic_num=patients.with_these_clinical_events(
         ectopic,
-        between=["delivery_code_date - 84 days", "delivery_code_date+ + 3 days"],
+        between=["delivery_code_date - 84 days", "delivery_code_date + 3 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -315,9 +315,9 @@ study = StudyDefinition(
             },
         ),  
 
-    miscarrage_num=patients.with_these_clinical_events(
-        miscarrage,
-        between=["delivery_code_date - 30 days", "delivery_code_date+ + 3 days"],
+    miscarriage_num=patients.with_these_clinical_events(
+        miscarriage,
+        between=["delivery_code_date - 30 days", "delivery_code_date + 3 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -327,7 +327,7 @@ study = StudyDefinition(
 
     molar_num=patients.with_these_clinical_events(
         molar,
-        between=["delivery_code_date - 84 days", "delivery_code_date+ + 3 days"],
+        between=["delivery_code_date - 84 days", "delivery_code_date + 3 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -338,7 +338,7 @@ study = StudyDefinition(
     # Number of stillbirth codes per persons
     stillbirth_num=patients.with_these_clinical_events(
         stillbirth_codes,
-        between=["delivery_code_date - 30 days", "delivery_code_date+ + 3 days"],
+        between=["delivery_code_date - 30 days", "delivery_code_date + 10 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -349,7 +349,7 @@ study = StudyDefinition(
     ## any loss combining above 5 variables    
     loss_any_num=patients.with_these_clinical_events(
         loss_any_codes,
-        between=["delivery_code_date - 84 days", "delivery_code_date+ + 3 days"],
+        between=["delivery_code_date - 84 days", "delivery_code_date + 3 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -360,7 +360,7 @@ study = StudyDefinition(
     ### multiples
     multips_num=patients.with_these_clinical_events(
         multi_pregnancy,
-        between=["delivery_code_date - 84 days", "delivery_code_date+ + 3 days"],
+        between=["delivery_code_date - 84 days", "delivery_code_date + 3 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -372,7 +372,7 @@ study = StudyDefinition(
     ## preeclampsia, eclampsia
     preeclampsia_num=patients.with_these_clinical_events(
         preeclampsia,
-        between=["delivery_code_date - 84 days", "delivery_code_date+ + 3 days"],
+        between=["delivery_code_date - 84 days", "delivery_code_date + 3 days"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -385,7 +385,7 @@ study = StudyDefinition(
     #tops only
     top_num=patients.with_these_clinical_events(
         tops,
-        between=[start_date, end_date],
+        between=["index_date", "2024-01-01"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -395,7 +395,7 @@ study = StudyDefinition(
     
     top_probable_num=patients.with_these_clinical_events(
         tops_probable,
-        between=[start_date, end_date],
+        between=["index_date", "2024-01-01"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -405,7 +405,7 @@ study = StudyDefinition(
 
     tops_any_num=patients.with_these_clinical_events(
         tops_any_codes,
-        between=[start_date, end_date],
+        between=["index_date", "2024-01-01"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -417,7 +417,7 @@ study = StudyDefinition(
     ## dating related codes:
     lmp_num=patients.with_these_clinical_events(
         lmp_codes,
-        between=[start_date, end_date],
+        between=["index_date", "2024-01-01"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -427,7 +427,7 @@ study = StudyDefinition(
 
     edd_num=patients.with_these_clinical_events(
         edd_codes,
-        between=[start_date, end_date],
+        between=["index_date", "2024-01-01"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
@@ -437,7 +437,7 @@ study = StudyDefinition(
 
     edc_num=patients.with_these_clinical_events(
         edc_codes,
-        between=[start_date, end_date],
+        between=["index_date", "2024-01-01"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 1, "stddev": 1},
