@@ -52,7 +52,7 @@ ectopic= codelist_from_csv(
     column="code",
 )
 
-miscarrage= codelist_from_csv(
+miscarriage= codelist_from_csv(
     "codelists/user-VickiPalin-pregnancy_miscarriage_snomed.csv",
     system="snomed",
     column="code",
@@ -73,7 +73,7 @@ stillbirth_codes= codelist_from_csv(
 loss_any_codes = combine_codelists(
         blighted_ovum,
         ectopic,
-        miscarrage,
+        miscarriage,
         molar,
         stillbirth_codes
 )
