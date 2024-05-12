@@ -27,7 +27,8 @@ actions:
            cohort_contin_region: output/SDR_table_continuous_vars_by_region.csv
            cohort_contin_age: output/SDR_table_continuous_vars_by_age.csv
            cohorts_catagorical_region: output/SDR_table_categorical_region.csv
-           cohorts_catagorical_age: output/SDR_table_categorical_age.csv       
+           cohorts_catagorical_age: output/SDR_table_categorical_age.csv 
+           cohort_overall: output/SDR_table_all.csv      
  ######################################################
 
 
