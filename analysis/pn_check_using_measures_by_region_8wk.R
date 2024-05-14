@@ -71,6 +71,7 @@ df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
 # create dataframe without NA 
 df_gaps=df_gaps%>%filter(!is.na(region))
 df_gaps <- df_gaps %>% filter(region != "NA")
+df_gaps <- df_gaps %>% filter(region != "1")
 df_gaps$region<-droplevels(df_gaps$region)
 
 
