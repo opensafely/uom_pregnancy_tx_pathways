@@ -580,4 +580,11 @@ actions:
           mod7_traditional_covid: output/mod7_covid_traditional.csv
           #mod7_finalfit_covid: output/mod7_finalfit_covid.csv
 
+  describe_glm_for_no_pn_check_sensitivity_12week_cohort:
+      run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity12wk_cohort.R
+      needs: [process_cohorts_select_one_random_event_12wk]
+      outputs:
+       moderately_sensitive:
+          mod8_full_matrix_r: output/mod8_fulladj_matrix_reduced_12weekcohort.csv
+          
 
