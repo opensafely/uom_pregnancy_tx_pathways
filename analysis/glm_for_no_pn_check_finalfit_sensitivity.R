@@ -31,7 +31,7 @@ df_input$region<-as.factor(df_input$region)
 df_input$region <- relevel(df_input$region, "London")
 df_input$imd<-as.factor(df_input$imd)
 df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
-
+ 
 # bmi - numeric
 df_input$bmi <- as.numeric(df_input$bmi)
 df_input$bmi_cat <- as.factor(df_input$bmi_cat)
@@ -61,134 +61,11 @@ df_input$IMD<-droplevels(df_input$IMD)
 
 
 
-###remove _comor from column names for plotting
+# ###remove _comor from column names for plotting
+# for ( col in 1:ncol(df_input)){
+#   colnames(df_input)[col] <-  sub("_comor.*", "", colnames(df_input)[col])
+# }
 
-for ( col in 1:ncol(df_input)){
-  colnames(df_input)[col] <-  sub("_comor.*", "", colnames(df_input)[col])
-}
-#colnames(df_input)
-
-# ### age & bmi adj
-# variables_names <- df_input %>% dplyr::select(Age, BMI)
-# explanatory_m1=colnames(variables_names)
-# dependent="postnatal_8wk_code_present"
-# 
-# df_input %>%
-#   finalfit.glm(dependent, explanatory_m1, add_dependent_label = F,
-#                dependent_label_prefix= "", metrics = TRUE) -> t_m1
-# t_m1.df <- as.data.frame(t_m1)
-# write_csv(t_m1[[1]], here::here("output","mod1_age_bmi.csv"))
-# write_csv(t_m1.df, here::here("output","mod1_age_bmi_matrix.csv"))
-
-
-## select variable for fully adjusted model
-###########################################
-#  mod 2  ##### Charlson Gp ##################
-variables_names_charlgp <- df_input %>% dplyr::select(Age, BMI, Region, Ethnicity, IMD,
-                                                      charlsonGrp2)
-explanatory_m2=colnames(variables_names_charlgp)
-rm(variables_names_charlgp)
-
-#  mod 3  ######## comorbidities x17 ############
-variables_names_comor <- df_input %>% 
-                  dplyr::select(Age, BMI, Region, Ethnicity, IMD, 
-                                "cancer","cardiovascular","chronic_obstructive_pulmonary",
-                                "heart_failure","connective_tissue", "dementia",
-                                "diabetes","diabetes_complications","hemiplegia",
-                                "hiv","metastatic_cancer" ,"mild_liver",
-                                "mod_severe_liver", "mod_severe_renal", "mi",
-                                "peptic_ulcer" , "peripheral_vascular")
-
-explanatory_m3=colnames(variables_names_comor)
-rm(variables_names_comor)
-
-#  mod 4  ############ history of HBP in pregnancy ##########
-variables_names_hbp_pregnancy <- df_input %>% dplyr::select(Age, BMI, Region, 
-                                                            Ethnicity, IMD, hbp_pregnancy)
-
-explanatory_m4=colnames(variables_names_hbp_pregnancy)
-rm(variables_names_hbp_pregnancy)
-
-dependent="postnatal_8wk_code_present"
-
-
-## model 2 - fully adjusted with Charlson to capture comorbidities
-df_input %>%
-  finalfit.glm(dependent, explanatory_m2, add_dependent_label = F,
-           dependent_label_prefix= "", metrics = TRUE) -> t_m2
-t_m2.df <- as.data.frame(t_m2)
-write_csv(t_m2[[1]], here::here("output","mod2_fulladj.csv"))
-write_csv(t_m2.df, here::here("output","mod2_fulladj_matrix.csv"))
-t_m2.df_adj <- t_m2.df[,-c(3:5)]
-write_csv(t_m2.df_adj, here::here("output","mod2_fulladj_matrix_reduced_Charlson.csv"))
-
-#plot
-mod2_plot<- df_input %>% 
-                or_plot(dependent, explanatory_m2, 
-                        column_space = c(-0.5, -0.1, 0.5),
-                        add_dependent_label = F,
-                        width = 10, height = 7,
-                        dependent_label = "No PN Check",
-                        table_text_size = 3)
-
-ggsave(
-  plot= mod2_plot, width = 11.5, height = 8,
-  filename="mod2_plot_charlson.jpeg", path=here::here("output"), dpi=300
-)
-rm(t_m2, t_m2.df, t_m2.df_adj, mod2_plot)
-
-
-## model 3 - fully adjusted with x17 comorbidities
-df_input %>%
-  finalfit.glm(dependent, explanatory_m3, add_dependent_label = F,
-               dependent_label_prefix= "", metrics = TRUE) -> t_m3
-t_m3.df <- as.data.frame(t_m3)
-write_csv(t_m3[[1]], here::here("output","mod3_fulladj.csv"))
-write_csv(t_m3.df, here::here("output","mod3_fulladj_matrix.csv"))
-t_m3.df_adj <- t_m3.df[,-c(3:5)]
-write_csv(t_m3.df_adj, here::here("output","mod3_fulladj_matrix_reduced_comorbids.csv"))
-
-
-mod3_plot<- df_input %>% 
-  or_plot(dependent, explanatory_m3, 
-          column_space = c(-0.5, -0.1, 0.5),
-          add_dependent_label = F,
-          width = 10, height = 7,
-          dependent_label = "No PN Check",
-          table_text_size = 3,
-          remove_ref = TRUE)
-
-ggsave(
-  plot= mod3_plot, width = 11.5, height = 8,
-  filename="mod3_plot_comor.jpeg", path=here::here("output"), dpi=300
-)
-rm(t_m3, t_m3.df, t_m3.df_adj, mod3_plot)
-
-
-## model 4 - fully adjusted with History of HBP in pregnancy (current and 5yrs+)
-df_input %>%
-  finalfit.glm(dependent, explanatory_m4, add_dependent_label = F,
-               dependent_label_prefix= "", metrics = TRUE) -> t_m4
-t_m4.df <- as.data.frame(t_m4)
-write_csv(t_m4[[1]], here::here("output","mod4_fulladj.csv"))
-write_csv(t_m4.df, here::here("output","mod4_fulladj_matrix.csv"))
-t_m4.df_adj <- t_m4.df[,-c(3:5)]
-write_csv(t_m4.df_adj, here::here("output","mod4_fulladj_matrix_reduced_hbp_pregnancy.csv"))
-
-
-mod4_plot<- df_input %>% 
-  or_plot(dependent, explanatory_m4, 
-          column_space = c(-0.5, -0.1, 0.5),
-          add_dependent_label = F,
-          width = 10, height = 7,
-          dependent_label = "No PN Check",
-          table_text_size = 3)
-
-ggsave(
-  plot= mod4_plot, width = 11.5, height = 8,
-  filename="mod4_plot_hpb.jpeg", path=here::here("output"), dpi=300
-)
-rm(t_m4, t_m4.df, t_m4.df_adj, mod4_plot)
 
 ############### 
 ## model with Charlson Y/N and hbp_pregnancy
@@ -197,62 +74,61 @@ rm(t_m4, t_m4.df, t_m4.df_adj, mod4_plot)
 variables_names_charlgp_hbppreg <- df_input %>% dplyr::select(Age, BMI, Region, Ethnicity, IMD,
                                                       charlsonGrp2, hbp_pregnancy)
 explanatory_m2.4=colnames(variables_names_charlgp_hbppreg)
-rm(variables_names_charlgp_hbppreg)
+dependent="postnatal_8wk_code_present"
 
-df_input %>%
+### take data from 2019 only
+### take data from 2022 onwards
+df19<- df_input %>% filter(delivery_code_date < as.Date("2020-01-01"))
+df22<- df_input %>% filter(delivery_code_date > as.Date("2021-12-31"))
+rm(variables_names_charlgp_hbppreg, df_input)
+
+
+#2019
+df19 %>%
   finalfit.glm(dependent, explanatory_m2.4, add_dependent_label = F,
-               dependent_label_prefix= "", metrics = TRUE) -> t_m2.4
-t_m2.4.df <- as.data.frame(t_m2.4)
-write_csv(t_m2.4[[1]], here::here("output","mod2.4_fulladj.csv"))
-write_csv(t_m2.4.df, here::here("output","mod2.4_fulladj_matrix.csv"))
-t_m2.4.df_adj <- t_m2.4.df[,-c(3:5)]
-write_csv(t_m2.4.df_adj, here::here("output","mod2.4_fulladj_matrix_reduced_Charlson_hbp_pregnancy.csv"))
-
-
-mod4.2_plot<- df_input %>% 
-  or_plot(dependent, explanatory_m2.4, 
-          column_space = c(-0.5, -0.1, 0.5),
-          add_dependent_label = F,
-          width = 10, height = 7,
-          dependent_label = "No PN Check",
-          table_text_size = 3)
-
-ggsave(
-  plot= mod4.2_plot, width = 11.5, height = 8,
-  filename="mod2.4_plot_hpb.jpeg", path=here::here("output"), dpi=300
-)
-rm(t_m4, t_m4.df, t_m4.df_adj, mod4_plot)
+               dependent_label_prefix= "", metrics = TRUE) -> t_m6
+t_m6.df <- as.data.frame(t_m6)
+t_m6.df_adj <- t_m6.df[,-c(3:5)]
+write_csv(t_m6.df_adj, here::here("output","mod6_fulladj_matrix_reduced_2019.csv"))
 
 
 
-# ##### sensitivityanalysis - see other action covid
- 
-# ### covid time
-# 
-# ### dummy data dates not working (only 2019 generated)
-# ## recreate covid variable to include nas as a level - na wont be introduced on real data 
-# #str(df_input$covid)
+#2022 onwards
+df22 %>%
+  finalfit.glm(dependent, explanatory_m2.4, add_dependent_label = F,
+               dependent_label_prefix= "", metrics = TRUE) -> t_m7
+t_m7.df <- as.data.frame(t_m7)
+t_m7.df_adj <- t_m7.df[,-c(3:5)]
+write_csv(t_m7.df_adj, here::here("output","mod7_fulladj_matrix_reduced_2022onwards.csv"))
+
+
+
+### covid time
+
+### dummy data dates not working (only 2019 generated)
+## recreate covid variable to include nas as a level - na wont be introduced on real data 
+#str(df_input$covid)
 # df_input <- df_input %>% dplyr::mutate(covid2 = case_when(is.na(covid) ~ 9,
 #                                                            covid == 0~ 0,
 #                                                          covid ==1 ~1))
 # df_input$covid2 <- as.factor(df_input$covid2)
-# 
-# 
-# ## traditional glm()
-# model_covid <- glm(postnatal_8wk_code_present ~ (Age+BMI+Region+Ethnicity+IMD+Charlson_Gp) * covid2, data = df_input, family = binomial(link = "logit"))
-# library('broom')
-# 
-# # Extract coefficient estimates and exponentiate them
-# fit_covid_results <- tidy(model_covid, exponentiate = TRUE)
-# # Extract confidence intervals and exponentiate them
-# conf_intervals <- confint(model_covid)
-# exp_conf_intervals <- exp(conf_intervals)
-# # Append exponentiated confidence intervals to the data frame
-# fit_covid_results$exp_conf_low <- exp_conf_intervals[, 1]
-# fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
-# 
-# write_csv(fit_covid_results, here::here("output","mod7_fulladj_traditional_reduced_covid.csv"))
-# 
+
+
+## traditional glm()
+model_covid <- glm(postnatal_8wk_code_present ~ (Age+BMI+Region+Ethnicity+IMD+charlsonGrp2) * covid, data = df_input, family = binomial(link = "logit"))
+library('broom')
+
+# Extract coefficient estimates and exponentiate them
+fit_covid_results <- tidy(model_covid, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals <- confint(model_covid)
+exp_conf_intervals <- exp(conf_intervals)
+# Append exponentiated confidence intervals to the data frame
+fit_covid_results$exp_conf_low <- exp_conf_intervals[, 1]
+fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
+
+write_csv(fit_covid_results, here::here("output","mod7_covid_traditional.csv"))
+
 # ## finalfit() glm
 # explanatory_m2_covid=c("Age*covid2","BMI*covid2","Region*covid2" , "Ethnicity*covid2" ,"IMD*covid2", "Charlson_Gp*covid2"  )
 
@@ -264,6 +140,7 @@ rm(t_m4, t_m4.df, t_m4.df_adj, mod4_plot)
 # #write_csv(t_m7.df, here::here("output","mod7_fulladj_matrix.csv"))
 # t_m7.df_adj <- t_m7.df[,-c(3:5)]
 # write_csv(t_m7.df_adj, here::here("output","mod7_finalfit_covid.csv"))
+
 
 
 

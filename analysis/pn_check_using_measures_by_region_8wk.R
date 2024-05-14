@@ -8,23 +8,24 @@ library("lubridate")
 rm(list=ls())
 #setwd(here::here("output", "measures"))
 
-df <- read_csv(here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_region.csv")#,
-  # col_types = cols_only(
-  # 
-  #   #Identifier
-  #   #region = col_factor(),
-  #   
-  #   # Outcomes
-  #   delivery_code_present  = col_double(),
-  #   postnatal_8wk_code_present = col_double(),
-  #   population  = col_number(),
-  #   value = col_number(),
-  #   
-  #   # Date
-  #   date = col_date(format="%Y-%m-%d")
-  #   
-  # ),
-  # na = character()
+df <- read_csv(
+  here::here("output", "joined_8wk", "measure_postnatal_check_rate_by_region.csv"),
+  col_types = cols_only(
+
+    #Identifier
+    region = col_factor(),
+
+    # Outcomes
+    delivery_code_present  = col_double(),
+    postnatal_8wk_code_present = col_double(),
+    population  = col_number(),
+    value = col_number(),
+
+    # Date
+    date = col_date(format="%Y-%m-%d")
+
+  ),
+  na = character()
   )
 
 
@@ -66,6 +67,11 @@ df_monrate <- df_plot%>% group_by(cal_mon, cal_year) %>%
 
 # create dataframe without NA 
 df_gaps=df_monrate%>%filter(!is.na(postnatal_8wk_code_present_rounded))
+
+# create dataframe without NA 
+df_gaps=df_gaps%>%filter(!is.na(region))
+df_gaps <- df_gaps %>% filter(region != "NA")
+df_gaps$region<-droplevels(df_gaps$region)
 
 
 ## save rounded and redacted data

@@ -1,36 +1,38 @@
 library('tidyverse')
 library('lubridate')
 library('dplyr')
-library('finalfit')
 
-setwd(here::here("output", "joined_8wk"))
+
+
+### 12 week cohort 
+setwd(here::here("output", "joined_12wk"))
 
 #2019
-df19 <- read_rds('basic_joined_8wk_records_2019.rds')
+df19 <- read_rds('basic_joined_12wk_records_2019.rds')
 ## filter del codes >0 (must be numeric)
 df19$delivery_code_present <- as.numeric(df19$delivery_code_present)
 df19 <- df19 %>% dplyr::filter(delivery_code_present > 0)
 
 #2020
-df20 <- read_rds('basic_joined_8wk_records_2020.rds')
+df20 <- read_rds('basic_joined_12wk_records_2020.rds')
 ## filter del codes >0 (must be numeric)
 df20$delivery_code_present <- as.numeric(df20$delivery_code_present)
 df20 <- df20 %>% dplyr::filter(delivery_code_present > 0)
 
 #2021
-df21 <- read_rds('basic_joined_8wk_records_2021.rds')
+df21 <- read_rds('basic_joined_12wk_records_2021.rds')
 ## filter del codes >0 (must be numeric)
 df21$delivery_code_present <- as.numeric(df21$delivery_code_present)
 df21 <- df21 %>% dplyr::filter(delivery_code_present > 0)
 
 #2022
-df22 <- read_rds('basic_joined_8wk_records_2022.rds')
+df22 <- read_rds('basic_joined_12wk_records_2022.rds')
 ## filter del codes >0 (must be numeric)
 df22$delivery_code_present <- as.numeric(df22$delivery_code_present)
 df22 <- df22 %>% dplyr::filter(delivery_code_present > 0)
 
 #2023
-df23 <- read_rds('basic_joined_8wk_records_2023.rds')
+df23 <- read_rds('basic_joined_12wk_records_2023.rds')
 ## filter del codes >0 (must be numeric)
 df23$delivery_code_present <- as.numeric(df23$delivery_code_present)
 df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
@@ -38,12 +40,6 @@ df23 <- df23 %>% dplyr::filter(delivery_code_present > 0)
 df <- rbind(df19,df20,df21,df22,df23)
 rm(df19,df20,df21,df22,df23)
 
-## count patients with delivery codes (potential record for patient each month)
-tabdelcodes <- as.data.frame(table(df$delivery_code_present))
-
-
-####
-## filter to one observation per patient 
 df$delivery_code_date<-as.Date(df$delivery_code_date)
 
 ### make variable for total delivery codes on EHR
@@ -53,24 +49,19 @@ df <- df %>% group_by(patient_id) %>%
 df <- df %>% group_by(patient_id) %>%
   mutate(sum_pn_codes = sum(pn8wk_code_number, na.rm = TRUE))
 
-## group by patient ID, then arrange by delivery code date
-## take first match per patient. 
-df2 <- df %>% group_by(patient_id)%>% arrange((delivery_code_date)) %>% filter(row_number()==1)
+
+# remove last month data - to match other plots
+last.date="2023-08-31"
+df=df%>% filter(date <=last.date)
+
+## group by patient ID, filter to one random observation per patient 
+## may have multiple rows from monthly extract (ie more than one del code so only select one in all subsequent analyses)
+df2<- df %>% group_by(patient_id) %>%
+  slice_sample(n=1)
+
 rm(df)
-tabdelcodes2 <- as.data.frame(table(df2$delivery_code_present))
 
-tabdelcodes_both <- rbind(tabdelcodes, tabdelcodes2)
-write_csv(tabdelcodes_both, here::here("output", "table_delcodes_8wk_update.csv"))
-rm(tabdelcodes)
 
-## count overall practices and patients:
-num_pracs <- length(unique(df2$practice))
-num_pats <- length(unique(df2$patient_id))
-overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
-write_csv(overall_counts, here::here("output", "overall_counts_8wk_update.csv"))
-rm(num_pracs, num_pats, overall_counts)
-
-## Define/clean variables before baseline table
 
 # bmi - numeric
 # remove bmi outliers - this replaces <8 or >50 with NA
@@ -106,8 +97,6 @@ df2 <- df2 %>%
                                  ethnicity2 == "0"  ~ "Unknown"))
 df2$Ethnicity <- as.factor(df2$Ethnicity)
 
-
-#df2 <- df2 %>% group_by(ethnicity) %>% filter(n() >= 5) %>% ungroup()
 
 ## covid positive
 df2 <- df2 %>% mutate(covid_positive = case_when(gp_covid == 1 ~ "1",
@@ -156,24 +145,48 @@ df2$charlsonGrp <- as.factor(df2$charlsonGrp)
 df2$charlsonGrp <- factor(df2$charlsonGrp, 
                                  labels = c("zero", "low", "medium", "high", "very high"))
 
+df2 <- df2 %>%
+  dplyr::mutate(charlsonGrp2 = case_when(charlson_score >1  ~ 1,
+                                charlson_score < 1 ~ 0))
+
+df2$charlsonGrp2 <- as.factor(df2$charlsonGrp2)
+
+saveRDS(df2, "cohort_selection_one_random_obvs_12wk.rds")
+rm(df2)
 
 
 
-# select variables for the baseline table
-bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, sum_pn_codes, region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, postnatal_8wk_code_present, charlsonGrp, covid_positive, hbp_any,
-                                     "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
-                                     "heart_failure_comor","connective_tissue_comor", "dementia_comor",
-                                     "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
-                                     "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
-                                     "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
-                                     "peptic_ulcer_comor" , "peripheral_vascular_comor" ) 
+# ## count overall practices and patients:
+# num_pracs <- length(unique(df2$practice))
+# num_pats <- length(unique(df2$patient_id))
+# overall_counts <- as.data.frame(cbind(num_pats, num_pracs))
+# write_csv(overall_counts, here::here("output", "overall_counts_8wk_cohort_selection.csv"))
+# rm(num_pracs, num_pats, overall_counts)
 
-# columns for baseline table
-colsfortab <- colnames(bltab_vars)
-#bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
-bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
-t<-(t[-1,])
-write_csv(t, here::here("output", "blt_overall_8wk_update_overall.csv"))
 
+# ## Define/clean variables before baseline table
+
+
+# # select variables for the baseline table
+# bltab_vars <- df2 %>% select(patient_id, age, age_cat, bmi, bmi_cat, delivery_code_number, sum_delivery_codes, sum_pn_codes, 
+#                                 region, ethnicity, ethnicity2, Ethnicity, imd, eth, ethnicity_sus, pn8wk_code_number, 
+#                                 postnatal_8wk_code_present, charlsonGrp, charlsonGrp2, covid_positive, hbp_any,
+#                                      "cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
+#                                      "heart_failure_comor","connective_tissue_comor", "dementia_comor",
+#                                      "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
+#                                      "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
+#                                      "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
+#                                      "peptic_ulcer_comor" , "peripheral_vascular_comor" ) 
+
+# # columns for baseline table
+# colsfortab <- colnames(bltab_vars)
+# #bltab_vars %>% summary_factorlist(explanatory = colsfortab, cont_cut = 10) -> t
+# bltab_vars %>% summary_factorlist(explanatory = colsfortab) -> t
+# t<-(t[-1,])
+# write_csv(t, here::here("output", "cohort_selection_one_random_obs_blt_8wk_overall.csv"))
+
+# bltab_vars_by_outcome %>% summary_factorlist(dependent="postnatal_8wk_code_present", explanatory = colsfortab) -> t2
+# t2<-(t2[-1,])
+# write_csv(t2, here::here("output", "cohort_selection_one_random_obs_blt_8wk_outcome.csv"))
 
 
