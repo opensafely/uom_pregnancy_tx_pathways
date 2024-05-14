@@ -46,8 +46,10 @@ colnames(df_input)[8]<-"IMD"
 colnames(df_input)[9]<-"BMI"
 
 df_input <- df_input %>% filter(Ethnicity != "Unknown")
+df_input$Ethnicity<-as.factor(df_input$Ethnicity)
 df_input$Ethnicity<-droplevels(df_input$Ethnicity)
 df_input <- df_input %>% filter(IMD != "0")
+df_input$IMD<-as.factor(df_input$IMD)
 df_input$IMD<-droplevels(df_input$IMD)
 
 
