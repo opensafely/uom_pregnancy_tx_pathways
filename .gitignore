@@ -10,3 +10,9 @@ venv/
 .Rhistory
 .Rproj.user/
 sdr/data
+*.Rproj
+sdr/report/_freeze/*
+sdr/report/_manuscript/*
+sdr/report/index_cache/*
+sdr/report/.quarto/
+sdr/report/index_files/

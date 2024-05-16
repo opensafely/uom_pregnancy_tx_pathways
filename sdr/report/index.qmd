@@ -1,0 +1,234 @@
+---
+title: "Investigation of Pregnancy Code Usage in Primary Care in England"
+subtitle: "Short Data Report"
+authors:
+  - name: Rose Higgins
+    affiliations:
+      name: "University of Oxford"
+      department: "Nuffield Department of Primary Care Health Sciences"
+      group: "Bennett Institute for Applied Data Science"
+    orcid: 0000-0002-5295-4370
+    email: rose.higgins@phc.ox.ac.uk
+  - name: Milan Wiedemann
+    affiliations:
+      name: "University of Oxford"
+      department: "Nuffield Department of Primary Care Health Sciences"
+      group: "Bennett Institute for Applied Data Science"
+    orcid: 0000-0003-1991-282X
+    email: milan.wiedemann@phc.ox.ac.uk
+  - name: Louis Fischer
+    affiliations:
+      name: "University of Oxford"
+      department: "Nuffield Department of Primary Care Health Sciences"
+      group: "Bennett Institute for Applied Data Science"
+    orcid: 0000-0002-0295-3812
+    email: louis.fisher@phc.ox.ac.uk
+  - name: Helen Curtis 
+    affiliations:
+      name: "University of Oxford"
+      department: "Nuffield Department of Primary Care Health Sciences"
+      group: "Bennett Institute for Applied Data Science"
+    orcid: 0000-0003-3429-9576
+    email: helen.curtis@phc.ox.ac.uk
+bibliography: references.bib
+---
+
+```{r load-pkgs}
+#| include: false
+
+library(here)
+library(fs)
+library(tidyverse)
+library(patchwork)
+library(ggrepel)
+library(gt)
+```
+
+```{r}
+#| label: load-data
+#| include: false
+#| cache: true
+
+load(here("sdr", "data", "snomed_code_usage.rda"))
+load(here("sdr", "data", "snomed_code_dict.rda"))
+
+used_snomed_concept_ids <- unique(snomed_code_usage$snomed_concept_id)
+
+pregnancy_codelists_paths <- dir_ls(
+  here("codelists"),
+  glob = "*user-VickiPalin-pregnancy*.csv$"
+)
+
+pregnancy_codelists <- pregnancy_codelists_paths |>
+  map(read_csv, col_types = list(code = "c")) %>%
+  bind_rows(.id = "codelist") |>
+  mutate(codelist = str_extract(codelist, "(?<=user-VickiPalin-)\\w+"))
+```
+
+```{r load-funs}
+#| label: load-funs
+#| include: false
+
+source(here("sdr", "scripts", "visualise_code_usage.R"))
+```
+
+# Introduction
+
+
+# Methods
+
+## Codelists
+
+We converted Read Codes used by @Minassian2019 to SNOMED CT Codes (see <https://github.com/opensafely/uom_pregnancy_tx_pathways>).
+
+## Data source
+
+We used publicly available the SNOMED Code Usage in Primary Care data [@NHSDigital2024] to investigate the code usage of pregnancy related codes between 1st August 2011 to 31 July 2023.
+
+# Results
+
+```{r}
+#| label: select-codelist-1
+#| include: false
+#| cache: true
+
+# Select data for one codelist
+selected_codelist <- pregnancy_codelists |> 
+  filter(codelist == "pregnancy_delivery_snomed_reviewed_2")
+
+# Get list of codes from codelist that were not found in GP records
+unused_codes <- selected_codelist |> 
+  filter(!code %in% used_snomed_concept_ids) |> 
+  pull(code)
+
+# Select data for all codes from codelist that were found in GP records
+selected_snomed_code_usage <- snomed_code_usage |>
+  filter(snomed_concept_id %in% selected_codelist$code)
+
+# Get list of 5 most used codes from codelist
+selected_top_5_codes <- selected_snomed_code_usage |>
+  select(snomed_concept_id, usage) |>
+  group_by(snomed_concept_id) |>
+  mutate(usage_sum = sum(usage)) |>
+  ungroup() |>
+  select(-usage) |>
+  distinct() |>
+  slice_max(usage_sum, n = 5) |>
+  pull(snomed_concept_id)
+
+```
+
+## Trends
+
+```{r fig-codelist-1}
+#| label: fig-codelist-1
+#| fig-cap: "Code usage of 'pregnancy_delivery_snomed_reviewed_2' codelist from 1st August 2011 to 31 July 2022. (A) Overall trend of code usage, (B) trends of the 5 most used codes. Each point represents the end date of a yearly interval." 
+#| fig-alt: "A line plot showing code usage of 'pregnancy_delivery_snomed_reviewed_2' codelist"
+
+selected_snomed_code_usage <- selected_snomed_code_usage |> 
+  group_by(end_date) |> 
+  mutate(usage_codelist = sum(usage, na.rm = TRUE)) |> 
+  ungroup()
+
+plot_sum_codelist <- selected_snomed_code_usage |> 
+  plot_code_usage(
+    date_variable = end_date,
+    code_usage_count = usage_codelist
+    )
+
+plot_top5_codelist <- selected_snomed_code_usage |> 
+  filter(snomed_concept_id %in% selected_top_5_codes) |> 
+  plot_code_usage(
+    date = end_date,
+    code_usage = usage,
+    colour = snomed_concept_id
+    ) + 
+  geom_label_repel(
+    aes(
+      label = ifelse(
+        end_date == min(selected_snomed_code_usage$end_date),
+        snomed_concept_id,
+        ""
+        )
+      ),
+    direction = "y",
+    hjust = "right",
+    size = 3,
+    box.padding = 0.2) +
+  guides(color = "none")
+
+
+plot_codelist <- plot_sum_codelist / plot_top5_codelist
+
+plot_codelist + 
+  plot_annotation(tag_levels = c("A")) + 
+  plot_layout(axes = "collect") &
+  theme(
+    plot.tag = element_text(size = rel(1)),
+    plot.tag.position = c(-.014, 1.03)
+    )
+```
+
+## Code counts
+
+```{r}
+#| label: tbl-used-codes-codelist-1
+#| tbl-cap: Counts of used codes from 'pregnancy_delivery_snomed_reviewed_2' between 1st Aug 2022 and 31 Jul 2023
+
+selected_snomed_code_usage |>
+  filter(!snomed_concept_id %in% unused_codes) |>
+  filter(end_date == "2023-07-31") |>
+  left_join(snomed_code_dict) |>
+  select(snomed_concept_id, description, usage) |>
+  gt() |>
+  cols_label(
+    snomed_concept_id = "SNOMED Code",
+    description = "Description",
+    usage = "Count"
+  ) |>
+  cols_width(
+    snomed_concept_id ~ px(160),
+    description ~ px(460),
+    usage ~ px(120)
+  ) |>
+  opt_interactive(
+    use_filters = TRUE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE,
+    use_resizers= TRUE,
+    use_page_size_select = TRUE
+    )
+
+```
+
+## Unused codes
+
+```{r}
+#| label: tbl-unused-codes-codelist-1
+#| tbl-cap: Unused codes from 'pregnancy_delivery_snomed_reviewed_2'
+
+selected_codelist |>
+  filter(code %in% unused_codes) |>
+  select(-codelist) |>
+  gt() |>
+  cols_label(
+    code = "SNOMED Code",
+    term = "Description"
+  ) |>
+  cols_width(
+    code ~ px(160),
+    term ~ px(550)
+  ) |>
+  opt_interactive(
+    use_filters = TRUE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE,
+    use_resizers= TRUE,
+    use_page_size_select = TRUE
+    )
+
+```
+
+# Discussion
+
+# References
