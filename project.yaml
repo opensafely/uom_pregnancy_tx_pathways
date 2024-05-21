@@ -538,53 +538,62 @@ actions:
 
 
 
-  describe_glm_for_no_pn_check:
-      run: r:latest analysis/glm_for_no_pn_check_finalfit.R
-      needs: [process_cohorts_select_one_random_event_8wk]
-      outputs:
-       moderately_sensitive:
-  #         mod1_age_coef: output/mod1_age_bmi.csv
-  #         mod1_age_matrix: output/mod1_age_bmi_matrix.csv
-          mod2_full_coef: output/mod2_fulladj.csv
-          mod2_full_maxtrix: output/mod2_fulladj_matrix.csv
-          mod2_full_maxtrix_r: output/mod2_fulladj_matrix_reduced_Charlson.csv
-          mod2_full_plot: output/mod2_plot_charlson.jpeg
-          mod3_full_coef: output/mod3_fulladj.csv
-          mod3_full_maxtrix: output/mod3_fulladj_matrix.csv
-          mod3_full_maxtrix_r: output/mod3_fulladj_matrix_reduced_comorbids.csv
-          mod3_full_plot: output/mod3_plot_comor.jpeg
-          mod4_full_coef: output/mod4_fulladj.csv
-          mod4_full_maxtrix: output/mod4_fulladj_matrix.csv
-          mod4_full_maxtrix_r: output/mod4_fulladj_matrix_reduced_hbp_pregnancy.csv
-          mod4_full_plot: output/mod4_plot_hpb.jpeg
-          mod2.4_full_coef: output/mod2.4_fulladj.csv
-          mod2.4_full_maxtrix: output/mod2.4_fulladj_matrix.csv
-          mod2.4_full_maxtrix_r: output/mod2.4_fulladj_matrix_reduced_Charlson_hbp_pregnancy.csv
-          mod2.4_full_plot: output/mod2.4_plot_hpb.jpeg
-  #         mod5_full_maxtrix_r: output/mod5_fulladj_matrix_reduced_onepat.csv
-  #         mod5_full_plot: output/mod5_plot_sensitivity_onepat.jpeg
-  #         mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_22onwards.csv
-  #         mod6_full_plot: output/mod6_plot_sensitivity_22onwards.jpeg
-  #         #mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_covid.csv
-  #         mod7_traditional_covid: output/mod7_fulladj_traditional_reduced_covid.csv
-  #         #mod3_sens_last_OR_CIs: output/mod3_fulladj_last.csv
-  #         #forestplot_1: output/glm_fullAdjs.jpeg
+  # describe_glm_for_no_pn_check:
+  #     run: r:latest analysis/glm_for_no_pn_check_finalfit.R
+  #     needs: [process_cohorts_select_one_random_event_8wk]
+  #     outputs:
+  #      moderately_sensitive:
+  # #         mod1_age_coef: output/mod1_age_bmi.csv
+  # #         mod1_age_matrix: output/mod1_age_bmi_matrix.csv
+  #         mod2_full_coef: output/mod2_fulladj.csv
+  #         mod2_full_maxtrix: output/mod2_fulladj_matrix.csv
+  #         mod2_full_maxtrix_r: output/mod2_fulladj_matrix_reduced_Charlson.csv
+  #         mod2_full_plot: output/mod2_plot_charlson.jpeg
+  #         mod3_full_coef: output/mod3_fulladj.csv
+  #         mod3_full_maxtrix: output/mod3_fulladj_matrix.csv
+  #         mod3_full_maxtrix_r: output/mod3_fulladj_matrix_reduced_comorbids.csv
+  #         mod3_full_plot: output/mod3_plot_comor.jpeg
+  #         mod4_full_coef: output/mod4_fulladj.csv
+  #         mod4_full_maxtrix: output/mod4_fulladj_matrix.csv
+  #         mod4_full_maxtrix_r: output/mod4_fulladj_matrix_reduced_hbp_pregnancy.csv
+  #         mod4_full_plot: output/mod4_plot_hpb.jpeg
+  #         mod2.4_full_coef: output/mod2.4_fulladj.csv
+  #         mod2.4_full_maxtrix: output/mod2.4_fulladj_matrix.csv
+  #         mod2.4_full_maxtrix_r: output/mod2.4_fulladj_matrix_reduced_Charlson_hbp_pregnancy.csv
+  #         mod2.4_full_plot: output/mod2.4_plot_hpb.jpeg
+  # #         mod5_full_maxtrix_r: output/mod5_fulladj_matrix_reduced_onepat.csv
+  # #         mod5_full_plot: output/mod5_plot_sensitivity_onepat.jpeg
+  # #         mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_22onwards.csv
+  # #         mod6_full_plot: output/mod6_plot_sensitivity_22onwards.jpeg
+  # #         #mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_covid.csv
+  # #         mod7_traditional_covid: output/mod7_fulladj_traditional_reduced_covid.csv
+  # #         #mod3_sens_last_OR_CIs: output/mod3_fulladj_last.csv
+  # #         #forestplot_1: output/glm_fullAdjs.jpeg
           
-  describe_glm_for_no_pn_check_sensitivity:
-      run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity.R
-      needs: [process_cohorts_select_one_random_event_8wk]
-      outputs:
-       moderately_sensitive:
-          mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_2019.csv
-          mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_2022onwards.csv
-          mod7_traditional_covid: output/mod7_covid_traditional.csv
-          #mod7_finalfit_covid: output/mod7_finalfit_covid.csv
+  # describe_glm_for_no_pn_check_sensitivity:
+  #     run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity.R
+  #     needs: [process_cohorts_select_one_random_event_8wk]
+  #     outputs:
+  #      moderately_sensitive:
+  #         mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_2019.csv
+  #         mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_2022onwards.csv
+  #         mod7_traditional_covid: output/mod7_covid_traditional.csv
+  #         #mod7_finalfit_covid: output/mod7_finalfit_covid.csv
 
-  describe_glm_for_no_pn_check_sensitivity_12week_cohort:
-      run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity12wk_cohort.R
-      needs: [process_cohorts_select_one_random_event_12wk]
-      outputs:
-       moderately_sensitive:
-          mod8_full_matrix_r: output/mod8_fulladj_matrix_reduced_12weekcohort.csv
+  # describe_glm_for_no_pn_check_sensitivity_12week_cohort:
+  #     run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity12wk_cohort.R
+  #     needs: [process_cohorts_select_one_random_event_12wk]
+  #     outputs:
+  #      moderately_sensitive:
+  #         mod8_full_matrix_r: output/mod8_fulladj_matrix_reduced_12weekcohort.csv
           
-
+  # Glm - traditional without finalfit()
+    describe_glm_for_no_pn_check:
+        run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity.R
+        needs: [process_cohorts_select_one_random_event_8wk]
+        outputs:
+        moderately_sensitive:
+            mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_2019.csv
+            mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_2022onwards.csv
+            mod7_traditional_covid: output/mod7_covid_traditional.csv
+            #mod7_finalfit_covid: output/mod7_finalfit_covid.csv
