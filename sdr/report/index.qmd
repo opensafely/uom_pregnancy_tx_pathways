@@ -74,7 +74,6 @@ source(here("sdr", "scripts", "visualise_code_usage.R"))
 
 # Introduction
 
-
 # Methods
 
 ## Codelists
@@ -228,6 +227,48 @@ selected_codelist |>
     )
 
 ```
+
+## Codes with changing descriptions
+
+```{r}
+snomed_codes_diff_desc <- selected_snomed_code_usage |>
+  filter(!snomed_concept_id %in% unused_codes) |>
+  left_join(snomed_code_dict) |> 
+  select(snomed_concept_id, description) |> 
+  distinct() |> 
+  group_by(snomed_concept_id) |> 
+  count() |> 
+  filter(n > 1) |> 
+  pull(snomed_concept_id)
+```
+
+There is a total of n = `r length(snomed_codes_diff_desc)` SNOMED codes in the selected codelist with codes that have changing descriptions.
+
+```{r}
+selected_snomed_code_usage |>
+  left_join(snomed_code_dict) |> 
+  filter(snomed_concept_id %in% snomed_codes_diff_desc) |> 
+  select(snomed_concept_id, description) |> 
+  distinct() |> 
+  arrange(snomed_concept_id) |> 
+  gt() |>
+  cols_label(
+    snomed_concept_id = "SNOMED Code",
+    description = "Description"
+  ) |>
+  cols_width(
+    snomed_concept_id ~ px(160),
+    description ~ px(550)
+  ) |>
+  opt_interactive(
+    use_filters = TRUE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE,
+    use_resizers= TRUE,
+    use_page_size_select = TRUE
+    )
+```
+
 
 # Discussion
 
