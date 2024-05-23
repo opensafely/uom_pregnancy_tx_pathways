@@ -168,6 +168,7 @@ plot_codelist +
     )
 ```
 
+
 ## Code counts
 
 ```{r}
@@ -231,6 +232,8 @@ selected_codelist |>
 ## Codes with changing descriptions
 
 ```{r}
+#| include: false
+
 snomed_codes_diff_desc <- selected_snomed_code_usage |>
   filter(!snomed_concept_id %in% unused_codes) |>
   left_join(snomed_code_dict) |> 
@@ -242,9 +245,14 @@ snomed_codes_diff_desc <- selected_snomed_code_usage |>
   pull(snomed_concept_id)
 ```
 
+
 There is a total of n = `r length(snomed_codes_diff_desc)` SNOMED codes in the selected codelist with codes that have changing descriptions.
 
 ```{r}
+#| label: tbl-diff-codes-desc-1
+#| tbl-cap: Codes from 'pregnancy_delivery_snomed_reviewed_2' with changing descriptions between 1st Aug 2011 and 31 Jul 2023
+
+
 selected_snomed_code_usage |>
   left_join(snomed_code_dict) |> 
   filter(snomed_concept_id %in% snomed_codes_diff_desc) |> 
@@ -266,6 +274,41 @@ selected_snomed_code_usage |>
     use_compact_mode = TRUE,
     use_resizers= TRUE,
     use_page_size_select = TRUE
+    )
+```
+
+## Exploration of active and inactive codes
+
+```{r}
+#| label: tbl-codes-active-inactive-1
+#| tbl-cap: Number of codes from 'pregnancy_delivery_snomed_reviewed_2' with changing status (active / inactive) between 1st Aug 2011 and 31 Jul 2023
+
+selected_snomed_code_usage |>
+  filter(!snomed_concept_id %in% unused_codes) |>
+  # left_join(snomed_code_dict) |> 
+  select(snomed_concept_id, active_at_start, active_at_end) |> 
+  group_by(active_at_start, active_at_end) |> 
+  count() |> 
+  ungroup() |> 
+  mutate(active_at_start = factor(active_at_start, labels = c("No", "Yes")),
+         active_at_end = factor(active_at_end, labels = c("No", "Yes"))) |> 
+  gt() |>
+  cols_label(
+    active_at_start = "Active at start",
+    active_at_end = "Active at end",
+    n = "Count"
+  ) |>
+  cols_width(
+    active_at_start ~ px(250),
+    active_at_end ~ px(250),
+    n ~ px(100)
+  ) |>
+  opt_interactive(
+    use_filters = FALSE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE,
+    use_resizers= FALSE,
+    use_page_size_select = FALSE
     )
 ```
 
