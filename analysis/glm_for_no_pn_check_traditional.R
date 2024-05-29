@@ -38,13 +38,6 @@ df_input$bmi_cat <- as.factor(df_input$bmi_cat)
 
 df_input<-ungroup(df_input)
 
-df_input <- df_input %>% mutate_at(c("cancer_comor","cardiovascular_comor","chronic_obstructive_pulmonary_comor",
-                                     "heart_failure_comor","connective_tissue_comor", "dementia_comor",
-                                     "diabetes_comor","diabetes_complications_comor","hemiplegia_comor",
-                                     "hiv_comor","metastatic_cancer_comor" ,"mild_liver_comor",
-                                     "mod_severe_liver_comor", "mod_severe_renal_comor", "mi_comor",
-                                     "peptic_ulcer_comor" , "peripheral_vascular_comor",
-                                     "hbp_pregnancy", "hbp_all", "hbp_any"), as.factor)
 
 # select variables for modelling
 colnames(df_input)[3]<-"Age"
@@ -62,45 +55,136 @@ df_input$IMD<-as.factor(df_input$IMD)
 df_input$IMD<-droplevels(df_input$IMD)
 
 
-# ###remove _comor from column names for plotting
-# for ( col in 1:ncol(df_input)){
-#   colnames(df_input)[col] <-  sub("_comor.*", "", colnames(df_input)[col])
-# }
+###remove _comor from column names for plotting
+for ( col in 1:ncol(df_input)){
+  colnames(df_input)[col] <-  sub("_comor.*", "", colnames(df_input)[col])
+}
+
+df_input <- df_input %>% mutate_at(c("cancer","cardiovascular","chronic_obstructive_pulmonary",
+                                     "heart_failure","connective_tissue", "dementia",
+                                     "diabetes","diabetes_complications","hemiplegia",
+                                     "hiv","metastatic_cancer" ,"mild_liver",
+                                     "mod_severe_liver", "mod_severe_renal", "mi",
+                                     "peptic_ulcer" , "peripheral_vascular",
+                                     "hbp_pregnancy", "hbp_all", "hbp_any"), as.factor)
 
 
 ############### 
-## model with Charlson Y/N and hbp_pregnancy
+## model with Charlson Y/N, no hbp_pregnancy history
 ###############
-#  mod 2+4  
-variables_names_charlgp_hbppreg <- df_input %>% dplyr::select(Age, BMI, Region, Ethnicity, IMD,
-                                                      charlsonGrp2, hbp_pregnancy)
-explanatory_m2.4=colnames(variables_names_charlgp_hbppreg)
-dependent="postnatal_8wk_code_present"
+#  mod full 
+## traditional glm()
+model_full <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2, data = df_input, family = binomial(link = "logit"))
+library('broom')
+
+# Extract coefficient estimates and exponentiate them
+fit_results <- tidy(model_full, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals <- confint(model_full)
+exp_conf_intervals <- exp(conf_intervals)
+# Append exponentiated confidence intervals to the data frame
+fit_results$exp_conf_low <- exp_conf_intervals[, 1]
+fit_results$exp_conf_high <- exp_conf_intervals[, 2]
+
+write_csv(fit_results, here::here("output","mod_full_traditional_Charlson.csv"))
+
+############### 
+## model with Charlson Y/N AND hbp_pregnancy history 
+###############
+#  mod full 
+## traditional glm()
+model_full_hbp <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df_input, family = binomial(link = "logit"))
+
+# Extract coefficient estimates and exponentiate them
+fit_results_hbp <- tidy(model_full_hbp, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals_hbp <- confint(model_full_hbp)
+exp_conf_intervals_hbp <- exp(conf_intervals_hbp)
+# Append exponentiated confidence intervals to the data frame
+fit_results_hbp$exp_conf_low <- exp_conf_intervals_hbp[, 1]
+fit_results_hbp$exp_conf_high <- exp_conf_intervals_hbp[, 2]
+
+write_csv(fit_results_hbp, here::here("output","mod_full_traditional_Charlson_AND_hbp.csv"))
+
+
+############### 
+## model with comorbidities x17 
+############
+## traditional glm()
+model_full_17comor <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+
+                            cancer+cardiovascular+chronic_obstructive_pulmonary+
+                            heart_failure+connective_tissue+ dementia+
+                            diabetes+diabetes_complications+hemiplegia+
+                            hiv+metastatic_cancer +mild_liver+
+                            mod_severe_liver+ mod_severe_renal+ mi+
+                            peptic_ulcer+ peripheral_vascular, 
+                            data = df_input, family = binomial(link = "logit"))
+
+# Extract coefficient estimates and exponentiate them
+fit_results_17comor <- tidy(model_full_17comor, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals_17comor <- confint(model_full_17comor)
+exp_conf_intervals_17comor <- exp(conf_intervals_17comor)
+# Append exponentiated confidence intervals to the data frame
+fit_results_17comor$exp_conf_low <- exp_conf_intervals_17comor[, 1]
+fit_results_17comor$exp_conf_high <- exp_conf_intervals_17comor[, 2]
+
+write_csv(fit_results_17comor, here::here("output","mod_full_traditional_17_comor.csv"))
+
+
+############### 
+## model with comorbidities x17 + HBP
+############
+## traditional glm()
+model_full_17comor_HBP <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+
+                                cancer+cardiovascular+chronic_obstructive_pulmonary+
+                                heart_failure+connective_tissue+ dementia+
+                                diabetes+diabetes_complications+hemiplegia+
+                                hiv+metastatic_cancer +mild_liver+
+                                mod_severe_liver+ mod_severe_renal+ mi+
+                                peptic_ulcer+ peripheral_vascular+hbp_pregnancy,
+                                data = df_input, family = binomial(link = "logit"))
+
+# Extract coefficient estimates and exponentiate them
+fit_results_17comor_HBP <- tidy(model_full_17comor_HBP, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals_17comor_HBP <- confint(model_full_17comor_HBP)
+exp_conf_intervals_17comor_HBP <- exp(conf_intervals_17comor_HBP)
+# Append exponentiated confidence intervals to the data frame
+fit_results_17comor_HBP$exp_conf_low <- exp_conf_intervals_17comor_HBP[, 1]
+fit_results_17comor_HBP$exp_conf_high <- exp_conf_intervals_17comor_HBP[, 2]
+
+write_csv(fit_results_17comor_HBP, here::here("output","mod_full_traditional_17_comor_AND_HBP.csv"))
 
 ### take data from 2019 only
 ### take data from 2022 onwards
 df19<- df_input %>% filter(delivery_code_date < as.Date("2020-01-01"))
-#df22<- df_input %>% filter(delivery_code_date > as.Date("2021-12-31"))
-rm(variables_names_charlgp_hbppreg, df_input)
+df22<- df_input %>% filter(delivery_code_date > as.Date("2021-12-31"))
 
 
 #2019
-df19 %>%
-  finalfit.glm(dependent, explanatory_m2.4, add_dependent_label = F,
-               dependent_label_prefix= "", metrics = TRUE) -> t_m6
-t_m6.df <- as.data.frame(t_m6)
-t_m6.df_adj <- t_m6.df[,-c(3:5)]
-write_csv(t_m6.df_adj, here::here("output","mod6_fulladj_matrix_reduced_2019.csv"))
+model_full_hbp_2019 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df19, family = binomial(link = "logit"))
+# Extract coefficient estimates and exponentiate them
+fit_results_2019 <- tidy(model_full_hbp_2019, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals_2019 <- confint(model_full_hbp_2019)
+exp_conf_intervals_2019 <- exp(conf_intervals_2019)
+# Append exponentiated confidence intervals to the data frame
+fit_results_2019$exp_conf_low <- exp_conf_intervals_2019[, 1]
+fit_results_2019$exp_conf_high <- exp_conf_intervals_2019[, 2]
+write_csv(fit_results_2019, here::here("output","mod_full_traditional_Charlson_AND_hbp_2019.csv"))
 
-
-
-# #2022 onwards
-# df22 %>%
-#   finalfit.glm(dependent, explanatory_m2.4, add_dependent_label = F,
-#                dependent_label_prefix= "", metrics = TRUE) -> t_m7
-# t_m7.df <- as.data.frame(t_m7)
-# t_m7.df_adj <- t_m7.df[,-c(3:5)]
-# write_csv(t_m7.df_adj, here::here("output","mod7_fulladj_matrix_reduced_2022onwards.csv"))
+#2022 onwards
+model_full_hbp_2022 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df22, family = binomial(link = "logit"))
+# Extract coefficient estimates and exponentiate them
+fit_results_2022 <- tidy(model_full_hbp_2022, exponentiate = TRUE)
+# Extract confidence intervals and exponentiate them
+conf_intervals_2022 <- confint(model_full_hbp_2022)
+exp_conf_intervals_2022 <- exp(conf_intervals_2022)
+# Append exponentiated confidence intervals to the data frame
+fit_results_2022$exp_conf_low <- exp_conf_intervals_2022[, 1]
+fit_results_2022$exp_conf_high <- exp_conf_intervals_2022[, 2]
+write_csv(fit_results_2022, here::here("output","mod_full_traditional_Charlson_AND_hbp_2022.csv"))
 
 
 
@@ -118,7 +202,7 @@ write_csv(t_m6.df_adj, here::here("output","mod6_fulladj_matrix_reduced_2019.csv
 # ## traditional glm()
 # model_covid <- glm(postnatal_8wk_code_present ~ (Age+BMI+Region+Ethnicity+IMD+charlsonGrp2) * covid, data = df_input, family = binomial(link = "logit"))
 # library('broom')
-# 
+
 # # Extract coefficient estimates and exponentiate them
 # fit_covid_results <- tidy(model_covid, exponentiate = TRUE)
 # # Extract confidence intervals and exponentiate them
@@ -127,7 +211,7 @@ write_csv(t_m6.df_adj, here::here("output","mod6_fulladj_matrix_reduced_2019.csv
 # # Append exponentiated confidence intervals to the data frame
 # fit_covid_results$exp_conf_low <- exp_conf_intervals[, 1]
 # fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
-# 
+
 # write_csv(fit_covid_results, here::here("output","mod7_covid_traditional.csv"))
 
 # ## finalfit() glm
