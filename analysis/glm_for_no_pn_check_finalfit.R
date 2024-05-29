@@ -117,7 +117,8 @@ dependent="postnatal_8wk_code_present"
 ## model 2 - fully adjusted with Charlson to capture comorbidities
 df_input %>%
   finalfit.glm(dependent, explanatory_m2, add_dependent_label = F,
-           dependent_label_prefix= "", metrics = TRUE) -> t_m2
+           dependent_label_prefix= "", metrics = TRUE,
+           glm_args = list(maxit = 100, method="newton")) -> t_m2
 t_m2.df <- as.data.frame(t_m2)
 write_csv(t_m2[[1]], here::here("output","mod2_fulladj.csv"))
 write_csv(t_m2.df, here::here("output","mod2_fulladj_matrix.csv"))

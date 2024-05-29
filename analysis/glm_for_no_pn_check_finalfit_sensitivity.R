@@ -80,7 +80,7 @@ dependent="postnatal_8wk_code_present"
 ### take data from 2019 only
 ### take data from 2022 onwards
 df19<- df_input %>% filter(delivery_code_date < as.Date("2020-01-01"))
-df22<- df_input %>% filter(delivery_code_date > as.Date("2021-12-31"))
+#df22<- df_input %>% filter(delivery_code_date > as.Date("2021-12-31"))
 rm(variables_names_charlgp_hbppreg, df_input)
 
 
@@ -94,13 +94,13 @@ write_csv(t_m6.df_adj, here::here("output","mod6_fulladj_matrix_reduced_2019.csv
 
 
 
-#2022 onwards
-df22 %>%
-  finalfit.glm(dependent, explanatory_m2.4, add_dependent_label = F,
-               dependent_label_prefix= "", metrics = TRUE) -> t_m7
-t_m7.df <- as.data.frame(t_m7)
-t_m7.df_adj <- t_m7.df[,-c(3:5)]
-write_csv(t_m7.df_adj, here::here("output","mod7_fulladj_matrix_reduced_2022onwards.csv"))
+# #2022 onwards
+# df22 %>%
+#   finalfit.glm(dependent, explanatory_m2.4, add_dependent_label = F,
+#                dependent_label_prefix= "", metrics = TRUE) -> t_m7
+# t_m7.df <- as.data.frame(t_m7)
+# t_m7.df_adj <- t_m7.df[,-c(3:5)]
+# write_csv(t_m7.df_adj, here::here("output","mod7_fulladj_matrix_reduced_2022onwards.csv"))
 
 
 
@@ -115,20 +115,20 @@ write_csv(t_m7.df_adj, here::here("output","mod7_fulladj_matrix_reduced_2022onwa
 # df_input$covid2 <- as.factor(df_input$covid2)
 
 
-## traditional glm()
-model_covid <- glm(postnatal_8wk_code_present ~ (Age+BMI+Region+Ethnicity+IMD+charlsonGrp2) * covid, data = df_input, family = binomial(link = "logit"))
-library('broom')
-
-# Extract coefficient estimates and exponentiate them
-fit_covid_results <- tidy(model_covid, exponentiate = TRUE)
-# Extract confidence intervals and exponentiate them
-conf_intervals <- confint(model_covid)
-exp_conf_intervals <- exp(conf_intervals)
-# Append exponentiated confidence intervals to the data frame
-fit_covid_results$exp_conf_low <- exp_conf_intervals[, 1]
-fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
-
-write_csv(fit_covid_results, here::here("output","mod7_covid_traditional.csv"))
+# ## traditional glm()
+# model_covid <- glm(postnatal_8wk_code_present ~ (Age+BMI+Region+Ethnicity+IMD+charlsonGrp2) * covid, data = df_input, family = binomial(link = "logit"))
+# library('broom')
+# 
+# # Extract coefficient estimates and exponentiate them
+# fit_covid_results <- tidy(model_covid, exponentiate = TRUE)
+# # Extract confidence intervals and exponentiate them
+# conf_intervals <- confint(model_covid)
+# exp_conf_intervals <- exp(conf_intervals)
+# # Append exponentiated confidence intervals to the data frame
+# fit_covid_results$exp_conf_low <- exp_conf_intervals[, 1]
+# fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
+# 
+# write_csv(fit_covid_results, here::here("output","mod7_covid_traditional.csv"))
 
 # ## finalfit() glm
 # explanatory_m2_covid=c("Age*covid2","BMI*covid2","Region*covid2" , "Ethnicity*covid2" ,"IMD*covid2", "Charlson_Gp*covid2"  )
