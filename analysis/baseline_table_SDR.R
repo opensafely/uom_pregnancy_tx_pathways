@@ -39,7 +39,7 @@ variables_names_contin <- df %>%
 colsfortab <- colnames(variables_names_contin)
 
 df %>%
-  summary_factorlist(explanatory=colsfortab, na_include = TRUE) -> t_continuous_overall 
+  summary_factorlist(explanatory=colsfortab) -> t_continuous_overall 
 summary_table<-(t_continuous_overall[-1,])
 
 write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_overall.csv"))
@@ -47,7 +47,7 @@ write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_overall
 
 dependent="age_cat"
 df %>%
-  summary_factorlist(dependent, explanatory=colsfortab, p = TRUE, na_include = TRUE) -> t_continuous_age
+  summary_factorlist(dependent, explanatory=colsfortab, p = TRUE) -> t_continuous_age
 summary_table<-(t_continuous_age[-1,])
 write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_by_age.csv"))
 
@@ -55,14 +55,14 @@ write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_by_age.
 ## categorical variables and rounding 
 # select categorical variables for the baseline table - for rounding counts. 
 
-#overall
+#overall categorical
 variables_names_categorical <- df %>% 
   select(patient_id, age_cat, imd, PN_code, 
          hbp_pregnancy, hbp_all,hbp_any)
 colsfortab=colnames(variables_names_categorical)
 
 df %>%
-  summary_factorlist(explanatory=colsfortab, na_include = TRUE) -> t_categorical_overall
+  summary_factorlist(explanatory=colsfortab) -> t_categorical_overall
 summary_table2<-(t_categorical_overall[-1,])
 
 ## round to 5
@@ -103,7 +103,7 @@ explanatory=colnames(variables_names_categorical)
 dependent="age_cat"
 
 df %>%
-  summary_factorlist(dependent, explanatory, na_include = TRUE) -> t_categorical_age
+  summary_factorlist(dependent, explanatory) -> t_categorical_age
 summary_table2<-(t_categorical_age[-1,])
 
 
