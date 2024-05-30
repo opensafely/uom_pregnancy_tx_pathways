@@ -45,11 +45,11 @@ summary_table<-(t_continuous_overall[-1,])
 write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_overall.csv"))
 
 
-dependent="age_cat"
-df %>%
-  summary_factorlist(dependent, explanatory=colsfortab, p = TRUE) -> t_continuous_age
-summary_table<-(t_continuous_age[-1,])
-write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_by_age.csv"))
+      # dependent="age_cat"
+      # df %>%
+      #   summary_factorlist(dependent, explanatory=colsfortab, p = TRUE) -> t_continuous_age
+      # summary_table<-(t_continuous_age[-1,])
+      # write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_by_age.csv"))
 
 
 ## categorical variables and rounding 
@@ -95,49 +95,49 @@ write_csv(data_overall, here::here("output", "SDR_table_categorical_overall.csv"
 
  
 
-# age_cat
-variables_names_categorical <- df %>% 
-  select(patient_id, region, imd, PN_code, 
-         hbp_pregnancy, hbp_all,hbp_any)
-explanatory=colnames(variables_names_categorical)
-dependent="age_cat"
+        # # age_cat
+        # variables_names_categorical <- df %>% 
+        #   select(patient_id, region, imd, PN_code, 
+        #          hbp_pregnancy, hbp_all,hbp_any)
+        # explanatory=colnames(variables_names_categorical)
+        # dependent="age_cat"
 
-df %>%
-  summary_factorlist(dependent, explanatory) -> t_categorical_age
-summary_table2<-(t_categorical_age[-1,])
-
-
-## round to 5
-## split cols out
-# Function to round counts to the nearest 5 and recalculate percentages
-round_counts <- function(summary_table2, col_range) {
-  # Extract counts
-  counts <- lapply(summary_table2[, col_range, drop = FALSE], function(x) as.numeric(sub("\\s*\\(.*", "", x)))
-  
-  # Round counts to the nearest 5
-  rounded_counts <- lapply(counts, function(x) round(x / 5) * 5)
-  
-  # Update the columns with rounded counts 
-  summary_table2[, col_range] <- lapply(rounded_counts, function(x) paste(x))
-  
-  return(summary_table2)
-}
-
-# Apply the function to the data by specifying column numbers
-data_age <- round_counts(summary_table2, 3:9)
-
-# Redact any counts < 7 
-data_age <- data_age %>%
-  mutate(across(3:9, ~ ifelse(as.numeric(.) <= 7, "redacted", .)))
+        # df %>%
+        #   summary_factorlist(dependent, explanatory) -> t_categorical_age
+        # summary_table2<-(t_categorical_age[-1,])
 
 
+        # ## round to 5
+        # ## split cols out
+        # # Function to round counts to the nearest 5 and recalculate percentages
+        # round_counts <- function(summary_table2, col_range) {
+        #   # Extract counts
+        #   counts <- lapply(summary_table2[, col_range, drop = FALSE], function(x) as.numeric(sub("\\s*\\(.*", "", x)))
+          
+        #   # Round counts to the nearest 5
+        #   rounded_counts <- lapply(counts, function(x) round(x / 5) * 5)
+          
+        #   # Update the columns with rounded counts 
+        #   summary_table2[, col_range] <- lapply(rounded_counts, function(x) paste(x))
+          
+        #   return(summary_table2)
+        # }
 
-write_csv(data_age, here::here("output", "SDR_table_categorical_age.csv"))
-#write_csv(data, here::here("output", "blt_6v12_weeks_categorical_rounded.csv"))
+        # # Apply the function to the data by specifying column numbers
+        # data_age <- round_counts(summary_table2, 3:9)
 
-## overall table:
-# columns for baseline table
-colsfortab <- colnames(df)
-df %>% summary_factorlist(explanatory = colsfortab) -> t_overall
-t_overall<-(t_overall[-1,])
-write_csv(t_overall, here::here("output", "SDR_table_all.csv"))
+        # # Redact any counts < 7 
+        # data_age <- data_age %>%
+        #   mutate(across(3:9, ~ ifelse(as.numeric(.) <= 7, "redacted", .)))
+
+
+
+        # write_csv(data_age, here::here("output", "SDR_table_categorical_age.csv"))
+        # #write_csv(data, here::here("output", "blt_6v12_weeks_categorical_rounded.csv"))
+
+        # ## overall table:
+        # # columns for baseline table
+        # colsfortab <- colnames(df)
+        # df %>% summary_factorlist(explanatory = colsfortab) -> t_overall
+        # t_overall<-(t_overall[-1,])
+        # write_csv(t_overall, here::here("output", "SDR_table_all.csv"))
