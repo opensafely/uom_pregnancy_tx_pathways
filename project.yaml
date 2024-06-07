@@ -407,49 +407,9 @@ actions:
 
 
 
-              # ## old baseline tables taking first obs. 
-              # # ## baseline table for overall cohorts. 
-              # # describe_baseline_table_8wk_cohort:
-              # #    run: r:latest analysis/baseline_table_8wk_using_rds.R
-              # #    needs: [describe_basic_record_to_rds_process]
-              # #    outputs:
-              # #      moderately_sensitive: 
-              # #        overall_delcodes: output/table_delcodes_8wk_update.csv
-              # #        table_overall_counts: output/overall_counts_8wk_update.csv
-              # #        table_overall: output/blt_overall_8wk_update_overall.csv  
-
-              # # ### cohort filtered to check within 6wks
-              # # describe_baseline_table_6wk_cohort:
-              # #    run: r:latest analysis/baseline_table_6wk_using_rds.R
-              # #    needs: [describe_basic_record_to_rds_process_6wkcohort]
-              # #    outputs:
-              # #      moderately_sensitive: 
-              # #        overall_delcodes: output/table_delcodes_6wk_update.csv
-              # #        table_overall_counts: output/overall_counts_6wk_update.csv
-              # #        table_overall: output/blt_overall_6wk_update_overall.csv 
-              # # ### cohort filtered to check within 12wks
-              # # describe_baseline_table_12wk_cohort:
-              # #    run: r:latest analysis/baseline_table_12wk_using_rds.R
-              # #    needs: [describe_basic_record_to_rds_process_12wkcohort]
-              # #    outputs:
-              # #      moderately_sensitive: 
-              # #        overall_delcodes: output/table_delcodes_12wk_update.csv
-              # #        table_overall_counts: output/overall_counts_12wk_update.csv
-              # #        table_overall: output/blt_overall_12wk_update_overall.csv 
-              # ## comparing 6 8 and 12 week cohorts
-              # describe_baseline_table_stats_compare_6_12_cohorts:
-              #     run: r:latest analysis/baseline_table_comparing_6_to_12.R
-              #     needs: [describe_basic_record_to_rds_process_6wkcohort,describe_basic_record_to_rds_process, describe_basic_record_to_rds_process_12wkcohort]
-              #     outputs:
-              #       moderately_sensitive:
-              #         comparing_6_8_12_cohorts_patient_numbers: output/blt_6v12_weeks_patient_numbers.csv
-              #         comparing_6_8_12_cohorts_continuous: output/blt_6v12_weeks_continuous_vars.csv
-              #         comparing_6_8_12_catagorical: output/blt_6v12_weeks_categorical.csv
-              #         comparing_6_8_12_catagorical_rounded: output/blt_6v12_weeks_categorical_rounded.csv
-
-  ##########################
-  ###### ITS analyses ######
-  ##########################
+  ############################################
+  #### Interrupted Time Series Analysis ######
+  ############################################
 
   ## ITS plot with modelled rates using 8 week cohort 
   describe_ITS_plot_overall_new_modelled:
@@ -536,8 +496,37 @@ actions:
           plot_ITS_age_cat_plot_data_cf: output/plot_data_ITS_region_counterfactual.csv
           plot_irr: output/plot_ITS_region_IRRs.jpeg
 
+    ##############################################
+    ####### logistic regression modelling ########
+    ##############################################
 
-####### logistic regression modelling. 
+
+  describe_glm_for_no_pn_check_Charlson:
+     run: r:latest analysis/glm_for_no_pn_check_Charlson.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_full: output/mod_full_Charlson.csv
+        model_full_AND_hbp: output/mod_full_Charlson_AND_hbp.csv
+
+  describe_glm_for_no_pn_check_17_comor:
+     run: r:latest analysis/glm_for_no_pn_check_17_comor.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_full_17: output/mod_full_17_comor.csv
+        model_full_17_AND_hbp: output/mod_full_17_comor_AND_HBP.csv
+ 
+
+  describe_glm_for_no_pn_check_19_22:
+     run: r:latest analysis/glm_for_no_pn_check_2019_2022.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_full_19: output/mod_full_Charlson_AND_hbp_2019.csv
+        model_sep_19: output/separation_result19.txt
+        model_full_22: output/mod_full_Charlson_AND_hbp_2022.csv
+        model_sep_22: output/separation_result22.txt
 
 # # Glm - finalfit() sensitivity - 2019 
 #   describe_finalfit_for_no_pn_check_sensitivity:
@@ -550,18 +539,18 @@ actions:
 #             #mod7_traditional_covid: output/mod7_covid_traditional.csv
 #             #mod7_finalfit_covid: output/mod7_finalfit_covid.csv
 
-# Glm traditional glm() model
-  describe_glm_for_no_pn_check_traditional:
-      run: r:latest analysis/glm_for_no_pn_check_traditional.R
-      needs: [process_cohorts_select_one_random_event_8wk]
-      outputs:
-        moderately_sensitive:
-            model_full: output/mod_full_traditional_Charlson.csv
-            model_full_AND_hbp: output/mod_full_traditional_Charlson_AND_hbp.csv
-            model_full_17comor: output/mod_full_traditional_17_comor.csv
-            model_full_17comor_AND_hbp: output/mod_full_traditional_17_comor_AND_HBP.csv
-            model_full_AND_hbp_2019: output/mod_full_traditional_Charlson_AND_hbp_2019.csv
-            model_full_AND_hbp_2022: output/mod_full_traditional_Charlson_AND_hbp_2022.csv
+# # Glm traditional glm() model
+#   describe_glm_for_no_pn_check_traditional:
+#       run: r:latest analysis/glm_for_no_pn_check_traditional.R
+#       needs: [process_cohorts_select_one_random_event_8wk]
+#       outputs:
+#         moderately_sensitive:
+#             model_full: output/mod_full_traditional_Charlson.csv
+#             model_full_AND_hbp: output/mod_full_traditional_Charlson_AND_hbp.csv
+#             model_full_17comor: output/mod_full_traditional_17_comor.csv
+#             model_full_17comor_AND_hbp: output/mod_full_traditional_17_comor_AND_HBP.csv
+#             model_full_AND_hbp_2019: output/mod_full_traditional_Charlson_AND_hbp_2019.csv
+#             model_full_AND_hbp_2022: output/mod_full_traditional_Charlson_AND_hbp_2022.csv
            
 
             # describe_glm_for_no_pn_check_sensitivity:
