@@ -528,55 +528,11 @@ actions:
         model_full_22: output/mod_full_Charlson_AND_hbp_2022.csv
         model_sep_22: output/separation_result22.txt
 
-# # Glm - finalfit() sensitivity - 2019 
-#   describe_finalfit_for_no_pn_check_sensitivity:
-#       run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity.R
-#       needs: [process_cohorts_select_one_random_event_8wk]
-#       outputs:
-#         moderately_sensitive:
-#             mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_2019.csv
-#             #mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_2022onwards.csv
-#             #mod7_traditional_covid: output/mod7_covid_traditional.csv
-#             #mod7_finalfit_covid: output/mod7_finalfit_covid.csv
-
-# # Glm traditional glm() model
-#   describe_glm_for_no_pn_check_traditional:
-#       run: r:latest analysis/glm_for_no_pn_check_traditional.R
-#       needs: [process_cohorts_select_one_random_event_8wk]
-#       outputs:
-#         moderately_sensitive:
-#             model_full: output/mod_full_traditional_Charlson.csv
-#             model_full_AND_hbp: output/mod_full_traditional_Charlson_AND_hbp.csv
-#             model_full_17comor: output/mod_full_traditional_17_comor.csv
-#             model_full_17comor_AND_hbp: output/mod_full_traditional_17_comor_AND_HBP.csv
-#             model_full_AND_hbp_2019: output/mod_full_traditional_Charlson_AND_hbp_2019.csv
-#             model_full_AND_hbp_2022: output/mod_full_traditional_Charlson_AND_hbp_2022.csv
-           
-
-            # describe_glm_for_no_pn_check_sensitivity:
-            #     run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity.R
-            #     needs: [process_cohorts_select_one_random_event_8wk]
-            #     outputs:
-            #      moderately_sensitive:
-            #         mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_2019.csv
-            #         mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_2022onwards.csv
-            #         mod7_traditional_covid: output/mod7_covid_traditional.csv
-            #         #mod7_finalfit_covid: output/mod7_finalfit_covid.csv
-
-            # describe_glm_for_no_pn_check_sensitivity_12week_cohort:
-            #     run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity12wk_cohort.R
-            #     needs: [process_cohorts_select_one_random_event_12wk]
-            #     outputs:
-            #      moderately_sensitive:
-            #         mod8_full_matrix_r: output/mod8_fulladj_matrix_reduced_12weekcohort.csv
-          
-# # Glm - traditional without finalfit()
-#   describe_glm_for_no_pn_check:
-#       run: r:latest analysis/glm_for_no_pn_check_finalfit_sensitivity.R
-#       needs: [process_cohorts_select_one_random_event_8wk]
-#       outputs:
-#         moderately_sensitive:
-#             mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_2019.csv
-#             #mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_2022onwards.csv
-#             #mod7_traditional_covid: output/mod7_covid_traditional.csv
-#             #mod7_finalfit_covid: output/mod7_finalfit_covid.csv
+  describe_glm_for_no_pn_check_covid_interaction_term:
+     run: r:latest analysis/glm_for_no_pn_check_covid.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_char_covid: output/mod_full_Charlson_covid.csv
+        model_char__hbp_covid: output/mod_full_Charlson_AND_hbp_covid.csv
+        model_char_covid_interaction: output/mod_full_Charlson_covid_interaction.csv
