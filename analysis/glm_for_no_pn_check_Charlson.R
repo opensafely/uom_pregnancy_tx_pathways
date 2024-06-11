@@ -75,21 +75,21 @@ fit_results$exp_conf_high <- exp_conf_intervals[, 2]
 
 write_csv(fit_results, here::here("output","mod_full_Charlson.csv"))
 
-############### 
-## model with Charlson Y/N AND hbp_pregnancy history 
-###############
-#  mod full 
-## traditional glm()
-model_full_hbp <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df_input, family = binomial(link = "logit"))
+# ############### 
+# ## model with Charlson Y/N AND hbp_pregnancy history 
+# ###############
+# #  mod full 
+# ## traditional glm()
+# model_full_hbp <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df_input, family = binomial(link = "logit"))
 
-# Extract coefficient estimates and exponentiate them
-fit_results_hbp <- tidy(model_full_hbp, exponentiate = TRUE)
-# Extract confidence intervals and exponentiate them
-conf_intervals_hbp <- confint(model_full_hbp)
-exp_conf_intervals_hbp <- exp(conf_intervals_hbp)
-# Append exponentiated confidence intervals to the data frame
-fit_results_hbp$exp_conf_low <- exp_conf_intervals_hbp[, 1]
-fit_results_hbp$exp_conf_high <- exp_conf_intervals_hbp[, 2]
+# # Extract coefficient estimates and exponentiate them
+# fit_results_hbp <- tidy(model_full_hbp, exponentiate = TRUE)
+# # Extract confidence intervals and exponentiate them
+# conf_intervals_hbp <- confint(model_full_hbp)
+# exp_conf_intervals_hbp <- exp(conf_intervals_hbp)
+# # Append exponentiated confidence intervals to the data frame
+# fit_results_hbp$exp_conf_low <- exp_conf_intervals_hbp[, 1]
+# fit_results_hbp$exp_conf_high <- exp_conf_intervals_hbp[, 2]
 
-write_csv(fit_results_hbp, here::here("output","mod_full_Charlson_AND_hbp.csv"))
+# write_csv(fit_results_hbp, here::here("output","mod_full_Charlson_AND_hbp.csv"))
 
