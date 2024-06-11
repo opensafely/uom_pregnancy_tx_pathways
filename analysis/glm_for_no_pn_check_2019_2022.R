@@ -59,7 +59,7 @@ df22<- df_input %>% filter(delivery_code_date > as.Date("2021-12-31"))
 rm(df_input)
 
 #2019
-model_full_hbp_2019 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df19, family = binomial(link = "logit"))
+model_full_hbp_2019 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2, data = df19, family = binomial(link = "logit"))
 # Extract coefficient estimates and exponentiate them
 fit_results_2019 <- tidy(model_full_hbp_2019, exponentiate = TRUE)
 # Extract confidence intervals and exponentiate them
@@ -68,17 +68,17 @@ exp_conf_intervals_2019 <- exp(conf_intervals_2019)
 # Append exponentiated confidence intervals to the data frame
 fit_results_2019$exp_conf_low <- exp_conf_intervals_2019[, 1]
 fit_results_2019$exp_conf_high <- exp_conf_intervals_2019[, 2]
-write_csv(fit_results_2019, here::here("output","mod_full_Charlson_AND_hbp_2019.csv"))
+write_csv(fit_results_2019, here::here("output","mod_full_Charlson_2019.csv"))
 
 
-detectsep_model19 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df19, family = binomial(link = "logit"), method = "detect_separation")
+detectsep_model19 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2, data = df19, family = binomial(link = "logit"), method = "detect_separation")
 separation_result19 <- capture.output(detectsep_model19)
 writeLines(separation_result19, here::here("output","separation_result19.txt"))
 
 
 
 #2022 onwards
-model_full_hbp_2022 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df22, family = binomial(link = "logit"))
+model_full_hbp_2022 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2, data = df22, family = binomial(link = "logit"))
 # Extract coefficient estimates and exponentiate them
 fit_results_2022 <- tidy(model_full_hbp_2022, exponentiate = TRUE)
 # Extract confidence intervals and exponentiate them
@@ -87,8 +87,8 @@ exp_conf_intervals_2022 <- exp(conf_intervals_2022)
 # Append exponentiated confidence intervals to the data frame
 fit_results_2022$exp_conf_low <- exp_conf_intervals_2022[, 1]
 fit_results_2022$exp_conf_high <- exp_conf_intervals_2022[, 2]
-write_csv(fit_results_2022, here::here("output","mod_full_Charlson_AND_hbp_2022.csv"))
+write_csv(fit_results_2022, here::here("output","mod_full_Charlson_2022.csv"))
 
-detectsep_model22 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2+hbp_pregnancy, data = df22, family = binomial(link = "logit"), method = "detect_separation")
+detectsep_model22 <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2, data = df22, family = binomial(link = "logit"), method = "detect_separation")
 separation_result22 <- capture.output(detectsep_model22)
 writeLines(separation_result22, here::here("output","separation_result22.txt"))

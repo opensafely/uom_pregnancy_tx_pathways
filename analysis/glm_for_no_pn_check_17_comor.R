@@ -96,27 +96,27 @@ fit_results_17comor$exp_conf_high <- exp_conf_intervals_17comor[, 2]
 write_csv(fit_results_17comor, here::here("output","mod_full_17_comor.csv"))
 
 
-############### 
-## model with comorbidities x17 + HBP
-############
-## traditional glm()
-model_full_17comor_HBP <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+
-                                cancer+cardiovascular+chronic_obstructive_pulmonary+
-                                heart_failure+connective_tissue+ dementia+
-                                diabetes+diabetes_complications+hemiplegia+
-                                hiv+metastatic_cancer +mild_liver+
-                                mod_severe_liver+ mod_severe_renal+ mi+
-                                peptic_ulcer+ peripheral_vascular+hbp_pregnancy,
-                                data = df_input, family = binomial(link = "logit"))
+# ############### 
+# ## model with comorbidities x17 + HBP
+# ############
+# ## traditional glm()
+# model_full_17comor_HBP <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+
+#                                 cancer+cardiovascular+chronic_obstructive_pulmonary+
+#                                 heart_failure+connective_tissue+ dementia+
+#                                 diabetes+diabetes_complications+hemiplegia+
+#                                 hiv+metastatic_cancer +mild_liver+
+#                                 mod_severe_liver+ mod_severe_renal+ mi+
+#                                 peptic_ulcer+ peripheral_vascular+hbp_pregnancy,
+#                                 data = df_input, family = binomial(link = "logit"))
 
-# Extract coefficient estimates and exponentiate them
-fit_results_17comor_HBP <- tidy(model_full_17comor_HBP, exponentiate = TRUE)
-# Extract confidence intervals and exponentiate them
-conf_intervals_17comor_HBP <- confint(model_full_17comor_HBP)
-exp_conf_intervals_17comor_HBP <- exp(conf_intervals_17comor_HBP)
-# Append exponentiated confidence intervals to the data frame
-fit_results_17comor_HBP$exp_conf_low <- exp_conf_intervals_17comor_HBP[, 1]
-fit_results_17comor_HBP$exp_conf_high <- exp_conf_intervals_17comor_HBP[, 2]
+# # Extract coefficient estimates and exponentiate them
+# fit_results_17comor_HBP <- tidy(model_full_17comor_HBP, exponentiate = TRUE)
+# # Extract confidence intervals and exponentiate them
+# conf_intervals_17comor_HBP <- confint(model_full_17comor_HBP)
+# exp_conf_intervals_17comor_HBP <- exp(conf_intervals_17comor_HBP)
+# # Append exponentiated confidence intervals to the data frame
+# fit_results_17comor_HBP$exp_conf_low <- exp_conf_intervals_17comor_HBP[, 1]
+# fit_results_17comor_HBP$exp_conf_high <- exp_conf_intervals_17comor_HBP[, 2]
 
-write_csv(fit_results_17comor_HBP, here::here("output","mod_full_17_comor_AND_HBP.csv"))
+# write_csv(fit_results_17comor_HBP, here::here("output","mod_full_17_comor_AND_HBP.csv"))
 
