@@ -184,7 +184,21 @@ actions:
     outputs:
      moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names_reduced.csv
+
+  describe_delivery_codes_frequency:
+    run: r:latest analysis/frequency_of_codes_Del.R
+    needs: [process_cohorts_select_one_random_event_8wk]
+    outputs:
+     moderately_sensitive:
+        table_delcodes: output/delivery_codes_count.csv
         
+  describe_postnatal_codes_frequency:
+    run: r:latest analysis/frequency_of_codes_PN.R
+    needs: [process_cohorts_select_one_random_event_8wk]
+    outputs:
+     moderately_sensitive:
+        table_pncodes: output/postnatal_codes_count.csv 
+
   # describe_pn_code_freq:
   #   run: r:latest analysis/pn_code_frequency.R
   #   needs: [join_cohorts_8_week]
