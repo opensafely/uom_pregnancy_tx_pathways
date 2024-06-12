@@ -550,3 +550,31 @@ actions:
         model_char_covid: output/mod_full_Charlson_covid.csv
         #model_char__hbp_covid: output/mod_full_Charlson_AND_hbp_covid.csv
         model_char_covid_interaction: output/mod_full_Charlson_covid_interaction.csv
+
+
+
+  ### trying finalfit
+
+  describe_glm_for_no_pn_check_Charlson_finalfit:
+     run: r:latest analysis/glm_for_no_pn_check_Charlson_finalfit.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_fullChar: output/mod_full_Charlson_finalfit.csv
+        #model_full_AND_hbp: output/mod_full_Charlson_AND_hbp.csv
+
+  describe_glm_for_no_pn_check_Comor17_finalfit:
+     run: r:latest analysis/glm_for_no_pn_check_17_comor_finalfit.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_fullComor17: output/mod_full_Comor17_finalfit.csv
+        #model_full_AND_hbp: output/mod_full_Charlson_AND_hbp.csv
+
+  describe_glm_for_no_pn_check_2019_2022_finalfit:
+     run: r:latest analysis/glm_for_no_pn_check_2019_2022_finalfit.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_full19: output/mod_2019_finalfit.csv
+        model_full22: output/mod_2022_finalfit.csv
