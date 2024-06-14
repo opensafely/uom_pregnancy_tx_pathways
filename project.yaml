@@ -578,3 +578,37 @@ actions:
       moderately_sensitive:
         model_full19: output/mod_2019_finalfit.csv
         model_full22: output/mod_2022_finalfit.csv
+
+
+#### glm model build
+  describe_glm_for_no_pn_check_age:
+     run: r:latest analysis/glm_for_no_pn_check_age.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age: output/mod_age.csv
+        mod_agecat: output/mod_age_cat.csv
+
+  describe_glm_for_no_pn_check_bmi:
+     run: r:latest analysis/glm_for_no_pn_check_bmi.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_bmi: output/mod_bmi.csv
+        mod_bmicat: output/mod_bmi_cat.csv
+
+  describe_glm_for_no_pn_check_demographics_only:
+     run: r:latest analysis/glm_for_no_pn_check_Charlson_part1.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        tabl_charlson_by_outcome: output/tab_Charlson_pnc_check.csv
+        model_demographics_only: output/mod_demographics.csv
+
+  describe_glm_for_no_pn_check_demographics_plus_region:
+     run: r:latest analysis/glm_for_no_pn_check_Charlson_part2.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        tabl_region_by_outcome: output/tab_region_pnc_check.csv
+        model_demographics_only: output/mod_demographics_region.csv
