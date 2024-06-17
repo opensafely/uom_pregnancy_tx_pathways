@@ -24,7 +24,7 @@ plot_code_usage <- function(data, date_variable, code_usage_count, label = NULL,
       ),
       labels = scales::label_date_short()
     ) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(), ) +
     ggplot2::labs(
       x = NULL,
       y = NULL,
@@ -35,5 +35,6 @@ plot_code_usage <- function(data, date_variable, code_usage_count, label = NULL,
       legend.position = "none",
       text = ggplot2::element_text(size = 12),
       axis.text.x = ggplot2::element_text(size = 10)
-    )
+    ) +
+    ggplot2::expand_limits(y = 0)
 }
