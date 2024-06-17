@@ -10,6 +10,7 @@ library(fs)
 library(gt)
 library(patchwork)
 library(ggrepel)
+library(plotly)
 
 # Load data
 load(here("sdr", "data", "snomed_code_usage.rda"))
@@ -103,7 +104,7 @@ ui <- page_navbar(
                     DTOutput(outputId = "tbl_code_usage", width = "100%")
                   ),
                   tabPanel(title = "Yearly code usage trends",
-                    plotOutput("plot_total_code_usage_top5")
+                    plotlyOutput("plot_total_code_usage_top5")
                   ),
                   tabPanel(title = "Selected codelist",
                     DTOutput(outputId = "tbl_codelist", width = "100%"))
@@ -163,7 +164,7 @@ server <- function(input, output, session) {
     )
   )
 
-  output$plot_total_code_usage_top5 <- renderPlot({
+  output$plot_total_code_usage_top5 <- renderPlotly({
 
     # Get list of 5 most used codes from codelist
     selected_top_5_codes <- codes_subset() |>
@@ -177,7 +178,7 @@ server <- function(input, output, session) {
       pull(snomed_concept_id)
 
     selected_snomed_code_usage <- codes_subset() |>
-      group_by(end_date) |> 
+      group_by(end_date) |>
       mutate(usage_codelist = sum(usage, na.rm = TRUE)) |>
       ungroup()
 
@@ -188,35 +189,37 @@ server <- function(input, output, session) {
       )
 
     plot_top5_codelist <- selected_snomed_code_usage |>
-      filter(snomed_concept_id %in% selected_top_5_codes) |>
+      # filter(snomed_concept_id %in% selected_top_5_codes) |>
       plot_code_usage(
         date = end_date,
         code_usage = usage,
         colour = snomed_concept_id
       ) +
-      geom_label_repel(
-        aes(
-          label = ifelse(
-            end_date == min(selected_snomed_code_usage$end_date),
-            snomed_concept_id,
-            ""
-          )
-        ),
-        direction = "y",
-        hjust = "right",
-        size = 3,
-        box.padding = 0.2) +
+      # geom_label_repel(
+      #   aes(
+      #     label = ifelse(
+      #       end_date == min(selected_snomed_code_usage$end_date),
+      #       snomed_concept_id,
+      #       ""
+      #     )
+      #   ),
+      #   direction = "y",
+      #   hjust = "right",
+      #   size = 3,
+      #   box.padding = 0.2) +
       guides(color = "none")
 
     plot_codelist <- plot_sum_codelist / plot_top5_codelist
 
-    plot_codelist +
+    plot_codelist <- plot_codelist +
       plot_annotation(tag_levels = c("A")) +
       plot_layout(axes = "collect") &
       theme(
         plot.tag = element_text(size = rel(1)),
         # plot.tag.position = c(-.014, 1.03)
       )
+
+      plotly::ggplotly(plot_codelist)
   })
 
   output$tbl_codelist <- renderDT(
@@ -224,7 +227,8 @@ server <- function(input, output, session) {
       selected_codelist(),
       colnames = c(
         "SNOMED Code" = "code",
-        "Description" = "term")
+        "Description" = "term"
+      )
     )
   )
 
