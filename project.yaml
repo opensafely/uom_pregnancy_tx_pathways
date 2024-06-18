@@ -538,9 +538,9 @@ actions:
      outputs:
       moderately_sensitive:
         model_full_19: output/mod_full_Charlson_2019.csv
-        model_sep_19: output/separation_result19.txt
+        #model_sep_19: output/separation_result19.txt
         model_full_22: output/mod_full_Charlson_2022.csv
-        model_sep_22: output/separation_result22.txt
+        #model_sep_22: output/separation_result22.txt
 
   describe_glm_for_no_pn_check_covid_interaction_term:
      run: r:latest analysis/glm_for_no_pn_check_covid.R
@@ -655,4 +655,12 @@ actions:
      needs: [process_cohorts_select_one_random_event_8wk]
      outputs:
       moderately_sensitive:
-        mod_age_bmi_eth_imd_reg: output/mod_full.csv
+        mod_age_bmi_eth_imd_reg_char: output/mod_full.csv
+
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char_hbp:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_hbp.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char_hbp: output/mod_full_hbp.csv

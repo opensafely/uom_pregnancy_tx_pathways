@@ -39,14 +39,6 @@ df_input$Ethnicity <- relevel(df_input$Ethnicity, "White") #white as reference
 df_input<-ungroup(df_input)
 
 
-# select variables for modelling
-# colnames(df_input)[3]<-"Age"
-# colnames(df_input)[7]<-"Region"
-# colnames(df_input)[8]<-"IMD"
-# colnames(df_input)[9]<-"BMI"
-#colnames(df_input)[40]<-"HBP"
-
-
 df_input <- df_input %>% filter(Ethnicity != "Unknown")
 df_input$Ethnicity<-as.factor(df_input$Ethnicity)
 df_input$Ethnicity<-droplevels(df_input$Ethnicity)
@@ -57,9 +49,6 @@ df_input$Ethnicity<-droplevels(df_input$Ethnicity)
 # df_input$charlsonGrp2 <- as.factor(df_input$charlsonGrp2)
 # df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
 
-
-############### 
-## model with Charlson Y/N, no hbp_pregnancy history
 ###############
 #  short model  
 ## traditional glm()

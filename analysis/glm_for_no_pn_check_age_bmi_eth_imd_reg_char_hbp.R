@@ -21,8 +21,8 @@ df_input$postnatal_8wk_code_present <- as.factor(df_input$postnatal_8wk_code_pre
 ## relevel so thoes with a pn check are the reference
 df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_present, "1")
 
-df_input$age_cat<-as.factor(df_input$age_cat)
-df_input$age_cat <- relevel(df_input$age_cat, "25-29")
+# df_input$age_cat<-as.factor(df_input$age_cat)
+# df_input$age_cat <- relevel(df_input$age_cat, "25-29")
 
 df_input$Ethnicity <- as.factor(df_input$Ethnicity)
 df_input$Ethnicity <- relevel(df_input$Ethnicity, "White") #white as reference
@@ -54,14 +54,14 @@ df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
 df_input$imd<-droplevels(df_input$imd)
 
 df_input$charlsonGrp2 <- as.factor(df_input$charlsonGrp2)
-
+df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
 
 ############### 
 ## model with Charlson Y/N
 ###############
 #  short model  
 ## traditional glm()
-model_full <- glm(postnatal_8wk_code_present ~ age+bmi+region+Ethnicity+imd+charlsonGrp2, data = df_input, family = binomial(link = "logit"))
+model_full <- glm(postnatal_8wk_code_present ~ age+bmi+region+Ethnicity+imd+charlsonGrp2+hbp_pregnancy, data = df_input, family = binomial(link = "logit"))
 
 
 # Extract coefficient estimates and exponentiate them
@@ -75,5 +75,5 @@ exp_conf_intervals <- exp(conf_intervals)
 fit_results$exp_conf_low <- exp_conf_intervals[, 1]
 fit_results$exp_conf_high <- exp_conf_intervals[, 2]
 
-write_csv(fit_results, here::here("output","mod_full.csv"))
+write_csv(fit_results, here::here("output","mod_full_hbp.csv"))
 

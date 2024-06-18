@@ -38,32 +38,10 @@ df_input$bmi_cat <- as.factor(df_input$bmi_cat)
 
 df_input<-ungroup(df_input)
 
-
-# select variables for modelling
-#colnames(df_input)[3]<-"Age"
-#colnames(df_input)[7]<-"Region"
-#colnames(df_input)[8]<-"IMD"
-colnames(df_input)[9]<-"BMI"
-#colnames(df_input)[40]<-"HBP"
-
-
-# df_input <- df_input %>% filter(Ethnicity != "Unknown")
-# df_input$Ethnicity<-as.factor(df_input$Ethnicity)
-# df_input$Ethnicity<-droplevels(df_input$Ethnicity)
-# df_input <- df_input %>% filter(IMD != "0")
-# df_input$IMD<-as.factor(df_input$IMD)
-# df_input$IMD<-droplevels(df_input$IMD)
-
-# df_input$charlsonGrp2 <- as.factor(df_input$charlsonGrp2)
-# df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
-
-
-############### 
-## model with Charlson Y/N, no hbp_pregnancy history
 ###############
 #  short model  
 ## traditional glm()
-model_bmi <- glm(postnatal_8wk_code_present ~ BMI, data = df_input, family = binomial(link = "logit"))
+model_bmi <- glm(postnatal_8wk_code_present ~ bmi, data = df_input, family = binomial(link = "logit"))
 model_bmicat <- glm(postnatal_8wk_code_present ~ bmi_cat, data = df_input, family = binomial(link = "logit"))
 
 # Extract coefficient estimates and exponentiate them
