@@ -63,6 +63,15 @@ pregnancy_codelists <- pregnancy_codelists_paths |>
   map(read_csv, col_types = list(code = "c")) %>%
   bind_rows(.id = "codelist") |>
   mutate(codelist = str_extract(codelist, "(?<=user-VickiPalin-)\\w+"))
+
+pregnancy_codelists_selected <- pregnancy_codelists |>
+  filter(
+    codelist %in% c(
+      "pregnancy_delivery_snomed_reviewed_2",
+      "pregnancy_postdel_antenatal_snomed",
+      "pregnancy_antenatal_snomed"
+      )
+    )
 ```
 
 ```{r load-funs}
@@ -74,11 +83,23 @@ source(here("sdr", "scripts", "visualise_code_usage.R"))
 
 # Introduction
 
+Identifying pregnancy in primary care electronic healthcare records is difficult.
+We aim to explore publicaly available data about code usage in primary care in England to understand how pregnancy related events are recorded since 2011.
+This report will focus on:
+
+1. changes and variation in code usage since 2011
+2. which codes describe most of the pregnancy related clinical events since 2011
+
 # Methods
 
 ## Codelists
 
 We converted Read Codes used by @Minassian2019 to SNOMED CT Codes (see <https://github.com/opensafely/uom_pregnancy_tx_pathways>).
+In this report we anlysed the code usage of the following three codelists:
+
+- [pregnancy_delivery_snomed_reviewed_2](https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_delivery_snomed_reviewed_2/39a121e3/) (Version 39a121e3)
+- [pregnancy_postdel_antenatal_snomed](https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_postdel_antenatal_snomed/22287ec9/) (Version 22287ec9)
+- [pregnancy_delivery_snomed_reviewed_2](https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_antenatal_snomed/61667fb8/) (Version 61667fb8)
 
 ## Data source
 
