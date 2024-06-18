@@ -578,3 +578,81 @@ actions:
       moderately_sensitive:
         model_full19: output/mod_2019_finalfit.csv
         model_full22: output/mod_2022_finalfit.csv
+
+
+#### glm model build - univariable analysis 
+  describe_glm_for_no_pn_check_age:
+     run: r:latest analysis/glm_for_no_pn_check_age.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age: output/mod_age.csv
+        mod_agecat: output/mod_age_cat.csv
+
+  describe_glm_for_no_pn_check_bmi:
+     run: r:latest analysis/glm_for_no_pn_check_bmi.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_bmi: output/mod_bmi.csv
+        mod_bmicat: output/mod_bmi_cat.csv
+
+
+  describe_glm_for_no_pn_check_ethnicity:
+     run: r:latest analysis/glm_for_no_pn_check_ethnicity.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_ethnicity: output/mod_ethnicity.csv
+
+
+  describe_glm_for_no_pn_check_imd:
+     run: r:latest analysis/glm_for_no_pn_check_imd.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_imd: output/mod_imd.csv
+
+  describe_glm_for_no_pn_check_region:
+     run: r:latest analysis/glm_for_no_pn_check_region.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_region: output/mod_region.csv
+
+
+  describe_glm_for_no_pn_check_charlsonGr2_only:
+     run: r:latest analysis/glm_for_no_pn_check_charlsonGr2_only.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_chargrp2: output/mod_charlsonGr2_only.csv
+
+#### building demographics
+  describe_glm_for_no_pn_check_age_bmi_eth:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth: output/mod_agebmieth.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd: output/mod_agebmiethimd.csv
+ 
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg: output/mod_agebmiethimdreg.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg: output/mod_full.csv
