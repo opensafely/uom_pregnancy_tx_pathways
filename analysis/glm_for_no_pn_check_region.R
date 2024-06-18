@@ -43,13 +43,13 @@ df_input$region <- relevel(df_input$region, "London")
 df_input<-ungroup(df_input)
 
 ## for log
-levels(df_input$Region)
-table(df_input$Region)
-str(df_input$Region)
+levels(df_input$region)
+table(df_input$region)
+str(df_input$region)
 
 # select variables for modelling
 # colnames(df_input)[3]<-"Age"
-colnames(df_input)[7]<-"Region"
+# colnames(df_input)[7]<-"Region"
 # colnames(df_input)[8]<-"IMD"
 # colnames(df_input)[9]<-"BMI"
 #colnames(df_input)[40]<-"HBP"
@@ -71,7 +71,7 @@ colnames(df_input)[7]<-"Region"
 ###############
 #  short model  
 ## traditional glm()
-model_region <- glm(postnatal_8wk_code_present ~ Region, data = df_input, family = binomial(link = "logit"))
+model_region <- glm(postnatal_8wk_code_present ~ region, data = df_input, family = binomial(link = "logit"))
 
 # Extract coefficient estimates and exponentiate them
 fit_results <- tidy(model_region, exponentiate = TRUE)
