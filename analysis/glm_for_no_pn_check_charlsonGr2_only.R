@@ -39,14 +39,6 @@ df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_prese
 df_input<-ungroup(df_input)
 
 
-# select variables for modelling
-# colnames(df_input)[3]<-"Age"
-# colnames(df_input)[7]<-"Region"
-# colnames(df_input)[8]<-"IMD"
-# colnames(df_input)[9]<-"BMI"
-#colnames(df_input)[40]<-"HBP"
-
-
 # df_input <- df_input %>% filter(Ethnicity != "Unknown")
 # df_input$Ethnicity<-as.factor(df_input$Ethnicity)
 # df_input$Ethnicity<-droplevels(df_input$Ethnicity)
