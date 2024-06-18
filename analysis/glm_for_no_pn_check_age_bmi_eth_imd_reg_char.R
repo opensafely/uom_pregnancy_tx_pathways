@@ -21,8 +21,8 @@ df_input$postnatal_8wk_code_present <- as.factor(df_input$postnatal_8wk_code_pre
 ## relevel so thoes with a pn check are the reference
 df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_present, "1")
 
-df_input$age_cat<-as.factor(df_input$age_cat)
-df_input$age_cat <- relevel(df_input$age_cat, "25-29")
+# df_input$age_cat<-as.factor(df_input$age_cat)
+# df_input$age_cat <- relevel(df_input$age_cat, "25-29")
 
 df_input$Ethnicity <- as.factor(df_input$Ethnicity)
 df_input$Ethnicity <- relevel(df_input$Ethnicity, "White") #white as reference
@@ -34,7 +34,7 @@ df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
  
 # bmi - numeric
 df_input$bmi <- as.numeric(df_input$bmi)
-df_input$bmi_cat <- as.factor(df_input$bmi_cat)
+# df_input$bmi_cat <- as.factor(df_input$bmi_cat)
 
 df_input<-ungroup(df_input)
 
@@ -44,7 +44,6 @@ colnames(df_input)[3]<-"Age"
 colnames(df_input)[7]<-"Region"
 colnames(df_input)[8]<-"IMD"
 colnames(df_input)[9]<-"BMI"
-#colnames(df_input)[40]<-"HBP"
 
 
 df_input <- df_input %>% filter(Ethnicity != "Unknown")
@@ -55,27 +54,27 @@ df_input$IMD<-as.factor(df_input$IMD)
 df_input$IMD<-droplevels(df_input$IMD)
 
 df_input$charlsonGrp2 <- as.factor(df_input$charlsonGrp2)
-df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
+# df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
 
-### chack for complete separation issues. 
-tab_region <- as.data.frame(table(df_input$Region, df_input$postnatal_8wk_code_present))
-write_csv(tab_region, here::here("output","tab_region_pnc_check.csv"))
 
 ############### 
 ## model with Charlson Y/N, no hbp_pregnancy history
 ###############
 #  short model  
 ## traditional glm()
-model_demographics_Region <- glm(postnatal_8wk_code_present ~ Age+BMI+Ethnicity+IMD+Region, data = df_input, family = binomial(link = "logit"))
+model_full <- glm(postnatal_8wk_code_present ~ Age+BMI+Region+Ethnicity+IMD+charlsonGrp2, data = df_input, family = binomial(link = "logit"))
+
 
 # Extract coefficient estimates and exponentiate them
-fit_results <- tidy(model_demographics_Region, exponentiate = TRUE)
+fit_results <- tidy(model_full, exponentiate = TRUE)
+
 # Extract confidence intervals and exponentiate them
-conf_intervals <- confint(model_demographics_Region)
+conf_intervals <- confint(model_full)
 exp_conf_intervals <- exp(conf_intervals)
+
 # Append exponentiated confidence intervals to the data frame
 fit_results$exp_conf_low <- exp_conf_intervals[, 1]
 fit_results$exp_conf_high <- exp_conf_intervals[, 2]
 
-write_csv(fit_results, here::here("output","mod_demographics_region.csv"))
+write_csv(fit_results, here::here("output","mod_full.csv"))
 

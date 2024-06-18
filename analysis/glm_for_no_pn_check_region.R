@@ -21,61 +21,60 @@ df_input$postnatal_8wk_code_present <- as.factor(df_input$postnatal_8wk_code_pre
 ## relevel so thoes with a pn check are the reference
 df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_present, "1")
 
-df_input$age_cat<-as.factor(df_input$age_cat)
-df_input$age_cat <- relevel(df_input$age_cat, "25-29")
+# df_input$age_cat<-as.factor(df_input$age_cat)
+# df_input$age_cat <- relevel(df_input$age_cat, "25-29")
 
-df_input$Ethnicity <- as.factor(df_input$Ethnicity)
-df_input$Ethnicity <- relevel(df_input$Ethnicity, "White") #white as reference
+# df_input$Ethnicity <- as.factor(df_input$Ethnicity)
+# df_input$Ethnicity <- relevel(df_input$Ethnicity, "White") #white as reference
 
 df_input$region<-as.factor(df_input$region)
 df_input$region <- relevel(df_input$region, "London")
-df_input$imd<-as.factor(df_input$imd)
-df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
+# df_input$imd<-as.factor(df_input$imd)
+# df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
  
-# bmi - numeric
-df_input$bmi <- as.numeric(df_input$bmi)
-df_input$bmi_cat <- as.factor(df_input$bmi_cat)
+# # bmi - numeric
+# df_input$bmi <- as.numeric(df_input$bmi)
+# df_input$bmi_cat <- as.factor(df_input$bmi_cat)
 
 df_input<-ungroup(df_input)
 
 
 # select variables for modelling
-colnames(df_input)[3]<-"Age"
+# colnames(df_input)[3]<-"Age"
 colnames(df_input)[7]<-"Region"
-colnames(df_input)[8]<-"IMD"
-colnames(df_input)[9]<-"BMI"
+# colnames(df_input)[8]<-"IMD"
+# colnames(df_input)[9]<-"BMI"
 #colnames(df_input)[40]<-"HBP"
 
 
-df_input <- df_input %>% filter(Ethnicity != "Unknown")
-df_input$Ethnicity<-as.factor(df_input$Ethnicity)
-df_input$Ethnicity<-droplevels(df_input$Ethnicity)
-df_input <- df_input %>% filter(IMD != "0")
-df_input$IMD<-as.factor(df_input$IMD)
-df_input$IMD<-droplevels(df_input$IMD)
+# df_input <- df_input %>% filter(Ethnicity != "Unknown")
+# df_input$Ethnicity<-as.factor(df_input$Ethnicity)
+# df_input$Ethnicity<-droplevels(df_input$Ethnicity)
+# df_input <- df_input %>% filter(IMD != "0")
+# df_input$IMD<-as.factor(df_input$IMD)
+# df_input$IMD<-droplevels(df_input$IMD)
 
-df_input$charlsonGrp2 <- as.factor(df_input$charlsonGrp2)
-df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
+# df_input$charlsonGrp2 <- as.factor(df_input$charlsonGrp2)
+# df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
 
-### chack for complete separation issues. 
-tab_charl <- as.data.frame(table(df_input$charlsonGrp2, df_input$postnatal_8wk_code_present))
-write_csv(tab_charl, here::here("output","tab_Charlson_pnc_check.csv"))
 
 ############### 
 ## model with Charlson Y/N, no hbp_pregnancy history
 ###############
 #  short model  
 ## traditional glm()
-model_demographics <- glm(postnatal_8wk_code_present ~ Age+BMI+Ethnicity+IMD, data = df_input, family = binomial(link = "logit"))
+model_region <- glm(postnatal_8wk_code_present ~ Region, data = df_input, family = binomial(link = "logit"))
 
 # Extract coefficient estimates and exponentiate them
-fit_results <- tidy(model_demographics, exponentiate = TRUE)
+fit_results <- tidy(model_region, exponentiate = TRUE)
+
 # Extract confidence intervals and exponentiate them
-conf_intervals <- confint(model_demographics)
+conf_intervals <- confint(model_region)
 exp_conf_intervals <- exp(conf_intervals)
+
 # Append exponentiated confidence intervals to the data frame
 fit_results$exp_conf_low <- exp_conf_intervals[, 1]
 fit_results$exp_conf_high <- exp_conf_intervals[, 2]
 
-write_csv(fit_results, here::here("output","mod_demographics.csv"))
+write_csv(fit_results, here::here("output","mod_region.csv"))
 
