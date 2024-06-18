@@ -21,8 +21,8 @@ df_input$postnatal_8wk_code_present <- as.factor(df_input$postnatal_8wk_code_pre
 ## relevel so thoes with a pn check are the reference
 df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_present, "1")
 
-# df_input$age_cat<-as.factor(df_input$age_cat)
-# df_input$age_cat <- relevel(df_input$age_cat, "25-29")
+df_input$age_cat<-as.factor(df_input$age_cat)
+df_input$age_cat <- relevel(df_input$age_cat, "25-29")
 
 df_input$Ethnicity <- as.factor(df_input$Ethnicity)
 df_input$Ethnicity <- relevel(df_input$Ethnicity, "White") #white as reference

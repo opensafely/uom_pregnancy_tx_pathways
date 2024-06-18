@@ -27,8 +27,12 @@ df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_prese
 # df_input$Ethnicity <- as.factor(df_input$Ethnicity)
 # df_input$Ethnicity <- relevel(df_input$Ethnicity, "White") #white as reference
 
-df_input$region<-as.factor(df_input$region)
+df_input$region <- factor(df_input$region, levels = c("East","East Midlands",
+                                                      "London", "North East", "North West",
+                                                      "South East","South West","West Midlands",
+                                                      "Yorkshire and The Humber"))
 df_input$region <- relevel(df_input$region, "London")
+
 # df_input$imd<-as.factor(df_input$imd)
 # df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
  
@@ -38,6 +42,10 @@ df_input$region <- relevel(df_input$region, "London")
 
 df_input<-ungroup(df_input)
 
+## for log
+levels(df_input$Region)
+table(df_input$Region)
+str(df_input$Region)
 
 # select variables for modelling
 # colnames(df_input)[3]<-"Age"

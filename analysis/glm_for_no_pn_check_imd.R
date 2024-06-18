@@ -29,7 +29,9 @@ df_input$postnatal_8wk_code_present <- relevel(df_input$postnatal_8wk_code_prese
 
 # df_input$region<-as.factor(df_input$region)
 # df_input$region <- relevel(df_input$region, "London")
-df_input$imd<-as.factor(df_input$imd)
+
+
+df_input$imd<- factor(df_input$imd, levels= c("0","1", "2", "3", "4","5"))
 df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
  
 # # bmi - numeric
@@ -38,6 +40,10 @@ df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
 
 df_input<-ungroup(df_input)
 
+## for log
+levels(df_input$imd)
+table(df_input$imd)
+str(df_input$imd)
 
 # select variables for modelling
 # colnames(df_input)[3]<-"Age"
@@ -51,8 +57,16 @@ colnames(df_input)[8]<-"IMD"
 # df_input$Ethnicity<-as.factor(df_input$Ethnicity)
 # df_input$Ethnicity<-droplevels(df_input$Ethnicity)
 df_input <- df_input %>% filter(IMD != "0")
-df_input$IMD<-as.factor(df_input$IMD)
+#df_input$IMD<-as.factor(df_input$IMD)
 df_input$IMD<-droplevels(df_input$IMD)
+
+
+## for log
+print("dropped levels")
+## for log
+levels(df_input$IMD)
+table(df_input$IMD)
+str(df_input$IMD)
 
 # df_input$charlsonGrp2 <- as.factor(df_input$charlsonGrp2)
 # df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
