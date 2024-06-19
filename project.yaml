@@ -510,77 +510,13 @@ actions:
           plot_ITS_age_cat_plot_data_cf: output/plot_data_ITS_region_counterfactual.csv
           plot_irr: output/plot_ITS_region_IRRs.jpeg
 
-    ##############################################
-    ####### logistic regression modelling ########
-    ##############################################
 
 
-  describe_glm_for_no_pn_check_Charlson:
-     run: r:latest analysis/glm_for_no_pn_check_Charlson.R
-     needs: [process_cohorts_select_one_random_event_8wk]
-     outputs:
-      moderately_sensitive:
-        model_full: output/mod_full_Charlson.csv
-        #model_full_AND_hbp: output/mod_full_Charlson_AND_hbp.csv
+##############################################
+####### logistic regression modelling ########
+##############################################
 
-  describe_glm_for_no_pn_check_17_comor:
-     run: r:latest analysis/glm_for_no_pn_check_17_comor.R
-     needs: [process_cohorts_select_one_random_event_8wk]
-     outputs:
-      moderately_sensitive:
-        model_full_17: output/mod_full_17_comor.csv
-        #model_full_17_AND_hbp: output/mod_full_17_comor_AND_HBP.csv
- 
-
-  describe_glm_for_no_pn_check_19_22:
-     run: r:latest analysis/glm_for_no_pn_check_2019_2022.R
-     needs: [process_cohorts_select_one_random_event_8wk]
-     outputs:
-      moderately_sensitive:
-        model_full_19: output/mod_full_Charlson_2019.csv
-        #model_sep_19: output/separation_result19.txt
-        model_full_22: output/mod_full_Charlson_2022.csv
-        #model_sep_22: output/separation_result22.txt
-
-  describe_glm_for_no_pn_check_covid_interaction_term:
-     run: r:latest analysis/glm_for_no_pn_check_covid.R
-     needs: [process_cohorts_select_one_random_event_8wk]
-     outputs:
-      moderately_sensitive:
-        model_char_covid: output/mod_full_Charlson_covid.csv
-        #model_char__hbp_covid: output/mod_full_Charlson_AND_hbp_covid.csv
-        model_char_covid_interaction: output/mod_full_Charlson_covid_interaction.csv
-
-
-
-  ### trying finalfit
-
-  describe_glm_for_no_pn_check_Charlson_finalfit:
-     run: r:latest analysis/glm_for_no_pn_check_Charlson_finalfit.R
-     needs: [process_cohorts_select_one_random_event_8wk]
-     outputs:
-      moderately_sensitive:
-        model_fullChar: output/mod_full_Charlson_finalfit.csv
-        #model_full_AND_hbp: output/mod_full_Charlson_AND_hbp.csv
-
-  describe_glm_for_no_pn_check_Comor17_finalfit:
-     run: r:latest analysis/glm_for_no_pn_check_17_comor_finalfit.R
-     needs: [process_cohorts_select_one_random_event_8wk]
-     outputs:
-      moderately_sensitive:
-        model_fullComor17: output/mod_full_Comor17_finalfit.csv
-        #model_full_AND_hbp: output/mod_full_Charlson_AND_hbp.csv
-
-  describe_glm_for_no_pn_check_2019_2022_finalfit:
-     run: r:latest analysis/glm_for_no_pn_check_2019_2022_finalfit.R
-     needs: [process_cohorts_select_one_random_event_8wk]
-     outputs:
-      moderately_sensitive:
-        model_full19: output/mod_2019_finalfit.csv
-        model_full22: output/mod_2022_finalfit.csv
-
-
-#### glm model build - univariable analysis 
+#### glm - univariable analysis 
   describe_glm_for_no_pn_check_age:
      run: r:latest analysis/glm_for_no_pn_check_age.R
      needs: [process_cohorts_select_one_random_event_8wk]
@@ -605,7 +541,6 @@ actions:
       moderately_sensitive:
         mod_ethnicity: output/mod_ethnicity.csv
 
-
   describe_glm_for_no_pn_check_imd:
      run: r:latest analysis/glm_for_no_pn_check_imd.R
      needs: [process_cohorts_select_one_random_event_8wk]
@@ -619,7 +554,6 @@ actions:
      outputs:
       moderately_sensitive:
         mod_region: output/mod_region.csv
-
 
   describe_glm_for_no_pn_check_charlsonGr2_only:
      run: r:latest analysis/glm_for_no_pn_check_charlsonGr2_only.R
@@ -635,7 +569,16 @@ actions:
       moderately_sensitive:
         mod_chargrp5: output/mod_charlsonGr5_only.csv
 
-#### building demographics
+  describe_glm_for_no_pn_check_covid_only:
+     run: r:latest analysis/glm_for_no_pn_check_covid_only.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_chargrp5: output/mod_covid_only.csv
+
+#################################
+#### building demographics glm()
+#################################
   describe_glm_for_no_pn_check_age_bmi_eth:
      run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth.R
      needs: [process_cohorts_select_one_random_event_8wk]
@@ -657,12 +600,16 @@ actions:
       moderately_sensitive:
         mod_age_bmi_eth_imd_reg: output/mod_agebmiethimdreg.csv
 
+  #####################
+  ## full model
+  ####################
   describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char:
      run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char.R
      needs: [process_cohorts_select_one_random_event_8wk]
      outputs:
       moderately_sensitive:
-        mod_age_bmi_eth_imd_reg_char: output/mod_full.csv
+        mod_age_bmi_eth_imd_reg_char: output/mod_full_char2.csv
+        mod_age_bmi_eth_imd_reg_char2_hbp: output/mod_full_char2_hbp.csv
 
   describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5:
      run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5.R
@@ -670,24 +617,49 @@ actions:
      outputs:
       moderately_sensitive:
         mod_age_bmi_eth_imd_reg_char5: output/mod_full_Char5.csv
+        mod_age_bmi_eth_imd_reg_char5_hbp: output/mod_full_Char5_HBP.csv
 
 
-  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char_hbp:
-     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_hbp.R
+
+  describe_glm_for_no_pn_check_17_comor:
+     run: r:latest analysis/glm_for_no_pn_check_17_comor.R
      needs: [process_cohorts_select_one_random_event_8wk]
      outputs:
       moderately_sensitive:
-        mod_age_bmi_eth_imd_reg_char_hbp: output/mod_full_hbp.csv
+        model_full_17: output/mod_full_17_comor.csv
+        model_full_17_AND_hbp: output/mod_full_17_comor_AND_HBP.csv
 
-## covid interaction
+##############################
+###### covid interaction
+##############################
   describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char2_COVID:
      run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_COVID.R
      needs: [process_cohorts_select_one_random_event_8wk]
      outputs:
       moderately_sensitive:
-        mod_full_covid: output/mod_full_covid.csv
-        mod_full_covid_interaction: output/mod_full_covid_interaction.csv
-        
+        mod_full_covid: output/mod_full_char2_covid.csv
+        mod_full_covid_interaction: output/mod_full_char2_covid_interaction.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_COVID:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_COVID.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_full_covid: output/mod_full_cahr5_covid.csv
+        mod_full_covid_interaction: output/mod_full_char5_covid_interaction.csv
+
+## 2019 v 2022 onwards
+  describe_glm_for_no_pn_check_19_22:
+     run: r:latest analysis/glm_for_no_pn_check_2019_2022.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_full_19: output/mod_full_Charlson_2019.csv
+        #model_sep_19: output/separation_result19.txt
+        model_full_22: output/mod_full_Charlson_2022.csv
+        #model_sep_22: output/separation_result22.txt
+
+
 ##########################
 ## using 12 week cohort ##
   describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char_12weeks:
