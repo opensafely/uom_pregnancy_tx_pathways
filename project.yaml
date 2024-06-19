@@ -628,6 +628,13 @@ actions:
       moderately_sensitive:
         mod_chargrp2: output/mod_charlsonGr2_only.csv
 
+  describe_glm_for_no_pn_check_charlsonGr5_only:
+     run: r:latest analysis/glm_for_no_pn_check_charlsonGr5_only.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_chargrp5: output/mod_charlsonGr5_only.csv
+
 #### building demographics
   describe_glm_for_no_pn_check_age_bmi_eth:
      run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth.R
@@ -657,6 +664,13 @@ actions:
       moderately_sensitive:
         mod_age_bmi_eth_imd_reg_char: output/mod_full.csv
 
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char5: output/mod_full_Char5.csv
+
 
   describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char_hbp:
      run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_hbp.R
@@ -664,3 +678,44 @@ actions:
      outputs:
       moderately_sensitive:
         mod_age_bmi_eth_imd_reg_char_hbp: output/mod_full_hbp.csv
+
+## covid interaction
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char2_COVID:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_COVID.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_full_covid: output/mod_full_covid.csv
+        mod_full_covid_interaction: output/mod_full_covid_interaction.csv
+        
+##########################
+## using 12 week cohort ##
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char_12weeks:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_12weeks.R
+     needs: [process_cohorts_select_one_random_event_12wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char_12weeks: output/mod_full_12weeks.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_12weeks:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_12weeks.R
+     needs: [process_cohorts_select_one_random_event_12wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char5: output/mod_full_Char5_12weeks.csv
+
+#########################
+## using 6 week cohort ##
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char_6weeks:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_6weeks.R
+     needs: [process_cohorts_select_one_random_event_6wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char_6weeks: output/mod_full_6weeks.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_6weeks:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_6weeks.R
+     needs: [process_cohorts_select_one_random_event_6wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char5: output/mod_full_Char5_6weeks.csv
