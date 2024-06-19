@@ -54,6 +54,7 @@ df_input$imd <- relevel(df_input$imd, "5")# least deprived as reference
 df_input$imd<-droplevels(df_input$imd)
 
 df_input$charlsonGrp2 <- as.factor(df_input$charlsonGrp2)
+df_input$hbp_pregnancy <- as.factor(df_input$hbp_pregnancy)
 
 
 ############### 
@@ -75,5 +76,24 @@ exp_conf_intervals <- exp(conf_intervals)
 fit_results$exp_conf_low <- exp_conf_intervals[, 1]
 fit_results$exp_conf_high <- exp_conf_intervals[, 2]
 
-write_csv(fit_results, here::here("output","mod_full.csv"))
+write_csv(fit_results, here::here("output","mod_full_char2.csv"))
 
+
+
+
+##hbp
+model_fullhbp <- glm(postnatal_8wk_code_present ~ age+bmi+region+Ethnicity+imd+charlsonGrp2+hbp_pregnancy, data = df_input, family = binomial(link = "logit"))
+
+
+# Extract coefficient estimates and exponentiate them
+fit_resultshbp <- tidy(model_fullhbp, exponentiate = TRUE)
+
+# Extract confidence intervals and exponentiate them
+conf_intervalshbp <- confint(model_fullhbp)
+exp_conf_intervalshbp <- exp(conf_intervalshbp)
+
+# Append exponentiated confidence intervals to the data frame
+fit_resultshbp$exp_conf_low <- exp_conf_intervalshbp[, 1]
+fit_resultshbp$exp_conf_high <- exp_conf_intervalshbp[, 2]
+
+write_csv(fit_results, here::here("output","mod_full_char2_hbp.csv"))
