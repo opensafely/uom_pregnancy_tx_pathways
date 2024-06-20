@@ -569,6 +569,13 @@ actions:
       moderately_sensitive:
         mod_chargrp5: output/mod_charlsonGr5_only.csv
 
+  describe_glm_for_no_pn_check_hbp:
+     run: r:latest analysis/glm_for_no_pn_check_hbp.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_hbp: output/mod_hbp_only.csv
+
   describe_glm_for_no_pn_check_covid_only:
      run: r:latest analysis/glm_for_no_pn_check_covid_only.R
      needs: [process_cohorts_select_one_random_event_8wk]
