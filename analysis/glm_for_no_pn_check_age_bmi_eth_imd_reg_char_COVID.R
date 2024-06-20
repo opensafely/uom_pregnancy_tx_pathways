@@ -75,7 +75,7 @@ exp_conf_intervals <- exp(conf_intervals)
 fit_results$exp_conf_low <- exp_conf_intervals[, 1]
 fit_results$exp_conf_high <- exp_conf_intervals[, 2]
 
-write_csv(fit_results, here::here("output","mod_full_covid.csv"))
+write_csv(fit_results, here::here("output","mod_full_char2_covid.csv"))
 
 
 ### covid time - interaction 
@@ -90,4 +90,4 @@ exp_conf_intervals <- exp(conf_intervals)
 fit_covid_results$exp_conf_low <- exp_conf_intervals[, 1]
 fit_covid_results$exp_conf_high <- exp_conf_intervals[, 2]
 
-write_csv(fit_covid_results, here::here("output","mod_full_covid_interaction.csv"))
+write_csv(fit_covid_results, here::here("output","mod_full_char2_covid_interaction.csv"))
