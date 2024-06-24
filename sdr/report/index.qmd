@@ -31,6 +31,8 @@ authors:
     orcid: 0000-0003-3429-9576
     email: helen.curtis@phc.ox.ac.uk
 bibliography: references.bib
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r load-pkgs}
@@ -335,7 +337,7 @@ tbl_delivery_selected_snomed_code_usage |>
     description ~ px(280),
     active_date_range ~ px(125),
     sum_usage_total ~ px(100),
-    pct_usage_total ~ px(60)
+    pct_usage_total ~ px(65)
   ) |>
   fmt_percent(
     columns = pct_usage_total,
@@ -375,7 +377,7 @@ tbl_delivery_selected_snomed_code_usage |>
     description ~ px(280),
     active_date_range ~ px(125),
     sum_usage_22to23 ~ px(100),
-    pct_usage_22to23 ~ px(60)
+    pct_usage_22to23 ~ px(65)
   ) |>
   fmt_percent(
     columns = pct_usage_22to23,
@@ -514,7 +516,7 @@ tbl_delivery_selected_snomed_code_usage |>
     description ~ px(280),
     active_date_range ~ px(125),
     sum_usage_total ~ px(100),
-    pct_usage_total ~ px(60)
+    pct_usage_total ~ px(65)
   ) |>
   fmt_percent(
     columns = pct_usage_total,
@@ -554,7 +556,7 @@ tbl_delivery_selected_snomed_code_usage |>
     description ~ px(280),
     active_date_range ~ px(125),
     sum_usage_22to23 ~ px(100),
-    pct_usage_22to23 ~ px(60)
+    pct_usage_22to23 ~ px(65)
   ) |>
   fmt_percent(
     columns = pct_usage_22to23,
@@ -693,7 +695,7 @@ tbl_delivery_selected_snomed_code_usage |>
     description ~ px(280),
     active_date_range ~ px(125),
     sum_usage_total ~ px(100),
-    pct_usage_total ~ px(60)
+    pct_usage_total ~ px(65)
   ) |>
   fmt_percent(
     columns = pct_usage_total,
@@ -733,7 +735,7 @@ tbl_delivery_selected_snomed_code_usage |>
     description ~ px(280),
     active_date_range ~ px(125),
     sum_usage_22to23 ~ px(100),
-    pct_usage_22to23 ~ px(60)
+    pct_usage_22to23 ~ px(65)
   ) |>
   fmt_percent(
     columns = pct_usage_22to23,
@@ -755,7 +757,7 @@ tbl_delivery_selected_snomed_code_usage |>
 
 ```{r}
 #| label: change1
-#| tbl-cap: Counts of used codes from 'pregnancy_postdel_antenatal_snomed' between 1st Aug 2011 and 31 Jul 2023
+#| tbl-cap: Codes from 'pregnancy_antenatal_snomed' with detected changes between 1st Aug 2011 and 31 Jul 2023
 
 
 # Select data for one codelist
@@ -771,32 +773,347 @@ selected_unused_codes <- selected_codelist |>
 selected_snomed_code_usage <- snomed_code_usage |>
   filter(snomed_concept_id %in% selected_codelist$code)
 
-selected_snomed_code_usage |>
+change_selected_snomed_code_usage <- selected_snomed_code_usage |>
   arrange(snomed_concept_id, start_date) |>
   group_by(start_date) |>
   mutate(usage_codelist_sum_yearly = sum(usage, na.rm = TRUE)) |>
   ungroup() |>
   group_by(snomed_concept_id) |>
   mutate(
-    usage_code_yearly_pct = usage / usage_codelist_sum_yearly,
-    usage_code_max_yearly_pct = max(usage_code_yearly_pct, na.rm = TRUE),
+    usage_codelist_yearly_pct = usage / usage_codelist_sum_yearly,
+    usage_codelist_max_yearly_pct = max(usage_codelist_yearly_pct, na.rm = TRUE),
     usage_code_change_yearly = usage - lag(usage),
     usage_code_change_yearly_pct = usage_code_change_yearly / usage,
     usage_code_max_change_yearly_pct = max(usage_code_change_yearly_pct, na.rm = TRUE),
+    usage_code_startend_change_pct = sum(usage_code_change_yearly_pct, na.rm = TRUE)
   ) |>
   mutate(
-    crit_yearly_volume = usage_code_max_yearly_pct > .05,
-    crit_yearly_change = usage_code_max_change_yearly_pct > .1,
-    crit_startend_change = usage_code_max_change_yearly_pct > .3
+    crit_yearly_volume = usage_codelist_max_yearly_pct > .05,
+    crit_yearly_change = (usage_code_max_change_yearly_pct > .1) | (usage_code_max_change_yearly_pct < -.1),
+    crit_startend_change = (usage_code_startend_change_pct > .3) | (usage_code_startend_change_pct < -.3)
     ) |>
   filter((crit_yearly_volume & crit_yearly_change) | (crit_yearly_volume & crit_startend_change)) |>
-  select(-c(active_at_start, active_at_end)) |>
-  print(n = 20)
+  select(
+    end_date,
+    snomed_concept_id,
+    usage,
+    usage_codelist_sum_yearly,
+    usage_codelist_yearly_pct,
+    usage_codelist_max_yearly_pct,
+    usage_code_change_yearly,
+    usage_code_change_yearly_pct,
+    usage_code_max_change_yearly_pct,
+    usage_code_startend_change_pct
+    ) |> 
+  ungroup()
+
+change_selected_snomed_code_usage |> 
+  mutate(end_date = paste0(year(end_date))) |> 
+  gt() |>
+  cols_hide(c(usage_codelist_max_yearly_pct, usage_code_max_change_yearly_pct, usage_codelist_sum_yearly)) |> 
+  cols_label(
+    end_date = "Date",
+    snomed_concept_id = "SNOMED code",
+    usage = "Yearly code usage",
+    usage_codelist_sum_yearly = "Yearly codelist usage",
+    usage_codelist_yearly_pct = "% of yearly codelist usage",
+    usage_code_change_yearly = "Yearly code change",
+    usage_code_change_yearly_pct = "Yearly % change",
+    usage_code_startend_change_pct = "Start end % change",
+  ) |>
+  # cols_width(
+  #   snomed_concept_id ~ px(160),
+  #   description ~ px(280),
+  #   active_date_range ~ px(125),
+  #   sum_usage_22to23 ~ px(100),
+  #   pct_usage_22to23 ~ px(65)
+  # ) |>
+  fmt_percent(
+    columns = c(
+      usage_codelist_yearly_pct,
+      usage_codelist_max_yearly_pct,
+      usage_code_change_yearly_pct,
+      usage_code_startend_change_pct
+      ),
+    decimals = 1
+  ) |>
+  opt_interactive(
+    use_filters = TRUE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE,
+    use_resizers= TRUE,
+    use_page_size_select = TRUE
+    ) |>
+  sub_missing(
+  columns = everything(),
+  rows = everything(),
+  missing_text = "---"
+)
+
+```
+
+```{r}
+#| label: fig1-change
+#| fig-cap: "Figure X. CHANGE CHANGE CHANGE" 
+#| fig-width: 8
+#| fig-height: 4
+
+change_selected_snomed_codes <- change_selected_snomed_code_usage |> 
+  pull(snomed_concept_id) |> 
+  unique()
+
+plot_change_codelist <- snomed_code_usage |> 
+  filter(snomed_concept_id %in% change_selected_snomed_codes) |> 
+  plot_code_usage(
+    date = end_date,
+    code_usage = usage,
+    colour = snomed_concept_id
+    ) +
+  guides(color = "none")
+
+plotly::ggplotly(plot_change_codelist)
 ```
 
 ### Delivery
 
+```{r}
+#| label: change2
+#| tbl-cap: Codes from 'pregnancy_delivery_snomed_reviewed_2' with detected changes between 1st Aug 2011 and 31 Jul 2023
+
+
+# Select data for one codelist
+selected_codelist <- pregnancy_codelists |> 
+  filter(codelist == "pregnancy_delivery_snomed_reviewed_2")
+
+# Get list of codes from codelist that were not found in GP records
+selected_unused_codes <- selected_codelist |> 
+  filter(!code %in% used_snomed_concept_ids) |> 
+  pull(code)
+
+# Select data for all codes from codelist that were found in GP records
+selected_snomed_code_usage <- snomed_code_usage |>
+  filter(snomed_concept_id %in% selected_codelist$code)
+
+change_selected_snomed_code_usage <- selected_snomed_code_usage |>
+  arrange(snomed_concept_id, start_date) |>
+  group_by(start_date) |>
+  mutate(usage_codelist_sum_yearly = sum(usage, na.rm = TRUE)) |>
+  ungroup() |>
+  group_by(snomed_concept_id) |>
+  mutate(
+    usage_codelist_yearly_pct = usage / usage_codelist_sum_yearly,
+    usage_codelist_max_yearly_pct = max(usage_codelist_yearly_pct, na.rm = TRUE),
+    usage_code_change_yearly = usage - lag(usage),
+    usage_code_change_yearly_pct = usage_code_change_yearly / usage,
+    usage_code_max_change_yearly_pct = max(usage_code_change_yearly_pct, na.rm = TRUE),
+    usage_code_startend_change_pct = sum(usage_code_change_yearly_pct, na.rm = TRUE)
+  ) |>
+  mutate(
+    crit_yearly_volume = usage_codelist_max_yearly_pct > .05,
+    crit_yearly_change = (usage_code_max_change_yearly_pct > .1) | (usage_code_max_change_yearly_pct < -.1),
+    crit_startend_change = (usage_code_startend_change_pct > .3) | (usage_code_startend_change_pct < -.3)
+    ) |>
+  filter((crit_yearly_volume & crit_yearly_change) | (crit_yearly_volume & crit_startend_change)) |>
+  select(
+    end_date,
+    snomed_concept_id,
+    usage,
+    usage_codelist_sum_yearly,
+    usage_codelist_yearly_pct,
+    usage_codelist_max_yearly_pct,
+    usage_code_change_yearly,
+    usage_code_change_yearly_pct,
+    usage_code_max_change_yearly_pct,
+    usage_code_startend_change_pct
+    ) |> 
+  ungroup()
+
+change_selected_snomed_code_usage |> 
+  mutate(end_date = paste0(year(end_date))) |> 
+  gt() |>
+  cols_hide(c(usage_codelist_max_yearly_pct, usage_code_max_change_yearly_pct, usage_codelist_sum_yearly)) |> 
+  cols_label(
+    end_date = "Date",
+    snomed_concept_id = "SNOMED code",
+    usage = "Yearly code usage",
+    usage_codelist_sum_yearly = "Yearly codelist usage",
+    usage_codelist_yearly_pct = "% of yearly codelist usage",
+    usage_code_change_yearly = "Yearly code change",
+    usage_code_change_yearly_pct = "Yearly % change",
+    usage_code_startend_change_pct = "Start end % change",
+  ) |>
+  # cols_width(
+  #   snomed_concept_id ~ px(160),
+  #   description ~ px(280),
+  #   active_date_range ~ px(125),
+  #   sum_usage_22to23 ~ px(100),
+  #   pct_usage_22to23 ~ px(65)
+  # ) |>
+  fmt_percent(
+    columns = c(
+      usage_codelist_yearly_pct,
+      usage_codelist_max_yearly_pct,
+      usage_code_change_yearly_pct,
+      usage_code_startend_change_pct
+      ),
+    decimals = 1
+  ) |>
+  opt_interactive(
+    use_filters = TRUE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE,
+    use_resizers= TRUE,
+    use_page_size_select = TRUE
+    ) |>
+  sub_missing(
+  columns = everything(),
+  rows = everything(),
+  missing_text = "---"
+)
+
+```
+
+```{r}
+#| label: fig2-change
+#| fig-cap: "Figure X. CHANGE CHANGE CHANGE" 
+#| fig-width: 8
+#| fig-height: 4
+
+change_selected_snomed_codes <- change_selected_snomed_code_usage |> 
+  pull(snomed_concept_id) |> 
+  unique()
+
+plot_change_codelist <- snomed_code_usage |> 
+  filter(snomed_concept_id %in% change_selected_snomed_codes) |> 
+  plot_code_usage(
+    date = end_date,
+    code_usage = usage,
+    colour = snomed_concept_id
+    ) +
+  guides(color = "none")
+
+plotly::ggplotly(plot_change_codelist)
+```
+
 ### Post-delivery Antenatal
+
+```{r}
+#| label: change3
+#| tbl-cap: Codes from 'pregnancy_postdel_antenatal_snomed' with detected changes between 1st Aug 2011 and 31 Jul 2023
+
+# Select data for one codelist
+selected_codelist <- pregnancy_codelists |> 
+  filter(codelist == "pregnancy_postdel_antenatal_snomed")
+
+# Get list of codes from codelist that were not found in GP records
+selected_unused_codes <- selected_codelist |> 
+  filter(!code %in% used_snomed_concept_ids) |> 
+  pull(code)
+
+# Select data for all codes from codelist that were found in GP records
+selected_snomed_code_usage <- snomed_code_usage |>
+  filter(snomed_concept_id %in% selected_codelist$code)
+
+change_selected_snomed_code_usage <- selected_snomed_code_usage |>
+  arrange(snomed_concept_id, start_date) |>
+  group_by(start_date) |>
+  mutate(usage_codelist_sum_yearly = sum(usage, na.rm = TRUE)) |>
+  ungroup() |>
+  group_by(snomed_concept_id) |>
+  mutate(
+    usage_codelist_yearly_pct = usage / usage_codelist_sum_yearly,
+    usage_codelist_max_yearly_pct = max(usage_codelist_yearly_pct, na.rm = TRUE),
+    usage_code_change_yearly = usage - lag(usage),
+    usage_code_change_yearly_pct = usage_code_change_yearly / usage,
+    usage_code_max_change_yearly_pct = max(usage_code_change_yearly_pct, na.rm = TRUE),
+    usage_code_startend_change_pct = sum(usage_code_change_yearly_pct, na.rm = TRUE)
+  ) |>
+  mutate(
+    crit_yearly_volume = usage_codelist_max_yearly_pct > .05,
+    crit_yearly_change = (usage_code_max_change_yearly_pct > .1) | (usage_code_max_change_yearly_pct < -.1),
+    crit_startend_change = (usage_code_startend_change_pct > .3) | (usage_code_startend_change_pct < -.3)
+    ) |>
+  filter((crit_yearly_volume & crit_yearly_change) | (crit_yearly_volume & crit_startend_change)) |>
+  select(
+    end_date,
+    snomed_concept_id,
+    usage,
+    usage_codelist_sum_yearly,
+    usage_codelist_yearly_pct,
+    usage_codelist_max_yearly_pct,
+    usage_code_change_yearly,
+    usage_code_change_yearly_pct,
+    usage_code_max_change_yearly_pct,
+    usage_code_startend_change_pct
+    ) |> 
+  ungroup()
+
+change_selected_snomed_code_usage |> 
+  mutate(end_date = paste0(year(end_date))) |> 
+  gt() |>
+  cols_hide(c(usage_codelist_max_yearly_pct, usage_code_max_change_yearly_pct, usage_codelist_sum_yearly)) |> 
+  cols_label(
+    end_date = "Date",
+    snomed_concept_id = "SNOMED code",
+    usage = "Yearly code usage",
+    usage_codelist_sum_yearly = "Yearly codelist usage",
+    usage_codelist_yearly_pct = "% of yearly codelist usage",
+    usage_code_change_yearly = "Yearly code change",
+    usage_code_change_yearly_pct = "Yearly % change",
+    usage_code_startend_change_pct = "Start end % change",
+  ) |>
+  # cols_width(
+  #   snomed_concept_id ~ px(160),
+  #   description ~ px(280),
+  #   active_date_range ~ px(125),
+  #   sum_usage_22to23 ~ px(100),
+  #   pct_usage_22to23 ~ px(65)
+  # ) |>
+  fmt_percent(
+    columns = c(
+      usage_codelist_yearly_pct,
+      usage_codelist_max_yearly_pct,
+      usage_code_change_yearly_pct,
+      usage_code_startend_change_pct
+      ),
+    decimals = 1
+  ) |>
+  opt_interactive(
+    use_filters = TRUE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE,
+    use_resizers= TRUE,
+    use_page_size_select = TRUE
+    ) |>
+  sub_missing(
+  columns = everything(),
+  rows = everything(),
+  missing_text = "---"
+)
+
+```
+
+```{r}
+#| label: fig3-change
+#| fig-cap: "Figure X. CHANGE CHANGE CHANGE" 
+#| fig-width: 8
+#| fig-height: 4
+
+change_selected_snomed_codes <- change_selected_snomed_code_usage |> 
+  pull(snomed_concept_id) |> 
+  unique()
+
+plot_change_codelist <- snomed_code_usage |> 
+  filter(snomed_concept_id %in% change_selected_snomed_codes) |> 
+  plot_code_usage(
+    date = end_date,
+    code_usage = usage,
+    colour = snomed_concept_id
+    ) +
+  guides(color = "none")
+
+plotly::ggplotly(plot_change_codelist)
+```
 
 ## Changes in clinical guidance
 
