@@ -5,7 +5,39 @@ library('finalfit')
 
 setwd(here::here("output"))
 
-df <- read_csv(here::here("output","input_SDR.csv.gz"))
+df <- read_csv(here::here("output","input_SDR.csv.gz"),
+               col_types = cols_only(
+                 delivery_code_date = col_date(format = ""),
+                  age = col_double(),
+                  age_cat = col_factor(),
+                  sex = col_factor(),
+                  region = col_factor(),
+                  imd = col_factor(),
+                  delivery_code = col_character(),
+                  delivery_code_number = col_number(),
+                  prior_deliveries = col_number(),
+                  PN_code = col_factor(),
+                  postnatal_code = col_character(),
+                  antenatal_num = col_number(),
+                  postterm_num = col_number(),
+                  blightedovum_num = col_number(),
+                  ectopic_num = col_number(),
+                  miscarriage_num = col_number(),
+                  molar_num = col_number(),
+                  stillbirth_num = col_number(),
+                  loss_any_num = col_number(),
+                  multips_num = col_number(),
+                  preeclampsia_num = col_number(),
+                  top_num = col_number(),
+                  top_probable_num = col_number(),
+                  tops_any_num = col_number(),
+                  lmp_num = col_number(),
+                  edd_num = col_number(),
+                  edc_num = col_number(),
+                  hbp_pregnancy = col_factor(),
+                  hbp_all = col_factor(),
+                  hbp_any = col_factor(),
+                  patient_id = col_number()))
 
 df$delivery_code_date<-as.Date(df$delivery_code_date)
 
@@ -18,13 +50,13 @@ write_csv(n_pats_df, here::here("output", "patient_numbers_SDR.csv"))
 rm(n_pats, n_pats_df)
 
 
-df$imd <- as.factor(df$imd)
-df$region <- as.factor(df$region)
-df$age_cat <- as.factor(df$age_cat)
-df$PN_code <- as.factor(df$PN_code)
-df$hbp_pregnancy <- as.factor(df$hbp_pregnancy)
-df$hbp_all <- as.factor(df$hbp_all)
-df$hbp_any <- as.factor(df$hbp_any)
+# df$imd <- as.factor(df$imd)
+# df$region <- as.factor(df$region)
+# df$age_cat <- as.factor(df$age_cat)
+# df$PN_code <- as.factor(df$PN_code)
+# df$hbp_pregnancy <- as.factor(df$hbp_pregnancy)
+# df$hbp_all <- as.factor(df$hbp_all)
+# df$hbp_any <- as.factor(df$hbp_any)
 
 
 # select continuous variables for the baseline table
@@ -44,12 +76,6 @@ summary_table<-(t_continuous_overall[-1,])
 
 write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_overall.csv"))
 
-
-      # dependent="age_cat"
-      # df %>%
-      #   summary_factorlist(dependent, explanatory=colsfortab, p = TRUE) -> t_continuous_age
-      # summary_table<-(t_continuous_age[-1,])
-      # write_csv(summary_table, here::here("output", "SDR_table_continuous_vars_by_age.csv"))
 
 
 ## categorical variables and rounding 
