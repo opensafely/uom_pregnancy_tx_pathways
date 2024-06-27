@@ -783,7 +783,19 @@ selected_unused_codes <- selected_codelist |>
 selected_snomed_code_usage <- snomed_code_usage |>
   filter(snomed_concept_id %in% selected_codelist$code)
 
+selected_snomed_code_usage_earliest <- selected_snomed_code_usage |>
+  select(start_date, snomed_concept_id, usage) |> 
+  slice_min(start_date) |> 
+  select(snomed_concept_id, earliest_usage = usage)
+
+selected_snomed_code_latests <- selected_snomed_code_usage |>
+  select(start_date, snomed_concept_id, usage) |> 
+  slice_max(start_date) |> 
+  select(snomed_concept_id, latests_usage = usage)
+
 change_selected_snomed_code_usage <- selected_snomed_code_usage |>
+  left_join(selected_snomed_code_usage_earliest) |> 
+  left_join(selected_snomed_code_latests) |>
   arrange(snomed_concept_id, start_date) |>
   group_by(start_date) |>
   mutate(usage_codelist_sum_yearly = sum(usage, na.rm = TRUE)) |>
@@ -795,7 +807,7 @@ change_selected_snomed_code_usage <- selected_snomed_code_usage |>
     usage_code_change_yearly = usage - lag(usage),
     usage_code_change_yearly_pct = usage_code_change_yearly / usage,
     usage_code_max_change_yearly_pct = max(usage_code_change_yearly_pct, na.rm = TRUE),
-    usage_code_startend_change_pct = sum(usage_code_change_yearly_pct, na.rm = TRUE)
+    usage_code_startend_change_pct = latests_usage / earliest_usage
   ) |>
   mutate(
     crit_yearly_volume = usage_codelist_max_yearly_pct > .05,
@@ -905,7 +917,19 @@ selected_unused_codes <- selected_codelist |>
 selected_snomed_code_usage <- snomed_code_usage |>
   filter(snomed_concept_id %in% selected_codelist$code)
 
+selected_snomed_code_usage_earliest <- selected_snomed_code_usage |>
+  select(start_date, snomed_concept_id, usage) |> 
+  slice_min(start_date) |> 
+  select(snomed_concept_id, earliest_usage = usage)
+
+selected_snomed_code_latests <- selected_snomed_code_usage |>
+  select(start_date, snomed_concept_id, usage) |> 
+  slice_max(start_date) |> 
+  select(snomed_concept_id, latests_usage = usage)
+
 change_selected_snomed_code_usage <- selected_snomed_code_usage |>
+  left_join(selected_snomed_code_usage_earliest) |> 
+  left_join(selected_snomed_code_latests) |>
   arrange(snomed_concept_id, start_date) |>
   group_by(start_date) |>
   mutate(usage_codelist_sum_yearly = sum(usage, na.rm = TRUE)) |>
@@ -917,7 +941,7 @@ change_selected_snomed_code_usage <- selected_snomed_code_usage |>
     usage_code_change_yearly = usage - lag(usage),
     usage_code_change_yearly_pct = usage_code_change_yearly / usage,
     usage_code_max_change_yearly_pct = max(usage_code_change_yearly_pct, na.rm = TRUE),
-    usage_code_startend_change_pct = sum(usage_code_change_yearly_pct, na.rm = TRUE)
+    usage_code_startend_change_pct = latests_usage / earliest_usage
   ) |>
   mutate(
     crit_yearly_volume = usage_codelist_max_yearly_pct > .05,
@@ -1026,7 +1050,19 @@ selected_unused_codes <- selected_codelist |>
 selected_snomed_code_usage <- snomed_code_usage |>
   filter(snomed_concept_id %in% selected_codelist$code)
 
+selected_snomed_code_usage_earliest <- selected_snomed_code_usage |>
+  select(start_date, snomed_concept_id, usage) |> 
+  slice_min(start_date) |> 
+  select(snomed_concept_id, earliest_usage = usage)
+
+selected_snomed_code_latests <- selected_snomed_code_usage |>
+  select(start_date, snomed_concept_id, usage) |> 
+  slice_max(start_date) |> 
+  select(snomed_concept_id, latests_usage = usage)
+
 change_selected_snomed_code_usage <- selected_snomed_code_usage |>
+  left_join(selected_snomed_code_usage_earliest) |> 
+  left_join(selected_snomed_code_latests) |>
   arrange(snomed_concept_id, start_date) |>
   group_by(start_date) |>
   mutate(usage_codelist_sum_yearly = sum(usage, na.rm = TRUE)) |>
@@ -1038,7 +1074,7 @@ change_selected_snomed_code_usage <- selected_snomed_code_usage |>
     usage_code_change_yearly = usage - lag(usage),
     usage_code_change_yearly_pct = usage_code_change_yearly / usage,
     usage_code_max_change_yearly_pct = max(usage_code_change_yearly_pct, na.rm = TRUE),
-    usage_code_startend_change_pct = sum(usage_code_change_yearly_pct, na.rm = TRUE)
+    usage_code_startend_change_pct = latests_usage / earliest_usage
   ) |>
   mutate(
     crit_yearly_volume = usage_codelist_max_yearly_pct > .05,
