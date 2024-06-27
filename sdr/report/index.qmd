@@ -75,6 +75,13 @@ pregnancy_codelists_selected <- pregnancy_codelists |>
       "pregnancy_antenatal_snomed"
       )
     )
+
+snomed_code_dict_short <- snomed_code_dict |> 
+  group_by(snomed_concept_id) |> 
+  slice_max(start_date) |> 
+  mutate(snomed_concept_id_desc = paste0(snomed_concept_id, ": ", description)) |> 
+  select(snomed_concept_id, snomed_concept_id_desc) |> 
+  ungroup()
 ```
 
 ```{r load-funs}
@@ -273,7 +280,8 @@ tbl_delivery_selected_snomed_code_usage <- delivery_selected_snomed_code_usage |
 #| include: false
 #| cache: false
 
-delivery_selected_snomed_code_usage <- delivery_selected_snomed_code_usage |> 
+delivery_selected_snomed_code_usage <- delivery_selected_snomed_code_usage |>
+  left_join(snomed_code_dict_short) |> 
   group_by(end_date) |> 
   mutate(usage_codelist = sum(usage, na.rm = TRUE)) |> 
   ungroup()
@@ -289,7 +297,7 @@ plot_top_codelist <- delivery_selected_snomed_code_usage |>
   plot_code_usage(
     date = end_date,
     code_usage = usage,
-    colour = snomed_concept_id
+    colour = snomed_concept_id_desc
     ) +
   guides(color = "none")
 
@@ -452,6 +460,7 @@ tbl_delivery_selected_snomed_code_usage <- delivery_selected_snomed_code_usage |
 #| cache: false
 
 delivery_selected_snomed_code_usage <- delivery_selected_snomed_code_usage |> 
+  left_join(snomed_code_dict_short) |> 
   group_by(end_date) |> 
   mutate(usage_codelist = sum(usage, na.rm = TRUE)) |> 
   ungroup()
@@ -467,7 +476,7 @@ plot_top_codelist <- delivery_selected_snomed_code_usage |>
   plot_code_usage(
     date = end_date,
     code_usage = usage,
-    colour = snomed_concept_id
+    colour = snomed_concept_id_desc
     ) + 
   guides(color = "none")
 
@@ -631,6 +640,7 @@ tbl_delivery_selected_snomed_code_usage <- delivery_selected_snomed_code_usage |
 #| cache: false
 
 delivery_selected_snomed_code_usage <- delivery_selected_snomed_code_usage |> 
+  left_join(snomed_code_dict_short) |> 
   group_by(end_date) |> 
   mutate(usage_codelist = sum(usage, na.rm = TRUE)) |> 
   ungroup()
@@ -646,7 +656,7 @@ plot_top_codelist <- delivery_selected_snomed_code_usage |>
   plot_code_usage(
     date = end_date,
     code_usage = usage,
-    colour = snomed_concept_id
+    colour = snomed_concept_id_desc
     ) + 
   guides(color = "none")
 
@@ -863,11 +873,12 @@ change_selected_snomed_codes <- change_selected_snomed_code_usage |>
   unique()
 
 plot_change_codelist <- snomed_code_usage |> 
+  left_join(snomed_code_dict_short) |> 
   filter(snomed_concept_id %in% change_selected_snomed_codes) |> 
   plot_code_usage(
     date = end_date,
     code_usage = usage,
-    colour = snomed_concept_id
+    colour = snomed_concept_id_desc
     ) +
   guides(color = "none")
 
@@ -984,11 +995,12 @@ change_selected_snomed_codes <- change_selected_snomed_code_usage |>
   unique()
 
 plot_change_codelist <- snomed_code_usage |> 
+  left_join(snomed_code_dict_short) |> 
   filter(snomed_concept_id %in% change_selected_snomed_codes) |> 
   plot_code_usage(
     date = end_date,
     code_usage = usage,
-    colour = snomed_concept_id
+    colour = snomed_concept_id_desc
     ) +
   guides(color = "none")
 
@@ -1104,11 +1116,12 @@ change_selected_snomed_codes <- change_selected_snomed_code_usage |>
   unique()
 
 plot_change_codelist <- snomed_code_usage |> 
+  left_join(snomed_code_dict_short) |> 
   filter(snomed_concept_id %in% change_selected_snomed_codes) |> 
   plot_code_usage(
     date = end_date,
     code_usage = usage,
-    colour = snomed_concept_id
+    colour = snomed_concept_id_desc
     ) +
   guides(color = "none")
 
