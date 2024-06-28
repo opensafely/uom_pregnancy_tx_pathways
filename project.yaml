@@ -31,12 +31,13 @@ actions:
            #cohort_overall: output/SDR_table_all.csv    
 
 
-  describe_SDR_cohort_minmax:
+  describe_SDR_cohort_minmax_meanSD:
       run: r:latest analysis/baseline_table_SDR_minmax.R
       needs: [generate_study_population_SDR]
       outputs:
         moderately_sensitive:
            cohorts_minmax: output/SDR_table_minmax.csv
+           cohorts_meanSD: output/SDR_table_meanSD.csv
            
  ######################################################
 

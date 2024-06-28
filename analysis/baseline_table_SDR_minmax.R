@@ -78,3 +78,23 @@ summary_df$Value <- round(summary_df$Value,3)
 summary_df$variable <- row.names(summary_df)
 summary_df <- summary_df[,c(2,1)]
 write_csv(summary_df, here::here("output", "SDR_table_minmax.csv"))
+
+
+
+
+# Function to summarise each variable - reduced
+summary_vars <- function(variables_names_contin) {
+  variables_names_contin %>%
+    summarise(across(everything(), list(
+      mean = ~mean(.),
+      sd = ~sd(.)
+    ), .names = "{col}_{fn}"))
+}
+summary_df_reduced <- summary_vars(variables_names_contin)
+summary_df_reduced <- t(summary_df_reduced)
+summary_df_reduced <- as.data.frame(summary_df_reduced)
+colnames(summary_df_reduced)[1]<- "Value"
+summary_df_reduced$Value <- round(summary_df_reduced$Value,3)
+summary_df_reduced$variable <- row.names(summary_df_reduced)
+summary_df_reduced <- summary_df_reduced[,c(2,1)]
+write_csv(summary_df_reduced, here::here("output", "SDR_table_meanSD.csv"))
