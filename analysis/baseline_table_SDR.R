@@ -6,40 +6,40 @@ library('finalfit')
 setwd(here::here("output"))
 
 df <- read_csv(here::here("output","input_SDR.csv.gz"),
-               col_types = cols_only(
-                 delivery_code_date = col_date(format = ""),
-                  age = col_double(),
-                  age_cat = col_factor(),
-                  sex = col_factor(),
-                  region = col_factor(),
-                  imd = col_factor(),
-                  delivery_code = col_character(),
-                  delivery_code_number = col_number(),
-                  prior_deliveries = col_number(),
-                  PN_code = col_factor(),
-                  postnatal_code = col_character(),
-                  antenatal_num = col_number(),
-                  postterm_num = col_number(),
-                  blightedovum_num = col_number(),
-                  ectopic_num = col_number(),
-                  miscarriage_num = col_number(),
-                  molar_num = col_number(),
-                  stillbirth_num = col_number(),
-                  loss_any_num = col_number(),
-                  multips_num = col_number(),
-                  preeclampsia_num = col_number(),
-                  top_num = col_number(),
-                  top_probable_num = col_number(),
-                  tops_any_num = col_number(),
-                  lmp_num = col_number(),
-                  edd_num = col_number(),
-                  edc_num = col_number(),
-                  hbp_pregnancy = col_factor(),
-                  hbp_all = col_factor(),
-                  hbp_any = col_factor(),
-                  patient_id = col_number()))
+               col_types = list(
+                delivery_code_date = "D",
+                age = "n",
+                age_cat = "f",
+                sex = "f",
+                region = "f",
+                imd = "f",
+                delivery_code = "c",
+                delivery_code_number =  "n",
+                prior_deliveries =  "n",
+                PN_code = "f",
+                postnatal_code =  "c",
+                antenatal_num =  "n",
+                postterm_num =  "n",
+                blightedovum_num =  "n",
+                ectopic_num =  "n",
+                miscarriage_num =  "n",
+                molar_num =  "n",
+                stillbirth_num =  "n",
+                loss_any_num =  "n",
+                multips_num =  "n",
+                preeclampsia_num =  "n",
+                top_num =  "n",
+                top_probable_num =  "n",
+                tops_any_num =  "n",
+                lmp_num =  "n",
+                edd_num =  "n",
+                edc_num =  "n",
+                hbp_pregnancy = "f",
+                hbp_all =  "f",
+                hbp_any =  "f",
+                patient_id =  "n"))
 
-df$delivery_code_date<-as.Date(df$delivery_code_date)
+  #df$delivery_code_date<-as.Date(df$delivery_code_date)
 
 
 ############ how many unique patients in each cohort
@@ -48,15 +48,6 @@ n_pats_df <- data.frame(n_pats)
 write_csv(n_pats_df, here::here("output", "patient_numbers_SDR.csv"))
 
 rm(n_pats, n_pats_df)
-
-
-# df$imd <- as.factor(df$imd)
-# df$region <- as.factor(df$region)
-# df$age_cat <- as.factor(df$age_cat)
-# df$PN_code <- as.factor(df$PN_code)
-# df$hbp_pregnancy <- as.factor(df$hbp_pregnancy)
-# df$hbp_all <- as.factor(df$hbp_all)
-# df$hbp_any <- as.factor(df$hbp_any)
 
 
 # select continuous variables for the baseline table
@@ -114,56 +105,7 @@ data_overall <- round_counts(summary_table2, 3)
 data_overall <- data_overall %>%
                   mutate(across(3, ~ ifelse(as.numeric(.) <= 7, "redacted", .)))
 
-
-
 write_csv(data_overall, here::here("output", "SDR_table_categorical_overall.csv"))
-#write_csv(data, here::here("output", "blt_6v12_weeks_categorical_rounded.csv"))
 
  
 
-        # # age_cat
-        # variables_names_categorical <- df %>% 
-        #   select(patient_id, region, imd, PN_code, 
-        #          hbp_pregnancy, hbp_all,hbp_any)
-        # explanatory=colnames(variables_names_categorical)
-        # dependent="age_cat"
-
-        # df %>%
-        #   summary_factorlist(dependent, explanatory) -> t_categorical_age
-        # summary_table2<-(t_categorical_age[-1,])
-
-
-        # ## round to 5
-        # ## split cols out
-        # # Function to round counts to the nearest 5 and recalculate percentages
-        # round_counts <- function(summary_table2, col_range) {
-        #   # Extract counts
-        #   counts <- lapply(summary_table2[, col_range, drop = FALSE], function(x) as.numeric(sub("\\s*\\(.*", "", x)))
-          
-        #   # Round counts to the nearest 5
-        #   rounded_counts <- lapply(counts, function(x) round(x / 5) * 5)
-          
-        #   # Update the columns with rounded counts 
-        #   summary_table2[, col_range] <- lapply(rounded_counts, function(x) paste(x))
-          
-        #   return(summary_table2)
-        # }
-
-        # # Apply the function to the data by specifying column numbers
-        # data_age <- round_counts(summary_table2, 3:9)
-
-        # # Redact any counts < 7 
-        # data_age <- data_age %>%
-        #   mutate(across(3:9, ~ ifelse(as.numeric(.) <= 7, "redacted", .)))
-
-
-
-        # write_csv(data_age, here::here("output", "SDR_table_categorical_age.csv"))
-        # #write_csv(data, here::here("output", "blt_6v12_weeks_categorical_rounded.csv"))
-
-        # ## overall table:
-        # # columns for baseline table
-        # colsfortab <- colnames(df)
-        # df %>% summary_factorlist(explanatory = colsfortab) -> t_overall
-        # t_overall<-(t_overall[-1,])
-        # write_csv(t_overall, here::here("output", "SDR_table_all.csv"))
