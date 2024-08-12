@@ -105,7 +105,7 @@ This report will focus on:
 ## Codelists
 
 We converted Read Codes used by @Minassian2019 to SNOMED CT Codes (see <https://github.com/opensafely/uom_pregnancy_tx_pathways>).
-In this report we anlysed the code usage of the following three codelists:
+In this report we analyse the code usage of the following three codelists:
 
 ### [Antenatal](https://www.opencodelists.org/codelist/user/VickiPalin/pregnancy_antenatal_snomed/61667fb8/)
 
