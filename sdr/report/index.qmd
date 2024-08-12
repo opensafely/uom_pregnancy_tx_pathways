@@ -94,7 +94,7 @@ source(here("sdr", "scripts", "visualise_code_usage.R"))
 # Introduction
 
 Identifying pregnancy in primary care electronic healthcare records is difficult.
-We aim to explore publicaly available data about code usage in primary care in England to understand how pregnancy related events are recorded since 2011.
+We aim to explore publicly available data about code usage in primary care in England to understand how pregnancy related events are recorded since 2011.
 This report will focus on:
 
 1. **Changes and variation in code usage since 2011**
