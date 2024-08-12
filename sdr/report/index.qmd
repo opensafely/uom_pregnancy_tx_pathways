@@ -494,7 +494,7 @@ plotly::ggplotly(plot_sum_codelist)
 
 ```{r}
 #| label: fig2-pregnancy_delivery_snomed_reviewed_2
-#| fig-cap: "Figure 2. Trends of the 10 most used codes of 'pregnancy_delivery_snomed_reviewed_2' codelist from 1st August 2011 to 31 July 2022. Each point represents the end date of a yearly interval." 
+#| fig-cap: "Figure 2. Trends of the 10 most used codes of 'pregnancy_delivery_snomed_reviewed_2' codelist from 1st August 2011 to 31 July 2023. Each point represents the end date of a yearly interval." 
 #| fig-width: 8
 #| fig-height: 4
 
