@@ -485,7 +485,7 @@ plot_top_codelist <- delivery_selected_snomed_code_usage |>
 
 ```{r}
 #| label: fig1-pregnancy_delivery_snomed_reviewed_2
-#| fig-cap: "Figure 1. Overall trend of code usage of 'pregnancy_delivery_snomed_reviewed_2' codelist from 1st August 2011 to 31 July 2022. Each point represents the end date of a yearly interval." 
+#| fig-cap: "Figure 1. Overall trend of code usage of 'pregnancy_delivery_snomed_reviewed_2' codelist from 1st August 2011 to 31 July 2023. Each point represents the end date of a yearly interval." 
 #| fig-width: 8
 #| fig-height: 4
 
