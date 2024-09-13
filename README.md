@@ -1,6 +1,6 @@
 # uom_pregnancy_tx_pathways
 
-[View on OpenSAFELY](https://jobs.opensafely.org/repo/https%253A%252F%252Fgithub.com%252Fopensafely%252F${uom_pregnancy_tx_pathways})
+[View on OpenSAFELY](https://jobs.opensafely.org/the-impact-of-covid-19-on-pregnancy-treatment-pathways-and-outcomes/)
 
 Details of the purpose and any published outputs from this project can be found at the link above.
 
