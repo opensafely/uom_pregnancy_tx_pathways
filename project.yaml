@@ -24,10 +24,21 @@ actions:
       outputs:
         moderately_sensitive:
            patient_numbers: output/patient_numbers_SDR.csv
-           cohort_contin_region: output/SDR_table_continuous_vars_by_region.csv
-           cohort_contin_age: output/SDR_table_continuous_vars_by_age.csv
-           cohorts_catagorical_region: output/SDR_table_categorical_region.csv
-           cohorts_catagorical_age: output/SDR_table_categorical_age.csv       
+           cohort_contin_overall: output/SDR_table_continuous_vars_overall.csv
+           #cohort_contin_age: output/SDR_table_continuous_vars_by_age.csv
+           cohorts_catagorical_overall: output/SDR_table_categorical_overall.csv
+           #cohorts_catagorical_age: output/SDR_table_categorical_age.csv 
+           #cohort_overall: output/SDR_table_all.csv    
+
+
+  describe_SDR_cohort_minmax_meanSD:
+      run: r:latest analysis/baseline_table_SDR_minmax.R
+      needs: [generate_study_population_SDR]
+      outputs:
+        moderately_sensitive:
+           cohorts_minmax: output/SDR_table_minmax.csv
+           cohorts_meanSD: output/SDR_table_meanSD.csv
+           
  ######################################################
 
 
@@ -183,7 +194,21 @@ actions:
     outputs:
      moderately_sensitive:
         table1: output/table_del_codes_reviewed_with_names_reduced.csv
+
+  describe_delivery_codes_frequency:
+    run: r:latest analysis/frequency_of_codes_Del.R
+    needs: [process_cohorts_select_one_random_event_8wk]
+    outputs:
+     moderately_sensitive:
+        table_delcodes: output/delivery_codes_count.csv
         
+  describe_postnatal_codes_frequency:
+    run: r:latest analysis/frequency_of_codes_PN.R
+    needs: [process_cohorts_select_one_random_event_8wk]
+    outputs:
+     moderately_sensitive:
+        table_pncodes: output/postnatal_codes_count.csv 
+
   # describe_pn_code_freq:
   #   run: r:latest analysis/pn_code_frequency.R
   #   needs: [join_cohorts_8_week]
@@ -349,48 +374,66 @@ actions:
         rds5: output/joined_12wk/basic_joined_12wk_records_2023.rds
 
 
-  ### baseline table for overall cohort. 
-  describe_baseline_table_8wk_cohort:
-     run: r:latest analysis/baseline_table_8wk_using_rds.R
+  ################### randomly select one delivery code event per id for subsequent modelling. 
+  process_cohorts_select_one_random_event_8wk:
+     run: r:latest analysis/cohort_selection_one_random_obs_8wk.R
      needs: [describe_basic_record_to_rds_process]
      outputs:
-       moderately_sensitive: 
-         overall_delcodes: output/table_delcodes_8wk_update.csv
-         table_overall_counts: output/overall_counts_8wk_update.csv
-         table_overall: output/blt_overall_8wk_update_overall.csv  
-
-  ### cohort filtered to check within 6wks
-  describe_baseline_table_6wk_cohort:
-     run: r:latest analysis/baseline_table_6wk_using_rds.R
+       highly_sensitive: 
+         rds_oneobs_8wk: output/joined_8wk/cohort_selection_one_random_obvs_8wk.rds
+       
+  process_cohorts_select_one_random_event_6wk:
+     run: r:latest analysis/cohort_selection_one_random_obs_6wk.R
      needs: [describe_basic_record_to_rds_process_6wkcohort]
      outputs:
-       moderately_sensitive: 
-         overall_delcodes: output/table_delcodes_6wk_update.csv
-         table_overall_counts: output/overall_counts_6wk_update.csv
-         table_overall: output/blt_overall_6wk_update_overall.csv 
-  ### cohort filtered to check within 12wks
-  describe_baseline_table_12wk_cohort:
-     run: r:latest analysis/baseline_table_12wk_using_rds.R
+       highly_sensitive: 
+         rds_oneobs_6wk: output/joined_6wk/cohort_selection_one_random_obvs_6wk.rds
+        
+  process_cohorts_select_one_random_event_12wk:
+     run: r:latest analysis/cohort_selection_one_random_obs_12wk.R
      needs: [describe_basic_record_to_rds_process_12wkcohort]
      outputs:
-       moderately_sensitive: 
-         overall_delcodes: output/table_delcodes_12wk_update.csv
-         table_overall_counts: output/overall_counts_12wk_update.csv
-         table_overall: output/blt_overall_12wk_update_overall.csv 
-  ## comparing 6 8 and 12 week cohorts
-  describe_baseline_table_stats_compare_6_12_cohorts:
-      run: r:latest analysis/baseline_table_comparing_6_to_12.R
-      needs: [describe_basic_record_to_rds_process_6wkcohort,describe_basic_record_to_rds_process, describe_basic_record_to_rds_process_12wkcohort]
-      outputs:
-        moderately_sensitive:
-          comparing_6_8_12_cohorts_patient_numbers: output/blt_6v12_weeks_patient_numbers.csv
-          comparing_6_8_12_cohorts_continuous: output/blt_6v12_weeks_continuous_vars.csv
-          comparing_6_8_12_catagorical: output/blt_6v12_weeks_categorical.csv
-          comparing_6_8_12_catagorical_rounded: output/blt_6v12_weeks_categorical_rounded.csv
+       highly_sensitive: 
+         rds_oneobs_12wk: output/joined_12wk/cohort_selection_one_random_obvs_12wk.rds
+  
 
-  ##########################
-  ###### ITS analyses ######
-  ##########################
+  #### use one obs per id for baselines tables and all models, sensitivity etc. 
+  # baseline table for 8 wk. 
+  describe_baseline_table_8wk_cohort_one_random_event:
+     run: r:latest analysis/baseline_table_8wk_using_cohort_one_obs.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+       moderately_sensitive: 
+         overall_counts: output/overall_counts_8wk_cohort_one_obs.csv
+         table_contin: output/blt_overall_8wk_cohort_one_obs_contin.csv 
+         table_categ: output/blt_overall_8wk_cohort_one_obs_cat.csv
+         table_categ_r: output/blt_overall_8wk_cohort_one_obs_cat_rounded.csv
+  # baseline table for 6 wk. 
+  describe_baseline_table_6wk_cohort_one_random_event:
+     run: r:latest analysis/baseline_table_6wk_using_cohort_one_obs.R
+     needs: [process_cohorts_select_one_random_event_6wk]
+     outputs:
+       moderately_sensitive: 
+         overall_counts: output/overall_counts_6wk_cohort_one_obs.csv
+         table_contin: output/blt_overall_6wk_cohort_one_obs_contin.csv 
+         table_categ: output/blt_overall_6wk_cohort_one_obs_cat.csv
+         table_categ_r: output/blt_overall_6wk_cohort_one_obs_cat_rounded.csv    
+  # baseline table for 12 wk. 
+  describe_baseline_table_12wk_cohort_one_random_event:
+     run: r:latest analysis/baseline_table_12wk_using_cohort_one_obs.R
+     needs: [process_cohorts_select_one_random_event_12wk]
+     outputs:
+       moderately_sensitive: 
+         overall_counts: output/overall_counts_12wk_cohort_one_obs.csv
+         table_contin: output/blt_overall_12wk_cohort_one_obs_contin.csv 
+         table_categ: output/blt_overall_12wk_cohort_one_obs_cat.csv
+         table_categ_r: output/blt_overall_12wk_cohort_one_obs_cat_rounded.csv
+
+
+
+  ############################################
+  #### Interrupted Time Series Analysis ######
+  ############################################
 
   ## ITS plot with modelled rates using 8 week cohort 
   describe_ITS_plot_overall_new_modelled:
@@ -479,40 +522,189 @@ actions:
 
 
 
-  describe_glm_for_no_pn_check:
-      run: r:latest analysis/glm_for_no_pn_check_finalfit.R
-      needs: [describe_basic_record_to_rds_process]
-      outputs:
-       moderately_sensitive:
-          mod1_age_coef: output/mod1_age_bmi.csv
-          mod1_age_matrix: output/mod1_age_bmi_matrix.csv
-          mod2_full_coef: output/mod2_fulladj.csv
-          mod2_full_maxtrix: output/mod2_fulladj_matrix.csv
-          mod2_full_maxtrix_r: output/mod2_fulladj_matrix_reduced_Charlson.csv
-          mod2_full_plot: output/mod2_plot_charlson.jpeg
-          mod3_full_coef: output/mod3_fulladj.csv
-          mod3_full_maxtrix: output/mod3_fulladj_matrix.csv
-          mod3_full_maxtrix_r: output/mod3_fulladj_matrix_reduced_comorbids.csv
-          mod3_full_plot: output/mod3_plot_comor.jpeg
-          mod4_full_coef: output/mod4_fulladj.csv
-          mod4_full_maxtrix: output/mod4_fulladj_matrix.csv
-          mod4_full_maxtrix_r: output/mod4_fulladj_matrix_reduced_hbp_pregnancy.csv
-          mod4_full_plot: output/mod4_plot_hpb.jpeg
-          mod5_full_maxtrix_r: output/mod5_fulladj_matrix_reduced_onepat.csv
-          mod5_full_plot: output/mod5_plot_sensitivity_onepat.jpeg
-          mod6_full_matrix_r: output/mod6_fulladj_matrix_reduced_22onwards.csv
-          mod6_full_plot: output/mod6_plot_sensitivity_22onwards.jpeg
-          #mod7_full_matrix_r: output/mod7_fulladj_matrix_reduced_covid.csv
-          mod7_traditional_covid: output/mod7_fulladj_traditional_reduced_covid.csv
-          #mod3_sens_last_OR_CIs: output/mod3_fulladj_last.csv
-          #forestplot_1: output/glm_fullAdjs.jpeg
-          
-  # describe_glm_for_no_pn_check_covid:
-  #     run: r:latest analysis/glm_for_no_pn_check_finalfit_covid.R
-  #     needs: [describe_basic_record_to_rds_process]
-  #     outputs:
-  #      moderately_sensitive:
-  #         mod7_traditional_covid: output/mod7_covid_traditional.csv
-  #         mod7_finalfit_covid: output/mod7_finalfit_covid.csv
+##############################################
+####### logistic regression modelling ########
+##############################################
+
+#### glm - univariable analysis 
+  describe_glm_for_no_pn_check_age:
+     run: r:latest analysis/glm_for_no_pn_check_age.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age: output/mod_age.csv
+        mod_agecat: output/mod_age_cat.csv
+
+  describe_glm_for_no_pn_check_bmi:
+     run: r:latest analysis/glm_for_no_pn_check_bmi.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_bmi: output/mod_bmi.csv
+        mod_bmicat: output/mod_bmi_cat.csv
 
 
+  describe_glm_for_no_pn_check_ethnicity:
+     run: r:latest analysis/glm_for_no_pn_check_ethnicity.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_ethnicity: output/mod_ethnicity.csv
+
+  describe_glm_for_no_pn_check_imd:
+     run: r:latest analysis/glm_for_no_pn_check_imd.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_imd: output/mod_imd.csv
+
+  describe_glm_for_no_pn_check_region:
+     run: r:latest analysis/glm_for_no_pn_check_region.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_region: output/mod_region.csv
+
+  describe_glm_for_no_pn_check_charlsonGr2_only:
+     run: r:latest analysis/glm_for_no_pn_check_charlsonGr2_only.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_chargrp2: output/mod_charlsonGr2_only.csv
+
+  describe_glm_for_no_pn_check_charlsonGr5_only:
+     run: r:latest analysis/glm_for_no_pn_check_charlsonGr5_only.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_chargrp5: output/mod_charlsonGr5_only.csv
+
+  describe_glm_for_no_pn_check_hbp:
+     run: r:latest analysis/glm_for_no_pn_check_hbp.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_hbp: output/mod_hbp_only.csv
+
+  describe_glm_for_no_pn_check_covid_only:
+     run: r:latest analysis/glm_for_no_pn_check_covid_only.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_chargrp5: output/mod_covid_only.csv
+
+#################################
+#### building demographics glm()
+#################################
+  describe_glm_for_no_pn_check_age_bmi_eth:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth: output/mod_agebmieth.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd: output/mod_agebmiethimd.csv
+ 
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg: output/mod_agebmiethimdreg.csv
+
+  #####################
+  ## full model
+  ####################
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char: output/mod_full_char2.csv
+        mod_age_bmi_eth_imd_reg_char2_hbp: output/mod_full_char2_hbp.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char5: output/mod_full_Char5.csv
+        mod_age_bmi_eth_imd_reg_char5_hbp: output/mod_full_Char5_HBP.csv
+
+
+
+  describe_glm_for_no_pn_check_17_comor:
+     run: r:latest analysis/glm_for_no_pn_check_17_comor.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_full_17: output/mod_full_17_comor.csv
+        model_full_17_AND_hbp: output/mod_full_17_comor_AND_HBP.csv
+
+##############################
+###### covid interaction
+##############################
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char2_COVID:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_COVID.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_full_covid: output/mod_full_char2_covid.csv
+        mod_full_covid_interaction: output/mod_full_char2_covid_interaction.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_COVID:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_COVID.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        mod_full_covid: output/mod_full_cahr5_covid.csv
+        mod_full_covid_interaction: output/mod_full_char5_covid_interaction.csv
+
+## 2019 v 2022 onwards
+  describe_glm_for_no_pn_check_19_22:
+     run: r:latest analysis/glm_for_no_pn_check_2019_2022.R
+     needs: [process_cohorts_select_one_random_event_8wk]
+     outputs:
+      moderately_sensitive:
+        model_full_19: output/mod_full_Charlson_2019.csv
+        #model_sep_19: output/separation_result19.txt
+        model_full_22: output/mod_full_Charlson_2022.csv
+        #model_sep_22: output/separation_result22.txt
+
+
+##########################
+## using 12 week cohort ##
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char_12weeks:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_12weeks.R
+     needs: [process_cohorts_select_one_random_event_12wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char_12weeks: output/mod_full_12weeks.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_12weeks:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_12weeks.R
+     needs: [process_cohorts_select_one_random_event_12wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char5: output/mod_full_Char5_12weeks.csv
+
+#########################
+## using 6 week cohort ##
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char_6weeks:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char_6weeks.R
+     needs: [process_cohorts_select_one_random_event_6wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char_6weeks: output/mod_full_6weeks.csv
+
+  describe_glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_6weeks:
+     run: r:latest analysis/glm_for_no_pn_check_age_bmi_eth_imd_reg_char5_6weeks.R
+     needs: [process_cohorts_select_one_random_event_6wk]
+     outputs:
+      moderately_sensitive:
+        mod_age_bmi_eth_imd_reg_char5: output/mod_full_Char5_6weeks.csv

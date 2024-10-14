@@ -170,6 +170,14 @@ DF_plot_f$Ethnicity <- factor(DF_plot_f$Ethnicity,
                                          "Other",
                                          "White"))
 
+names(DF_counter)[16]="Ethnicity"
+DF_counter$Ethnicity <- factor(DF_counter$Ethnicity, 
+                              levels = c("Asian or Asian British",
+                                         "Black or Black British",
+                                         "Mixed",
+                                         "Other",
+                                         "White"))                                        
+
 ### plot 
 plot_ITS<-ggplot(DF_plot_f, aes(x=date, y=fit*1000/population_rounded, group=covid))+ 
   theme_bw()+ 
