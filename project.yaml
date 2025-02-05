@@ -173,28 +173,6 @@ actions:
   #### of most frequent delivery and postnatal codes               ####
   #####################################################################
 
-  describe_del_code_freq:
-    run: r:latest analysis/del_code_frequency.R
-    needs: [join_cohorts_8_week]
-    outputs:
-      moderately_sensitive:
-        hist1: output/del_code_histogram_reviewed.jpeg
-        table1: output/table_del_codes_reviewed.csv
-
-  describe_del_code_freq_with_names:
-    run: r:latest analysis/del_code_frequency_with_names.R
-    needs: [describe_del_code_freq]
-    outputs:
-      moderately_sensitive:
-        table1: output/table_del_codes_reviewed_with_names.csv
-
-  describe_del_code_freq_with_names_reduced:
-    run: r:latest analysis/del_code_frequency_with_names_reduced.R
-    needs: [describe_del_code_freq_with_names]
-    outputs:
-     moderately_sensitive:
-        table1: output/table_del_codes_reviewed_with_names_reduced.csv
-
   describe_delivery_codes_frequency:
     run: r:latest analysis/frequency_of_codes_Del.R
     needs: [process_cohorts_select_one_random_event_8wk]
@@ -209,45 +187,7 @@ actions:
      moderately_sensitive:
         table_pncodes: output/postnatal_codes_count.csv 
 
-  # describe_pn_code_freq:
-  #   run: r:latest analysis/pn_code_frequency.R
-  #   needs: [join_cohorts_8_week]
-  #   outputs:
-  #     moderately_sensitive:
-  #       hist2: output/pn_code_histogram_reviewed.jpeg
-  #       table1: output/table_pn_codes_reviewed.csv
 
-  # describe_pn_code_freq_with_names:
-  #    run: r:latest analysis/pn_code_frequency_with_names.R
-  #    needs: [describe_pn_code_freq]
-  #    outputs:
-  #      moderately_sensitive:
-  #        table1: output/table_pn_codes_reviewed_with_names.csv   
-
-  # describe_pn_code_freq_with_names_reduced:
-  #    run: r:latest analysis/pn_code_frequency_with_names_reduced.R
-  #    needs: [describe_pn_code_freq_with_names]
-  #    outputs:
-  #     moderately_sensitive:
-  #        table1: output/table_pn_codes_reviewed_with_names_reduced.csv   
-
-  # frequency of codes by unique patients
-  # describe_freq_by_unique_patients:
-  #    run: r:latest analysis/del_code_and_pn_code_frequency_by_patient.R
-  #    needs: [join_cohorts_8_week]
-  #    outputs:
-  #     moderately_sensitive:
-  #        hist_del_code: output/del_code_histogram_reviewed_byPatient.jpeg
-  #        hist_pn_code: output/pn_code_histogram_reviewed_byPatient.jpeg
-  #        quantiles_del: output/del_code_quantiles_by_patients.csv
-  #        quantiles_pn: output/pn_code_quantiles_by_patients.csv
-  #        freq_del: output/table_del_codes_reviewed_overall.csv
-  #        freq_pn: output/table_pn_codes_reviewed_overall.csv
-  #        freq_del_namesR: output/table_del_codes_mergedR.csv
-  #        freq_pn_namesR: output/table_pn_codes_mergedR.csv
-  #     highly_sensitive: 
-  #        hist_pn_code_data: output/pn_code_histogram_data.csv
-  #        hist_del_code_data: output/del_code_histogram_data.csv
   
   ######################################################
   #### plots for rate of postnatal checks over time ####
